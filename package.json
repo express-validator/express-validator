@@ -1,0 +1,20 @@
+{
+  "author": "Christoph Tavan <dev@tavan.de>",
+  "name": "express-validator",
+  "description": "Express middleware for node-validator",
+  "version": "0.0.0",
+  "homepage": "https://github.com/ctavan/express-validator",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ctavan/express-validator.git"
+  },
+  "main": "./index.js",
+  "engines": {
+    "node": "*"
+  },
+  "dependencies": {
+    "validator": ">=0.2.8"
+  },
+  "devDependencies": {
+  }
+}
