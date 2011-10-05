@@ -64,7 +64,7 @@ There have been validation errors: Invalid getparam, Invalid foo
 
 - Christoph Tavan <dev@tavan.de> - Wrap the gist in an npm package
 
-## Licence
+## License
 
 Copyright (c) 2010 Chris O'Hara <cohara87@gmail.com>, MIT License
 
