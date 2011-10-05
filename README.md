@@ -1,6 +1,6 @@
 # express-validator
 
-[express.js]( https://github.com/visionmedia/express ) middleware for
+An [express.js]( https://github.com/visionmedia/express ) middleware for
 [node-validator]( https://github.com/chriso/node-validator ).
 
 This is basically a copy of a [gist]( https://gist.github.com/752126 ) by
