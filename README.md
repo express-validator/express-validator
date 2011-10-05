@@ -6,6 +6,12 @@ An [express.js]( https://github.com/visionmedia/express ) middleware for
 This is basically a copy of a [gist]( https://gist.github.com/752126 ) by
 node-validator author [chriso]( https://github.com/chriso ).
 
+## Installation
+
+```
+npm install express-validator
+```
+
 ## Usage
 
 ``` javascript
