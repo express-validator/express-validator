@@ -1,8 +1,11 @@
 {
-  "author": "Christoph Tavan <dev@tavan.de>",
   "name": "express-validator",
-  "description": "Express middleware for node-validator",
-  "version": "0.0.0",
+  "description": "Express middleware for the validator module.",
+  "author": "Christoph Tavan <dev@tavan.de>",
+  "contributors": [
+    "Chris O'Hara <cohara87@gmail.com>"
+  ],
+  "version": "0.1.0",
   "homepage": "https://github.com/ctavan/express-validator",
   "repository": {
     "type": "git",
