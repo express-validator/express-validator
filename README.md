@@ -54,7 +54,11 @@ $ curl -d 'postparam=1' http://localhost:8888/t1est?getparam=1ab
 There have been validation errors: Invalid getparam, Invalid foo
 ```
 
+# Contributors
+
+- Christoph Tavan <dev@tavan.de> - Wrap the gist in an npm package
+
 # Licence
 
-Copyright (c) 2010 Chris O'Hara cohara87@gmail.com, MIT License
+Copyright (c) 2010 Chris O'Hara <cohara87@gmail.com>, MIT License
 
