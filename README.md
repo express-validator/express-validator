@@ -22,18 +22,16 @@ var express = require('express'),
 app.use(express.bodyParser());
 app.use(expressValidator);
 
-app.post('/:foo', function(req, res) {
+app.post('/:urlparam', function(req, res) {
   var errors = [];
   req.onValidationError(function(msg) {
     console.log('Validation error: ' + msg);
     errors.push(msg);
   });
 
-  req.mixinParams();
-
   req.assert('postparam', 'Invalid postparam').isInt();
   req.assert('getparam', 'Invalid getparam').isInt();
-  req.assert('foo', 'Invalid foo').isAlpha();
+  req.assert('urlparam', 'Invalid urlparam').isAlpha();
 
   req.sanitize('postparam').toBoolean();
 
@@ -41,7 +39,11 @@ app.post('/:foo', function(req, res) {
     res.send('There have been validation errors: ' + errors.join(', '), 500);
     return;
   }
-  res.json(req.params);
+  res.json({
+    urlparam: req.param('urlparam'),
+    getparam: req.param('getparam'),
+    postparam: req.param('postparam')
+  });
 });
 
 app.listen(8888);
@@ -51,10 +53,10 @@ Which will result in:
 
 ```
 $ curl -d 'postparam=1' http://localhost:8888/test?getparam=1
-{"foo":"test","getparam":"1","postparam":true}
+{"urlparam":"test","getparam":"1","postparam":true}
 
 $ curl -d 'postparam=1' http://localhost:8888/t1est?getparam=1
-There have been validation errors: Invalid foo
+There have been validation errors: Invalid urlparam
 
 $ curl -d 'postparam=1' http://localhost:8888/t1est?getparam=1ab
 There have been validation errors: Invalid getparam, Invalid foo
