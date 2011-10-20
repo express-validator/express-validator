@@ -19,5 +19,14 @@
     "validator": ">=0.2.8"
   },
   "devDependencies": {
-  }
+  },
+  "keywords": [
+    "express",
+    "validator",
+    "validation",
+    "validate",
+    "sanitize",
+    "sanitization",
+    "xss"
+  ]
 }
