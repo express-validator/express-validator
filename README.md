@@ -62,6 +62,16 @@ $ curl -d 'postparam=1' http://localhost:8888/t1est?getparam=1ab
 There have been validation errors: Invalid getparam, Invalid foo
 ```
 
+## Changelog
+
+### v0.1.1
+- Use req.param() method to get parameter values instead of accessing
+  req.params directly.
+- Remove req.mixinParams() method.
+
+### v0.1.0
+- Initial release
+
 ## Contributors
 
 - Christoph Tavan <dev@tavan.de> - Wrap the gist in an npm package
