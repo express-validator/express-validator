@@ -10,9 +10,10 @@ app.post('/:urlparam', function(req, res) {
   req.onValidationError(function(msg) {
     console.log('Validation error: ' + msg);
     errors.push(msg);
+    return this;
   });
 
-  req.assert('postparam', 'Invalid postparam').isInt();
+  req.assert('postparam', 'Invalid postparam').notEmpty().isInt();
   req.assert('getparam', 'Invalid getparam').isInt();
   req.assert('urlparam', 'Invalid urlparam').isAlpha();
 
