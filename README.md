@@ -65,6 +65,9 @@ There have been validation errors: Invalid getparam, Invalid foo
 
 ## Changelog
 
+### v0.1.2
+- Expose Filter and Validator instances to allow adding custom methods
+
 ### v0.1.1
 - Use req.param() method to get parameter values instead of accessing
   req.params directly.
