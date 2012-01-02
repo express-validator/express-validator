@@ -14,7 +14,7 @@ npm install express-validator
 
 ## Usage
 
-``` javascript
+```javascript
 var express = require('express'),
     expressValidator = require('express-validator'),
     app = express.createServer();
@@ -63,7 +63,23 @@ $ curl -d 'postparam=1' http://localhost:8888/t1est?getparam=1ab
 There have been validation errors: Invalid getparam, Invalid foo
 ```
 
+You can extend the `Validator` and `Filter` objects to add custom validation
+and sanitization methods:
+
+```javascript
+var expressValidator = require('express-validator');
+
+expressValidator.Filter.prototype.toLowerCase = function(){
+  this.modify(this.str.toLowerCase());
+  return this.str;
+};
+```
+
+
 ## Changelog
+
+### v0.1.3
+- Readme update
 
 ### v0.1.2
 - Expose Filter and Validator instances to allow adding custom methods
