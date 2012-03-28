@@ -63,6 +63,34 @@ $ curl -d 'postparam=1' http://localhost:8888/t1est?getparam=1ab
 There have been validation errors: Invalid getparam, Invalid foo
 ```
 
+To manage errors in templates you can get an object with ```key:msg``` pairs
+
+```javascript
+req.assert('email', 'Not a valid email address').isEmail();
+req.assert('password', 'Password is required').notEmpty();
+
+var errors = req.getErrors();
+if(errors)
+  console.log(errors);
+```
+
+In case of validation errors, will result in:
+
+```
+{ email: 'Not a valid email address', 'password': 'Password is required' }
+```
+
+You can use the errors object in a template like:
+
+```
+if(errors.email)
+  input.error(type="text", name="email", value="#{values.email}")
+  span.error= errors.email
+else
+  input.(type="text", name="email")
+```
+
+
 You can extend the `Validator` and `Filter` objects to add custom validation
 and sanitization methods:
 
