@@ -15,10 +15,12 @@ var url = 'http://localhost:' + port;
 // POST params.
 
 var errorMessage = 'Parameter is not an integer';
-var validation = function(req, res, errors) {
+var validation = function(req, res) {
   req.assert('testparam', errorMessage).notEmpty().isInt();
+
+  var errors = req.validationErrors();
   if (errors.length) {
-    res.json({errors: errors});
+    res.json(errors);
     return;
   }
   res.json({testparam: req.param('testparam')});
@@ -27,7 +29,8 @@ var app = new App(port, validation);
 app.start();
 
 function fail(body) {
-  assert.deepEqual(body, {errors: [errorMessage]});
+  assert.equal(body.length, 1);
+  assert.deepEqual(body[0].msg, errorMessage);
 }
 function pass(body) {
   assert.deepEqual(body, {testparam: 123});

@@ -16,17 +16,8 @@ App.prototype.start = function() {
   self.app.use(express.bodyParser());
   self.app.use(expressValidator);
 
-  function testAction(req, res) {
-    var errors = [];
-    req.onValidationError(function(msg) {
-      errors.push(msg);
-      return this;
-    });
-
-    self.validation(req, res, errors);
-  }
-  self.app.get('/:testparam?', testAction);
-  self.app.post('/:testparam?', testAction);
+  self.app.get('/:testparam?', self.validation);
+  self.app.post('/:testparam?', self.validation);
 
   self.app.listen(this.port);
 };

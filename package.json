@@ -13,7 +13,7 @@
   },
   "main": "./index.js",
   "scripts": {
-    "test": "node test/integration.js"
+    "test": "for F in test/*.js; do echo \"$F: \"; node $F; done;"
   },
   "engines": {
     "node": "*"
