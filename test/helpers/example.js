@@ -1,17 +1,12 @@
-var express = require('express'),
-    expressValidator = require('../index.js'),
+var util = require('util'),
+    express = require('express'),
+    expressValidator = require('../../index'),
     app = express.createServer();
 
 app.use(express.bodyParser());
 app.use(expressValidator);
 
 app.post('/:urlparam', function(req, res) {
-  var errors = [];
-  req.onValidationError(function(msg) {
-    console.log('Validation error: ' + msg);
-    errors.push(msg);
-    return this;
-  });
 
   req.assert('postparam', 'Invalid postparam').notEmpty().isInt();
   req.assert('getparam', 'Invalid getparam').isInt();
@@ -19,8 +14,9 @@ app.post('/:urlparam', function(req, res) {
 
   req.sanitize('postparam').toBoolean();
 
-  if (errors.length) {
-    res.send('There have been validation errors: ' + errors.join(', '), 500);
+  var errors = req.validationErrors();
+  if (errors) {
+    res.send('There have been validation errors: ' + util.inspect(errors), 500);
     return;
   }
   res.json({

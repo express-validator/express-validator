@@ -3,22 +3,29 @@
   "description": "Express middleware for the validator module.",
   "author": "Christoph Tavan <dev@tavan.de>",
   "contributors": [
-    "Chris O'Hara <cohara87@gmail.com>"
+    "Chris O'Hara <cohara87@gmail.com>",
+    "@orfaust"
   ],
-  "version": "0.1.3",
+  "version": "0.2.0",
   "homepage": "https://github.com/ctavan/express-validator",
   "repository": {
     "type": "git",
     "url": "git://github.com/ctavan/express-validator.git"
   },
   "main": "./index.js",
+  "scripts": {
+    "test": "make test"
+  },
   "engines": {
     "node": "*"
   },
   "dependencies": {
-    "validator": ">=0.2.8"
+    "validator": "~0.4.5"
   },
   "devDependencies": {
+    "async": "~0.1.18",
+    "express": "~2.5.9",
+    "request": "~2.9.153"
   },
   "keywords": [
     "express",
