@@ -1,40 +1,11 @@
-// Test config
 var assert = require('assert');
 var async = require('async');
-var request = require('request');
-var errorMessage = 'Parameter is not an integer';
+
+var App = require('./helpers/app');
+var req = require('./helpers/req');
+
 var port = process.env.NODE_HTTP_PORT || 8888;
 var url = 'http://localhost:' + port;
-
-// Sample app
-var express = require('express');
-var expressValidator = require('../index.js');
-var app = express.createServer();
-
-app.use(express.bodyParser());
-app.use(expressValidator);
-
-function testAction(req, res) {
-  var errors = [];
-  req.onValidationError(function(msg) {
-    errors.push(msg);
-    return this;
-  });
-
-  req.assert('testparam', errorMessage).notEmpty().isInt();
-
-  if (errors.length) {
-    res.json({errors: errors});
-    return;
-  }
-  res.json({testparam: req.param('testparam')});
-}
-app.get('/:testparam?', testAction);
-app.post('/:testparam?', testAction);
-
-app.listen(port);
-
-// Tests
 
 // There are three ways to pass parameters to express:
 // - as part of the URL
@@ -43,33 +14,23 @@ app.listen(port);
 // URL params take precedence over GET params which take precedence over
 // POST params.
 
+var errorMessage = 'Parameter is not an integer';
+var validation = function(req, res, errors) {
+  req.assert('testparam', errorMessage).notEmpty().isInt();
+  if (errors.length) {
+    res.json({errors: errors});
+    return;
+  }
+  res.json({testparam: req.param('testparam')});
+};
+var app = new App(port, validation);
+app.start();
+
 function fail(body) {
   assert.deepEqual(body, {errors: [errorMessage]});
 }
 function pass(body) {
   assert.deepEqual(body, {testparam: 123});
-}
-var check = function(assertion, cb) {
-  return function(err, res, body) {
-    if (typeof body === 'string') {
-      try {
-        body = JSON.parse(body);
-      } catch (e) {
-        return cb(e);
-      }
-    }
-    assertion(body);
-    cb(null);
-  };
-};
-
-function req() {
-  var args = Array.prototype.slice.call(arguments);
-  var cb = args.pop();
-  var assertion = args.pop();
-  var method = args.shift();
-  args.push(check(assertion, cb));
-  request[method].apply(this, args);
 }
 
 var tests = [
@@ -98,7 +59,6 @@ var tests = [
 
 async.parallel(tests, function(err) {
   assert.ifError(err);
-  app.close();
+  app.stop();
   console.log('All %d tests passed.', tests.length);
 });
-
