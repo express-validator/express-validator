@@ -14,7 +14,7 @@
   },
   "main": "./index.js",
   "scripts": {
-    "test": "for F in test/*.js; do echo \"$F: \"; node $F; done;"
+    "test": "make test"
   },
   "engines": {
     "node": "*"
