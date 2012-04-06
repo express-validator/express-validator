@@ -12,13 +12,19 @@
     "url": "git://github.com/ctavan/express-validator.git"
   },
   "main": "./index.js",
+  "scripts": {
+    "test": "node test/integration.js"
+  },
   "engines": {
     "node": "*"
   },
   "dependencies": {
-    "validator": ">=0.2.8"
+    "validator": "~0.4.5"
   },
   "devDependencies": {
+    "async": "~0.1.18",
+    "express": "~2.5.9",
+    "request": "~2.9.153"
   },
   "keywords": [
     "express",
