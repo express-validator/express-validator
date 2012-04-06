@@ -1,5 +1,7 @@
 # express-validator
 
+[![Build Status](https://secure.travis-ci.org/ctavan/express-validator.png)](http://travis-ci.org/ctavan/express-validator)
+
 An [express.js]( https://github.com/visionmedia/express ) middleware for
 [node-validator]( https://github.com/chriso/node-validator ).
 
@@ -15,20 +17,15 @@ npm install express-validator
 ## Usage
 
 ```javascript
-var express = require('express'),
-    expressValidator = require('express-validator'),
+var util = require('util'),
+    express = require('express'),
+    expressValidator = require('../../index'),
     app = express.createServer();
 
 app.use(express.bodyParser());
 app.use(expressValidator);
 
 app.post('/:urlparam', function(req, res) {
-  var errors = [];
-  req.onValidationError(function(msg) {
-    console.log('Validation error: ' + msg);
-    errors.push(msg);
-    return this;
-  });
 
   req.assert('postparam', 'Invalid postparam').notEmpty().isInt();
   req.assert('getparam', 'Invalid getparam').isInt();
@@ -36,8 +33,9 @@ app.post('/:urlparam', function(req, res) {
 
   req.sanitize('postparam').toBoolean();
 
-  if (errors.length) {
-    res.send('There have been validation errors: ' + errors.join(', '), 500);
+  var errors = req.validationErrors();
+  if (errors) {
+    res.send('There have been validation errors: ' + util.inspect(errors), 500);
     return;
   }
   res.json({
@@ -57,10 +55,13 @@ $ curl -d 'postparam=1' http://localhost:8888/test?getparam=1
 {"urlparam":"test","getparam":"1","postparam":true}
 
 $ curl -d 'postparam=1' http://localhost:8888/t1est?getparam=1
-There have been validation errors: Invalid urlparam
+There have been validation errors: [
+  { param: 'urlparam', msg: 'Invalid urlparam', value: 't1est' } ]
 
 $ curl -d 'postparam=1' http://localhost:8888/t1est?getparam=1ab
-There have been validation errors: Invalid getparam, Invalid foo
+There have been validation errors: [
+  { param: 'getparam', msg: 'Invalid getparam', value: '1ab' },
+  { param: 'urlparam', msg: 'Invalid urlparam', value: 't1est' } ]
 ```
 
 You can extend the `Validator` and `Filter` objects to add custom validation
@@ -75,8 +76,81 @@ expressValidator.Filter.prototype.toLowerCase = function(){
 };
 ```
 
+### Validation errors
+
+You have two choices on how to get the validation errors:
+
+```javascript
+req.assert('email', 'required').notEmpty();
+req.assert('email', 'valid email required').isEmail();
+req.assert('password', '6 to 20 characters required').len(6, 20);
+
+var errors = req.validationErrors();
+var mappedErrors = req.validationErrors(true);
+```
+
+errors:
+
+```javascript
+[
+  {param: "email", msg: "required", value: "<received input>"},
+  {param: "email", msg: "valid email required", value: "<received input>"},
+  {param: "password", msg: "6 to 20 characters required", value: "<received input>"}
+]
+```
+
+mappedErrors:
+
+```javascript
+{
+  email: {
+    param: "email",
+    msg: "valid email required",
+    value: "<received input>"
+  },
+  password: {
+    param: "password",
+    msg: "6 to 20 characters required",
+    value: "<received input>"
+  }
+}
+```
+
+### Nested input data
+
+Example:
+
+```html
+<input name="user[fields][email]" />
+```
+
+Provide an array instead of a string:
+
+```javascript
+req.assert(['user', 'fields', 'email'], 'valid email required').isEmail();
+var errors = req.validationErrors();
+console.log(errors);
+```
+
+Output:
+
+```javascript
+[
+  {
+    param: "user_fields_email",
+    msg: "valid email required",
+    value: "<received input>"
+  }
+]
+```
+
 
 ## Changelog
+
+### v0.2.0
+- Added `validationErrors()` method (by @orfaust)
+- Added support for nested form fields (by @orfaust)
+- Added test cases
 
 ### v0.1.3
 - Readme update
@@ -95,6 +169,7 @@ expressValidator.Filter.prototype.toLowerCase = function(){
 ## Contributors
 
 - Christoph Tavan <dev@tavan.de> - Wrap the gist in an npm package
+- @orfaust - Add `validationErrors()` and nested field support
 
 ## License
 
