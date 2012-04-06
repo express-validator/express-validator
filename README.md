@@ -167,6 +167,7 @@ Output:
 ## Contributors
 
 - Christoph Tavan <dev@tavan.de> - Wrap the gist in an npm package
+- @orfaust - Add `validationErrors()` and nested field support
 
 ## License
 
