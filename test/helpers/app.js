@@ -2,8 +2,6 @@
 var express = require('express');
 var expressValidator = require('../../index');
 
-var app = null;
-
 function App(port, validation) {
   this.app = null;
   this.port = port;
