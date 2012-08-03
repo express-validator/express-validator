@@ -10,7 +10,7 @@ var url = 'http://localhost:' + port;
 // Nested parameters are also supported
 
 var validation = function(req, res) {
-  req.assert(['user', 'fields', 'email'], 'not empty').notEmpty();
+  req.assert('user.fields.email', 'not empty').notEmpty();
   req.assert(['user', 'fields', 'email'], 'valid email required').isEmail();
 
   var errors = req.validationErrors();
