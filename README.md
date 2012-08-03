@@ -154,8 +154,11 @@ req.assert(['user', 'fields', 'email'], 'valid email required').isEmail();
 
 ## Changelog
 
+### v0.2.3
+- Fix checkHeader() (@pimguilherme)
+
 ### v0.2.2
-- Add dot-notation for nested input
+- Add dot-notation for nested input (@sharonjl)
 - Add validate() alias for check()
 
 ### v0.2.1
