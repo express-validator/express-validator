@@ -6,7 +6,7 @@
     "Chris O'Hara <cohara87@gmail.com>",
     "@orfaust"
   ],
-  "version": "0.2.1",
+  "version": "0.2.2",
   "homepage": "https://github.com/ctavan/express-validator",
   "repository": {
     "type": "git",
@@ -20,12 +20,12 @@
     "node": "*"
   },
   "dependencies": {
-    "validator": "~0.4.5"
+    "validator": "~0.4.10"
   },
   "devDependencies": {
-    "async": "~0.1.18",
-    "express": "~2.5.9",
-    "request": "~2.9.153"
+    "async": "~0.1.22",
+    "express": "~2.5.11",
+    "request": "~2.10.0"
   },
   "keywords": [
     "express",
