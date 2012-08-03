@@ -144,8 +144,22 @@ Output:
 ]
 ```
 
+Alternatively you can use dot-notation to specify nested fields to be checked:
+
+```javascript
+req.assert(['user', 'fields', 'email'], 'valid email required').isEmail();
+```
+
+
 
 ## Changelog
+
+### v0.2.2
+- Add dot-notation for nested input
+- Add validate() alias for check()
+
+### v0.2.1
+- Fix chaining validators (@rapee)
 
 ### v0.2.0
 - Added `validationErrors()` method (by @orfaust)
