@@ -16,6 +16,7 @@ App.prototype.start = function() {
   self.app.use(express.bodyParser());
   self.app.use(expressValidator);
 
+  self.app.get(/\/test(\d+)/, self.validation);
   self.app.get('/:testparam?', self.validation);
   self.app.post('/:testparam?', self.validation);
 
