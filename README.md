@@ -150,9 +150,25 @@ Alternatively you can use dot-notation to specify nested fields to be checked:
 req.assert(['user', 'fields', 'email'], 'valid email required').isEmail();
 ```
 
+### Regex routes
+
+Express allows you to define regex routes like:
+
+```javascript
+app.get(/\/test(\d+)/, function() {});
+```
+
+You can validate the extracted matches like this:
+
+```javascript
+req.assert(0, 'Not a three-digit integer.').len(3, 3).isInt();
+```
 
 
 ## Changelog
+
+### v0.2.4
+- Support for regex routes (@Cecchi)
 
 ### v0.2.3
 - Fix checkHeader() (@pimguilherme)
