@@ -1,0 +1,15 @@
+<html>
+<head>
+<script type="text/javascript" src="validator-min.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+try {
+    check('ad>dfds@fsdfsd.com').isEmail();
+} catch (e) {
+    console.log('ok');
+}
+console.log(sanitize('aaa<a>bbb</a>').xss());
+</script>
+</body>
+</html>
