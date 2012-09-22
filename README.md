@@ -19,7 +19,7 @@ npm install express-validator
 ```javascript
 var util = require('util'),
     express = require('express'),
-    expressValidator = require('../../index'),
+    expressValidator = require('express-validator'),
     app = express.createServer();
 
 app.use(express.bodyParser());
