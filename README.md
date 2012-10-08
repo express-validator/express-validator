@@ -167,6 +167,9 @@ req.assert(0, 'Not a three-digit integer.').len(3, 3).isInt();
 
 ## Changelog
 
+### v0.3.0
+- `req.validationErrors()` now returns `null` instead of `false` if there are no errors.
+
 ### v0.2.4
 - Support for regex routes (@Cecchi)
 
