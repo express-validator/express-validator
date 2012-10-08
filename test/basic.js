@@ -19,7 +19,7 @@ var validation = function(req, res) {
   req.assert('testparam', errorMessage).notEmpty().isInt();
 
   var errors = req.validationErrors();
-  if (errors.length) {
+  if (errors) {
     res.json(errors);
     return;
   }

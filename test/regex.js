@@ -14,7 +14,7 @@ var validation = function(req, res) {
   req.assert(0, errorMessage).len(3,3).isInt();
 
   var errors = req.validationErrors();
-  if (errors.length) {
+  if (errors) {
     res.json(errors);
     return;
   }
