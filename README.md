@@ -161,6 +161,8 @@ Custom validation which always fails. Useful for debugging or for
 adding messages manually when doing complex validation:
 
 ```javascript
+var expressValidator = require('express-validator');
+
 expressValidator.Validator.prototype.fail = function() {
   //You could validate against this.str, instead of just erroring out.
 
@@ -172,8 +174,6 @@ expressValidator.Validator.prototype.fail = function() {
 Custom sanitization which lower-cases the string:
 
 ```javascript
-var expressValidator = require('express-validator');
-
 expressValidator.Filter.prototype.toLowerCase = function(){
   this.modify(this.str.toLowerCase());
   return this.str;
