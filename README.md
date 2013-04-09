@@ -64,18 +64,6 @@ There have been validation errors: [
   { param: 'urlparam', msg: 'Invalid urlparam', value: 't1est' } ]
 ```
 
-You can extend the `Validator` and `Filter` objects to add custom validation
-and sanitization methods:
-
-```javascript
-var expressValidator = require('express-validator');
-
-expressValidator.Filter.prototype.toLowerCase = function(){
-  this.modify(this.str.toLowerCase());
-  return this.str;
-};
-```
-
 ### Validation errors
 
 You have two choices on how to get the validation errors:
@@ -164,6 +152,33 @@ You can validate the extracted matches like this:
 req.assert(0, 'Not a three-digit integer.').len(3, 3).isInt();
 ```
 
+### Extending
+
+You can extend the `Validator` and `Filter` objects to add custom validation
+and sanitization method.
+
+Custom validation which always fails. Useful for debugging or for
+adding messages manually when doing complex validation:
+
+```javascript
+var expressValidator = require('express-validator');
+
+expressValidator.Validator.prototype.fail = function() {
+  //You could validate against this.str, instead of just erroring out.
+
+  this.error(this.msg);
+  return this;
+};
+```
+
+Custom sanitization which lower-cases the string:
+
+```javascript
+expressValidator.Filter.prototype.toLowerCase = function(){
+  this.modify(this.str.toLowerCase());
+  return this.str;
+};
+```
 
 ## Changelog
 
