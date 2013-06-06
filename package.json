@@ -21,7 +21,7 @@
     "node": "*"
   },
   "dependencies": {
-    "validator": "0.4.25"
+    "validator": "1.1.3"
   },
   "devDependencies": {
     "async": "~0.1.22",

@@ -11,7 +11,7 @@ var url = 'http://localhost:' + port;
 
 var errorMessage = 'Parameter is not a 3 digit integer';
 var validation = function(req, res) {
-  req.assert(0, errorMessage).len(3,3).isInt();
+  req.assert(0, errorMessage).len(3, 3).isInt();
 
   var errors = req.validationErrors();
   if (errors) {
@@ -24,7 +24,7 @@ var app = new App(port, validation);
 app.start();
 
 function fail(body) {
-  assert.equal(body.length, 1);
+  assert.equal(body.length, 2);
   assert.deepEqual(body[0].msg, errorMessage);
 }
 function pass(body) {
