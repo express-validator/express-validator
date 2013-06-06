@@ -187,6 +187,13 @@ expressValidator.Filter.prototype.toLowerCase = function(){
 
 ## Changelog
 
+### v0.4.1
+- Update this readme
+
+### v0.4.0
+- Added `req.checkBody()` (@zero21xxx).
+- Upgraded validator dependency to 1.1.3
+
 ### v0.3.0
 - `req.validationErrors()` now returns `null` instead of `false` if there are no errors.
 
