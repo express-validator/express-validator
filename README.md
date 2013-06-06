@@ -27,7 +27,8 @@ app.use(expressValidator);
 
 app.post('/:urlparam', function(req, res) {
 
-  req.assert('postparam', 'Invalid postparam').notEmpty().isInt();
+  // checkBody only checks req.body; none of the other req parameters
+  req.checkBody('postparam', 'Invalid postparam').notEmpty().isInt();
   req.assert('getparam', 'Invalid getparam').isInt();
   req.assert('urlparam', 'Invalid urlparam').isAlpha();
 
@@ -62,6 +63,10 @@ $ curl -d 'postparam=1' http://localhost:8888/t1est?getparam=1ab
 There have been validation errors: [
   { param: 'getparam', msg: 'Invalid getparam', value: '1ab' },
   { param: 'urlparam', msg: 'Invalid urlparam', value: 't1est' } ]
+
+$ curl http://localhost:8888/test?getparam=1&postparam=1
+There have been validation errors: [
+  { param: 'postparam', msg: 'Invalid postparam', value: undefined} ]
 ```
 
 ### Validation errors
@@ -221,6 +226,7 @@ expressValidator.Filter.prototype.toLowerCase = function(){
 
 - Christoph Tavan <dev@tavan.de> - Wrap the gist in an npm package
 - @orfaust - Add `validationErrors()` and nested field support
+- @zero21xxx - Added `checkBody` function
 
 ## License
 
