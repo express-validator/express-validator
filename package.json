@@ -4,7 +4,8 @@
   "author": "Christoph Tavan <dev@tavan.de>",
   "contributors": [
     "Chris O'Hara <cohara87@gmail.com>",
-    "@orfaust"
+    "@orfaust",
+    "@zero21xxx"
   ],
   "version": "0.3.2",
   "homepage": "https://github.com/ctavan/express-validator",
