@@ -23,7 +23,7 @@ var util = require('util'),
     app = express.createServer();
 
 app.use(express.bodyParser());
-app.use(expressValidator);
+app.use(expressValidator([options]));
 
 app.post('/:urlparam', function(req, res) {
 
@@ -67,6 +67,32 @@ There have been validation errors: [
 $ curl http://localhost:8888/test?getparam=1&postparam=1
 There have been validation errors: [
   { param: 'postparam', msg: 'Invalid postparam', value: undefined} ]
+```
+
+### Middleware Options
+####`errorFormatter`
+_function(param,msg,value)_
+
+The `errorFormatter` option can be used to specify a function that can be used to formate the objects that populate the error arrow that is returned in `req.validationErrors()`. It should return an `Object` that has `param`, `msg`, and `value` keys defined.
+
+```javascript
+// In this example, the formParam value is going to get morphed into form body format useful for printing.
+app.use(expressValidator({
+  errorFormatter: function(param, msg, value) {
+      var namespace = param.split('.')
+      , root    = namespace.shift()
+      , formParam = root;
+
+    while(namespace.length) {
+      formParam += '[' + namespace.shift() + ']';
+    }
+    return {
+      param : formParam,
+      msg   : msg,
+      value : value
+    };
+  }
+}));
 ```
 
 ### Validation errors
