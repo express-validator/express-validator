@@ -5,9 +5,10 @@
   "contributors": [
     "Chris O'Hara <cohara87@gmail.com>",
     "@orfaust",
-    "@zero21xxx"
+    "@zero21xxx",
+    "@niftylettuce"
   ],
-  "version": "0.6.0",
+  "version": "0.6.1",
   "homepage": "https://github.com/ctavan/express-validator",
   "repository": {
     "type": "git",
