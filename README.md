@@ -36,7 +36,7 @@ app.post('/:urlparam', function(req, res) {
 
   var errors = req.validationErrors();
   if (errors) {
-    res.send('There have been validation errors: ' + util.inspect(errors), 500);
+    res.send('There have been validation errors: ' + util.inspect(errors), 400);
     return;
   }
   res.json({
