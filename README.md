@@ -73,7 +73,7 @@ There have been validation errors: [
 ####`errorFormatter`
 _function(param,msg,value)_
 
-The `errorFormatter` option can be used to specify a function that can be used to formate the objects that populate the error arrow that is returned in `req.validationErrors()`. It should return an `Object` that has `param`, `msg`, and `value` keys defined.
+The `errorFormatter` option can be used to specify a function that can be used to format the objects that populate the error array that is returned in `req.validationErrors()`. It should return an `Object` that has `param`, `msg`, and `value` keys defined.
 
 ```javascript
 // In this example, the formParam value is going to get morphed into form body format useful for printing.
