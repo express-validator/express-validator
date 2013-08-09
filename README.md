@@ -166,7 +166,7 @@ Output:
 Alternatively you can use dot-notation to specify nested fields to be checked:
 
 ```javascript
-req.assert(['user', 'fields', 'email'], 'valid email required').isEmail();
+req.assert(['user.fields.email'], 'valid email required').isEmail();
 ```
 
 ### Regex routes
