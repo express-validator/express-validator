@@ -211,6 +211,22 @@ expressValidator.Filter.prototype.toLowerCase = function(){
 };
 ```
 
+### Adding to SailsJS
+
+You can add `express-validator` to your [SailsJS](https://github.com/balderdashy/sails) application
+simply by adding the following `config/express.js` file.
+
+```javascript
+var expressValidator = require('express-validator');
+
+module.exports.express = {
+    customMiddleware: function(app){
+        app.use(this.bodyParser());
+        app.use(expressValidator());
+    }
+}
+```
+
 ## Changelog
 
 ### v0.4.1
