@@ -7,7 +7,7 @@
     "@orfaust",
     "@zero21xxx"
   ],
-  "version": "0.8.0",
+  "version": "1.0.0",
   "homepage": "https://github.com/ctavan/express-validator",
   "repository": {
     "type": "git",
@@ -21,7 +21,7 @@
     "node": "*"
   },
   "dependencies": {
-    "validator": "1.5.0"
+    "validator": "2.0.0"
   },
   "devDependencies": {
     "async": "~0.1.22",
