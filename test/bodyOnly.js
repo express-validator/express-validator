@@ -12,7 +12,7 @@ var url = 'http://localhost:' + port;
 // - as GET parameter in the querystring
 // - as POST parameter in the body
 // These test show that req.checkBody are only interested in req.body values, all other
-// parameters will be ignore.
+// parameters will be ignored.
 
 var errorMessage = 'Parameter is not an integer';
 var validation = function(req, res) {
