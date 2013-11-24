@@ -23,7 +23,7 @@ var util = require('util'),
     app = express.createServer();
 
 app.use(express.bodyParser());
-app.use(expressValidator([options]));
+app.use(expressValidator([options])); // this line must be immediately after express.bodyParser()!
 
 app.post('/:urlparam', function(req, res) {
 
