@@ -28,9 +28,15 @@ app.use(expressValidator([options])); // this line must be immediately after exp
 app.post('/:urlparam', function(req, res) {
 
   // checkBody only checks req.body; none of the other req parameters
+  // Similarly checkParams only checks in req.params (URL params) and checkQuery only checks req.query (GET params); none of the other req parameters
   req.checkBody('postparam', 'Invalid postparam').notEmpty().isInt();
-  req.assert('getparam', 'Invalid getparam').isInt();
-  req.assert('urlparam', 'Invalid urlparam').isAlpha();
+  req.checkParams('urlparam', 'Invalid urlparam').isAlpha();
+  req.checkQuery('getparam', 'Invalid getparam').isInt();
+
+  // OR assert can be used to check on all 3 types of params.
+  // req.assert('postparam', 'Invalid postparam').notEmpty().isInt();
+  // req.assert('urlparam', 'Invalid urlparam').isAlpha();
+  // req.assert('getparam', 'Invalid getparam').isInt();
 
   req.sanitize('postparam').toBoolean();
 
