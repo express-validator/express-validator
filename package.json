@@ -19,7 +19,7 @@
     "test": "make test"
   },
   "engines": {
-    "node": "*"
+    "node": ">= 0.8"
   },
   "dependencies": {
     "validator": "3.1.0"
