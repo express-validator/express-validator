@@ -5,9 +5,10 @@
   "contributors": [
     "Chris O'Hara <cohara87@gmail.com>",
     "@orfaust",
-    "@zero21xxx"
+    "@zero21xxx",
+    "Roman Kalyakin <roman@kalyakin.com>"
   ],
-  "version": "1.0.1",
+  "version": "2.0.0",
   "homepage": "https://github.com/ctavan/express-validator",
   "repository": {
     "type": "git",
@@ -18,10 +19,10 @@
     "test": "make test"
   },
   "engines": {
-    "node": "*"
+    "node": ">= 0.8"
   },
   "dependencies": {
-    "validator": "2.0.0"
+    "validator": "3.1.0"
   },
   "devDependencies": {
     "async": "~0.1.22",
