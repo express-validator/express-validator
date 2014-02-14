@@ -3,7 +3,7 @@
 [![Build Status](https://secure.travis-ci.org/ctavan/express-validator.png)](http://travis-ci.org/ctavan/express-validator)
 
 An [express.js]( https://github.com/visionmedia/express ) middleware for
-[node-validator]( https://github.com/chriso/node-validator ).
+[node-validator]( https://github.com/chriso/validator.js ).
 
 This is basically a copy of a [gist]( https://gist.github.com/752126 ) by
 node-validator author [chriso]( https://github.com/chriso ).
