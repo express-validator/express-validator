@@ -192,30 +192,12 @@ req.assert(0, 'Not a three-digit integer.').len(3, 3).isInt();
 
 ### Extending
 
-You can extend the `Validator` and `Filter` objects to add custom validation
-and sanitization method.
-
-Custom validation which always fails. Useful for debugging or for
-adding messages manually when doing complex validation:
+You can add your own validators using `expressValidator.validator.extend(name, fn)`
 
 ```javascript
-var expressValidator = require('express-validator');
-
-expressValidator.Validator.prototype.fail = function() {
-  //You could validate against this.str, instead of just erroring out.
-
-  this.error(this.msg);
-  return this;
-};
-```
-
-Custom sanitization which lower-cases the string:
-
-```javascript
-expressValidator.Filter.prototype.toLowerCase = function(){
-  this.modify(this.str.toLowerCase());
-  return this.str;
-};
+expressValidator.validator.extend('isFinite', function (str) {
+    return isFinite(str);
+});
 ```
 
 ## Changelog
