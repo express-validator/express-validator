@@ -17,6 +17,7 @@ var url = 'http://localhost:' + port;
 var errorMessage = 'Parameter is not an integer';
 var validation = function(req, res) {
   req.checkBody('testparam', errorMessage).notEmpty().isInt();
+  req.checkBody('arrayParam').isArray();
 
   var errors = req.validationErrors();
   if (errors) {
@@ -40,19 +41,20 @@ function pass(body) {
 
 var tests = [
   // Test URL param this should always fail because it ONLY looks at the body and it fails both notEmpty() and isInt()
-  async.apply(req, 'get', url + '/test', fail(2)),
-  async.apply(req, 'get', url + '/123', fail(2)),
-  async.apply(req, 'post', url + '/test', fail(2)),
-  async.apply(req, 'post', url + '/123', fail(2)),
+  async.apply(req, 'get', url + '/test', fail(3)),
+  async.apply(req, 'get', url + '/123', fail(3)),
+  async.apply(req, 'post', url + '/test', fail(3)),
+  async.apply(req, 'post', url + '/123', fail(3)),
 
   // Test POST param
-  async.apply(req, 'post', url + '/test?testparam=gettest', fail(2)),
-  async.apply(req, 'post', url + '/123?testparam=123', fail(2)),
-  async.apply(req, 'post', url + '/123?testparam=123', {json: {testparam: 'posttest'}}, fail(1)),
-  async.apply(req, 'post', url + '/?testparam=test', {json: {testparam: 123}}, pass),
-  async.apply(req, 'post', url + '/?testparam=123', {json: {testparam: 'posttest'}}, fail(1)),
-  async.apply(req, 'post', url + '/', {json: {testparam: 'test'}}, fail(1)),
-  async.apply(req, 'post', url + '/', {json: {testparam: 123}}, pass)
+  async.apply(req, 'post', url + '/test?testparam=gettest', fail(3)),
+  async.apply(req, 'post', url + '/123?testparam=123', fail(3)),
+  async.apply(req, 'post', url + '/123?testparam=123', {json: {testparam: 'posttest'}}, fail(2)),
+  async.apply(req, 'post', url + '/?testparam=test', {json: {testparam: 123, arrayParam: [1,2,3]}}, pass),
+  async.apply(req, 'post', url + '/?testparam=123', {json: {testparam: 'posttest', arrayParam: 123}}, fail(2)),
+  async.apply(req, 'post', url + '/?testparam=123', {json: {testparam: 'posttest', arrayParam: {}}}, fail(2)),
+  async.apply(req, 'post', url + '/', {json: {testparam: 'test'}, arrayParam: '[]'}, fail(2)),
+  async.apply(req, 'post', url + '/', {json: {testparam: 123, arrayParam: []}}, pass)
 ]
 
 async.parallel(tests, function(err) {
