@@ -168,6 +168,15 @@ mappedErrors:
 }
 ```
 
+### Optional input
+
+You can use the `optional()` method to check an input only when the input exists.
+
+```javascript
+req.checkBody('email').optional().isEmail();
+//if there is no error, req.body.email is either undefined or a valid mail.
+```
+
 ### Nested input data
 
 Example:
