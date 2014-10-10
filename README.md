@@ -102,6 +102,32 @@ app.use(expressValidator({
 }));
 ```
 
+####`customValidators`
+_{ "validatorName": function(value, [additional arguments]), ... }_
+
+
+The `customValidators` option can be used to add additional validation methods as needed. This option should be an `Object` defining the validator names and associated validation functions. 
+
+Define your custom validators:
+
+```javascript
+app.use(expressValidator({
+ customValidators: {
+    isArray: function(value) {
+        return Array.isArray(value);
+    }, 
+    gte: function(param, num) {
+        return param >= num;
+    }
+ }   
+}));
+```
+Use them with their validator name:
+```javascript
+req.checkBody('users', 'Users must be an array').isArray();
+req.checkQuery('time', 'Time must be an integer great than or equal to 5').isInt().gte(5)
+```
+
 ### Validation errors
 
 You have two choices on how to get the validation errors:
@@ -140,6 +166,15 @@ mappedErrors:
     value: "<received input>"
   }
 }
+```
+
+### Optional input
+
+You can use the `optional()` method to check an input only when the input exists.
+
+```javascript
+req.checkBody('email').optional().isEmail();
+//if there is no error, req.body.email is either undefined or a valid mail.
 ```
 
 ### Nested input data
@@ -192,13 +227,7 @@ req.assert(0, 'Not a three-digit integer.').len(3, 3).isInt();
 
 ### Extending
 
-You can add your own validators using `expressValidator.validator.extend(name, fn)`
-
-```javascript
-expressValidator.validator.extend('isFinite', function (str) {
-    return isFinite(str);
-});
-```
+You can add your own validators using the `customValidators` option. See [Middleware Options](#middleware-options) for usage details. 
 
 ## Changelog
 

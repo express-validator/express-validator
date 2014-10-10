@@ -8,7 +8,7 @@
     "@zero21xxx",
     "Roman Kalyakin <roman@kalyakin.com>"
   ],
-  "version": "2.1.1",
+  "version": "2.6.0",
   "homepage": "https://github.com/ctavan/express-validator",
   "repository": {
     "type": "git",
@@ -22,7 +22,7 @@
     "node": ">= 0.8"
   },
   "dependencies": {
-    "validator": "3.5.0"
+    "validator": "3.19.0"
   },
   "devDependencies": {
     "async": "~0.1.22",

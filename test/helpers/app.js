@@ -14,7 +14,13 @@ App.prototype.start = function() {
   self.app = express.createServer();
 
   self.app.use(express.bodyParser());
-  self.app.use(expressValidator());
+  self.app.use(expressValidator({
+    customValidators: {
+      isArray: function(value) {
+        return Array.isArray(value);
+      }
+    }
+  }));
 
   self.app.get(/\/test(\d+)/, self.validation);
   self.app.get('/:testparam?', self.validation);
