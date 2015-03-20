@@ -8,7 +8,7 @@
     "@zero21xxx",
     "Roman Kalyakin <roman@kalyakin.com>"
   ],
-  "version": "2.8.0",
+  "version": "2.9.0",
   "homepage": "https://github.com/ctavan/express-validator",
   "repository": {
     "type": "git",
