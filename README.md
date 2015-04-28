@@ -106,7 +106,7 @@ app.use(expressValidator({
 _{ "validatorName": function(value, [additional arguments]), ... }_
 
 
-The `customValidators` option can be used to add additional validation methods as needed. This option should be an `Object` defining the validator names and associated validation functions. 
+The `customValidators` option can be used to add additional validation methods as needed. This option should be an `Object` defining the validator names and associated validation functions.
 
 Define your custom validators:
 
@@ -115,11 +115,11 @@ app.use(expressValidator({
  customValidators: {
     isArray: function(value) {
         return Array.isArray(value);
-    }, 
+    },
     gte: function(param, num) {
         return param >= num;
     }
- }   
+ }
 }));
 ```
 Use them with their validator name:
@@ -227,51 +227,11 @@ req.assert(0, 'Not a three-digit integer.').len(3, 3).isInt();
 
 ### Extending
 
-You can add your own validators using the `customValidators` option. See [Middleware Options](#middleware-options) for usage details. 
+You can add your own validators using the `customValidators` option. See [Middleware Options](#middleware-options) for usage details.
 
 ## Changelog
 
-### v0.4.1
-- Update this readme
-
-### v0.4.0
-- Added `req.checkBody()` (@zero21xxx).
-- Upgraded validator dependency to 1.1.3
-
-### v0.3.0
-- `req.validationErrors()` now returns `null` instead of `false` if there are no errors.
-
-### v0.2.4
-- Support for regex routes (@Cecchi)
-
-### v0.2.3
-- Fix checkHeader() (@pimguilherme)
-
-### v0.2.2
-- Add dot-notation for nested input (@sharonjl)
-- Add validate() alias for check()
-
-### v0.2.1
-- Fix chaining validators (@rapee)
-
-### v0.2.0
-- Added `validationErrors()` method (by @orfaust)
-- Added support for nested form fields (by @orfaust)
-- Added test cases
-
-### v0.1.3
-- Readme update
-
-### v0.1.2
-- Expose Filter and Validator instances to allow adding custom methods
-
-### v0.1.1
-- Use req.param() method to get parameter values instead of accessing
-  req.params directly.
-- Remove req.mixinParams() method.
-
-### v0.1.0
-- Initial release
+See [CHANGELOG.md](CHANGELOG.md)
 
 ## Contributors
 
