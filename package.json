@@ -25,9 +25,12 @@
     "validator": "3.34.0"
   },
   "devDependencies": {
-    "async": "~0.1.22",
-    "express": "~2.5.11",
-    "request": "~2.10.0"
+    "async": "0.9.0",
+    "body-parser": "1.12.3",
+    "chai": "2.3.0",
+    "express": "4.12.3",
+    "mocha": "2.2.4",
+    "supertest": "0.15.0"
   },
   "keywords": [
     "express",
