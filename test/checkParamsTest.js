@@ -5,6 +5,13 @@ var request = require('supertest');
 var app = require('./helpers/app')(validation);
 var errorMessage = 'Parameter is not an integer';
 
+// There are three ways to pass parameters to express:
+// - as part of the URL
+// - as GET parameter in the querystring
+// - as POST parameter in the body
+// These test show that req.checkParams are only interested in req.params values, all other
+// parameters will be ignored.
+
 function validation(req, res) {
   req.checkParams('testparam', errorMessage).notEmpty().isInt();
 
