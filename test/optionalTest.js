@@ -2,7 +2,7 @@ var chai = require('chai');
 var expect = chai.expect;
 var request = require('supertest');
 
-var app = require('./helpers/app')(validation);
+var app;
 var errorMessage = 'Parameter is not an integer';
 
 function validation(req, res) {
@@ -32,6 +32,11 @@ function testRoute(path, test, done) {
       done();
     });
 }
+
+before(function() {
+  delete require.cache[require.resolve('./helpers/app')];
+  app = require('./helpers/app')(validation);
+});
 
 // TODO: Don't know if all of these are necessary, but we do need to test body and header
 describe('#optional()', function() {

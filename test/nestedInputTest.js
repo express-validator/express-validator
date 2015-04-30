@@ -2,7 +2,7 @@ var chai = require('chai');
 var expect = chai.expect;
 var request = require('supertest');
 
-var app = require('./helpers/app')(validation);
+var app;
 
 function validation(req, res) {
   req.assert(['user', 'fields', 'email'], 'not empty').notEmpty();
@@ -35,6 +35,11 @@ function testRoute(path, data, test, done) {
       done();
     });
 }
+
+before(function() {
+  delete require.cache[require.resolve('./helpers/app')];
+  app = require('./helpers/app')(validation);
+});
 
 // TODO: This functionality should probably be easier to test as a unit
 describe('nested input as array or dot notation', function() {

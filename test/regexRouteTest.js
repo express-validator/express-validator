@@ -2,7 +2,7 @@ var chai = require('chai');
 var expect = chai.expect;
 var request = require('supertest');
 
-var app = require('./helpers/app')(validation);
+var app;
 var errorMessage = 'Parameter is not a 3 digit integer';
 
 function validation(req, res) {
@@ -32,6 +32,11 @@ function testRoute(path, test, done) {
       done();
     });
 }
+
+before(function() {
+  delete require.cache[require.resolve('./helpers/app')];
+  app = require('./helpers/app')(validation);
+});
 
 describe('Express routes can be defined using regular expressions', function() {
   it('should return a success when regex route is validated', function(done) {

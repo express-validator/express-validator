@@ -2,7 +2,7 @@ var chai = require('chai');
 var expect = chai.expect;
 var request = require('supertest');
 
-var app = require('./helpers/app')(validation);
+var app;
 var errorMessage = 'valid email required';
 
 function validation(req, res) {
@@ -33,6 +33,11 @@ function testRoute(path, data, test, done) {
       done();
     });
 }
+
+before(function() {
+  delete require.cache[require.resolve('./helpers/app')];
+  app = require('./helpers/app')(validation);
+});
 
 describe('#validationErrors(true)', function() {
   it('should return a success when the correct data is passed on the body', function(done) {

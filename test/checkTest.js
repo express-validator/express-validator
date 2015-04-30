@@ -2,7 +2,7 @@ var chai = require('chai');
 var expect = chai.expect;
 var request = require('supertest');
 
-var app = require('./helpers/app')(validation);
+var app;
 var errorMessage = 'Parameter is not an integer';
 
 // There are three ways to pass parameters to express:
@@ -49,6 +49,11 @@ function postRoute(path, data, test, done) {
       done();
     });
 }
+
+before(function() {
+  delete require.cache[require.resolve('./helpers/app')];
+  app = require('./helpers/app')(validation);
+});
 
 describe('#check()/#assert()/#validate()', function() {
   describe('GET tests', function() {
