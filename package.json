@@ -25,7 +25,7 @@
     "node": ">= 0.8"
   },
   "dependencies": {
-    "validator": "3.34.0"
+    "validator": "3.39.0"
   },
   "devDependencies": {
     "async": "~0.1.22",
