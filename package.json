@@ -22,7 +22,7 @@
     "changelog": "github-changes -o ctavan -r express-validator -a -m YYYY/MM/DD --no-merges"
   },
   "engines": {
-    "node": ">= 0.8"
+    "node": ">= 0.10"
   },
   "dependencies": {
     "validator": "3.39.0"
