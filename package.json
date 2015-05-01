@@ -27,6 +27,7 @@
   "devDependencies": {
     "async": "~0.1.22",
     "express": "~2.5.11",
+    "jshint": "2.7.0",
     "request": "~2.10.0"
   },
   "keywords": [
