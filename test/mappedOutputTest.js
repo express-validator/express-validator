@@ -34,6 +34,8 @@ function testRoute(path, data, test, done) {
     });
 }
 
+// This before() is required in each set of tests in
+// order to use a new validation function in each file
 before(function() {
   delete require.cache[require.resolve('./helpers/app')];
   app = require('./helpers/app')(validation);
