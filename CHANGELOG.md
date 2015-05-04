@@ -1,6 +1,10 @@
 ## Change Log
 
 ### upcoming 2015/05/04
+- [ea00f9d](https://github.com/ctavan/express-validator/commit/ea00f9d6cfe0859f6f00ceb45d66f4d9270064b0) Update changelog. (@rustybailey)
+
+### v2.10.0 2015/05/04
+- [0f48735](https://github.com/ctavan/express-validator/commit/0f48735dc77ec561ad014a721375b561ce3889fe) 2.10.0 (@rustybailey)
 - [bc2ef59](https://github.com/ctavan/express-validator/commit/bc2ef59b5a5c45be12f6efb27199a29d8689ac2f) Use the same node versions as node-validator. (@rustybailey)
 - [0c3aaec](https://github.com/ctavan/express-validator/commit/0c3aaecb0f7d4a75a1bc20e94290cfe72e98a49c) Bump validator version to 3.39.0 (@rustybailey)
 - [dfb757b](https://github.com/ctavan/express-validator/commit/dfb757b8eafe3149c552be4b92eb259fb6bdd5e5) Add changelog to devDependencies and add npm script to generate changelog. (@rustybailey)
