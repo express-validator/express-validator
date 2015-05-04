@@ -1,20 +1,16 @@
 // Sample app
 var express = require('express');
 var expressValidator = require('../../index');
+var bodyParser = require('body-parser');
 
-function App(port, validation) {
-  this.app = null;
-  this.port = port;
-  this.validation = validation;
-}
-module.exports = App;
+var port = process.env.PORT || 8888;
+var app = express();
 
-App.prototype.start = function() {
-  var self = this;
-  self.app = express.createServer();
+module.exports = function(validation) {
 
-  self.app.use(express.bodyParser());
-  self.app.use(expressValidator({
+  app.set('port', port);
+  app.use(bodyParser.json());
+  app.use(expressValidator({
     customValidators: {
       isArray: function(value) {
         return Array.isArray(value);
@@ -22,13 +18,9 @@ App.prototype.start = function() {
     }
   }));
 
-  self.app.get(/\/test(\d+)/, self.validation);
-  self.app.get('/:testparam?', self.validation);
-  self.app.post('/:testparam?', self.validation);
+  app.get(/\/test(\d+)/, validation);
+  app.get('/:testparam?', validation);
+  app.post('/:testparam?', validation);
 
-  self.app.listen(this.port);
-};
-
-App.prototype.stop = function() {
-  this.app.close();
+  return app;
 };

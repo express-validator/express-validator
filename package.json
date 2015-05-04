@@ -18,7 +18,7 @@
   },
   "main": "./index.js",
   "scripts": {
-    "test": "make test",
+    "test": "mocha ./test",
     "changelog": "github-changes -o ctavan -r express-validator -a -m YYYY/MM/DD --no-merges"
   },
   "engines": {
@@ -28,11 +28,13 @@
     "validator": "3.39.0"
   },
   "devDependencies": {
-    "async": "~0.1.22",
-    "express": "~2.5.11",
+    "body-parser": "1.12.3",
+    "chai": "2.3.0",
+    "express": "4.12.3",
     "github-changes": "1.0.0",
     "jshint": "2.7.0",
-    "request": "~2.10.0"
+    "mocha": "2.2.4",
+    "supertest": "0.15.0"
   },
   "keywords": [
     "express",
