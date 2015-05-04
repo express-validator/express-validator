@@ -1,0 +1,18 @@
+{
+    "regexdash": true,
+    "browser": true,
+    "trailing": true,
+    "sub": true,
+    "curly": true,
+    "eqeqeq": true,
+    "indent": 4,
+    "latedef": "nofunc",
+    "newcap": true,
+    "unused": true,
+    "eqnull": true,
+    "bitwise": true,
+    "noarg": true,
+    "noempty": true,
+    "nonew": true,
+    "node": true
+}
