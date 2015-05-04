@@ -1,5 +1,29 @@
 ## Change Log
 
+### upcoming 2015/05/04
+- [bc2ef59](https://github.com/ctavan/express-validator/commit/bc2ef59b5a5c45be12f6efb27199a29d8689ac2f) Use the same node versions as node-validator. (@rustybailey)
+- [0c3aaec](https://github.com/ctavan/express-validator/commit/0c3aaecb0f7d4a75a1bc20e94290cfe72e98a49c) Bump validator version to 3.39.0 (@rustybailey)
+- [dfb757b](https://github.com/ctavan/express-validator/commit/dfb757b8eafe3149c552be4b92eb259fb6bdd5e5) Add changelog to devDependencies and add npm script to generate changelog. (@rustybailey)
+- [bf044b5](https://github.com/ctavan/express-validator/commit/bf044b577f6999a7f1e92cb9f74ddf4a44bd78d3) Add node 0.12 to travis.yml, remove dead gist link in README, add license in package.json. (@rustybailey)
+- [f42077f](https://github.com/ctavan/express-validator/commit/f42077fabfc9b8ef6100069b17e83f5fab2eb395) Add editorconfig. (@rustybailey)
+- [73daa44](https://github.com/ctavan/express-validator/commit/73daa44dee192049da4fff732dec629a6630af73) Add jshint to devDependencies, add .jshintrc, fix semicolon issues. (@rustybailey)
+- [fb8d049](https://github.com/ctavan/express-validator/commit/fb8d049dd1f0a0da6c0070cf160316f9b732a732) Add comment to explain before() function busting require's cache in each test file. (@rustybailey)
+- [7fc7b1c](https://github.com/ctavan/express-validator/commit/7fc7b1c54c22f19dfc650cba06b47e6e05d0c653) Remove async from devDependencies (@rustybailey)
+- [a74de1e](https://github.com/ctavan/express-validator/commit/a74de1eb3ef2bdf67beb5be4fd3a8e51e4d190b5) Remove old tests and change npm test to use Mocha. (@rustybailey)
+- [39f1b55](https://github.com/ctavan/express-validator/commit/39f1b55f817a7ca1f0fc802247ba8dd0d24ff21f) Add Mocha tests for validating regex routes (@rustybailey)
+- [68adc6e](https://github.com/ctavan/express-validator/commit/68adc6e76b6abb3f0c1946c3c51ca16c1cebe9b6) Add Mocha tests for nested input (@rustybailey)
+- [a029176](https://github.com/ctavan/express-validator/commit/a029176a7c7ac0666f0b93adca0d2ea0a57ff98b) Add Mocha tests for mapped output using validationErrors(true) (@rustybailey)
+- [5a2f7ef](https://github.com/ctavan/express-validator/commit/5a2f7ef3a5a0f59fb9f6692e2e5d93f81b5e497b) Add Mocha tests for check() (@rustybailey)
+- [9cd6f62](https://github.com/ctavan/express-validator/commit/9cd6f626cb287f1a877e0f645690b528938f3dc4) Add Mocha tests for checkQuery() (@rustybailey)
+- [c91e022](https://github.com/ctavan/express-validator/commit/c91e0220312097548abaf21d91e076e18726f3ab) Add Mocha tests for checkBody() (@rustybailey)
+- [bbcb462](https://github.com/ctavan/express-validator/commit/bbcb4620ada424a2352a148975eba2072d8badf3) Add tests for checkParams() (@rustybailey)
+- [d2eb638](https://github.com/ctavan/express-validator/commit/d2eb638611a015dd04d4aa59c4c790ca324bcc66) Add mocha/chai as dependencies, simplify app.js helper, create mocha tests for optional(). (@rustybailey)
+
+### v2.9.1 2015/04/28
+- [9c87684](https://github.com/ctavan/express-validator/commit/9c87684a02eff71f40fc98ce3da37992fee464cd) Bump version to 2.9.1. (@rustybailey)
+- [37ede78](https://github.com/ctavan/express-validator/commit/37ede786203d5b9aa87acf96bd568c26fcc6de3a) Fix checkHeader so that it works with optional(). (@rustybailey)
+- [136307f](https://github.com/ctavan/express-validator/commit/136307f94aebaf4dcc7e83dee62bfd5cae9a1333) Move change log into its own file and expand it using github-changes. Fixes #130 (@rustybailey)
+
 ### v2.9.0 2015/03/20
 - [c2e5124](https://github.com/ctavan/express-validator/commit/c2e512490667cc1cbc22e2de762c79cbf425354a) Bump version to 2.9.0 (@ctavan)
 - [9624cca](https://github.com/ctavan/express-validator/commit/9624cca38836a7299bba570e3addd07913ded174) Update node validator dependency. (@ctavan)
