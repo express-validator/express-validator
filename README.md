@@ -134,15 +134,16 @@ Define your custom sanitizers:
 ```javascript
 app.use(expressValidator({
  customSanitizers: {
-    toStingLowerCase: function(value) {
-        return (""+value).toLowerCase();
+    toSanitizeSomehow: function(value) {
+        var newValue = value;//some operations
+        return newValue;
     },
  }
 }));
 ```
 Use them with their sanitizer name:
 ```javascript
-req.sanitizer('address').toStingLowerCase();
+req.sanitizer('address').toSanitizeSomehow();
 ```
 
 ### Validation errors
