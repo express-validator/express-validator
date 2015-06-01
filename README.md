@@ -124,6 +124,27 @@ Use them with their validator name:
 req.checkBody('users', 'Users must be an array').isArray();
 req.checkQuery('time', 'Time must be an integer great than or equal to 5').isInt().gte(5)
 ```
+####`customSanitizers`
+_{ "sanitizerName": function(value, [additional arguments]), ... }_
+
+The `customSanitizers` option can be used to add additional sanitizers methods as needed. This option should be an `Object` defining the sanitizer names and associated functions.
+
+Define your custom sanitizers:
+
+```javascript
+app.use(expressValidator({
+ customSanitizers: {
+    toSanitizeSomehow: function(value) {
+        var newValue = value;//some operations
+        return newValue;
+    },
+ }
+}));
+```
+Use them with their sanitizer name:
+```javascript
+req.sanitizer('address').toSanitizeSomehow();
+```
 
 ### Validation errors
 

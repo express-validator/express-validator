@@ -15,6 +15,11 @@ module.exports = function(validation) {
       isArray: function(value) {
         return Array.isArray(value);
       }
+    },
+    customSanitizers: {
+      toTestSanitize: function(value) {
+          return "!!!!";
+      }
     }
   }));
 
