@@ -24,6 +24,7 @@ app.use(expressValidator([options])); // this line must be immediately after exp
 
 app.post('/:urlparam', function(req, res) {
 
+  // VALIDATION
   // checkBody only checks req.body; none of the other req parameters
   // Similarly checkParams only checks in req.params (URL params) and
   // checkQuery only checks req.query (GET params).
@@ -36,6 +37,14 @@ app.post('/:urlparam', function(req, res) {
   // req.assert('urlparam', 'Invalid urlparam').isAlpha();
   // req.assert('getparam', 'Invalid getparam').isInt();
 
+  // SANITIZATION
+  // as with validation these will only validate the corresponding
+  // request object
+  req.sanitizeBody('postparam').toBoolean();
+  req.sanitizeParams('urlparam').toBoolean();
+  req.sanitizeQuery('getparam').toBoolean();
+
+  // OR find the relevent param in all areas
   req.sanitize('postparam').toBoolean();
 
   var errors = req.validationErrors();
@@ -44,9 +53,9 @@ app.post('/:urlparam', function(req, res) {
     return;
   }
   res.json({
-    urlparam: req.param('urlparam'),
-    getparam: req.param('getparam'),
-    postparam: req.param('postparam')
+    urlparam: req.params.urlparam,
+    getparam: req.params.getparam,
+    postparam: req.params.postparam
   });
 });
 
@@ -146,7 +155,35 @@ Use them with their sanitizer name:
 req.sanitizer('address').toSanitizeSomehow();
 ```
 
-### Validation errors
+## Validation
+
+#### req.check();
+```javascript
+   req.check('testparam', 'Error Message').notEmpty().isInt();
+   req.check('testparam.child', 'Error Message').isInt(); // find nested params
+   req.check(['testparam', 'child'], 'Error Message').isInt(); // find nested params
+```
+
+Starts the validation of the specifed parameter, will look for the parameter in `req` in the order `params`, `query`, `body`, then validate, you can use 'dot-notation' or an array to access nested values.
+
+Validators are appended and can be chained. See [chriso/validator.js](https://github.com/chriso/validator.js) for available validators, or [add your own](#customvalidators).
+
+#### req.assert();
+Alias for [req.check()](#reqcheck).
+
+#### req.validate();
+Alias for [req.check()](#reqcheck).
+
+#### req.checkBody();
+Same as [req.check()](#reqcheck), but only looks in `req.body`.
+
+#### req.checkQuery();
+Same as [req.check()](#reqcheck), but only looks in `req.query`.
+
+#### req.checkParams();
+Same as [req.check()](#reqcheck), but only looks in `req.params`.
+
+## Validation errors
 
 You have two choices on how to get the validation errors:
 
@@ -195,39 +232,37 @@ req.checkBody('email').optional().isEmail();
 //if there is no error, req.body.email is either undefined or a valid mail.
 ```
 
-### Nested input data
+## Sanitizer
 
-Example:
-
-```html
-<input name="user[fields][email]" />
-```
-
-Provide an array instead of a string:
-
+#### req.sanitize();
 ```javascript
-req.assert(['user', 'fields', 'email'], 'valid email required').isEmail();
-var errors = req.validationErrors();
-console.log(errors);
+
+req.body.comment = 'a <span>comment</span>';
+req.body.comment.username = '    user    ';
+
+req.sanitize('comment').escape(); // returns 'a &lt;span&gt;comment&lt;/span&gt;'
+req.sanitize('comment.user').trim(); // returns 'a user'
+
+console.log(req.body.comment); // 'a &lt;span&gt;comment&lt;/span&gt;'
+console.log(req.body.comment.user); // 'a user'
+
 ```
 
-Output:
+Sanitizes the specified parameter (using 'dot-notation' or array), the parameter will be updated to the sanitized result. Cannot be chained, and will return the result. See [chriso/validator.js](https://github.com/chriso/validator.js) for available sanitizers, or [add your own](#customsanitizers).
 
-```javascript
-[
-  {
-    param: "user_fields_email",
-    msg: "valid email required",
-    value: "<received input>"
-  }
-]
-```
+If the parameter is present in multiple places with the same name e.g. `req.params.comment` & `req.query.comment`, they will all be sanitized.
 
-Alternatively you can use dot-notation to specify nested fields to be checked:
+#### req.filter();
+Alias for [req.sanitize()](#reqsanitize).
 
-```javascript
-req.assert(['user.fields.email'], 'valid email required').isEmail();
-```
+#### req.sanitizeBody();
+Same as [req.sanitize()](#reqsanitize), but only looks in `req.body`.
+
+#### req.sanitizeQuery();
+Same as [req.sanitize()](#reqsanitize), but only looks in `req.query`.
+
+#### req.sanitizeParams();
+Same as [req.sanitize()](#reqsanitize), but only looks in `req.params`.
 
 ### Regex routes
 
@@ -243,10 +278,6 @@ You can validate the extracted matches like this:
 req.assert(0, 'Not a three-digit integer.').len(3, 3).isInt();
 ```
 
-### Extending
-
-You can add your own validators using the `customValidators` option. See [Middleware Options](#middleware-options) for usage details.
-
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md)
@@ -260,4 +291,3 @@ See [CHANGELOG.md](CHANGELOG.md)
 ## License
 
 Copyright (c) 2010 Chris O'Hara <cohara87@gmail.com>, MIT License
-
