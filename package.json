@@ -25,7 +25,7 @@
     "node": ">= 0.10"
   },
   "dependencies": {
-    "validator": "3.39.0"
+    "validator": "3.40.1"
   },
   "devDependencies": {
     "body-parser": "1.12.3",
