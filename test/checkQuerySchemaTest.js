@@ -70,7 +70,7 @@ before(function() {
   app = require('./helpers/app')(validation);
 });
 
-describe('#checkQuery()', function() {
+describe('#checkQuerySchema()', function() {
   describe('GET tests', function() {
     it('should return two errors when query is missing, and unrelated param is present', function(done) {
       getRoute('/test', failMulti, 2, done);

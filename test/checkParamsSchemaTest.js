@@ -70,7 +70,7 @@ before(function() {
   app = require('./helpers/app')(validation);
 });
 
-describe('#checkParams()', function() {
+describe('#checkParamsSchema()', function() {
   describe('GET tests', function() {
     it('should return one error when param does not validate as int', function(done) {
       getRoute('/test', fail, 1, done);

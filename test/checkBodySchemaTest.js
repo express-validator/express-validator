@@ -60,7 +60,7 @@ before(function() {
   app = require('./helpers/app')(validation);
 });
 
-describe('#bodyValidations()', function() {
+describe('#checkBodySchema()', function() {
   describe('GET tests', function() {
     it('should return three errors when param is missing', function(done) {
       getRoute('/', fail, 3, done);
