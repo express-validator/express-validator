@@ -19,6 +19,9 @@
   "main": "./index.js",
   "scripts": {
     "test": "mocha ./test",
+    "jshint": "jshint ./test ./lib",
+    "jscs": "jscs ./test ./lib",
+    "travis-build": "npm test && npm run jshint && npm run jscs",
     "changelog": "github-changes -o ctavan -r express-validator -a -m YYYY/MM/DD --no-merges"
   },
   "engines": {
@@ -33,6 +36,7 @@
     "chai": "2.3.0",
     "express": "4.12.3",
     "github-changes": "1.0.0",
+    "jscs": "1.13.1",
     "jshint": "2.7.0",
     "mocha": "2.2.4",
     "supertest": "0.15.0"
