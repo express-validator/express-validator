@@ -27,7 +27,7 @@ function pass(body) {
 function testRoute(path, test, done) {
   request(app)
     .get(path)
-    .end(function(err, res){
+    .end(function(err, res) {
       test(res.body);
       done();
     });

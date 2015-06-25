@@ -17,8 +17,8 @@ module.exports = function(validation) {
       }
     },
     customSanitizers: {
-      toTestSanitize: function(value) {
-          return "!!!!";
+      toTestSanitize: function() {
+        return "!!!!";
       }
     }
   }));

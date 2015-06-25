@@ -15,15 +15,6 @@ function fail(body) {
   expect(body).to.not.have.property('body', 'testparam');
 }
 
-function getRoute(path, test, done) {
-  request(app)
-    .get(path)
-    .end(function(err, res) {
-      test(res.body);
-      done();
-    });
-}
-
 function postRoute(path, data, test, done) {
   request(app)
     .post(path)
@@ -44,7 +35,7 @@ before(function() {
 describe('#sanitizeBody', function() {
   describe('POST tests', function() {
     it('should return property and sanitized value when body param is present', function(done) {
-      postRoute('/', {testparam: '   abcdf    '}, pass, done);
+      postRoute('/', { testparam: '   abcdf    ' }, pass, done);
     });
 
     it('should not return property when body param is missing', function(done) {
