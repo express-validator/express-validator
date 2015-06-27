@@ -4,6 +4,9 @@ var request = require('supertest');
 
 var app;
 function validation(req, res) {
+  req.sanitize('zerotest').toString();
+  req.sanitize('emptystrtest').toBoolean();
+  req.sanitize('falsetest').toString();
   req.sanitize('testparam').whitelist(['a', 'b', 'c']);
   res.send({ params: req.params, query: req.query, body: req.body });
 }
@@ -19,6 +22,18 @@ function pass(body) {
 
   if (Object.keys(body.body).length) {
     expect(body).to.have.deep.property('body.testparam', 'abc');
+  }
+
+  if (body.body.hasOwnProperty('zerotest')) {
+    expect(body).to.have.deep.property('body.zerotest', '0');
+  }
+
+  if (body.body.hasOwnProperty('emptystrtest')) {
+    expect(body).to.have.deep.property('body.emptystrtest', false);
+  }
+
+  if (body.body.hasOwnProperty('falsetest')) {
+    expect(body).to.have.deep.property('body.falsetest', 'false');
   }
 
 }
@@ -79,6 +94,10 @@ describe('#sanitizers', function() {
 
     it('should return property and sanitized value when body is present', function(done) {
       postRoute('/', { testparam: '     abcdef     ' }, pass, done);
+    });
+
+    it('should return properly sanitized values even if the original value is falsey, but not null/undefined', function(done) {
+      postRoute('/', { testparam: '     abcdef     ', zerotest: 0, emptystrtest: '', falsetest: false }, pass, done);
     });
 
   });
