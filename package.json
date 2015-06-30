@@ -28,7 +28,7 @@
     "node": ">= 0.10"
   },
   "dependencies": {
-    "lodash": "3.9.3",
+    "lodash": "3.10.0",
     "validator": "3.40.1"
   },
   "devDependencies": {
