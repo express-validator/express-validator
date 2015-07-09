@@ -19,7 +19,9 @@ function validation(req, res) {
   if (errors) {
     return res.send(errors);
   }
-  res.send({ testparam: req.params.testparam || req.query.testparam || req.body.testparam });
+  res.send({
+    testparam: req.params.testparam || req.query.testparam || req.body.testparam
+  });
 }
 
 function fail(body) {
@@ -119,6 +121,35 @@ describe('#check()/#assert()/#validate()', function() {
 
     it('should return a success when body validates', function(done) {
       postRoute('/', { testparam: '42' }, pass, done);
+    });
+
+    it('should avaliable to override error message in chain', function(done) {
+      delete require.cache[require.resolve('./helpers/app')];
+      var app = require('./helpers/app')(function (req, res) {
+        req.check('testparam0', 'required').notEmpty();
+        req.check('testparam1', 'required').notEmpty().isInt({message: 'invalid'});
+
+        var errors = req.validationErrors();
+        if (errors) {
+          return res.send({
+            normal: errors,
+            mapped: req.validationErrors(true)
+          });
+        }
+        res.status(200);
+      });
+
+      request(app).post('/').send({testparam1: 'hello'}).end(function(err, res) {
+        expect(res.body.normal).to.have.length(2);
+        expect(res.body.normal[0]).to.have.property('msg', 'required');
+        expect(res.body.normal[1]).to.have.property('msg', 'invalid');
+
+        expect(res.body.mapped).to.have.keys('testparam0', 'testparam1');
+        expect(res.body.mapped).to.have.deep.property("testparam0.msg", 'required');
+        expect(res.body.mapped).to.have.deep.property("testparam1.msg", 'invalid');
+
+        done();
+      });
     });
   });
 

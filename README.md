@@ -30,7 +30,8 @@ app.post('/:urlparam', function(req, res) {
   // checkQuery only checks req.query (GET params).
   req.checkBody('postparam', 'Invalid postparam').notEmpty().isInt();
   req.checkParams('urlparam', 'Invalid urlparam').isAlpha();
-  req.checkQuery('getparam', 'Invalid getparam').isInt();
+  // can also override error message in chain option
+  req.checkQuery('getparam', 'Getparam is required').isInt({message: 'Invalid getparam'});
 
   // OR assert can be used to check on all 3 types of params.
   // req.assert('postparam', 'Invalid postparam').notEmpty().isInt();
