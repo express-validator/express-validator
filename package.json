@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "lodash": "3.10.0",
-    "validator": "3.40.1"
+    "validator": "4.0.2"
   },
   "devDependencies": {
     "body-parser": "1.12.3",
