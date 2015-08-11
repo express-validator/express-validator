@@ -152,7 +152,7 @@ app.use(expressValidator({
 ```
 Use them with their sanitizer name:
 ```javascript
-req.sanitizer('address').toSanitizeSomehow();
+req.sanitize('address').toSanitizeSomehow();
 ```
 
 ## Validation
