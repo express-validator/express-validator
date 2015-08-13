@@ -238,7 +238,7 @@ req.checkBody('email').optional().isEmail();
 ```javascript
 
 req.body.comment = 'a <span>comment</span>';
-req.body.comment.username = '    user    ';
+req.body.comment.username = '   a user    ';
 
 req.sanitize('comment').escape(); // returns 'a &lt;span&gt;comment&lt;/span&gt;'
 req.sanitize('comment.user').trim(); // returns 'a user'
