@@ -257,13 +257,13 @@ req.checkBody('email').optional().isEmail();
 ```javascript
 
 req.body.comment = 'a <span>comment</span>';
-req.body.comment.username = '    user    ';
+req.body.username = '   a user    ';
 
 req.sanitize('comment').escape(); // returns 'a &lt;span&gt;comment&lt;/span&gt;'
-req.sanitize('comment.user').trim(); // returns 'a user'
+req.sanitize('username').trim(); // returns 'a user'
 
 console.log(req.body.comment); // 'a &lt;span&gt;comment&lt;/span&gt;'
-console.log(req.body.comment.user); // 'a user'
+console.log(req.body.username); // 'a user'
 
 ```
 
