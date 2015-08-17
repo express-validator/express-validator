@@ -9,7 +9,7 @@ var mustBeIntegerMessage = 'testparam must be an integer';
 
 function validation(req, res) {
   req.checkParams('testparam', errorMessage)
-    .notEmpty()
+    .notEmpty() // with default message
     .isInt().withMessage(mustBeIntegerMessage)
     .isInt() // with default message
     .isLength(2, 2).withMessage(mustBeTwoDigitsMessage);
@@ -57,11 +57,11 @@ before(function() {
 });
 
 describe('#withMessage()', function() {
-    it('should return one error per validation when param does not validate as two digit int, with custom message', function(done) {
+    it('should return one error per validation failure, with custom message where defined', function(done) {
       getRoute('/test', fail([mustBeIntegerMessage, errorMessage, mustBeTwoDigitsMessage]), 3, done);
     });
 
-    it('should return three errors when param is missing, with default message for the first and custom messages for the rest', function(done) {
+    it('should return four errors when param is missing, with default message for the first and third errors, and custom messages for the rest, as defined', function(done) {
       getRoute('/', fail([errorMessage, mustBeIntegerMessage, errorMessage, mustBeTwoDigitsMessage]), 4, done);
     });
 
@@ -69,7 +69,7 @@ describe('#withMessage()', function() {
       getRoute('/42', pass, null, done);
     });
 
-    it('should return a fail with a single custom message when failing one validiation', function(done) {
+    it('should provide a custom message when an invalid value is provided, and the validation is followed by withMessage', function(done) {
       getRoute('/199', fail(mustBeTwoDigitsMessage), 1, done);
     });
 });
