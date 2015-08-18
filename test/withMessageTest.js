@@ -72,4 +72,22 @@ describe('#withMessage()', function() {
     it('should provide a custom message when an invalid value is provided, and the validation is followed by withMessage', function(done) {
       getRoute('/199', fail(mustBeTwoDigitsMessage), 1, done);
     });
+
+    it('should update the error message only if the preceeding validation was the one to fail', function() {
+      var validator = require('../lib/express_validator')();
+      var req = {
+        body: {
+          testParam: 'abc'
+        }
+      };
+
+      validator(req, {}, function() {});
+      req.check('testParam', 'Default Error Message')
+        .isInt() // should produce 'Default Error Message'
+        .isLength(2).withMessage('Custom Error Message');
+
+      expect(req.validationErrors()).to.deep.equal([
+        { param: 'testParam', msg: 'Default Error Message', value: 'abc' }
+      ]);
+    });
 });
