@@ -18,8 +18,8 @@ function validation(req, res) {
       notEmpty: true,
       isInt: {
         failMsg: 'Parameter is not an integer'
-      },
-    },
+      }
+    }
   });
 
   var errors = req.validationErrors();

@@ -10,7 +10,7 @@ function validation(req, res) {
   req.checkBody({
     'testparam': {
       notEmpty: true,
-      isInt: true,
+      isInt: true
     },
     'arrayParam': {
       isArray: true

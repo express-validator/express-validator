@@ -225,7 +225,7 @@ mappedErrors:
 
 ### Per-validation messages
 
-You can provide an error message for a single validation with `.withMessage()`. This can be chained with the rest of your validation, and if you don't use it for one of the validations then it will fall back to the default. 
+You can provide an error message for a single validation with `.withMessage()`. This can be chained with the rest of your validation, and if you don't use it for one of the validations then it will fall back to the default.
 
 ```javascript
 req.assert('email', 'Invalid email')
@@ -249,6 +249,37 @@ You can use the `optional()` method to check an input only when the input exists
 ```javascript
 req.checkBody('email').optional().isEmail();
 //if there is no error, req.body.email is either undefined or a valid mail.
+```
+
+### Validation By schema
+
+Alternatively you can define all your validations at once using a simple schema. This also enables per-validator error messages.
+Schema validation will be used if you pass an object to any of the validator methods.
+
+```javascript
+req.checkBody({
+  'email': {
+    notEmpty: true,
+    isEmail:
+      failMsg: 'Invalid Email'
+    }
+  },
+  'password': {
+    notEmpty: true,
+    isLength: {
+      options: [2, 10]
+    },
+    failMsg: 'Invalid Password' // Error message for the parameter
+  },
+  'name.first': { //
+    notEmpty: true,
+    isLength: {
+      options: [2, 10],
+      failMsg: 'Must be between 2 and 10 chars long' // Error message for the validator, takes precedent over parameter message
+    },
+    failMsg: 'Invalid First Name'
+  }
+});
 ```
 
 ## Sanitizer

@@ -3,7 +3,7 @@ var expect = chai.expect;
 var request = require('supertest');
 
 var app;
-var errorMessage = 'Parameter is not an integer';
+var errorMessage = 'Parameter is not valid';
 
 // There are three ways to pass parameters to express:
 // - as part of the URL
@@ -16,10 +16,9 @@ function validation(req, res) {
   req.checkQuery({
     'testparam': {
       notEmpty: true,
-      isInt: {
-        failMsg: 'Parameter is not an integer'
-      },
-    },
+      failMsg: errorMessage,
+      isInt: true
+    }
   });
 
   var errors = req.validationErrors();
@@ -36,7 +35,7 @@ function fail(body, length) {
 
 function failMulti(body, length) {
   expect(body).to.have.length(length);
-  expect(body[0]).to.have.property('msg', 'Invalid param');
+  expect(body[0]).to.have.property('msg', errorMessage);
   expect(body[1]).to.have.property('msg', errorMessage);
 }
 
