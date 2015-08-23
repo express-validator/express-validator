@@ -28,7 +28,7 @@ function testRoute(path, data, test, done) {
   request(app)
     .post(path)
     .send(data)
-    .end(function(err, res){
+    .end(function(err, res) {
       test(res.body);
       done();
     });

@@ -9,7 +9,7 @@
     "Roman Kalyakin <roman@kalyakin.com>",
     "Rusty Bailey <rustylbailey@gmail.com>"
   ],
-  "version": "2.12.1",
+  "version": "2.15.1",
   "homepage": "https://github.com/ctavan/express-validator",
   "license": "MIT",
   "repository": {
@@ -18,21 +18,25 @@
   },
   "main": "./index.js",
   "scripts": {
-    "test": "mocha ./test",
+    "test": "mocha",
+    "jshint": "jshint ./test ./lib",
+    "jscs": "jscs ./test ./lib",
+    "travis-build": "npm test && npm run jshint && npm run jscs",
     "changelog": "github-changes -o ctavan -r express-validator -a -m YYYY/MM/DD --no-merges"
   },
   "engines": {
     "node": ">= 0.10"
   },
   "dependencies": {
-    "lodash": "3.9.3",
-    "validator": "3.40.1"
+    "lodash": "3.10.x",
+    "validator": "4.0.x"
   },
   "devDependencies": {
     "body-parser": "1.12.3",
     "chai": "2.3.0",
     "express": "4.12.3",
     "github-changes": "1.0.0",
+    "jscs": "1.13.1",
     "jshint": "2.7.0",
     "mocha": "2.2.4",
     "supertest": "0.15.0"

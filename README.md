@@ -152,7 +152,7 @@ app.use(expressValidator({
 ```
 Use them with their sanitizer name:
 ```javascript
-req.sanitizer('address').toSanitizeSomehow();
+req.sanitize('address').toSanitizeSomehow();
 ```
 
 ## Validation
@@ -223,6 +223,25 @@ mappedErrors:
 }
 ```
 
+### Per-validation messages
+
+You can provide an error message for a single validation with `.withMessage()`. This can be chained with the rest of your validation, and if you don't use it for one of the validations then it will fall back to the default. 
+
+```javascript
+req.assert('email', 'Invalid email')
+    .notEmpty().withMessage('Email is required')
+    .isEmail();
+var errors = req.validationErrors();
+```
+errors:
+
+```javascript
+[
+  {param: 'email', msg: 'Email is required', value: '<received input>'}
+  {param: 'email', msg: 'Invalid Email', value: '<received input>'}
+]
+```
+
 ### Optional input
 
 You can use the `optional()` method to check an input only when the input exists.
@@ -238,13 +257,13 @@ req.checkBody('email').optional().isEmail();
 ```javascript
 
 req.body.comment = 'a <span>comment</span>';
-req.body.comment.username = '    user    ';
+req.body.username = '   a user    ';
 
 req.sanitize('comment').escape(); // returns 'a &lt;span&gt;comment&lt;/span&gt;'
-req.sanitize('comment.user').trim(); // returns 'a user'
+req.sanitize('username').trim(); // returns 'a user'
 
 console.log(req.body.comment); // 'a &lt;span&gt;comment&lt;/span&gt;'
-console.log(req.body.comment.user); // 'a user'
+console.log(req.body.username); // 'a user'
 
 ```
 
