@@ -17,7 +17,7 @@ function validation(req, res) {
     'testparam': {
       notEmpty: true,
       isInt: {
-        failMsg: 'Parameter is not an integer'
+        errorMessage: 'Parameter is not an integer'
       }
     }
   });

@@ -10,7 +10,7 @@ function validation(req, res) {
     'optional_param': {
       optional: true,
       isInt: {
-        failMsg: errorMessage
+        errorMessage: errorMessage
       }
     }
   });

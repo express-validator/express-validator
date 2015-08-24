@@ -16,7 +16,7 @@ function validation(req, res) {
   req.checkQuery({
     'testparam': {
       notEmpty: true,
-      failMsg: errorMessage,
+      errorMessage: errorMessage,
       isInt: true
     }
   });
