@@ -183,6 +183,38 @@ Same as [req.check()](#reqcheck), but only looks in `req.query`.
 #### req.checkParams();
 Same as [req.check()](#reqcheck), but only looks in `req.params`.
 
+## Validation By schema
+
+Alternatively you can define all your validations at once using a simple schema. This also enables per-validator error messages.
+Schema validation will be used if you pass an object to any of the validator methods.
+
+```javascript
+req.checkBody({
+  'email': {
+    notEmpty: true,
+    isEmail:
+      errorMessage: 'Invalid Email'
+    }
+  },
+  'password': {
+    notEmpty: true,
+    isLength: {
+      options: [2, 10] // pass options to the valdatior with the options property as an array
+    },
+    errorMessage: 'Invalid Password' // Error message for the parameter
+  },
+  'name.first': { //
+    optional: true, // won't validate if field is empty
+    isLength: {
+      options: [2, 10],
+      errorMessage: 'Must be between 2 and 10 chars long' // Error message for the validator, takes precedent over parameter message
+    },
+    errorMessage: 'Invalid First Name'
+  }
+});
+```
+
+
 ## Validation errors
 
 You have two choices on how to get the validation errors:
@@ -225,7 +257,7 @@ mappedErrors:
 
 ### Per-validation messages
 
-You can provide an error message for a single validation with `.withMessage()`. This can be chained with the rest of your validation, and if you don't use it for one of the validations then it will fall back to the default. 
+You can provide an error message for a single validation with `.withMessage()`. This can be chained with the rest of your validation, and if you don't use it for one of the validations then it will fall back to the default.
 
 ```javascript
 req.assert('email', 'Invalid email')
@@ -242,7 +274,7 @@ errors:
 ]
 ```
 
-### Optional input
+## Optional input
 
 You can use the `optional()` method to check an input only when the input exists.
 
