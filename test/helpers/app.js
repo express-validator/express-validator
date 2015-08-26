@@ -2,6 +2,7 @@
 var express = require('express');
 var expressValidator = require('../../index');
 var bodyParser = require('body-parser');
+var Promise = require('bluebird');
 
 var port = process.env.PORT || 8888;
 var app = express();
@@ -14,6 +15,14 @@ module.exports = function(validation) {
     customValidators: {
       isArray: function(value) {
         return Array.isArray(value);
+      },
+      isAsyncTest: function(testparam) {
+        return new Promise(function(resolve, reject) {
+          setTimeout(function() {
+            if (testparam === '42') { return resolve(); }
+            reject();
+          }, 200);
+        });
       }
     },
     customSanitizers: {

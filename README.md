@@ -183,6 +183,35 @@ Same as [req.check()](#reqcheck), but only looks in `req.query`.
 #### req.checkParams();
 Same as [req.check()](#reqcheck), but only looks in `req.params`.
 
+## Asynchronous Validation
+
+If you need to perform asynchronous validation, for example checking a database if a username has been taken already, your custom validator can return a promise.
+
+You **MUST** use `asyncValidationErrors` which returns a promise to check for errors, otherwise the validator promises won't be resolved.
+
+ *`asyncValidationErrors` will also return any regular synchronous validation errors.*
+
+ ```javascript
+app.use(expressValidator({
+  customValidators: {
+    isUsernameAvailable: function(username) {
+      return new Promise(function(resolve, reject) {
+        ...
+      });
+    }
+  }
+}));
+
+...
+
+req.check('username', 'Username Taken').isUsernameAvailable();
+
+req.asyncValidationErrors().catch(function(errors) {
+  res.send(errors);
+});
+
+ ```
+
 ## Validation errors
 
 You have two choices on how to get the validation errors:
@@ -192,8 +221,8 @@ req.assert('email', 'required').notEmpty();
 req.assert('email', 'valid email required').isEmail();
 req.assert('password', '6 to 20 characters required').len(6, 20);
 
-var errors = req.validationErrors();
-var mappedErrors = req.validationErrors(true);
+var errors = req.validationErrors(); // Or req.asyncValidationErrors();
+var mappedErrors = req.validationErrors(true); // Or req.asyncValidationErrors(true);
 ```
 
 errors:
@@ -225,7 +254,7 @@ mappedErrors:
 
 ### Per-validation messages
 
-You can provide an error message for a single validation with `.withMessage()`. This can be chained with the rest of your validation, and if you don't use it for one of the validations then it will fall back to the default. 
+You can provide an error message for a single validation with `.withMessage()`. This can be chained with the rest of your validation, and if you don't use it for one of the validations then it will fall back to the default.
 
 ```javascript
 req.assert('email', 'Invalid email')
