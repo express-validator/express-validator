@@ -183,36 +183,64 @@ Same as [req.check()](#reqcheck), but only looks in `req.query`.
 #### req.checkParams();
 Same as [req.check()](#reqcheck), but only looks in `req.params`.
 
-## Validation By schema
+## Asynchronous Validation
 
-Alternatively you can define all your validations at once using a simple schema. This also enables per-validator error messages.
-Schema validation will be used if you pass an object to any of the validator methods.
+If you need to perform asynchronous validation, for example checking a database if a username has been taken already, your custom validator can return a promise.
 
-```javascript
-req.checkBody({
-  'email': {
-    notEmpty: true,
-    isEmail:
-      errorMessage: 'Invalid Email'
+You **MUST** use `asyncValidationErrors` which returns a promise to check for errors, otherwise the validator promises won't be resolved.
+
+ *`asyncValidationErrors` will also return any regular synchronous validation errors.*
+
+ ```javascript
+app.use(expressValidator({
+  customValidators: {
+    isUsernameAvailable: function(username) {
+      return new Promise(function(resolve, reject) {
+        ...
+      });
     }
-  },
-  'password': {
-    notEmpty: true,
-    isLength: {
-      options: [2, 10] // pass options to the valdatior with the options property as an array
-    },
-    errorMessage: 'Invalid Password' // Error message for the parameter
-  },
-  'name.first': { //
-    optional: true, // won't validate if field is empty
-    isLength: {
-      options: [2, 10],
-      errorMessage: 'Must be between 2 and 10 chars long' // Error message for the validator, takes precedent over parameter message
-    },
-    errorMessage: 'Invalid First Name'
   }
+}));
+
+...
+
+req.check('username', 'Username Taken').isUsernameAvailable();
+
+req.asyncValidationErrors().catch(function(errors) {
+  res.send(errors);
 });
-```
+
+ ```
+ ## Validation By schema
+
+ Alternatively you can define all your validations at once using a simple schema. This also enables per-validator error messages.
+ Schema validation will be used if you pass an object to any of the validator methods.
+
+ ```javascript
+ req.checkBody({
+   'email': {
+     notEmpty: true,
+     isEmail:
+       errorMessage: 'Invalid Email'
+     }
+   },
+   'password': {
+     notEmpty: true,
+     isLength: {
+       options: [2, 10] // pass options to the valdatior with the options property as an array
+     },
+     errorMessage: 'Invalid Password' // Error message for the parameter
+   },
+   'name.first': { //
+     optional: true, // won't validate if field is empty
+     isLength: {
+       options: [2, 10],
+       errorMessage: 'Must be between 2 and 10 chars long' // Error message for the validator, takes precedent over parameter message
+     },
+     errorMessage: 'Invalid First Name'
+   }
+ });
+ ```
 
 
 ## Validation errors
@@ -224,8 +252,8 @@ req.assert('email', 'required').notEmpty();
 req.assert('email', 'valid email required').isEmail();
 req.assert('password', '6 to 20 characters required').len(6, 20);
 
-var errors = req.validationErrors();
-var mappedErrors = req.validationErrors(true);
+var errors = req.validationErrors(); // Or req.asyncValidationErrors();
+var mappedErrors = req.validationErrors(true); // Or req.asyncValidationErrors(true);
 ```
 
 errors:
