@@ -279,6 +279,7 @@ mappedErrors:
   }
 }
 ```
+*Note: Using mappedErrors will only provide the last error per param in the chain of validation errors.*
 
 ### Per-validation messages
 
