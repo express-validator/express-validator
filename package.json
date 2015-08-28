@@ -9,7 +9,7 @@
     "Roman Kalyakin <roman@kalyakin.com>",
     "Rusty Bailey <rustylbailey@gmail.com>"
   ],
-  "version": "2.17.0",
+  "version": "2.17.1",
   "homepage": "https://github.com/ctavan/express-validator",
   "license": "MIT",
   "repository": {
