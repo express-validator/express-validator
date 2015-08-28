@@ -48,7 +48,7 @@ before(function() {
 });
 
 // TODO: Don't know if all of these are necessary, but we do need to test body and header
-describe('#optional()', function() {
+describe('#optionalSchema()', function() {
   it('should return a success when there is an empty route', function(done) {
     testRoute('/', pass, done);
   });

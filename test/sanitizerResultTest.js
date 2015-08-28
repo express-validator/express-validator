@@ -56,7 +56,7 @@ before(function() {
   app = require('./helpers/app')(validation);
 });
 
-describe('#sanitizers', function() {
+describe('#sanitizers (check results)', function() {
   describe('GET tests', function() {
     it('should return property and sanitized value when param is present', function(done) {
       getRoute('/abcdef', pass, done);
