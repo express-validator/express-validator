@@ -218,7 +218,7 @@ Schema validation will be used if you pass an object to any of the validator met
 req.checkBody({
  'email': {
   notEmpty: true,
-    isEmail:
+    isEmail: {
       errorMessage: 'Invalid Email'
     }
   },
