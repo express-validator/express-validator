@@ -166,6 +166,8 @@ req.sanitize('address').toSanitizeSomehow();
 
 Starts the validation of the specifed parameter, will look for the parameter in `req` in the order `params`, `query`, `body`, then validate, you can use 'dot-notation' or an array to access nested values.
 
+If a validator takes in params, you would call it like `req.assert('reqParam').contains('thisString');`.
+
 Validators are appended and can be chained. See [chriso/validator.js](https://github.com/chriso/validator.js) for available validators, or [add your own](#customvalidators).
 
 #### req.assert();
@@ -182,6 +184,9 @@ Same as [req.check()](#reqcheck), but only looks in `req.query`.
 
 #### req.checkParams();
 Same as [req.check()](#reqcheck), but only looks in `req.params`.
+
+#### req.checkHeaders();
+Only checks `req.headers`. This method is not covered by the general `req.check()`.
 
 ## Asynchronous Validation
 
@@ -217,7 +222,7 @@ Schema validation will be used if you pass an object to any of the validator met
 ```javascript
 req.checkBody({
  'email': {
-  notEmpty: true,
+    notEmpty: true,
     isEmail: {
       errorMessage: 'Invalid Email'
     }
@@ -225,7 +230,7 @@ req.checkBody({
   'password': {
     notEmpty: true,
       isLength: {
-      options: [2, 10] // pass options to the valdatior with the options property as an array
+      options: [2, 10] // pass options to the validator with the options property as an array
     },
     errorMessage: 'Invalid Password' // Error message for the parameter
   },
@@ -302,7 +307,7 @@ errors:
 
 ## Optional input
 
-You can use the `optional()` method to check an input only when the input exists.
+You can use the `optional()` method to skip validation. By default, it only skips validation if the key does not exist on the request object. If you want to skip validation based on the property being falsy (null, undefined, etc), you can pass in `{ checkFalsy: true }`.
 
 ```javascript
 req.checkBody('email').optional().isEmail();
@@ -327,6 +332,8 @@ console.log(req.body.username); // 'a user'
 
 Sanitizes the specified parameter (using 'dot-notation' or array), the parameter will be updated to the sanitized result. Cannot be chained, and will return the result. See [chriso/validator.js](https://github.com/chriso/validator.js) for available sanitizers, or [add your own](#customsanitizers).
 
+If a sanitizer takes in params, you would call it like `req.sanitize('reqParam').whitelist(['a', 'b', 'c']);`.
+
 If the parameter is present in multiple places with the same name e.g. `req.params.comment` & `req.query.comment`, they will all be sanitized.
 
 #### req.filter();
@@ -340,6 +347,9 @@ Same as [req.sanitize()](#reqsanitize), but only looks in `req.query`.
 
 #### req.sanitizeParams();
 Same as [req.sanitize()](#reqsanitize), but only looks in `req.params`.
+
+#### req.sanitizeHeaders();
+Only sanitizes `req.headers`. This method is not covered by the general `req.sanitize()`.
 
 ### Regex routes
 
