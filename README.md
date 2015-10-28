@@ -219,7 +219,7 @@ Schema validation will be used if you pass an object to any of the validator met
 ```javascript
 req.checkBody({
  'email': {
-  notEmpty: true,
+    notEmpty: true,
     isEmail: {
       errorMessage: 'Invalid Email'
     }
@@ -227,7 +227,7 @@ req.checkBody({
   'password': {
     notEmpty: true,
       isLength: {
-      options: [2, 10] // pass options to the valdatior with the options property as an array
+      options: [2, 10] // pass options to the validator with the options property as an array
     },
     errorMessage: 'Invalid Password' // Error message for the parameter
   },
@@ -304,7 +304,7 @@ errors:
 
 ## Optional input
 
-You can use the `optional()` method to check an input only when the input exists.
+You can use the `optional()` method to skip validation. By default, it only skips validation if the key does not exist on the request object. If you want to skip validation based on the property being falsy (null, undefined, etc), you can pass in `{ checkFalsy: true }`.
 
 ```javascript
 req.checkBody('email').optional().isEmail();
