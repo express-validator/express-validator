@@ -166,6 +166,8 @@ req.sanitize('address').toSanitizeSomehow();
 
 Starts the validation of the specifed parameter, will look for the parameter in `req` in the order `params`, `query`, `body`, then validate, you can use 'dot-notation' or an array to access nested values.
 
+If a validator takes in params, you would call it like `req.assert('reqParam').contains('thisString');`.
+
 Validators are appended and can be chained. See [chriso/validator.js](https://github.com/chriso/validator.js) for available validators, or [add your own](#customvalidators).
 
 #### req.assert();
@@ -326,6 +328,8 @@ console.log(req.body.username); // 'a user'
 ```
 
 Sanitizes the specified parameter (using 'dot-notation' or array), the parameter will be updated to the sanitized result. Cannot be chained, and will return the result. See [chriso/validator.js](https://github.com/chriso/validator.js) for available sanitizers, or [add your own](#customsanitizers).
+
+If a sanitizer takes in params, you would call it like `req.sanitize('reqParam').whitelist(['a', 'b', 'c']);`.
 
 If the parameter is present in multiple places with the same name e.g. `req.params.comment` & `req.query.comment`, they will all be sanitized.
 
