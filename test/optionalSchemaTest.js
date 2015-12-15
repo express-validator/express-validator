@@ -26,6 +26,17 @@ function validation(req, res) {
     }
   });
 
+  req.assert({
+    'optional_falsy_param_array': {
+      optional: {
+        options: { checkFalsy: true }
+      },
+      isInt: {
+        errorMessage: errorMessage
+      }
+    }
+  });
+
   var errors = req.validationErrors();
   if (errors) {
     return res.send(errors);
@@ -86,6 +97,14 @@ describe('#optionalSchema()', function() {
 
   it('should return a success when param is provided and validated', function(done) {
     testRoute('/path?optional_param=123', pass, done);
+  });
+
+  it('should return a success when the optional falsy param is present, but false, defined via options array', function(done) {
+    testRoute('/path?optional_falsy_param_array=', pass, done);
+  });
+
+  it('should return an error when the optional falsy param is present, but does not pass, defined via options array', function(done) {
+    testRoute('/path?optional_falsy_param_array=hello', fail, done);
   });
 
   it('should return a success when the optional falsy param is present, but false', function(done) {
