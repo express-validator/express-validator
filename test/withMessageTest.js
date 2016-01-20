@@ -12,7 +12,7 @@ function validation(req, res) {
     .notEmpty() // with default message
     .isInt().withMessage(mustBeIntegerMessage)
     .isInt() // with default message
-    .isLength(2, 2).withMessage(mustBeTwoDigitsMessage);
+    .isLength({ min: 2, max: 2 }).withMessage(mustBeTwoDigitsMessage);
   var errors = req.validationErrors();
   if (errors) {
     return res.send(errors);
@@ -84,7 +84,7 @@ describe('#withMessage()', function() {
       validator(req, {}, function() {});
       req.check('testParam', 'Default Error Message')
         .isInt() // should produce 'Default Error Message'
-        .isLength(2).withMessage('Custom Error Message');
+        .isLength({ min: 2 }).withMessage('Custom Error Message');
 
       expect(req.validationErrors()).to.deep.equal([
         { param: 'testParam', msg: 'Default Error Message', value: 'abc' }
