@@ -229,15 +229,16 @@ req.checkBody({
   },
   'password': {
     notEmpty: true,
-      isLength: {
-      options: [2, 10] // pass options to the validator with the options property as an array
+    match: {
+      options: ['example', 'i'] // pass options to the validator with the options property as an array
+      // options: ['/example/i'] // match also accepts the full expression in the first parameter
     },
     errorMessage: 'Invalid Password' // Error message for the parameter
   },
   'name.first': { //
     optional: true, // won't validate if field is empty
     isLength: {
-      options: [2, 10],
+      options: [{ min: 2, max: 10 }],
       errorMessage: 'Must be between 2 and 10 chars long' // Error message for the validator, takes precedent over parameter message
     },
     errorMessage: 'Invalid First Name'
