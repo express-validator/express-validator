@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "bluebird": "^2.9.x",
-    "lodash": "3.10.x",
+    "lodash": "4.2.x",
     "validator": "4.5.x"
   },
   "devDependencies": {
