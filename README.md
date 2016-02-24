@@ -260,6 +260,7 @@ req.checkBody({
 ```
 
 This will determine location for the specific validator no matter which method you use to call validator. If you use `in: 'query'` then checkQuery() will be called even if you called you schema as checkParams(). Currently supported location here are `'body', 'params', 'query'`.
+If you provide not supported location parameter then validation process for current parameter will be skipped.
 
 ## Validation errors
 
