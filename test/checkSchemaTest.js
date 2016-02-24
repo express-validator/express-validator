@@ -32,6 +32,18 @@ function validation(req, res) {
         }],
         errorMessage: errorMsgOutOfRange
       }
+    },
+    'skipped': {
+      // this validator is a fake validator which cannot raise any error, should be always skipped
+      in: 'notSupportedOne',
+      notEmpty: true,
+      isInt: {
+        options: [{
+          min: 2,
+          max: 10
+        }],
+        errorMessage: errorMsgOutOfRange
+      }
     }
   });
 
