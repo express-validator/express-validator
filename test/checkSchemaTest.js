@@ -16,14 +16,14 @@ var errorMsgOutOfRange = 'Parameter is out of range or not int.';
 function validation(req, res) {
   req.check({
     'testparam': {
-      in : 'params',
+      in: 'params',
       notEmpty: true,
       isInt: {
         errorMessage: errorMsg
       }
     },
     'testquery': {
-      in : 'query',
+      in: 'query',
       notEmpty: true,
       isInt: {
         options: [{
