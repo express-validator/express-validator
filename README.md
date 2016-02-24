@@ -246,6 +246,21 @@ req.checkBody({
 });
 ```
 
+You can also define location against to validate specific schema validator by adding `in` parameter as fallowing:
+
+```javascript
+req.checkBody({
+ 'email': {
+    in: 'query',
+    notEmpty: true,
+    isEmail: {
+      errorMessage: 'Invalid Email'
+    }
+  }
+```
+
+This will determine location for the specific validator no matter which method you use to call validator. If you use `in: 'query'` then checkQuery() will be called even if you called you schema as checkParams(). Currently supported location here are `'body', 'params', 'query'`.
+
 ## Validation errors
 
 You have two choices on how to get the validation errors:
