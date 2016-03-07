@@ -1,5 +1,6 @@
 var chai = require('chai');
 var expect = chai.expect;
+var Promise = require('bluebird');
 
 describe('#withMessage()', function() {
 	describe('on async validators', function() {
