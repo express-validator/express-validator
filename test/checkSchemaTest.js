@@ -13,18 +13,17 @@ var errorMsgOutOfRange = 'Parameter is out of range or not int.';
 // These test show that req.checkParams are only interested in req.params values, all other
 // parameters will be ignored.
 
-function validation(req, res) {
-  req.check({
-    'testparam': {
-      in: 'params',
-      notEmpty: true,
+var schema = {
+  testparam: {
+    in: 'params',
+    notEmpty: true,
       isInt: {
         errorMessage: errorMsg
       }
-    },
-    'testquery': {
-      in: 'query',
-      notEmpty: true,
+  },
+  testquery: {
+    in: 'query',
+    notEmpty: true,
       isInt: {
         options: [{
           min: 2,
@@ -32,11 +31,11 @@ function validation(req, res) {
         }],
         errorMessage: errorMsgOutOfRange
       }
-    },
-    'skipped': {
-      // this validator is a fake validator which cannot raise any error, should be always skipped
-      in: 'notSupportedOne',
-      notEmpty: true,
+  },
+  'skipped': {
+    // this validator is a fake validator which cannot raise any error, should be always skipped
+    in: 'notSupportedOne',
+    notEmpty: true,
       isInt: {
         options: [{
           min: 2,
@@ -44,17 +43,55 @@ function validation(req, res) {
         }],
         errorMessage: errorMsgOutOfRange
       }
+  },
+  'numInQuery': {
+    notEmpty: true,
+    isInt: {
+      options: [{
+        min: 0,
+        max: 665
+      }],
+      errorMessage: errorMsgOutOfRange
     }
-  });
+  }
+};
 
+function validationSendResponse(req, res) {
   var errors = req.validationErrors();
   if (errors) {
     return res.send(errors);
   }
+
   res.send({
     testparam: req.params.testparam,
-    testquery: req.params.testquery
+    testquery: req.query.testquery,
+    skipped: req.query.skipped,
+    numInQuery: req.query.numInQuery
   });
+}
+
+function validation(req, res) {
+
+  req.check(schema);
+  validationSendResponse(req, res);
+}
+
+function validationQuery(req, res) {
+
+  req.checkQuery(schema);
+  validationSendResponse(req, res);
+}
+
+function validationParams(req, res) {
+
+  req.checkParams(schema);
+  validationSendResponse(req, res);
+}
+
+function validationBody(req, res) {
+
+  req.checkBody(schema);
+  validationSendResponse(req, res);
 }
 
 function failParams(body, length) {
@@ -75,6 +112,15 @@ function failAll(body, length) {
 
 function pass(params) {
   expect(params).to.have.property('testparam', '25');
+  expect(params).to.have.property('testquery', '6');
+  expect(params).to.have.property('skipped', '34');
+  expect(params).to.have.property('numInQuery', '0');
+}
+
+function failQueryParams(params, length) {
+  expect(params).to.have.length(length);
+  expect(params[0]).to.have.property('msg', 'Invalid param');
+  expect(params[1]).to.have.property('msg', errorMsgOutOfRange);
 }
 
 function getRoute(path, test, length, done) {
@@ -86,29 +132,78 @@ function getRoute(path, test, length, done) {
     });
 }
 
-// This before() is required in each set of tests in
-// order to use a new validation function in each file
-before(function() {
-  delete require.cache[require.resolve('./helpers/app')];
-  app = require('./helpers/app')(validation);
-});
-
 describe('Check defining validator location inside schema validators', function() {
 
+  // This before() is required in each set of tests in
+  // order to use a new validation function in each file
+  before(function() {
+    delete require.cache[require.resolve('./helpers/app')];
+    app = require('./helpers/app')(validation);
+  });
+
   it('should validate against schema with query and params locations', function(done) {
-    getRoute('/25?testquery=6', pass, 1, done);
+    getRoute('/25?testquery=6&skipped=34&numInQuery=0', pass, 1, done);
   });
 
   it('should fail when param is not integer', function(done) {
-    getRoute('/ImNot?testquery=6', failParams, 1, done);
+    getRoute('/ImNot?testquery=6&skipped=34&numInQuery=0', failParams, 1, done);
   });
 
   it('should fail when query param is out of range', function(done) {
-    getRoute('/25?testquery=20', failQuery, 1, done);
+    getRoute('/25?testquery=20&skipped=34&numInQuery=0', failQuery, 1, done);
   });
 
   it('should fail when non of params are valid', function(done) {
-    getRoute('/ImNot?testquery=20', failAll, 2, done);
+    getRoute('/ImNot?testquery=20&skipped=34&numInQuery=0', failAll, 2, done);
+  });
+
+});
+
+describe('Check defining validator location inside schema validators by checkQuery()', function() {
+
+  // This before() is required in each set of tests in
+  // order to use a new validation function in each file
+  before(function() {
+    delete require.cache[require.resolve('./helpers/app')];
+    app = require('./helpers/app')(validationQuery);
+  });
+
+  it('should validate against schema with query and params locations', function(done) {
+    getRoute('/25?testquery=6&skipped=34&numInQuery=0', pass, 1, done);
+  });
+
+  it('should fail when query param is out of range', function(done) {
+    getRoute('/25?testquery=6&skipped=34&numInQuery=666', failQuery, 1, done);
+  });
+
+});
+
+describe('Check defining validator location inside schema validators by checkParams()', function() {
+
+  // This before() is required in each set of tests in
+  // order to use a new validation function in each file
+  before(function() {
+    delete require.cache[require.resolve('./helpers/app')];
+    app = require('./helpers/app')(validationParams);
+  });
+
+  it('should fail when searching for query param in the path params', function(done) {
+    getRoute('/25?testquery=6&skipped=34&numInQuery=666', failQueryParams, 2, done);
+  });
+
+});
+
+describe('Check defining validator location inside schema validators by checkBody()', function() {
+
+  // This before() is required in each set of tests in
+  // order to use a new validation function in each file
+  before(function() {
+    delete require.cache[require.resolve('./helpers/app')];
+    app = require('./helpers/app')(validationBody);
+  });
+
+  it('should fail when searching for query param in the body', function(done) {
+    getRoute('/25?testquery=6&skipped=34&numInQuery=666', failQueryParams, 2, done);
   });
 
 });
