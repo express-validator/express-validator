@@ -229,9 +229,9 @@ req.checkBody({
   },
   'password': {
     notEmpty: true,
-    match: {
+    matches: {
       options: ['example', 'i'] // pass options to the validator with the options property as an array
-      // options: ['/example/i'] // match also accepts the full expression in the first parameter
+      // options: [/example/i] // matches also accepts the full expression in the first parameter
     },
     errorMessage: 'Invalid Password' // Error message for the parameter
   },
