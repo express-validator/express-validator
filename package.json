@@ -29,14 +29,14 @@
   },
   "dependencies": {
     "bluebird": "^2.9.x",
-    "lodash": "4.2.x",
-    "validator": "4.5.x"
+    "lodash": "4.6.x",
+    "validator": "5.1.x"
   },
   "devDependencies": {
     "body-parser": "1.12.3",
     "chai": "2.3.0",
     "express": "4.12.3",
-    "github-changes": "1.0.0",
+    "github-changes": "1.0.2",
     "jscs": "1.13.1",
     "jshint": "2.7.0",
     "mocha": "2.2.4",

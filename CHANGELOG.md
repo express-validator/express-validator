@@ -1,6 +1,101 @@
 ## Change Log
 
-### upcoming 2015/05/04
+### upcoming 2016/03/13
+- [c704a22](https://github.com/ctavan/express-validator/commit/c704a2203f430dacff765e83862e36e1cc45471d) Upgrade to 2.19.2
+- [9b74fb4](https://github.com/ctavan/express-validator/commit/9b74fb4ffd4edce7268b9d1e9303829cdb8ae14e) Fix matches example in README (resolves #209)
+- [20f033a](https://github.com/ctavan/express-validator/commit/20f033a9f6a7ba6ad1f3d9eb6c34e8e804071d0a) Added missing require that broke build of tests on node v0.10.43
+- [981239f](https://github.com/ctavan/express-validator/commit/981239fd7d7841b2c862c28e1d3f92836f52dcaa) Readme and tests updated after review.
+- [f6f88bc](https://github.com/ctavan/express-validator/commit/f6f88bcfd69179f2fdae87c02903bc04eba92029) #203 - Fixed bug where .withMessage() would not apply to a custom async validator (@chrissinclair)
+- [4fdc7a9](https://github.com/ctavan/express-validator/commit/4fdc7a9a711485e792886accdc9160725ad67d9b) Extended test schema to check if not supported location type force validator to skip.
+- [d1894e8](https://github.com/ctavan/express-validator/commit/d1894e88a15f5a135aaf6090e9a771eff0bbee48) Formatter updated.
+- [d87a4f1](https://github.com/ctavan/express-validator/commit/d87a4f1a06b98ef466513decec6428fef3d3c6d6) Readme updated.
+- [a300751](https://github.com/ctavan/express-validator/commit/a30075162b721c5cdb3c2dee196704aab3d30f5b) Issue #206. Added support for new field in validators structure allowing to define location of validation.
+
+### v2.19.1 2016/02/05
+- [f3ed152](https://github.com/ctavan/express-validator/commit/f3ed152ef28bcc49d7c67c3842fb1ff1bb2067ed) 2.19.1 (@rustybailey)
+- [64d34f7](https://github.com/ctavan/express-validator/commit/64d34f736b2b0d0880a5ca0c55fff8296422cf73) Update package.json (@timoruppell)
+- [55ad066](https://github.com/ctavan/express-validator/commit/55ad06654b65ffd2d7ecdc7f33de80b6856f7340) Change lodash method names to match 4.x changes (@timoruppell)
+
+### v2.19.0 2016/01/21
+- [479dc71](https://github.com/ctavan/express-validator/commit/479dc71c78e73d0e525b8111c7672c524564b60e) 2.19.0
+- [460e11c](https://github.com/ctavan/express-validator/commit/460e11c6df1210d66abd96cd3d2593c429528edf) Upgrade dependency (validator.js) from 4.2.x -> 4.5.x (@aristidesfl)
+
+### v2.18.0 2015/10/28
+- [8a2cb3b](https://github.com/ctavan/express-validator/commit/8a2cb3bd75fadb49cb861e08d2f5c3db1d9693bf) Upgrade to 2.18.0 (@rustybailey)
+- [4c9359f](https://github.com/ctavan/express-validator/commit/4c9359f3062241535991bad6411f3ed2a658bff7) Fix #177: Add sanitizeHeaders with tests and docs. (@rustybailey)
+- [3e636f3](https://github.com/ctavan/express-validator/commit/3e636f36a84d0defd7d644b1ef5d697811755be5) Fix #120: Add an options object to optional() so that you can test for falsy values. (@rustybailey)
+- [56d18fb](https://github.com/ctavan/express-validator/commit/56d18fb5dc675502d06d57a377259e173d29d6fa) Update validator to 4.2.x and add node 4.0/4.1 to travis.yml. (@rustybailey)
+- [3123c0f](https://github.com/ctavan/express-validator/commit/3123c0f41bdaeced65deeb672c0955359571fa93) Fix #182: Add how to call validators/sanitizers with arguments to docs. (@rustybailey)
+- [dc9a576](https://github.com/ctavan/express-validator/commit/dc9a5763b4378ee56f1b4f49b3d88c5044f8fdf6) Update readme (@riguy724)
+
+### v2.17.1 2015/08/28
+- [94f5c11](https://github.com/ctavan/express-validator/commit/94f5c11065d800c0a027fb0b2c52914e8dafaec7) Upgrade to 2.17.1. (@rustybailey)
+- [13083d9](https://github.com/ctavan/express-validator/commit/13083d90bec06b0f7b9dbb6bff5986e7fd1735eb) Clarify mappedErrors in README - resolves #161 (@rustybailey)
+- [eef5347](https://github.com/ctavan/express-validator/commit/eef534782067bf19b459120a5770ed186fbe6917) Issue #165: Fix the output of nested params to be a uniform string in the param field. This was broken in the refactor of v2.12.0. (@rustybailey)
+- [979cd33](https://github.com/ctavan/express-validator/commit/979cd33b3c8d13923f93573f63a85cd88f9d0d27) Update README.md (@rustybailey)
+
+### v2.17.0 2015/08/27
+- [ba73177](https://github.com/ctavan/express-validator/commit/ba73177ec176363ef25566a5241bfc4331ccd5ae) Upgrade to 2.17.0 (@rustybailey)
+- [bf54ca8](https://github.com/ctavan/express-validator/commit/bf54ca8252c4cb358a2ef0823abf41b70c02fab8) Typo fix. (@rustybailey)
+
+### v2.16.0 2015/08/26
+- [09f2225](https://github.com/ctavan/express-validator/commit/09f2225a8d7101bab3f149d4d04f94e878df709f) Upgrade to 2.16.0. (@rustybailey)
+- [b7d98ec](https://github.com/ctavan/express-validator/commit/b7d98ec7a933c2cd4a1cda8cdfa2f3918075c609) Fix typos in comments. (@rustybailey)
+- [6e13c90](https://github.com/ctavan/express-validator/commit/6e13c901bf5e0dea5b0085b1366c9a6c6dae9956) async validation (@Jakeii)
+- [b6fca2b](https://github.com/ctavan/express-validator/commit/b6fca2b3a2d0d215f1ae620301977c0c6a0ccb6b) change failMsg to errorMessage, use optional in README.md example (@Jakeii)
+- [8ff3698](https://github.com/ctavan/express-validator/commit/8ff36987ce13476fad5dbb5653612860ecf0aca3) conform to jscs and other imporvements (@Jakeii)
+
+### v2.15.1 2015/08/19
+- [a5e8906](https://github.com/ctavan/express-validator/commit/a5e89062d2e33ed09345ccb6dcec83e61e4cdefb) Upgrade to 2.15.1 (@rustybailey)
+- [b9dc9df](https://github.com/ctavan/express-validator/commit/b9dc9dfee7408d37319b138ff33a06e688c2b36c) Fixed bug where with message would provide a custom message to an incorrect validation if the one it was meant to apply to passed, but a validation with a default message failed before hand.
+
+### v2.15.0 2015/08/17
+- [1ffb3d4](https://github.com/ctavan/express-validator/commit/1ffb3d4ce6622ca4e0b415df32fc11540f1b434e) Upgrade to 2.15.0 (@rustybailey)
+- [a16ea13](https://github.com/ctavan/express-validator/commit/a16ea13f968ab6de058e161a6cd7368ff036c6b2) Correct sanitize example in README. (@rustybailey)
+- [bf5edfa](https://github.com/ctavan/express-validator/commit/bf5edfaaf9e2ff7f420600116cb9a63dea1de807) Updated a few style points per PR feedback. (@chrissinclair)
+- [10a15a2](https://github.com/ctavan/express-validator/commit/10a15a22ed3da0d730b958b0699e01e2f7abe883) Updated readme to detail the .withMessage method (@chrissinclair)
+- [9b4243c](https://github.com/ctavan/express-validator/commit/9b4243cbd96c34af77a0570ab752942c6ca8f58f) Added withMessage extension to provide a custom message per validation (@chrissinclair)
+
+### v2.14.2 2015/08/11
+- [42bcf60](https://github.com/ctavan/express-validator/commit/42bcf60b81372dd6c0cb7451ebc8276867dccba1) Upgrade to 2.14.2 (@rustybailey)
+- [8807999](https://github.com/ctavan/express-validator/commit/88079994627ece8559c03a6adf5150e9dd79bf6d) Fixed typo with the direction of how to use custom sanitizer. (@phuson)
+
+### v2.14.1 2015/08/10
+- [84e489f](https://github.com/ctavan/express-validator/commit/84e489fd1a8d63eec6483a5511681ec767412ffe) Upgrade to 2.14.1 (@rustybailey)
+- [669fcb8](https://github.com/ctavan/express-validator/commit/669fcb8c177c4f86c1fe3c357537e622bc60ae46) Add sudo false to travis to move to container builds: http://docs.travis-ci.com/user/workers/container-based-infrastructure/ (@rustybailey)
+- [b6c89ef](https://github.com/ctavan/express-validator/commit/b6c89ef88f7cf7b20cc7e5e807a7066aa8fa791e) Don't call validators for optional parameters (@ikokostya)
+
+### v2.14.0 2015/08/05
+- [478f36d](https://github.com/ctavan/express-validator/commit/478f36d66b0fafbd105c4e4f71b63db9bb5d9a5e) Upgrade to 2.14.0 (@rustybailey)
+- [60bfdcb](https://github.com/ctavan/express-validator/commit/60bfdcb4991f7a7afb73704e74ad426d1fbf6db2) Change lodash version to 3.10.x and validator version to 4.0.x (@rustybailey)
+- [3e5ca70](https://github.com/ctavan/express-validator/commit/3e5ca7003cd2ab7eaa3d88083d589fc94f8e78f7) Updated to the latest validator version (4.0.2) (@SamVerschueren)
+
+### v2.13.0 2015/06/30
+- [0b02b1b](https://github.com/ctavan/express-validator/commit/0b02b1b000241914205a9c72e4e9f291b792dd52) Upgrade to 2.13.0 (@rustybailey)
+- [879c41d](https://github.com/ctavan/express-validator/commit/879c41da7552e77748fb3a5dc0c347ad498a5952) Update lodash to 3.10.0 (@rustybailey)
+
+### v2.12.2 2015/06/27
+- [8e754ba](https://github.com/ctavan/express-validator/commit/8e754ba78a7ea9b85f3fdc1be182970f010d823c) Upgrade to 2.12.2 (@rustybailey)
+- [cd7f31b](https://github.com/ctavan/express-validator/commit/cd7f31bf783597313b225960407a8ee754a34d24) Test for falsey values in sanitization. (@rustybailey)
+- [72d06e8](https://github.com/ctavan/express-validator/commit/72d06e8a105df00cb98333c5009845498a260045) Add jscsrc, add jscs/jshint to travis build, and fix errors thrown by JSHint/JSCS. (@rustybailey)
+- [d1c5ec3](https://github.com/ctavan/express-validator/commit/d1c5ec3f35078b2986cbb83ec3977f031c08a2c1) build a chain so optional works (@Jakeii)
+- [586d65d](https://github.com/ctavan/express-validator/commit/586d65d7a839710ffb3fcf428aff54b2babe327b) add validation by schema (@Jakeii)
+
+### v2.12.1 2015/06/16
+- [eeeb52f](https://github.com/ctavan/express-validator/commit/eeeb52fcdfd320a6a97161ddfd2b6abb60e6d153) Upgrade to 2.12.1 (@rustybailey)
+- [006ab99](https://github.com/ctavan/express-validator/commit/006ab9927d6519b2594ebc5c841a83584433aed1) Provide a default options value (@JSteunou)
+
+### v2.12.0 2015/06/16
+- [cf8427b](https://github.com/ctavan/express-validator/commit/cf8427bc8f9325bab80c538084dc415ae39d5f08) Upgrade to 2.12.0 (@rustybailey)
+- [261337a](https://github.com/ctavan/express-validator/commit/261337a8a479b806f66f2cb2a819c748a53568ec) Update node-validator to 3.40.1 (@rustybailey)
+- [fc2745e](https://github.com/ctavan/express-validator/commit/fc2745e3a2b122e324f8e582b7a0544e071db97d) complete code refactor (@Jakeii)
+
+### v2.11.0 2015/06/01
+- [63ac9c8](https://github.com/ctavan/express-validator/commit/63ac9c84f4e54fd215e8e9a00ae92e772ba65774) Bump to 2.11.0 (@rustybailey)
+- [e92aa7f](https://github.com/ctavan/express-validator/commit/e92aa7f0aad74a11f8359b3e588ccdfadaac16df) fix readme, add tests (@uhlryk)
+- [a7352f7](https://github.com/ctavan/express-validator/commit/a7352f71579ca34fd5febb6d20f86efae3169023) fix spelling sanitize; add documentation (@uhlryk)
+- [cdf3a0e](https://github.com/ctavan/express-validator/commit/cdf3a0e7682ce7c32d6a8692e2bd6fb7671de5da) added custom santizers (@uhlryk)
+- [06435b9](https://github.com/ctavan/express-validator/commit/06435b97d1310f6de72c6428b4281c0932ecbf5f) Update CHANGELOG.md (changelog command relies on remote tags) (@rustybailey)
 - [ea00f9d](https://github.com/ctavan/express-validator/commit/ea00f9d6cfe0859f6f00ceb45d66f4d9270064b0) Update changelog. (@rustybailey)
 
 ### v2.10.0 2015/05/04
@@ -50,12 +145,12 @@
 - [1dc8679](https://github.com/ctavan/express-validator/commit/1dc8679ef2207e1ac886bf3eeac7f63955c042c5) Bump version to 2.5.0 (@ctavan)
 - [2205323](https://github.com/ctavan/express-validator/commit/220532338d20abc57ba2510b1f51c86c31705757) adds tests for optional() method (@BAKFR)
 - [7402642](https://github.com/ctavan/express-validator/commit/7402642a9a7917f16bba42c1d06503047821052b) add curly braces to respect the coding style (@BAKFR)
-- [b90f482](https://github.com/ctavan/express-validator/commit/b90f482d13d446f4e5d22b9ba038be0740e9d20d) add documentation for customValidators option
+- [b90f482](https://github.com/ctavan/express-validator/commit/b90f482d13d446f4e5d22b9ba038be0740e9d20d) add documentation for customValidators option (@sterling)
 
 ### v2.4.0 2014/09/04
 - [9d18380](https://github.com/ctavan/express-validator/commit/9d18380884562b9d8e366f1b180f9eee11658f66) Bump version to 2.4.0 (@ctavan)
-- [9a167b7](https://github.com/ctavan/express-validator/commit/9a167b7e524113a78ef04e77bf946d9a8832ddc9) whitespace cleanup
-- [668e5c5](https://github.com/ctavan/express-validator/commit/668e5c547c22c78e9b10b525d6357cf9b2e8a969) Add support for custom validators
+- [9a167b7](https://github.com/ctavan/express-validator/commit/9a167b7e524113a78ef04e77bf946d9a8832ddc9) whitespace cleanup (@sterling)
+- [668e5c5](https://github.com/ctavan/express-validator/commit/668e5c547c22c78e9b10b525d6357cf9b2e8a969) Add support for custom validators (@sterling)
 - [58d2142](https://github.com/ctavan/express-validator/commit/58d2142798898cc6b6bec71a1c333324ec6d6a5a) add documentation on README (@BAKFR)
 - [e42f650](https://github.com/ctavan/express-validator/commit/e42f650bb165bcaa18d36a2168a6c43968cf9c90) add the method optional() who disables the checks if value is undefined (@BAKFR)
 
@@ -70,7 +165,7 @@
 - [6dcddc8](https://github.com/ctavan/express-validator/commit/6dcddc83d71e540d20ec2e0da3dbb717c78acd7f) Bump version to 2.1.2 (@ctavan)
 - [bffe0d9](https://github.com/ctavan/express-validator/commit/bffe0d9a2ea9a29505eb2264e04badc4d68e221b) Fixed function call order (@killroy42)
 - [129be78](https://github.com/ctavan/express-validator/commit/129be780252c9bb88bd281861561077d4bf96241) Fixed arguments usage for strict compliance (@killroy42)
-- [defffe1](https://github.com/ctavan/express-validator/commit/defffe1b4493b7e21122fbe4f5ac877543f8a702) Update express_validator.js (@r3mus)
+- [defffe1](https://github.com/ctavan/express-validator/commit/defffe1b4493b7e21122fbe4f5ac877543f8a702) Update express_validator.js (@brandonscript)
 - [01bdbf4](https://github.com/ctavan/express-validator/commit/01bdbf47486136364635edc73725c92f8690a90c) Return sanitized value from req.sanitize() (@dpolivy)
 
 ### v2.1.1 2014/03/17
