@@ -1,6 +1,6 @@
 # express-validator
 
-[![Build Status](https://secure.travis-ci.org/ctavan/express-validator.png)](http://travis-ci.org/ctavan/express-validator)
+[![npm version](https://badge.fury.io/js/express-validator.svg)](https://badge.fury.io/js/express-validator) [![Build Status](https://secure.travis-ci.org/ctavan/express-validator.png)](http://travis-ci.org/ctavan/express-validator)
 
 An [express.js]( https://github.com/visionmedia/express ) middleware for
 [node-validator]( https://github.com/chriso/validator.js ).
