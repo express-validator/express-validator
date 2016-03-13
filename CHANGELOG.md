@@ -1,5 +1,13 @@
 ## Change Log
 
+### v2.20.2 2016/03/13
+- [a4a603b](https://github.com/ctavan/express-validator/commit/a4a603bce78f96a4b0987af5cf2490e07cd44404) Upgrade to 2.20.2 (@rustybailey)
+- [49803b9](https://github.com/ctavan/express-validator/commit/49803b945239f298dc06329a02d102c9a7d5a607) Added comment to reference the fix (@AuspeXeu)
+- [41add1b](https://github.com/ctavan/express-validator/commit/41add1be83ed28fcf91abc383b921d7472a1e41a) Added badge reflecting the dependency status (@AuspeXeu)
+- [5c9e08c](https://github.com/ctavan/express-validator/commit/5c9e08c87363b963124010d15e46ada9ea9dd151) Upgraded bluebird (@AuspeXeu)
+- [69d5cc6](https://github.com/ctavan/express-validator/commit/69d5cc6361babc90a96f34718adbdf81ce5c7769) Add npm version badge (@rustybailey)
+- [a5262c7](https://github.com/ctavan/express-validator/commit/a5262c70cbe17dcac5808726f3043b8ab583aa5c) Upgrade changelog. (@rustybailey)
+
 ### v2.20.1 2016/03/13
 - [0f4d5f6](https://github.com/ctavan/express-validator/commit/0f4d5f69d514c691f33890698cdea37060a1698c) Upgrade to 2.20.1 (@rustybailey)
 - [0241908](https://github.com/ctavan/express-validator/commit/0241908c15684333cce7102d8a882718f09d387c) Downgrade validator. An upgrade will require a major version bump since it doesn't automatically coerce non-strings to strings anymore: https://github.com/chriso/validator.js/pull/496 (@rustybailey)
