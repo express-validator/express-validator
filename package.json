@@ -28,7 +28,7 @@
     "node": ">= 0.10"
   },
   "dependencies": {
-    "bluebird": "^2.9.x",
+    "bluebird": "3.3.x",
     "lodash": "4.6.x",
     "validator": "4.9.x"
   },
