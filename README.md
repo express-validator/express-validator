@@ -246,6 +246,50 @@ req.checkBody({
 });
 ```
 
+You can also define a specific location to validate against in the schema by adding `in` parameter as shown below:
+
+```javascript
+req.check({
+ 'email': {
+    in: 'query',
+    notEmpty: true,
+    isEmail: {
+      errorMessage: 'Invalid Email'
+    }
+  }
+});
+```
+
+Please remember that the `in` attribute will have always highest priority. This mean if you use `in: 'query'` then checkQuery() will be called inside even if you do `checkParams()` or `checkBody()`. For example, all of these calls will check query params for email param:
+
+
+```javascript
+var schema = {
+ 'email': {
+    in: 'query',
+    notEmpty: true,
+    isEmail: {
+      errorMessage: 'Invalid Email'
+    }
+  },
+  'password': {
+    notEmpty: true,
+    match: {
+      options: ['example', 'i'] // pass options to the validator with the options property as an array
+      // options: ['/example/i'] // match also accepts the full expression in the first parameter
+    },
+    errorMessage: 'Invalid Password' // Error message for the parameter
+  }
+};
+
+req.check(schema);        // will check 'password' no matter where it is but 'email' in query params
+req.checkQuery(schema);   // will check 'password' and 'email' in query params
+req.checkBody(schema);    // will check 'password' in body but 'email' in query params
+req.checkParams(schema);  // will check 'password' in path params but 'email' in query params
+```
+
+Currently supported location are `'body', 'params', 'query'`. If you provide a location parameter that is not supported, the validation process for current parameter will be skipped.
+
 ## Validation errors
 
 You have two choices on how to get the validation errors:
