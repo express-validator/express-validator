@@ -1,5 +1,10 @@
 ## Change Log
 
+### v2.20.3 2016/03/21
+- [0fafa68](https://github.com/ctavan/express-validator/commit/0fafa68e0bc21c06a673d6c2ac160ababdccf04c) Upgrade to 2.20.3
+- [7884efc](https://github.com/ctavan/express-validator/commit/7884efc891c39d5fd4d1c41fef08f8cb01bf0a39) Convert promises to Bluebird promises in order to use reflect(). Should fix #220
+- [659978a](https://github.com/ctavan/express-validator/commit/659978ab0dd38c8eb10b00ea92bcd857a6e5f627) Update changelog (@rustybailey)
+
 ### v2.20.2 2016/03/13
 - [a4a603b](https://github.com/ctavan/express-validator/commit/a4a603bce78f96a4b0987af5cf2490e07cd44404) Upgrade to 2.20.2 (@rustybailey)
 - [49803b9](https://github.com/ctavan/express-validator/commit/49803b945239f298dc06329a02d102c9a7d5a607) Added comment to reference the fix (@AuspeXeu)
@@ -16,6 +21,8 @@
 - [e57acd2](https://github.com/ctavan/express-validator/commit/e57acd209e795b2dbfee43fb7aa126da9738b23d) Upgrade to 2.20.0 (@rustybailey)
 - [9073b5e](https://github.com/ctavan/express-validator/commit/9073b5e53c122bd60f9873818980b87dde177b28) Upgrade github-changes, lodash, and validator; update CHANGELOG. (@rustybailey)
 - [dca9911](https://github.com/ctavan/express-validator/commit/dca9911928dba20dbd3fa31f39260b7f18da22f0) Apply README fixes from 9b74fb4ffd4edce7268b9d1e9303829cdb8ae14e (@rustybailey)
+
+### v2.19.2 2016/03/09
 - [c704a22](https://github.com/ctavan/express-validator/commit/c704a2203f430dacff765e83862e36e1cc45471d) Upgrade to 2.19.2
 - [9b74fb4](https://github.com/ctavan/express-validator/commit/9b74fb4ffd4edce7268b9d1e9303829cdb8ae14e) Fix matches example in README (resolves #209)
 - [20f033a](https://github.com/ctavan/express-validator/commit/20f033a9f6a7ba6ad1f3d9eb6c34e8e804071d0a) Added missing require that broke build of tests on node v0.10.43
