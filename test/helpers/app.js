@@ -2,10 +2,15 @@
 var express = require('express');
 var expressValidator = require('../../index');
 var bodyParser = require('body-parser');
-var Promise = require('bluebird');
 
 var port = process.env.PORT || 8888;
 var app = express();
+
+// If no native implementation of Promise exists (less than Node v4),
+// use Bluebird promises so we can test for both depending on the Node version
+if (typeof Promise === 'undefined') {
+  Promise = require('bluebird');
+}
 
 module.exports = function(validation) {
 
