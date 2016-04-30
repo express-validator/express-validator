@@ -14,7 +14,7 @@ var errorMessage = 'Parameter is not an integer';
 
 function validation(req, res) {
   req.checkBody('testparam', errorMessage).notEmpty().isInt();
-  req.checkBody('arrayParam').isArray();
+  req.checkBody('numParam').gte(5);
 
   var errors = req.validationErrors();
   if (errors) {
@@ -93,23 +93,19 @@ describe('#checkBody()', function() {
     });
 
     it('should return a success when params validate on the body', function(done) {
-      postRoute('/?testparam=blah', { testparam: '42', arrayParam: [1, 2, 3] }, pass, null, done);
+      postRoute('/?testparam=blah', { testparam: '42', numParam: 10 }, pass, null, done);
     });
 
     it('should return two errors when two params are present, but do not validate', function(done) {
-      postRoute('/?testparam=42', { testparam: 'posttest', arrayParam: 123 }, fail, 2, done);
+      postRoute('/?testparam=42', { testparam: 'posttest', numParam: 1 }, fail, 2, done);
     });
 
     it('should return two errors when two params are present, but do not validate', function(done) {
-      postRoute('/?testparam=42', { testparam: 'posttest', arrayParam: {} }, fail, 2, done);
-    });
-
-    it('should return two errors when two params are present, but do not validate', function(done) {
-      postRoute('/', { testparam: 'test', arrayParam: '[]' }, fail, 2, done);
+      postRoute('/', { testparam: 'test', numParam: '[]' }, fail, 2, done);
     });
 
     it('should return a success when params validate on the body', function(done) {
-      postRoute('/', { testparam: '42', arrayParam: [] }, pass, null, done);
+      postRoute('/', { testparam: '42', numParam: 10 }, pass, null, done);
     });
   });
 

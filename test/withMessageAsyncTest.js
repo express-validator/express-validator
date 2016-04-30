@@ -69,7 +69,7 @@ describe('#withMessage()', function() {
 						expect(err).to.deep.equal([{
 							msg: 'Custom Message',
 							param: 'testParam',
-							value: 100
+							value: '100'
 						}]);
 					});
 			});
