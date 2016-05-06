@@ -1,8 +1,13 @@
 ## Change Log
 
+### v2.20.4 2016/05/06
+- [54156e1](https://github.com/ctavan/express-validator/commit/54156e14ea2311c27beba0e854c25fe50ee9b22f) Upgrade to 2.20.4 to update validator to v5 (@rustybailey)
+- [4fe80ec](https://github.com/ctavan/express-validator/commit/4fe80ec3efedf3feec9412b3a0e57f598ec7be60) Update node-validator to v5 and restore automatic string coercion. (@rustybailey)
+- [bfd9502](https://github.com/ctavan/express-validator/commit/bfd9502e9da38ac2dcdc28c720cbf78d4af3c4dd) Update changelog. (@rustybailey)
+
 ### v2.20.3 2016/03/21
-- [0fafa68](https://github.com/ctavan/express-validator/commit/0fafa68e0bc21c06a673d6c2ac160ababdccf04c) Upgrade to 2.20.3
-- [7884efc](https://github.com/ctavan/express-validator/commit/7884efc891c39d5fd4d1c41fef08f8cb01bf0a39) Convert promises to Bluebird promises in order to use reflect(). Should fix #220
+- [0fafa68](https://github.com/ctavan/express-validator/commit/0fafa68e0bc21c06a673d6c2ac160ababdccf04c) Upgrade to 2.20.3 (@rustybailey)
+- [7884efc](https://github.com/ctavan/express-validator/commit/7884efc891c39d5fd4d1c41fef08f8cb01bf0a39) Convert promises to Bluebird promises in order to use reflect(). Should fix #220 (@rustybailey)
 - [659978a](https://github.com/ctavan/express-validator/commit/659978ab0dd38c8eb10b00ea92bcd857a6e5f627) Update changelog (@rustybailey)
 
 ### v2.20.2 2016/03/13
@@ -23,8 +28,8 @@
 - [dca9911](https://github.com/ctavan/express-validator/commit/dca9911928dba20dbd3fa31f39260b7f18da22f0) Apply README fixes from 9b74fb4ffd4edce7268b9d1e9303829cdb8ae14e (@rustybailey)
 
 ### v2.19.2 2016/03/09
-- [c704a22](https://github.com/ctavan/express-validator/commit/c704a2203f430dacff765e83862e36e1cc45471d) Upgrade to 2.19.2
-- [9b74fb4](https://github.com/ctavan/express-validator/commit/9b74fb4ffd4edce7268b9d1e9303829cdb8ae14e) Fix matches example in README (resolves #209)
+- [c704a22](https://github.com/ctavan/express-validator/commit/c704a2203f430dacff765e83862e36e1cc45471d) Upgrade to 2.19.2 (@rustybailey)
+- [9b74fb4](https://github.com/ctavan/express-validator/commit/9b74fb4ffd4edce7268b9d1e9303829cdb8ae14e) Fix matches example in README (resolves #209) (@rustybailey)
 - [20f033a](https://github.com/ctavan/express-validator/commit/20f033a9f6a7ba6ad1f3d9eb6c34e8e804071d0a) Added missing require that broke build of tests on node v0.10.43
 - [981239f](https://github.com/ctavan/express-validator/commit/981239fd7d7841b2c862c28e1d3f92836f52dcaa) Readme and tests updated after review.
 - [f6f88bc](https://github.com/ctavan/express-validator/commit/f6f88bcfd69179f2fdae87c02903bc04eba92029) #203 - Fixed bug where .withMessage() would not apply to a custom async validator (@chrissinclair)
@@ -39,7 +44,7 @@
 - [55ad066](https://github.com/ctavan/express-validator/commit/55ad06654b65ffd2d7ecdc7f33de80b6856f7340) Change lodash method names to match 4.x changes (@timoruppell)
 
 ### v2.19.0 2016/01/21
-- [479dc71](https://github.com/ctavan/express-validator/commit/479dc71c78e73d0e525b8111c7672c524564b60e) 2.19.0
+- [479dc71](https://github.com/ctavan/express-validator/commit/479dc71c78e73d0e525b8111c7672c524564b60e) 2.19.0 (@rustybailey)
 - [460e11c](https://github.com/ctavan/express-validator/commit/460e11c6df1210d66abd96cd3d2593c429528edf) Upgrade dependency (validator.js) from 4.2.x -> 4.5.x (@aristidesfl)
 
 ### v2.18.0 2015/10/28
@@ -201,7 +206,7 @@
 - [aaff5d9](https://github.com/ctavan/express-validator/commit/aaff5d92e006ef6ee55ee3758ccfd17fe92c22ac) Update validator to 3.5.0 and bump version to 2.1.0 (@ctavan)
 - [7f3b8a9](https://github.com/ctavan/express-validator/commit/7f3b8a9119b2eb17826015cf59a36e0b3925c55a) Update README. (@ctavan)
 - [079c6da](https://github.com/ctavan/express-validator/commit/079c6da0bfe14f95a0b94721488e06081e5b89ed) Update package.json (@gkorland)
-- [a91664b](https://github.com/ctavan/express-validator/commit/a91664be05bd3ce37811b0c1e24a75aa8d6e5bff) Update node-validator repository url (@marcbachmann)
+- [a91664b](https://github.com/ctavan/express-validator/commit/a91664be05bd3ce37811b0c1e24a75aa8d6e5bff) Update node-validator repository url
 - [6fe2aa6](https://github.com/ctavan/express-validator/commit/6fe2aa67a7f9fd0110085e67a8066bc46cdbe605) - fixed typo (@theorm)
 - [816437a](https://github.com/ctavan/express-validator/commit/816437a7df0299172d9e78ad6c3d0f29e07ebff9) - and quoting node versions to make travis linter happy (@theorm)
 - [aa7d749](https://github.com/ctavan/express-validator/commit/aa7d7496b307394a0c55a7dcfbe55c45d2332d62) - removed node 0.6 from .travis.yml. 0.8+ is required now as it is the minimum version for validator.js (@theorm)
