@@ -32,7 +32,7 @@ before(function() {
   app = require('./helpers/app')(validation);
 });
 
-describe.only('#sanitizeCookies', function() {
+describe('#sanitizeCookies', function() {
   describe('GET tests', function() {
     it('should return property and sanitized value when cookies param is present', function(done) {
       getRoute('/', 'space   ', pass, done);
