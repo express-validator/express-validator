@@ -201,7 +201,20 @@ app.use(expressValidator({
   customValidators: {
     isUsernameAvailable: function(username) {
       return new Promise(function(resolve, reject) {
-        ...
+        User.findOne({ username: username })
+        .then(function(user) {
+          if (user) {
+            resolve(user);
+          }
+          else {
+            reject(user);
+          }
+        })
+        .catch(function(error){
+          if (error) {
+            reject(error);
+          }
+        });
       });
     }
   }
@@ -209,7 +222,11 @@ app.use(expressValidator({
 
 req.check('username', 'Username Taken').isUsernameAvailable();
 
-req.asyncValidationErrors().catch(function(errors) {
+req.asyncValidationErrors()
+.then(function() {
+// create user
+})
+.catch(function(errors) {
   res.send(errors);
 });
 
