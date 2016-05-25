@@ -14,6 +14,10 @@ function validation(req, res) {
     },
     'arrayParam': {
       isArray: true
+    },
+    'wildcard.*.*.param': {
+      notEmpty: true,
+      isInt: true
     }
   });
 
@@ -62,56 +66,92 @@ before(function() {
 
 describe('#checkBodySchema()', function() {
   describe('GET tests', function() {
-    it('should return three errors when param is missing', function(done) {
-      getRoute('/', fail, 3, done);
+    it('should return five errors when param is missing', function(done) {
+      getRoute('/', fail, 5, done);
     });
 
-    it('should return three errors when param is present, but not in the body', function(done) {
-      getRoute('/42', fail, 3, done);
+    it('should return five errors when param is present, but not in the body', function(done) {
+      getRoute('/42', fail, 5, done);
     });
   });
 
   describe('POST tests', function() {
-    it('should return three errors when param is missing', function(done) {
-      postRoute('/', null, fail, 3, done);
+    it('should return five errors when param is missing', function(done) {
+      postRoute('/', null, fail, 5, done);
     });
 
-    it('should return three errors when param is present, but not in the body', function(done) {
-      postRoute('/42', null, fail, 3, done);
+    it('should return five errors when param is present, but not in the body', function(done) {
+      postRoute('/42', null, fail, 5, done);
     });
 
     // POST only
 
-    it('should return three errors when params are not present', function(done) {
-      postRoute('/test?testparam=gettest', null, fail, 3, done);
+    it('should return five errors when params are not present', function(done) {
+      postRoute('/test?testparam=gettest', null, fail, 5, done);
     });
 
-    it('should return three errors when param is present, but not in body', function(done) {
-      postRoute('/42?testparam=42', null, fail, 3, done);
+    it('should return five errors when param is present, but not in body', function(done) {
+      postRoute('/42?testparam=42', null, fail, 5, done);
     });
 
-    it('should return two errors when one param is present, but does not validate', function(done) {
-      postRoute('/42?testparam=42', { testparam: 'posttest' }, fail, 2, done);
-    });
-
-    it('should return a success when params validate on the body', function(done) {
-      postRoute('/?testparam=blah', { testparam: '42', arrayParam: [1, 2, 3] }, pass, null, done);
-    });
-
-    it('should return two errors when two params are present, but do not validate', function(done) {
-      postRoute('/?testparam=42', { testparam: 'posttest', arrayParam: 123 }, fail, 2, done);
-    });
-
-    it('should return two errors when two params are present, but do not validate', function(done) {
-      postRoute('/?testparam=42', { testparam: 'posttest', arrayParam: {} }, fail, 2, done);
-    });
-
-    it('should return two errors when two params are present, but do not validate', function(done) {
-      postRoute('/', { testparam: 'test', arrayParam: '[]' }, fail, 2, done);
+    it('should return four errors when one param is present, but does not validate', function(done) {
+      postRoute('/42?testparam=42', { testparam: 'posttest' }, fail, 4, done);
     });
 
     it('should return a success when params validate on the body', function(done) {
-      postRoute('/', { testparam: '42', arrayParam: [] }, pass, null, done);
+      postRoute('/?testparam=blah', {
+        testparam: '42',
+        arrayParam: [1, 2, 3],
+        wildcard: { a: { d: { param: 1 } }, b: { e: { param: 1 } }, c: { f: { param: 1 } } }
+      }, pass, null, done);
+    });
+
+    it('should return two errors when two params are present, but do not validate', function(done) {
+      postRoute('/?testparam=42', {
+        testparam: 'posttest',
+        arrayParam: 123,
+        wildcard: { a: { d: { param: 1 } }, b: { e: { param: 1 } }, c: { f: { param: 1 } } }
+      }, fail, 2, done);
+    });
+
+    it('should return two errors when two params are present, but do not validate', function(done) {
+      postRoute('/?testparam=42', {
+        testparam: 'posttest',
+        arrayParam: [1, 2, 3],
+        wildcard: { a: { d: { param: 'string' } }, b: { e: { param: 1 } }, c: { f: { param: 1 } } }
+      }, fail, 2, done);
+    });
+
+    it('should return two errors when two params are present, but do not validate', function(done) {
+      postRoute('/', {
+        testparam: 'test',
+        arrayParam: '[]',
+        wildcard: { a: { d: { param: 1 } }, b: { e: { param: 1 } }, c: { f: { param: 1 } } }
+      }, fail, 2, done);
+    });
+
+    it('should return a success when params validate on the body', function(done) {
+      postRoute('/', {
+        testparam: '42',
+        arrayParam: [],
+        wildcard: { a: { d: { param: 1 } }, b: { e: { param: 1 } }, c: { f: { param: 1 } } }
+      }, pass, null, done);
+    });
+
+    it('should return two error when one params are not present', function(done) {
+      postRoute('/', {
+        testparam: '42',
+        arrayParam: [],
+        wildcard: { a: { d: { notparam: 1 } }, b: { e: { param: 1 } }, c: { f: { param: 1 } } }
+      }, fail, 2, done);
+    });
+
+    it('should return two error when two params are not present', function(done) {
+      postRoute('/', {
+        testparam: '42',
+        arrayParam: [],
+        wildcard: { a: { d: { notparam: 1 } }, b: { e: { param: 1 } }, c: { f: { param: 1 } }, g: { h: true } }
+      }, fail, 4, done);
     });
   });
 });
