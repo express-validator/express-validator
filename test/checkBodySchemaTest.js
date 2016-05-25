@@ -137,5 +137,21 @@ describe('#checkBodySchema()', function() {
         wildcard: {a: {d: {param: 1}}, b: {e: {param: 1}}, c: {f: {param: 1}}}
       }, pass, null, done);
     });
+
+    it('should return two error when one params are not present', function(done) {
+      postRoute('/', {
+        testparam: '42',
+        arrayParam: [],
+        wildcard: {a: {d: {notparam: 1}}, b: {e: {param: 1}}, c: {f: {param: 1}}}
+      }, fail, 2, done);
+    });
+
+    it('should return two error when two params are not present', function(done) {
+      postRoute('/', {
+        testparam: '42',
+        arrayParam: [],
+        wildcard: {a: {d: {notparam: 1}}, b: {e: {param: 1}}, c: {f: {param: 1}}, g: {h: true}}
+      }, fail, 4, done);
+    });
   });
 });
