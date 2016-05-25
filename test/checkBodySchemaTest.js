@@ -26,7 +26,7 @@ function validation(req, res) {
     return res.send(errors);
   }
 
-  res.send({testparam: req.body.testparam});
+  res.send({ testparam: req.body.testparam });
 }
 
 function fail(body, length) {
@@ -95,14 +95,14 @@ describe('#checkBodySchema()', function() {
     });
 
     it('should return four errors when one param is present, but does not validate', function(done) {
-      postRoute('/42?testparam=42', {testparam: 'posttest'}, fail, 4, done);
+      postRoute('/42?testparam=42', { testparam: 'posttest' }, fail, 4, done);
     });
 
     it('should return a success when params validate on the body', function(done) {
       postRoute('/?testparam=blah', {
         testparam: '42',
         arrayParam: [1, 2, 3],
-        wildcard: {a: {d: {param: 1}}, b: {e: {param: 1}}, c: {f: {param: 1}}}
+        wildcard: { a: { d: { param: 1 } }, b: { e: { param: 1 } }, c: { f: { param: 1 } } }
       }, pass, null, done);
     });
 
@@ -110,7 +110,7 @@ describe('#checkBodySchema()', function() {
       postRoute('/?testparam=42', {
         testparam: 'posttest',
         arrayParam: 123,
-        wildcard: {a: {d: {param: 1}}, b: {e: {param: 1}}, c: {f: {param: 1}}}
+        wildcard: { a: { d: { param: 1 } }, b: { e: { param: 1 } }, c: { f: { param: 1 } } }
       }, fail, 2, done);
     });
 
@@ -118,7 +118,7 @@ describe('#checkBodySchema()', function() {
       postRoute('/?testparam=42', {
         testparam: 'posttest',
         arrayParam: [1, 2, 3],
-        wildcard: {a: {d: {param: 'string'}}, b: {e: {param: 1}}, c: {f: {param: 1}}}
+        wildcard: { a: { d: { param: 'string' } }, b: { e: { param: 1 } }, c: { f: { param: 1 } } }
       }, fail, 2, done);
     });
 
@@ -126,7 +126,7 @@ describe('#checkBodySchema()', function() {
       postRoute('/', {
         testparam: 'test',
         arrayParam: '[]',
-        wildcard: {a: {d: {param: 1}}, b: {e: {param: 1}}, c: {f: {param: 1}}}
+        wildcard: { a: { d: { param: 1 } }, b: { e: { param: 1 } }, c: { f: { param: 1 } } }
       }, fail, 2, done);
     });
 
@@ -134,7 +134,7 @@ describe('#checkBodySchema()', function() {
       postRoute('/', {
         testparam: '42',
         arrayParam: [],
-        wildcard: {a: {d: {param: 1}}, b: {e: {param: 1}}, c: {f: {param: 1}}}
+        wildcard: { a: { d: { param: 1 } }, b: { e: { param: 1 } }, c: { f: { param: 1 } } }
       }, pass, null, done);
     });
 
@@ -142,7 +142,7 @@ describe('#checkBodySchema()', function() {
       postRoute('/', {
         testparam: '42',
         arrayParam: [],
-        wildcard: {a: {d: {notparam: 1}}, b: {e: {param: 1}}, c: {f: {param: 1}}}
+        wildcard: { a: { d: { notparam: 1 } }, b: { e: { param: 1 } }, c: { f: { param: 1 } } }
       }, fail, 2, done);
     });
 
@@ -150,7 +150,7 @@ describe('#checkBodySchema()', function() {
       postRoute('/', {
         testparam: '42',
         arrayParam: [],
-        wildcard: {a: {d: {notparam: 1}}, b: {e: {param: 1}}, c: {f: {param: 1}}, g: {h: true}}
+        wildcard: { a: { d: { notparam: 1 } }, b: { e: { param: 1 } }, c: { f: { param: 1 } }, g: { h: true } }
       }, fail, 4, done);
     });
   });
