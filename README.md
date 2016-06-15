@@ -5,6 +5,8 @@
 An [express.js]( https://github.com/visionmedia/express ) middleware for
 [node-validator]( https://github.com/chriso/validator.js ).
 
+*Note: As of node-validator's v5, it does not automatically coerce values to strings, but it still requires strings as input. So now express-validator will automatically coerce your input to strings before to passes to node-validator. Ideally, `notEmpty()` should still function as normal.*
+
 ## Installation
 
 ```
@@ -119,18 +121,18 @@ Define your custom validators:
 ```javascript
 app.use(expressValidator({
  customValidators: {
-    isArray: function(value) {
-        return Array.isArray(value);
+    saysHello: function(value) {
+        return value === "Hello";
     },
     gte: function(param, num) {
-        return param >= num;
+        return Number(param) >= Number(num);
     }
  }
 }));
 ```
 Use them with their validator name:
 ```javascript
-req.checkBody('users', 'Users must be an array').isArray();
+req.checkBody('users', 'Users must be an array').saysHello();
 req.checkQuery('time', 'Time must be an integer great than or equal to 5').isInt().gte(5)
 ```
 ####`customSanitizers`

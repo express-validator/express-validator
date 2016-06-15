@@ -18,8 +18,8 @@ module.exports = function(validation) {
   app.use(bodyParser.json());
   app.use(expressValidator({
     customValidators: {
-      isArray: function(value) {
-        return Array.isArray(value);
+      gte: function(param, value) {
+        return Number(param) >= Number(value);
       },
       isAsyncTest: function(testparam) {
         return new Promise(function(resolve, reject) {
