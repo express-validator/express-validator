@@ -204,10 +204,10 @@ app.use(expressValidator({
         User.findOne({ username: username })
         .then(function(user) {
           if (user) {
-            resolve(user);
+            reject(user);
           }
           else {
-            reject(user);
+            resolve(user);
           }
         })
         .catch(function(error){
