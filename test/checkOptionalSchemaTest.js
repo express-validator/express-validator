@@ -41,7 +41,7 @@ var validOptional = {
 var invalidAll = {
 	optional_body: invalidOptionalBodyValue,
 	required_body: invalidRequiredBodyValue
-}
+};
 
 var invalidRequired = {
 	optional_body: optionalBodyValue,
@@ -88,7 +88,7 @@ function passAll(body) {
 function passRequired(body) {
 
 	expect(body).to.have.property('required_body', requiredBodyValue);
-	expect(body.optional_body).to.be.undefined;
+	expect(body).to.not.have.property('optional_body');
 }
 
 function failAll(body) {
@@ -136,38 +136,38 @@ before(function() {
   app = require('./helpers/app')(validation);
 });
 
-describe('Check with optional validators in schema', function () {
-	it('should pass validation with all parameters sent', function (done) {
+describe('Check with optional validators in schema', function() {
+	it('should pass validation with all parameters sent', function(done) {
 		postRoute('/', validAll, passAll, done);
 	});
 
-	it('should pass validation with only required parameter sent', function (done) {
+	it('should pass validation with only required parameter sent', function(done) {
 		postRoute('/', validRequired, passRequired, done);
 	});
 
-	it('should fail validation with all invalid parameters sent', function (done) {
+	it('should fail validation with all invalid parameters sent', function(done) {
 		postRoute('/', invalidAll, failAll, done);
 	});
 
-	it('should fail validation with invalid required parameter sent', function (done) {
+	it('should fail validation with invalid required parameter sent', function(done) {
 		postRoute('/', invalidRequired, failRequired, done);
 	});
 
-	it('should fail validation with only invalid parameter', function (done) {
+	it('should fail validation with only invalid parameter', function(done) {
 		postRoute('/', invalidRequiredOnly, failRequired, done);
 	});
 
-	it('should fail validation with invalid optional parameter sent', function (done) {
+	it('should fail validation with invalid optional parameter sent', function(done) {
 		postRoute('/', invalidOptional, failOptional, done);
 	});
 
-	it('should fail validation with only valid optional parameter sent', function (done) {
+	it('should fail validation with only valid optional parameter sent', function(done) {
 		postRoute('/', validOptional, failUndefinedRequired, done);
 	});
 
-	it('should fail validation with only invalid optional parameter sent', function (done) {
+	it('should fail validation with only invalid optional parameter sent', function(done) {
 		postRoute('/', invalidOptionalOnly, failUndefinedRequiredInvalidOptional, done);
 	});
-})
+});
 
 
