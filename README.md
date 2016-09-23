@@ -348,6 +348,23 @@ mappedErrors:
 ```
 *Note: Using mappedErrors will only provide the last error per param in the chain of validation errors.*
 
+### String formatting for error messages
+
+Error messages can be customized to include both the value provided by the user, as well as the value of any parameters passed to the validation function, using a standard string replacement format:
+
+`%0` is replaced with user input  
+`%1` is replaced with the first parameter to the validator  
+`%2` is replaced with the second parameter to the validator  
+etc...
+
+Example:
+```javascript
+req.assert('number', '%0 is not an integer').isInt();
+req.assert('number', '%0 is not divisible by %1').isDivisibleBy(5);
+```
+
+*Note:* string replacement does **not** work with the `.withMessage()` syntax. If you'd like to have per-validator error messages with string formatting, please use the [Validation by Schema](#validation-by-schema) method instead.
+
 ### Per-validation messages
 
 You can provide an error message for a single validation with `.withMessage()`. This can be chained with the rest of your validation, and if you don't use it for one of the validations then it will fall back to the default.
