@@ -8,10 +8,10 @@ var errorMessage = 'Parameter is not an integer';
 function validation(req, res) {
   req.assert({
     'optional_param': {
-      optional: true,
       isInt: {
         errorMessage: errorMessage
-      }
+      },
+      optional: true
     }
   });
 
