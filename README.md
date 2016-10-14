@@ -203,7 +203,7 @@ app.use(expressValidator({
       return new Promise(function(resolve, reject) {
         User.findOne({ username: username })
         .then(function(user) {
-          if (user) {
+          if (!user) {
             resolve(user);
           }
           else {
