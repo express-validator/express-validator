@@ -233,13 +233,19 @@ req.asyncValidationErrors()
 ```
 ## Validation by Schema
 
-Alternatively you can define all your validations at once using a simple schema. This also enables per-validator error messages.
+Alternatively you can define all your validations at once using a simple schema.
 Schema validation will be used if you pass an object to any of the validator methods.
+
+You may pass per-validator error messages with the `errorMessage` key.  
+Validator options may be passed via `options` key as an array when various values are needed,
+or as a single non-null value otherwise.
 
 ```javascript
 req.checkBody({
  'email': {
-    notEmpty: true,
+    optional: {
+      options: { checkFalsy: true } // or: [{ checkFalsy: true }]
+    },
     isEmail: {
       errorMessage: 'Invalid Email'
     }
