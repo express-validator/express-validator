@@ -15,12 +15,13 @@ npm install express-validator
 
 ```javascript
 var util = require('util'),
+    bodyParser = require('body-parser'),
     express = require('express'),
     expressValidator = require('express-validator'),
-    app = express.createServer();
+    app = express();
 
-app.use(express.bodyParser());
-app.use(expressValidator([options])); // this line must be immediately after express.bodyParser()!
+app.use(bodyParser.json());
+app.use(expressValidator([options])); // this line must be immediately after any of the bodyParser middlewares!
 
 app.post('/:urlparam', function(req, res) {
 
