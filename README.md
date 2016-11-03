@@ -121,7 +121,11 @@ Define your custom validators:
 app.use(expressValidator({
  customValidators: {
     isArray: function(value) {
-        return Array.isArray(value);
+    	if (typeof value === 'string') {
+            return Array.isArray(JSON.parse(value));
+        }else {
+            return Array.isArray(value);
+        }
     },
     gte: function(param, num) {
         return param >= num;
