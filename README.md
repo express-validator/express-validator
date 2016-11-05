@@ -341,9 +341,10 @@ req.assert('email', 'Invalid email')
     .notEmpty().withMessage('Email is required')
     .isEmail();
 
-req.getValidationErrors(function(errors){
-  // do something with errors
-});
+req.getValidationErrors()
+   .then(function(errors){
+     // do something with errors
+   });
 
 ```
 errors:

@@ -61,7 +61,7 @@ before(function() {
   app = require('./helpers/app')(validation);
 });
 
-describe('#validateTest()', function() {
+describe('#getValidationErrorsTest()', function() {
   describe('GET tests', function() {
     it('should return two errors when query is missing, and unrelated param is present', function(done) {
       getRoute('/test', fail, 2, done);
