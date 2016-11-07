@@ -1,3 +1,5 @@
 node_modules
 .idea
 npm-debug.log
+coverage
+.nyc_output
