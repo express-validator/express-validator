@@ -48,15 +48,18 @@ app.post('/:urlparam', function(req, res) {
   // OR find the relevent param in all areas
   req.sanitize('postparam').toBoolean();
 
-  var errors = req.validationErrors();
-  if (errors) {
-    res.send('There have been validation errors: ' + util.inspect(errors), 400);
-    return;
-  }
-  res.json({
-    urlparam: req.params.urlparam,
-    getparam: req.params.getparam,
-    postparam: req.params.postparam
+  // Alternatively use `var errors = yield req.getValidationErrors();`
+  // when using generators e.g. with co-express
+  req.getValidationErrors().then(function(errors) {
+    if (errors) {
+      res.send('There have been validation errors: ' + util.inspect(errors), 400);
+      return;
+    }
+    res.json({
+      urlparam: req.params.urlparam,
+      getparam: req.params.getparam,
+      postparam: req.params.postparam
+    });
   });
 });
 
@@ -87,7 +90,7 @@ There have been validation errors: [
 ####`errorFormatter`
 _function(param,msg,value)_
 
-The `errorFormatter` option can be used to specify a function that can be used to format the objects that populate the error array that is returned in `req.validationErrors()`. It should return an `Object` that has `param`, `msg`, and `value` keys defined.
+The `errorFormatter` option can be used to specify a function that can be used to format the objects that populate the error array that is returned in `req.getValidationErrors()`. It should return an `Object` that has `param`, `msg`, and `value` keys defined.
 
 ```javascript
 // In this example, the formParam value is going to get morphed into form body format useful for printing.
@@ -189,49 +192,6 @@ Same as [req.check()](#reqcheck), but only looks in `req.params`.
 #### req.checkHeaders();
 Only checks `req.headers`. This method is not covered by the general `req.check()`.
 
-## Asynchronous Validation
-
-If you need to perform asynchronous validation, for example checking a database if a username has been taken already, your custom validator can return a promise.
-
-You **MUST** use `asyncValidationErrors` which returns a promise to check for errors, otherwise the validator promises won't be resolved.
-
- *`asyncValidationErrors` will also return any regular synchronous validation errors.*
-
- ```javascript
-app.use(expressValidator({
-  customValidators: {
-    isUsernameAvailable: function(username) {
-      return new Promise(function(resolve, reject) {
-        User.findOne({ username: username })
-        .then(function(user) {
-          if (!user) {
-            resolve();
-          }
-          else {
-            reject(user);
-          }
-        })
-        .catch(function(error){
-          if (error) {
-            reject(error);
-          }
-        });
-      });
-    }
-  }
-}));
-
-req.check('username', 'Username Taken').isUsernameAvailable();
-
-req.asyncValidationErrors()
-.then(function() {
-// create user
-})
-.catch(function(errors) {
-  res.send(errors);
-});
-
-```
 ## Validation by Schema
 
 Alternatively you can define all your validations at once using a simple schema.
@@ -316,18 +276,18 @@ Currently supported location are `'body', 'params', 'query'`. If you provide a l
 
 ## Validation errors
 
-You have two choices on how to get the validation errors:
+You have two choices for getting validation errors:
 
 ```javascript
 req.assert('email', 'required').notEmpty();
 req.assert('email', 'valid email required').isEmail();
 req.assert('password', '6 to 20 characters required').len(6, 20);
 
-var errors = req.validationErrors(); // Or req.asyncValidationErrors();
-var mappedErrors = req.validationErrors(true); // Or req.asyncValidationErrors(true);
+req.getValidationErrors(); // Basic errors
+req.getValidationErrors(true); // Mapped Errors
 ```
 
-errors:
+Basic Errors:
 
 ```javascript
 [
@@ -337,7 +297,7 @@ errors:
 ]
 ```
 
-mappedErrors:
+Mapped Errors:
 
 ```javascript
 {
@@ -353,7 +313,7 @@ mappedErrors:
   }
 }
 ```
-*Note: Using mappedErrors will only provide the last error per param in the chain of validation errors.*
+*Note: Using mapped errors will only provide the last error per param in the chain of validation errors.*
 
 ### String formatting for error messages
 
@@ -380,7 +340,12 @@ You can provide an error message for a single validation with `.withMessage()`. 
 req.assert('email', 'Invalid email')
     .notEmpty().withMessage('Email is required')
     .isEmail();
-var errors = req.validationErrors();
+
+req.getValidationErrors()
+   .then(function(errors){
+     // do something with errors
+   });
+
 ```
 errors:
 
@@ -450,6 +415,12 @@ You can validate the extracted matches like this:
 ```javascript
 req.assert(0, 'Not a three-digit integer.').len(3, 3).isInt();
 ```
+
+## Deprecated methods
+
+Express Validator previously recommended using `req.validationErrors()` and
+`req.asyncValidationErrors()` which have now been deprecated in favour of
+`req.getValidationErrors()`.
 
 ## Changelog
 
