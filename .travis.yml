@@ -9,3 +9,5 @@ install:
   - npm install
 script:
   - npm run travis-build
+after_success:
+  - npm run report-coverage
