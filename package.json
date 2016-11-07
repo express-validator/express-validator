@@ -18,7 +18,7 @@
   },
   "main": "./index.js",
   "scripts": {
-    "test": "mocha",
+    "test": "nyc mocha",
     "jshint": "jshint ./test ./lib",
     "jscs": "jscs ./test ./lib",
     "travis-build": "npm test && npm run jshint && npm run jscs",
