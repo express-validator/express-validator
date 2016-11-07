@@ -40,6 +40,7 @@
     "jscs": "1.13.1",
     "jshint": "2.7.0",
     "mocha": "2.2.4",
+    "nyc": "8.4.0",
     "supertest": "0.15.0"
   },
   "keywords": [
