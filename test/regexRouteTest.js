@@ -6,7 +6,9 @@ var app;
 var errorMessage = 'Parameter is not a 3 digit integer';
 
 function validation(req, res) {
-  req.assert(0, errorMessage).len(3, 3).isInt();
+  req.assert(0, errorMessage).len(3, 3).isInt({
+    allow_leading_zeroes: false
+  });
 
   var errors = req.validationErrors();
   if (errors) {

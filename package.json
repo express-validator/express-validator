@@ -31,7 +31,7 @@
   "dependencies": {
     "bluebird": "3.4.x",
     "lodash": "4.16.x",
-    "validator": "5.7.x"
+    "validator": "~6.1.0"
   },
   "devDependencies": {
     "body-parser": "1.12.3",
