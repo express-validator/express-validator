@@ -192,6 +192,9 @@ Same as [req.check()](#reqcheck), but only looks in `req.params`.
 #### req.checkHeaders();
 Only checks `req.headers`. This method is not covered by the general `req.check()`.
 
+#### req.checkCookies();
+Only checks `req.cookies`. This method is not covered by the general `req.check()`.
+
 ## Validation by Schema
 
 Alternatively you can define all your validations at once using a simple schema.
@@ -401,6 +404,9 @@ Same as [req.sanitize()](#reqsanitize), but only looks in `req.params`.
 
 #### req.sanitizeHeaders();
 Only sanitizes `req.headers`. This method is not covered by the general `req.sanitize()`.
+
+#### req.sanitizeCookies();
+Only sanitizes `req.cookies`. This method is not covered by the general `req.sanitize()`.
 
 ### Regex routes
 
