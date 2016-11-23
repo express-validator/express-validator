@@ -1,6 +1,9 @@
 # express-validator
 
-[![npm version](https://badge.fury.io/js/express-validator.svg)](https://badge.fury.io/js/express-validator) [![Build Status](https://secure.travis-ci.org/ctavan/express-validator.png)](http://travis-ci.org/ctavan/express-validator) [![Dependency Status](https://david-dm.org/ctavan/express-validator.svg)](https://david-dm.org/ctavan/express-validator) [![Coverage Status](https://coveralls.io/repos/github/ctavan/express-validator/badge.svg?branch=master)](https://coveralls.io/github/ctavan/express-validator?branch=master)
+[![npm version](https://img.shields.io/npm/v/express-validator.svg)](https://www.npmjs.com/package/express-validator)
+[![Build Status](https://img.shields.io/travis/ctavan/express-validator.svg)](http://travis-ci.org/ctavan/express-validator)
+[![Dependency Status](https://img.shields.io/david/ctavan/express-validator.svg)](https://david-dm.org/ctavan/express-validator)
+[![Coverage Status](https://img.shields.io/coveralls/ctavan/express-validator.svg)](https://coveralls.io/github/ctavan/express-validator?branch=master)
 
 An [express.js]( https://github.com/visionmedia/express ) middleware for
 [node-validator]( https://github.com/chriso/validator.js ).
