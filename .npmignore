@@ -1,0 +1,9 @@
+.editorconfig
+.idea
+.jscsrc
+.jshintrc
+.nyc_output
+.nycrc
+.travis.yml
+coverage
+test
