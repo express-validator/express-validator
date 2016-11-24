@@ -15,9 +15,9 @@ var errorMessage = 'Parameter is not 42';
 function validation(req, res) {
   req.checkQuery('testparam', errorMessage).notEmpty().isAsyncTest();
 
-  req.getValidationErrors().then(function(errors) {
-    if (errors) {
-      res.send(errors);
+  req.getValidationResult().then(function(errors) {
+    if (!errors.isEmpty()) {
+      res.send(errors.array());
     } else {
       res.send({ testparam: req.query.testparam });
     }
