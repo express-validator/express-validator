@@ -5,6 +5,17 @@
 An [express.js]( https://github.com/visionmedia/express ) middleware for
 [node-validator]( https://github.com/chriso/validator.js ).
 
+- [Installation](#installation)
+- [Usage](#usage)
+- [Middleware options](#middleware-options)
+- [Validation](#validation)
+- [Validation by schema](#validation-by-schema)
+- [Validation result](#validation-result)
+- [Optional input](#optional-input)
+- [Sanitizer](#sanitizer)
+- [Changelog](#changelog)
+- [License](#license)
+
 ## Installation
 
 ```
