@@ -17,6 +17,7 @@ An [express.js]( https://github.com/visionmedia/express ) middleware for
   + [Per-validation messages](#per-validation-messages)
 - [Optional input](#optional-input)
 - [Sanitizer](#sanitizer)
+- [Regex routes](#regex-routes)
 - [Changelog](#changelog)
 - [License](#license)
 
@@ -101,8 +102,8 @@ There have been validation errors: [
   { param: 'postparam', msg: 'Invalid postparam', value: undefined} ]
 ```
 
-### Middleware Options
-####`errorFormatter`
+## Middleware Options
+#### `errorFormatter`
 _function(param,msg,value)_
 
 The `errorFormatter` option can be used to specify a function that must build the error objects used in the validation result returned by `req.getValidationResult()`.<br>
@@ -495,7 +496,7 @@ Only sanitizes `req.headers`. This method is not covered by the general `req.san
 #### req.sanitizeCookies();
 Only sanitizes `req.cookies`. This method is not covered by the general `req.sanitize()`.
 
-### Regex routes
+## Regex routes
 
 Express allows you to define regex routes like:
 
