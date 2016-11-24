@@ -93,7 +93,7 @@ There have been validation errors: [
 ####`errorFormatter`
 _function(param,msg,value)_
 
-The `errorFormatter` option can be used to specify a function that can be used to format the objects that populate the error array that is returned in `req.getValidationErrors()`. It should return an `Object` that has `param`, `msg`, and `value` keys defined.
+The `errorFormatter` option can be used to specify a function that can be used to format the objects that populate the error array that is returned in `req.validationErrors()`. It should return an `Object` that has `param`, `msg`, and `value` keys defined.
 
 ```javascript
 // In this example, the formParam value is going to get morphed into form body format useful for printing.
@@ -289,8 +289,8 @@ req.assert('email', 'required').notEmpty();
 req.assert('email', 'valid email required').isEmail();
 req.assert('password', '6 to 20 characters required').len(6, 20);
 
-req.getValidationErrors(); // Basic errors
-req.getValidationErrors(true); // Mapped Errors
+req.validationErrors(); // Basic errors
+req.validationErrors(true); // Mapped Errors
 ```
 
 Basic Errors:
@@ -347,7 +347,7 @@ req.assert('email', 'Invalid email')
     .notEmpty().withMessage('Email is required')
     .isEmail();
 
-req.getValidationErrors()
+req.validationErrors()
    .then(function(errors){
      // do something with errors
    });
