@@ -16,8 +16,8 @@ function validation(req, res) {
   req.checkQuery('testparam', errorMessage).notEmpty().isAsyncTest();
 
   req.getValidationErrors().then(function(errors) {
-    if (errors) {
-      res.send(errors);
+    if (!errors.isEmpty()) {
+      res.send(errors.array());
     } else {
       res.send({ testparam: req.query.testparam });
     }
