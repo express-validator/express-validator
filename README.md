@@ -48,11 +48,11 @@ app.post('/:urlparam', function(req, res) {
   // OR find the relevent param in all areas
   req.sanitize('postparam').toBoolean();
 
-  // Alternatively use `var errors = yield req.getValidationErrors();`
+  // Alternatively use `var result = yield req.getValidationErrors();`
   // when using generators e.g. with co-express
-  req.getValidationErrors().then(function(errors) {
-    if (errors) {
-      res.send('There have been validation errors: ' + util.inspect(errors), 400);
+  req.getValidationErrors().then(function(result) {
+    if (!result.isEmpty()) {
+      res.send('There have been validation errors: ' + util.inspect(errors.array()), 400);
       return;
     }
     res.json({
@@ -279,20 +279,41 @@ Currently supported location are `'body', 'params', 'query'`. If you provide a l
 
 ## Validation errors
 
-You have two choices for getting validation errors:
+The method `req.getValidationErrors()` returns a Promise which resolves to a result object.
 
-```javascript
+```js
 req.assert('email', 'required').notEmpty();
 req.assert('email', 'valid email required').isEmail();
 req.assert('password', '6 to 20 characters required').len(6, 20);
 
-req.getValidationErrors(); // Basic errors
-req.getValidationErrors(true); // Mapped Errors
+req.getValidationErrors().then(function(result) {
+  // do something with the validation result
+});
 ```
 
-Basic Errors:
+The API for the result object is the following:
+
+### `result.isEmpty()`
+Returns a boolean determining whether there were errors or not.
+
+### `result.useFirstErrorOnly()`
+Sets the `firstErrorOnly` flag of this result object, which modifies the way
+other methods like `result.array()` and `result.mapped()` work.<br>
+
+This method is chainable, so the following is OK:
+
+```js
+result.useFirstErrorOnly().array();
+```
+
+### `result.array()`
+Returns an array of errors.<br>
+All errors for all validated parameters will be included, unless you specify that you want only the first error of each param by invoking `result.useFirstErrorOnly()`.
 
 ```javascript
+var errors = result.array();
+
+// errors will now contain something like this:
 [
   {param: "email", msg: "required", value: "<received input>"},
   {param: "email", msg: "valid email required", value: "<received input>"},
@@ -300,9 +321,16 @@ Basic Errors:
 ]
 ```
 
-Mapped Errors:
+### `result.mapped()`
+Returns an object of errors, where the key is the parameter name, and the value is an error object as returned by the error formatter.
+
+Because of historical reasons, by default this method will return the last error of each parameter.<br>
+You can change this behavior by invoking `result.useFirstErrorOnly()`, so the first error is returned instead.
 
 ```javascript
+var errors = result.mapped();
+
+// errors will now be similar to this:
 {
   email: {
     param: "email",
@@ -316,7 +344,20 @@ Mapped Errors:
   }
 }
 ```
-*Note: Using mapped errors will only provide the last error per param in the chain of validation errors.*
+
+### `result.throw()`
+If there are errors, throws an `Error` object which is decorated with the same API as the validation result object.<br>
+Useful for dealing with the validation errors in the `catch` block of a `try..catch` or promise.
+
+```js
+try {
+  result.throw();
+  res.send('success!');
+} catch (e) {
+  console.log(e.array());
+  res.send('oops, validation failed!');
+}
+```
 
 ### String formatting for error messages
 
@@ -345,12 +386,13 @@ req.assert('email', 'Invalid email')
     .isEmail();
 
 req.getValidationErrors()
-   .then(function(errors){
-     // do something with errors
+   .then(function(result){
+     console.log(result.array());
    });
 
 ```
-errors:
+
+prints:
 
 ```javascript
 [
