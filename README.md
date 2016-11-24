@@ -11,6 +11,10 @@ An [express.js]( https://github.com/visionmedia/express ) middleware for
 - [Validation](#validation)
 - [Validation by schema](#validation-by-schema)
 - [Validation result](#validation-result)
+  + [Result API](#result-api)
+  + [Deprecated API](#deprecated-api)
+  + [String formatting for error messages](#string-formatting-for-error-messages)
+  + [Per-validation messages](#per-validation-messages)
 - [Optional input](#optional-input)
 - [Sanitizer](#sanitizer)
 - [Changelog](#changelog)
@@ -291,6 +295,7 @@ Currently supported location are `'body', 'params', 'query'`. If you provide a l
 
 ## Validation result
 
+### Result API
 The method `req.getValidationResult()` returns a Promise which resolves to a result object.
 
 ```js
@@ -305,10 +310,10 @@ req.getValidationResult().then(function(result) {
 
 The API for the result object is the following:
 
-### `result.isEmpty()`
+#### `result.isEmpty()`
 Returns a boolean determining whether there were errors or not.
 
-### `result.useFirstErrorOnly()`
+#### `result.useFirstErrorOnly()`
 Sets the `firstErrorOnly` flag of this result object, which modifies the way
 other methods like `result.array()` and `result.mapped()` work.<br>
 
@@ -318,7 +323,7 @@ This method is chainable, so the following is OK:
 result.useFirstErrorOnly().array();
 ```
 
-### `result.array()`
+#### `result.array()`
 Returns an array of errors.<br>
 All errors for all validated parameters will be included, unless you specify that you want only the first error of each param by invoking `result.useFirstErrorOnly()`.
 
@@ -333,7 +338,7 @@ var errors = result.array();
 ]
 ```
 
-### `result.mapped()`
+#### `result.mapped()`
 Returns an object of errors, where the key is the parameter name, and the value is an error object as returned by the error formatter.
 
 Because of historical reasons, by default this method will return the last error of each parameter.<br>
@@ -357,7 +362,7 @@ var errors = result.mapped();
 }
 ```
 
-### `result.throw()`
+#### `result.throw()`
 If there are errors, throws an `Error` object which is decorated with the same API as the validation result object.<br>
 Useful for dealing with the validation errors in the `catch` block of a `try..catch` or promise.
 
@@ -369,6 +374,34 @@ try {
   console.log(e.array());
   res.send('oops, validation failed!');
 }
+```
+
+### Deprecated API
+The following methods are deprecated.<br>
+While they work, their API is unflexible and sometimes return weird results if compared to the bleeding edge `req.getValidationResult()`.
+
+Additionally, these methods may be removed in a future version.
+
+#### `req.validationErrors([mapped])`
+Returns synchronous errors in the form of an array, or an object that maps parameter to error in case `mapped` is passed as `true`.<br>
+If there are no errors, the returned value is `false`.
+
+```js
+var errors = req.validationErrors();
+if (errors) {
+  // do something with the errors
+}
+```
+
+#### `req.asyncValidationErrors([mapped])`
+Returns a promise that will either resolve if no validation errors happened, or reject with an errors array/mapping object. For reference on this, see `req.validationErrors()`.
+
+```js
+req.asyncValidationErrors().then(function() {
+  // all good here
+}, function(errors) {
+  // damn, validation errors!
+});
 ```
 
 ### String formatting for error messages
@@ -475,12 +508,6 @@ You can validate the extracted matches like this:
 ```javascript
 req.assert(0, 'Not a three-digit integer.').len(3, 3).isInt();
 ```
-
-## Deprecated methods
-
-Express Validator previously recommended using `req.validationErrors()` and
-`req.asyncValidationErrors()` which have now been deprecated in favour of
-`req.getValidationResult()`.
 
 ## Changelog
 
