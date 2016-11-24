@@ -48,9 +48,9 @@ app.post('/:urlparam', function(req, res) {
   // OR find the relevent param in all areas
   req.sanitize('postparam').toBoolean();
 
-  // Alternatively use `var result = yield req.getValidationErrors();`
+  // Alternatively use `var result = yield req.getValidationResult();`
   // when using generators e.g. with co-express
-  req.getValidationErrors().then(function(result) {
+  req.getValidationResult().then(function(result) {
     if (!result.isEmpty()) {
       res.send('There have been validation errors: ' + util.inspect(errors.array()), 400);
       return;
@@ -90,7 +90,8 @@ There have been validation errors: [
 ####`errorFormatter`
 _function(param,msg,value)_
 
-The `errorFormatter` option can be used to specify a function that can be used to format the objects that populate the error array that is returned in `req.getValidationErrors()`. It should return an `Object` that has `param`, `msg`, and `value` keys defined.
+The `errorFormatter` option can be used to specify a function that must build the error objects used in the validation result returned by `req.getValidationResult()`.<br>
+It should return an `Object` that has `param`, `msg`, and `value` keys defined.
 
 ```javascript
 // In this example, the formParam value is going to get morphed into form body format useful for printing.
@@ -277,16 +278,16 @@ req.checkParams(schema);  // will check 'password' in path params but 'email' in
 
 Currently supported location are `'body', 'params', 'query'`. If you provide a location parameter that is not supported, the validation process for current parameter will be skipped.
 
-## Validation errors
+## Validation result
 
-The method `req.getValidationErrors()` returns a Promise which resolves to a result object.
+The method `req.getValidationResult()` returns a Promise which resolves to a result object.
 
 ```js
 req.assert('email', 'required').notEmpty();
 req.assert('email', 'valid email required').isEmail();
 req.assert('password', '6 to 20 characters required').len(6, 20);
 
-req.getValidationErrors().then(function(result) {
+req.getValidationResult().then(function(result) {
   // do something with the validation result
 });
 ```
@@ -385,7 +386,7 @@ req.assert('email', 'Invalid email')
     .notEmpty().withMessage('Email is required')
     .isEmail();
 
-req.getValidationErrors()
+req.getValidationResult()
    .then(function(result){
      console.log(result.array());
    });
@@ -468,7 +469,7 @@ req.assert(0, 'Not a three-digit integer.').len(3, 3).isInt();
 
 Express Validator previously recommended using `req.validationErrors()` and
 `req.asyncValidationErrors()` which have now been deprecated in favour of
-`req.getValidationErrors()`.
+`req.getValidationResult()`.
 
 ## Changelog
 
