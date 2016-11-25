@@ -1,5 +1,83 @@
 ## Change Log
 
+### v3.0.0 2016/11/24
+- [cdfb5dc](https://github.com/ctavan/express-validator/commit/cdfb5dc114bea4bfb481ae360406bc163496d3da) Upgrade to 3.0.0 (@gustavohenke)
+- [fa25f11](https://github.com/ctavan/express-validator/commit/fa25f11fe211663e902160b921db8e1eb7a07ce3) Specify fail message of optional when using schema (@gustavohenke)
+- [d99417f](https://github.com/ctavan/express-validator/commit/d99417f35d92bf3d751c979639ac04958fbc1aec) Ignore tests and other dotfiles from npm package (@gustavohenke)
+- [f3c0a40](https://github.com/ctavan/express-validator/commit/f3c0a40027a780a8e4c61d8215309ed916699951) Move optional flag after other validation in optionalSchemaTest (@gustavohenke)
+- [ebdd10d](https://github.com/ctavan/express-validator/commit/ebdd10d14c136aa6bec6d5ba3ecccc23f623d308) readme: rename non existing variable in Usage (@gustavohenke)
+- [6d96a97](https://github.com/ctavan/express-validator/commit/6d96a976b16e5bc05eb69893b64334e108158775) readme: add missing regex routes section (@gustavohenke)
+- [5e204dc](https://github.com/ctavan/express-validator/commit/5e204dc7b9c4aca773139198429e8f09a52faba2) readme: readd docs about deprecated methods (@gustavohenke)
+- [8f10fa6](https://github.com/ctavan/express-validator/commit/8f10fa6bd1cb6f36a2d9f42d173c7a307b93575a) readme: add a table of contents (@gustavohenke)
+- [bbb9b4e](https://github.com/ctavan/express-validator/commit/bbb9b4e93cf6fe34f9f8178e56a7245188c9f657) Rename #getValidationErrors() to #getValidationResult() (@gustavohenke)
+- [40e966f](https://github.com/ctavan/express-validator/commit/40e966fc0c4dc42a42f3deb17207dcabfff3faac) readme: update docs for usage of #getValidationErrors() (@gustavohenke)
+- [d054608](https://github.com/ctavan/express-validator/commit/d05460820cf430f87d23c58682dd8fdac10bddc7) JSHint: set expr rule to true (@gustavohenke)
+- [5db0b0f](https://github.com/ctavan/express-validator/commit/5db0b0f8db2829c0b4e43357d00c06e119aec85d) getValidationErrors(): return a result object instead of errors directly (@gustavohenke)
+- [1db8f0d](https://github.com/ctavan/express-validator/commit/1db8f0de80ea1c3a473646519daa0d1e107e0d8d) Improve IDE autocomplete for methods (@AleksandrChernyavenko)
+- [2551e9c](https://github.com/ctavan/express-validator/commit/2551e9c19ae25649eade096f02b8681523dde685) Separate utils from the main file (@gustavohenke)
+- [6ec3bd8](https://github.com/ctavan/express-validator/commit/6ec3bd89671c6077921b4472853fcbfe05ad4072) Switch README badges to Shields.io (@gustavohenke)
+- [1afe320](https://github.com/ctavan/express-validator/commit/1afe3206c1c5ff9b0c26940cf909c42c4739bbce) Bug Fix: Optional validate method may not be applied when using a schema (@IOAyman)
+- [42c065d](https://github.com/ctavan/express-validator/commit/42c065d155d2bfb7221cc8e5d022f8b2a2554f2f) Fix branch of the coverage badge in the README (@gustavohenke)
+- [0ffd03d](https://github.com/ctavan/express-validator/commit/0ffd03dd227459bed05a38bf4fb026d5f65e689e) Add missing tests for #checkHeaders() (@gustavohenke)
+- [17cb82e](https://github.com/ctavan/express-validator/commit/17cb82e659197f9396fed537e4e190bff166e93c) Make headers validation and sanitization case insensitive (@gustavohenke)
+- [1694cda](https://github.com/ctavan/express-validator/commit/1694cdaa10e2cb8e672ecd5f9a1d78dfa6c3b084) Add tests for #checkCookies() (@gustavohenke)
+- [a21c260](https://github.com/ctavan/express-validator/commit/a21c260f7b2e6ab85901f90bce45e3782aa4de7d) remove only (@parisholley)
+- [65a9d7c](https://github.com/ctavan/express-validator/commit/65a9d7ce1ac2e29d752961bed9f69d0a33382cd8) support for cookies (@parisholley)
+- [7d83ad9](https://github.com/ctavan/express-validator/commit/7d83ad9b48fae472cfb1b0d426f95fe384d8a37d) npm: go with ^ operator for versions of bluebird and lodash (@gustavohenke)
+- [4a82694](https://github.com/ctavan/express-validator/commit/4a82694cf4991c37c257f1e9a1c76a5a17ca8122) Remove undocumented and untested feature .checkFiles() (@gustavohenke)
+- [1efdc52](https://github.com/ctavan/express-validator/commit/1efdc52b283c5c6e6f84525996532befcc445c6e) Restore old behavior of isInt in the tests (@gustavohenke)
+- [2bb8fe0](https://github.com/ctavan/express-validator/commit/2bb8fe08b24a41d5bfb4330d709fc5151b109e67) Create CONTRIBUTING.md (@gustavohenke)
+- [5b9232e](https://github.com/ctavan/express-validator/commit/5b9232e750eb5e155dc95ffb0e142a2e0f80e24e) npm: update validator to ~6.1.0 (@gustavohenke)
+- [da5565d](https://github.com/ctavan/express-validator/commit/da5565d3455a8142843eae07e3f7168c4be18b43) Add coverage badge (@gustavohenke)
+- [498d85b](https://github.com/ctavan/express-validator/commit/498d85bce95a2c305fc6a579f94a16f44635ce39) travis: report coverage after successful build (@gustavohenke)
+- [6d6f96e](https://github.com/ctavan/express-validator/commit/6d6f96e3ff7426ae88f318858039ac32bcb73372) npm: change test script to run mocha with coverage reporting (@gustavohenke)
+- [1d0399e](https://github.com/ctavan/express-validator/commit/1d0399e5c4b88bcd839831e4d41456af2ba2f9d5) git: ignore nyc output directories (@gustavohenke)
+- [fc58755](https://github.com/ctavan/express-validator/commit/fc5875527c7ccca0678ccae90942fd0b7a07c8fc) nyc: report with text-summary and lcov + html data (@gustavohenke)
+- [96de1fd](https://github.com/ctavan/express-validator/commit/96de1fdcf58ac8208a86fbc4e81f97e19041b49b) npm: install nyc as dev dependency (@gustavohenke)
+- [f5e3eee](https://github.com/ctavan/express-validator/commit/f5e3eeecfb6b3175ef756631ba1b54df76e86c30) Fixing documentation and test typos. (@cbovis)
+- [70731ee](https://github.com/ctavan/express-validator/commit/70731eea44fd08aae7987bbc972d24c8ddc273b5) Modified README to reflect getValidationErrors() (@cbovis)
+- [f357f8e](https://github.com/ctavan/express-validator/commit/f357f8e7b7ac3949ecc920d966670c680be724c8) Friendlier API for retrieving validation errors. (@cbovis)
+- [56a90a1](https://github.com/ctavan/express-validator/commit/56a90a138060e071831d0436fcc8a6ed92eddcbd) Update first example from README to Express 4 (@gustavohenke)
+
+### v2.21.0 2016/10/24
+- [a95211d](https://github.com/ctavan/express-validator/commit/a95211dd788687bc781cbe0d985a285918e57729) Upgrade to 2.21.0 (@gustavohenke)
+- [a9fe8b6](https://github.com/ctavan/express-validator/commit/a9fe8b67a14acb72037fcbe02549664ff4c20e79) Travis: change node versions to 4 and 6 (@gustavohenke)
+- [92ea8ec](https://github.com/ctavan/express-validator/commit/92ea8ec428a4504e9060592792ca9ea6bd1e500b) Fixed error in README (async validation) (@joehull)
+- [8253d60](https://github.com/ctavan/express-validator/commit/8253d6070878e725232f0ddc5de4aeb75195143a) Document how to use options in schema validation (@gustavohenke)
+- [6840299](https://github.com/ctavan/express-validator/commit/684029978f249f28d5a89d9cafc9b3bb35e118f2) check if options were passed before making it an array (@gustavohenke)
+
+### v2.20.10 2016/09/23
+- [d64ca71](https://github.com/ctavan/express-validator/commit/d64ca712f4940a445b436a97a2075ebea83a2f46) Upgrade to 2.20.10 (@rustybailey)
+- [ca6b70b](https://github.com/ctavan/express-validator/commit/ca6b70b7688c4d5c2c3bc44fe4e65b3923b77b97) Upgrade lodash to 4.16.x (@rustybailey)
+- [cff7341](https://github.com/ctavan/express-validator/commit/cff7341e6b30e4f4b552e147701813a411e7a0e1) README updates for string formatting (@dpolivy)
+- [9cd35cb](https://github.com/ctavan/express-validator/commit/9cd35cb29fe193dcb3c671f5ab06fac06de4eee1) Fix linter errors and code style. (@helmutkian)
+- [094d189](https://github.com/ctavan/express-validator/commit/094d189b4ee188d8a0c1685a19d360aadd63ee73) Define tests for optional schemas with check. (@helmutkian)
+
+### v2.20.9 2016/09/22
+- [111298c](https://github.com/ctavan/express-validator/commit/111298c15aacdad9d1e5aaf52affd10cc68a5cc1) Upgrade to 2.20.9 (@rustybailey)
+- [ef8ed54](https://github.com/ctavan/express-validator/commit/ef8ed542a937b049dd536965dab2e0060059d43f) Fix req.check with optional schema parameters (@helmutkian)
+- [a7b68dc](https://github.com/ctavan/express-validator/commit/a7b68dc81d6a7c5852767a887626418a6aa71ca3) Upgrade Validator.js API to v5.7.x (@IOAyman)
+- [f0b2d9e](https://github.com/ctavan/express-validator/commit/f0b2d9e22898aa2fafb21d36041e1d8ac342ca06) Validator.js version bump (@IOAyman)
+- [5cf0b78](https://github.com/ctavan/express-validator/commit/5cf0b784fa6503798eebbf0d2489b16f64e95177) String formatting for error messages (@dpolivy)
+
+### v2.20.8 2016/06/21
+- [4e1c0cc](https://github.com/ctavan/express-validator/commit/4e1c0cc835d9dcaa42a95a7cdbadf531b2d74932) Upgrade to 2.20.8 (@rustybailey)
+
+### v2.20.7 2016/06/18
+- [ec109f0](https://github.com/ctavan/express-validator/commit/ec109f0d0d6f24b11c8f3b27607ef53436105f4a) Upgrade to 2.20.7 (@rustybailey)
+- [b76bcbb](https://github.com/ctavan/express-validator/commit/b76bcbb6ac0ab5dd6943b993a31a97e190e398c6) Fix lodash to 4.13.x (@rustybailey)
+
+### v2.20.6 2016/06/18
+- [90386f3](https://github.com/ctavan/express-validator/commit/90386f33e77ed6c97b6363bfd0ff7d93d64c508d) Upgrade to 2.20.6 (@rustybailey)
+- [5f2889d](https://github.com/ctavan/express-validator/commit/5f2889d16cf8b623a310aaa82c21f4801045c0ef) Update lodash to 4.14.x and validator to 5.4.x (@rustybailey)
+- [6008f46](https://github.com/ctavan/express-validator/commit/6008f466f0efdc5d18974240d4a4d94392b98b0c) avoid deletion of param error message when using validation against schema (@srkimir)
+- [d9e7ccd](https://github.com/ctavan/express-validator/commit/d9e7ccd65ddcb0cfc7f2423a64d958cce37d85a4) Update production depedencies (@KevinBusse)
+
+### v2.20.5 2016/05/25
+- [1f71006](https://github.com/ctavan/express-validator/commit/1f7100683de77cf793296d34cbc61c2a695e8e0f) Upgrade to 2.20.5 (@rustybailey)
+- [522e224](https://github.com/ctavan/express-validator/commit/522e22456e2c73f07761d188f36d9be24ef5c286) Asynchronous validation implementation (@felipelrz)
+- [69a4ce7](https://github.com/ctavan/express-validator/commit/69a4ce789c06e6ee61bf7e8b968270ead1b151bc) Update changelog. (@rustybailey)
+
 ### v2.20.4 2016/05/06
 - [54156e1](https://github.com/ctavan/express-validator/commit/54156e14ea2311c27beba0e854c25fe50ee9b22f) Upgrade to 2.20.4 to update validator to v5 (@rustybailey)
 - [4fe80ec](https://github.com/ctavan/express-validator/commit/4fe80ec3efedf3feec9412b3a0e57f598ec7be60) Update node-validator to v5 and restore automatic string coercion. (@rustybailey)
@@ -46,6 +124,10 @@
 ### v2.19.0 2016/01/21
 - [479dc71](https://github.com/ctavan/express-validator/commit/479dc71c78e73d0e525b8111c7672c524564b60e) 2.19.0 (@rustybailey)
 - [460e11c](https://github.com/ctavan/express-validator/commit/460e11c6df1210d66abd96cd3d2593c429528edf) Upgrade dependency (validator.js) from 4.2.x -> 4.5.x (@aristidesfl)
+- [fe894f1](https://github.com/ctavan/express-validator/commit/fe894f132adb68dae966346bca5985bb2b10b82e) code style fix (@pascalopitz)
+- [bb13c59](https://github.com/ctavan/express-validator/commit/bb13c59cdce4c78ba900c8f6979fc33d754ea945) making sure options object is tested, adjusted readme to include example (@pascalopitz)
+- [98b4a22](https://github.com/ctavan/express-validator/commit/98b4a222c90a7ff592dea68df07e44ed49a300fc) options property now doesn't have to be an array (@pascalopitz)
+- [3417ddd](https://github.com/ctavan/express-validator/commit/3417dddf56611d09f41f5f44721a58d63a984551) Fixing options not getting passed into chain when using schema (@pascalopitz)
 
 ### v2.18.0 2015/10/28
 - [8a2cb3b](https://github.com/ctavan/express-validator/commit/8a2cb3bd75fadb49cb861e08d2f5c3db1d9693bf) Upgrade to 2.18.0 (@rustybailey)
