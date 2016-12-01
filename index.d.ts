@@ -14,7 +14,8 @@ declare namespace Express {
 declare module "express-validator" {
 
   /**
-   * @middlewareOptions see: https://github.com/ctavan/express-validator#middleware-options
+   * @param options see: https://github.com/ctavan/express-validator#middleware-options
+   * @constructor
    */
   function ExpressValidator(options?: ExpressValidator.ExpressValidatorOptions): express.RequestHandler;
 
@@ -29,10 +30,33 @@ declare namespace ExpressValidator {
   interface SanitizerFunction { (item: string): Sanitizer; }
   interface Dictionary<T> { [key: string]: T; }
   interface Result {
+    /**
+     * @return A boolean determining whether there were errors or not.
+     */
     isEmpty(): boolean
+    /**
+     * @return All errors for all validated parameters will be included, unless you specify that you want only the first
+     * error of each param by invoking `result.useFirstErrorOnly()`.
+     */
     array(): MappedError[]
+    /**
+     * @return An object of errors, where the key is the parameter name, and the value is an error object as returned by
+     *  the error formatter.
+     * Because of historical reasons, by default this method will return the last error of each parameter.
+     * You can change this behavior by invoking result.useFirstErrorOnly(), so the first error is returned instead.
+     */
     mapped(): Dictionary<MappedError>
+    /**
+     * Sets the `firstErrorOnly` flag of this result object, which modifies the way other methods like `result.array()`
+     * and `result.mapped()` work.
+     */
     useFirstErrorOnly(): Result
+    /**
+     * Useful for dealing with the validation errors in the catch block of a try..catch or promise.
+     *
+     * @throws If there are errors, throws an Error object which is decorated with the same API as the validation
+     * result object.
+     */
     throw(): Result
   }
 
@@ -53,8 +77,31 @@ declare namespace ExpressValidator {
     sanitizeParams: SanitizerFunction;
     sanitizeHeaders: SanitizerFunction;
 
+    /**
+     * @deprecated
+     * @param mapped Will cause the validator to return an object that maps parameter to error.
+     * @return Synchronous errors in the form of an array. If there are no errors, the returned value is false.
+     */
+    validationErrors(mapped?: boolean): Dictionary<MappedError> | MappedError[];
+    /**
+     * @deprecated
+     * @param mapped Will cause the validator to return an object that maps parameter to error.
+     * @return Synchronous errors in the form of an array. If there are no errors, the returned value is false.
+     */
+    validationErrors<T>(mapped?: boolean): Dictionary<T> | T[];
+    /**
+     * @deprecated
+     * @param mapped Whether to map parameters to errors or not.
+     */
     asyncValidationErrors(mapped?: boolean): Promise<MappedError[] | Dictionary<MappedError>>;
+    /**
+     * @deprecated
+     * @param mapped Whether to map parameters to errors or not.
+     */
     asyncValidationErrors<T>(mapped?: boolean): Promise<T[] | Dictionary<T>>;
+    /**
+     * @return Promise<Result> A Promise which resolves to a result object.
+     */
     getValidationResult(): Promise<Result>
   }
 
