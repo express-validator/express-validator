@@ -1,8 +1,7 @@
 // Type definitions for express-validator 3.0.0
 // Project: https://github.com/ctavan/express-validator
-// Definitions by: Nathan Ridley <https://github.com/axefrog/>, Jonathan Häberle <http://dreampulse.de>, Peter Harris <https://github.com/codeanimal/>, Ayman Nedjmeddine <https://github.com/IOAyman>
+// Definitions by: Ayman Nedjmeddine <https://github.com/IOAyman>, Nathan Ridley <https://github.com/axefrog/>, Jonathan Häberle <http://dreampulse.de>, Peter Harris <https://github.com/codeanimal/>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-
 import * as express from 'express'
 import * as Promise from 'bluebird'
 
@@ -17,7 +16,7 @@ declare module "express-validator" {
   /**
    * @middlewareOptions see: https://github.com/ctavan/express-validator#middleware-options
    */
-  function ExpressValidator(middlewareOptions?: any): express.RequestHandler;
+  function ExpressValidator(options?: ExpressValidator.ExpressValidatorOptions): express.RequestHandler;
 
   export = ExpressValidator;
 }
@@ -25,15 +24,17 @@ declare module "express-validator" {
 // Internal Module.
 declare namespace ExpressValidator {
 
-  export interface ValidationError {
-    msg: string;
-    param: string;
-  }
-
   interface ValidatorFunction { (item: string | {}, message?: string): Validator; }
   interface ValidatorExtraFunction extends ValidatorFunction { (matchIndex: number, message?: string): Validator; }
   interface SanitizerFunction { (item: string): Sanitizer; }
   interface Dictionary<T> { [key: string]: T; }
+  interface Result {
+    isEmpty(): boolean
+    array(): MappedError[]
+    mapped(): Dictionary<MappedError>
+    useFirstErrorOnly(): Result
+    throw(): Result
+  }
 
   export interface RequestValidation {
     assert: ValidatorExtraFunction;
@@ -52,11 +53,9 @@ declare namespace ExpressValidator {
     sanitizeParams: SanitizerFunction;
     sanitizeHeaders: SanitizerFunction;
 
-    onValidationError(errback: (msg: string) => void): void;
-    validationErrors(mapped?: boolean): Dictionary<MappedError> | MappedError[];
-    validationErrors<T>(mapped?: boolean): Dictionary<T> | T[];
     asyncValidationErrors(mapped?: boolean): Promise<MappedError[] | Dictionary<MappedError>>;
     asyncValidationErrors<T>(mapped?: boolean): Promise<T[] | Dictionary<T>>;
+    getValidationResult(): Promise<Result>
   }
 
   export interface Validator {
@@ -239,5 +238,11 @@ declare namespace ExpressValidator {
   interface MinMaxOptions {
     min?: number;
     max?: number;
+  }
+
+  export interface ExpressValidatorOptions {
+    customValidators: { [validatorName: string]: (value: any) => boolean }
+    customSanitizers: { [sanitizername: string]: (value: any) => any }
+    errorFormatter: (param: string, msg: string, value: any) => {param: string, msg: string, value: any}
   }
 }
