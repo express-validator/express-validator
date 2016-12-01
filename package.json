@@ -17,8 +17,9 @@
     "url": "git://github.com/ctavan/express-validator.git"
   },
   "main": "./index.js",
+  "types": "./index.d.ts",
   "scripts": {
-    "test": "nyc mocha",
+    "test": "nyc mocha && tsc",
     "jshint": "jshint ./test ./lib",
     "jscs": "jscs ./test ./lib",
     "travis-build": "npm test && npm run jshint && npm run jscs",
