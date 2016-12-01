@@ -129,11 +129,11 @@ declare namespace ExpressValidator {
     isVariableWidth(): Validator;
     isMultibyte(): Validator;
     isSurrogatePair(): Validator;
-    isInt(options?: MinMaxOptions): Validator;
+    isInt(options?: ExpressValidator.Options.MinMaxOptions): Validator;
     /**
      * Alias for isDecimal
      */
-    isFloat(options?: MinMaxOptions): Validator;
+    isFloat(options?: ExpressValidator.Options.MinMaxOptions): Validator;
     isDecimal(): Validator;
     isHexadecimal(): Validator;
     isDivisibleBy(num: number): Validator;
@@ -147,8 +147,8 @@ declare namespace ExpressValidator {
      * Check if length is 0
      */
     isEmpty(): Validator;
-    isLength(options: MinMaxOptions): Validator;
-    isByteLength(options: MinMaxOptions): Validator;
+    isLength(options: ExpressValidator.Options.MinMaxOptions): Validator;
+    isByteLength(options: ExpressValidator.Options.MinMaxOptions): Validator;
     /**
      * Version can be 3, 4, 5, 'all' or empty, see http://en.wikipedia.org/wiki/Universally_unique_identifier
      */
@@ -195,62 +195,47 @@ declare namespace ExpressValidator {
     // Additional ValidatorChain.prototype.* validators
 
     notEmpty(): Validator;
-    len(options: MinMaxOptions): Validator;
+    len(options: ExpressValidator.Options.MinMaxOptions): Validator;
     optional(options?: { checkFalsy?: boolean }): Validator;
     withMessage(message: string): Validator;
   }
 
   interface Sanitizer {
     /**
-     * Trim optional `chars`, default is to trim whitespace (\r\n\t )
+     * Convert the input string to a date, or null if the input is not a date.
      */
-    trim(...chars: string[]): Sanitizer;
-    ltrim(...chars: string[]): Sanitizer;
-    rtrim(...chars: string[]): Sanitizer;
-    stripLow(keep_new_lines?: boolean): Sanitizer;
+    toDate(): Sanitizer;
     toFloat(): Sanitizer;
     toInt(radix?: number): Sanitizer;
     /**
      * True unless str = '0', 'false', or str.length == 0. In strict mode only '1' and 'true' return true.
      */
     toBoolean(strict?: boolean): Sanitizer;
-
     /**
-     * Convert the input string to a date, or null if the input is not a date.
+     * Trim optional `chars`, default is to trim whitespace (\r\n\t )
      */
-    toDate(): Sanitizer;
-
+    trim(chars: string): Sanitizer;
+    ltrim(chars: string): Sanitizer;
+    rtrim(chars: string): Sanitizer;
+    stripLow(keep_new_lines?: boolean): Sanitizer;
     /**
      * Escape &, <, >, and "
      */
     escape(): Sanitizer;
-
     /**
      * Replaces HTML encoded entities with <, >, &, ', " and /.
      */
     unescape(): Sanitizer;
-
     blacklist(chars: string): Sanitizer;
-    blacklist(chars: string[]): Sanitizer;
     whitelist(chars: string): Sanitizer;
-    whitelist(chars: string[]): Sanitizer;
 
-    normalizeEmail(options?: { lowercase?: boolean; remove_dots?: boolean; remove_extensions?: boolean }): Sanitizer;
-
-    /**
-     * !!! XSS sanitization was removed from the library (see: https://github.com/chriso/validator.js#xss-sanitization)
-     */
+    normalizeEmail(options?: ExpressValidator.Options.NormalizeEmailOptions): Sanitizer;
   }
 
   interface MappedError {
     param: string;
     msg: string;
     value: string;
-  }
-
-  interface MinMaxOptions {
-    min?: number;
-    max?: number;
   }
 }
 
@@ -263,6 +248,11 @@ declare namespace ExpressValidator.Options {
   }
 
   // VALIDATORS
+
+  interface MinMaxOptions {
+    min?: number;
+    max?: number;
+  }
 
   interface IsEmailOptions {
     allow_display_name?: boolean;
@@ -311,4 +301,18 @@ declare namespace ExpressValidator.Options {
 
 
   // SANITIZERS
+
+  interface NormalizeEmailOptions {
+    all_lowercase: boolean
+    gmail_lowercase: boolean
+    gmail_remove_dots: boolean
+    gmail_remove_subaddress: boolean
+    gmail_convert_googlemaildotcom: boolean
+    outlookdotcom_lowercase: boolean
+    outlookdotcom_remove_subaddress: boolean
+    yahoo_lowercase: boolean
+    yahoo_remove_subaddress: boolean
+    icloud_lowercase: boolean
+    icloud_remove_subaddress: boolean
+  }
 }
