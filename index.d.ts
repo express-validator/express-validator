@@ -17,7 +17,7 @@ declare module "express-validator" {
    * @param options see: https://github.com/ctavan/express-validator#middleware-options
    * @constructor
    */
-  function ExpressValidator(options?: ExpressValidator.ExpressValidatorOptions): express.RequestHandler;
+  function ExpressValidator(options?: ExpressValidator.Options.ExpressValidatorOptions): express.RequestHandler;
 
   export = ExpressValidator;
 }
@@ -106,100 +106,54 @@ declare namespace ExpressValidator {
   }
 
   export interface Validator {
-    /**
-     * Alias for regex()
-     */
-    is(): Validator;
-    /**
-     * Alias for notRegex()
-     */
-    not(): Validator;
-    isEmail(options?: {}): Validator;
+    isEmail(options?: ExpressValidator.Options.IsEmailOptions): Validator;
     /**
      * Accepts http, https, ftp
      */
-    isURL(): Validator;
-    isFQDN(options?: MinMaxOptions): Validator;
-
+    isURL(options?: ExpressValidator.Options.IsURLOptions): Validator;
+    isMACAddress(): Validator;
     /**
      * Combines isIPv4 and isIPv6
      */
-    isIP(): Validator;
-    isIPv4(): Validator;
-    isIPv6(): Validator;
-    isMACAddress(): Validator;
-    isISBN(version?: number): Validator;
-    isISIN(): Validator;
-    isISO8601(): Validator;
-    isMobilePhone(locale: string): Validator;
-    isMongoId(): Validator;
-    isMultibyte(): Validator;
-    isAlpha(locale?: string): Validator;
-    isAlphanumeric(locale?: string): Validator;
-    isAscii(): Validator;
-    isBase64(): Validator;
+    isIP(version?: number): Validator;
+    isFQDN(options?: ExpressValidator.Options.IsFQDNOptions): Validator;
     isBoolean(): Validator;
-    isByteLength(options: MinMaxOptions): Validator;
-    isCurrency(options: {}): Validator;
-    isDataURI(): Validator;
-    isDivisibleBy(num: number): Validator;
+    isAlpha(locale?: string): Validator; // TODO AlphaLocale type
+    isAlphanumeric(locale?: string): Validator; // TODO AlphanumericLocale type
     isNumeric(): Validator;
+    isLowercase(): Validator;
+    isUppercase(): Validator;
+    isAscii(): Validator;
+    isFullWidth(): Validator;
+    isHalfWidth(): Validator;
+    isVariableWidth(): Validator;
+    isMultibyte(): Validator;
+    isSurrogatePair(): Validator;
+    isInt(options?: MinMaxOptions): Validator;
+    /**
+     * Alias for isDecimal
+     */
+    isFloat(options?: MinMaxOptions): Validator;
+    isDecimal(): Validator;
     isHexadecimal(): Validator;
+    isDivisibleBy(num: number): Validator;
     /**
      * Accepts valid hexcolors with or without # prefix
      */
     isHexColor(): Validator;
-    /**
-     * isNumeric accepts zero padded numbers, e.g. '001', isInt doesn't
-     */
-    isInt(options?: MinMaxOptions): Validator;
-    isLowercase(): Validator;
-    isUppercase(): Validator;
-    isDecimal(): Validator;
-    /**
-     * Alias for isDecimal
-     */
-    isFloat(): Validator;
-    isFullWidth(): Validator;
-    isHalfWidth(): Validator;
-    isVariableWidth(): Validator;
+    isMD5(): Validator;
+    isJSON(): Validator;
     /**
      * Check if length is 0
      */
-    isNull(): Validator;
+    isEmpty(): Validator;
+    isLength(options: MinMaxOptions): Validator;
+    isByteLength(options: MinMaxOptions): Validator;
     /**
-     * Not just whitespace (input.trim().length !== 0)
+     * Version can be 3, 4, 5, 'all' or empty, see http://en.wikipedia.org/wiki/Universally_unique_identifier
      */
-    notEmpty(): Validator;
-    equals(equals: any): Validator;
-    contains(str: string): Validator;
-
-    /**
-     * Usage: matches(/[a-z]/i) or matches('[a-z]','i')
-     */
-    matches(pattern: string, modifiers?: string): Validator;
-    matches(pattern: RegExp): Validator;
-
-    /**
-     * max is optional
-     */
-    len(min: number, max?: number): Validator;
-    /**
-     * Version can be 3, 4 or 5 or empty, see http://en.wikipedia.org/wiki/Universally_unique_identifier
-     */
-    isUUID(version?: number): Validator;
-    /**
-     * Alias for isUUID(3)
-     */
-    isUUIDv3(): Validator;
-    /**
-     * Alias for isUUID(4)
-     */
-    isUUIDv4(): Validator;
-    /**
-     * Alias for isUUID(5)
-     */
-    isUUIDv5(): Validator;
+    isUUID(version?: number | string): Validator; // TODO UUID version type
+    isMongoId(): Validator;
     /**
      * Uses Date.parse() - regex is probably a better choice
      */
@@ -212,24 +166,36 @@ declare namespace ExpressValidator {
      * Argument is optional and defaults to today. Comparison is non-inclusive
      */
     isBefore(date?: Date): Validator;
-    isIn(options: string): Validator;
-    isIn(options: string[]): Validator;
-    notIn(options: string): Validator;
-    notIn(options: string[]): Validator;
-    max(val: string): Validator;
-    min(val: string): Validator;
-    isJSON(): Validator;
-    isLength(options: MinMaxOptions): Validator;
-    isWhitelisted(chars: string): Validator;
+    isIn(options: string | string[]): Validator;
     /**
      * Will work against Visa, MasterCard, American Express, Discover, Diners Club, and JCB card numbering formats
      */
     isCreditCard(): Validator;
-    /**
-     * Check an input only when the input exists
-     */
-    isSurrogatePar(): Validator;
+    isISIN(): Validator;
+    isISBN(version?: number): Validator;
+    isISSN(options?: ExpressValidator.Options.IsISSNOptions): Validator
+    isMobilePhone(locale: string): Validator; // TODO MobilePhoneLocale
+    isCurrency(options: ExpressValidator.Options.IsCurrencyOptions): Validator;
+    isISO8601(): Validator;
+    isBase64(): Validator;
+    isDataURI(): Validator;
+    isWhitelisted(chars: string | string[]): Validator;
 
+
+    // Additional Validators provided by validator.js
+
+    equals(equals: any): Validator;
+    contains(str: string): Validator;
+    /**
+     * Usage: matches(/[a-z]/i) or matches('[a-z]','i')
+     */
+    matches(str: string, pattern: RegExp | string, modifiers?: string): Validator;
+
+
+    // Additional ValidatorChain.prototype.* validators
+
+    notEmpty(): Validator;
+    len(options: MinMaxOptions): Validator;
     optional(options?: { checkFalsy?: boolean }): Validator;
     withMessage(message: string): Validator;
   }
@@ -286,10 +252,63 @@ declare namespace ExpressValidator {
     min?: number;
     max?: number;
   }
+}
+
+declare namespace ExpressValidator.Options {
 
   export interface ExpressValidatorOptions {
     customValidators: { [validatorName: string]: (value: any) => boolean }
     customSanitizers: { [sanitizername: string]: (value: any) => any }
     errorFormatter: (param: string, msg: string, value: any) => {param: string, msg: string, value: any}
   }
+
+  // VALIDATORS
+
+  interface IsEmailOptions {
+    allow_display_name?: boolean;
+    allow_utf8_local_part?: boolean;
+    require_tld?: boolean;
+  }
+
+  interface IsURLOptions {
+    protocols?: string[];
+    require_tld?: boolean;
+    require_protocol?: boolean;
+    require_host: boolean;
+    require_valid_protocol?: boolean;
+    allow_underscores?: boolean;
+    host_whitelist?: (string | RegExp)[];
+    host_blacklist?: (string | RegExp)[];
+    allow_trailing_dot?: boolean;
+    allow_protocol_relative_urls?: boolean;
+  }
+
+  interface IsFQDNOptions {
+    require_tld?: boolean;
+    allow_underscores?: boolean;
+    allow_trailing_dot?: boolean;
+  }
+
+  interface IsISSNOptions {
+    case_sensitive: boolean
+    require_hyphen: boolean
+  }
+
+  interface IsCurrencyOptions {
+    symbol?: string;
+    require_symbol?: boolean;
+    allow_space_after_symbol?: boolean;
+    symbol_after_digits?: boolean;
+    allow_negatives?: boolean;
+    parens_for_negatives?: boolean;
+    negative_sign_before_digits?: boolean;
+    negative_sign_after_digits?: boolean;
+    allow_negative_sign_placeholder?: boolean;
+    thousands_separator?: string;
+    decimal_separator?: string;
+    allow_space_after_digits?: boolean;
+  }
+
+
+  // SANITIZERS
 }
