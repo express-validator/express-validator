@@ -14,5 +14,6 @@
     "strictNullChecks": true,
     "outDir": "./build"
   },
+  "files": [ "index.d.ts" ],
   "exclude": [ "node_modules", "coverage" ]
 }

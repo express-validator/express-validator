@@ -129,11 +129,11 @@ declare namespace ExpressValidator {
     isVariableWidth(): Validator;
     isMultibyte(): Validator;
     isSurrogatePair(): Validator;
-    isInt(options?: ExpressValidator.Options.MinMaxOptions): Validator;
+    isInt(options?: ExpressValidator.Options.IsIntOptions): Validator;
     /**
      * Alias for isDecimal
      */
-    isFloat(options?: ExpressValidator.Options.MinMaxOptions): Validator;
+    isFloat(options?: ExpressValidator.Options.MinMaxExtendedOptions): Validator;
     isDecimal(): Validator;
     isHexadecimal(): Validator;
     isDivisibleBy(num: number): Validator;
@@ -252,6 +252,15 @@ declare namespace ExpressValidator.Options {
   interface MinMaxOptions {
     min?: number;
     max?: number;
+  }
+
+  interface MinMaxExtendedOptions extends MinMaxOptions {
+    lt?: number;
+    gt?: number;
+  }
+
+  interface IsIntOptions extends MinMaxExtendedOptions {
+    allow_leading_zeroes: boolean;
   }
 
   interface IsEmailOptions {
