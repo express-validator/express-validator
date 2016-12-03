@@ -107,13 +107,11 @@ declare namespace ExpressValidator {
 
   export interface Validator {
     isEmail(options?: ExpressValidator.Options.IsEmailOptions): Validator;
-    /**
-     * Accepts http, https, ftp
-     */
     isURL(options?: ExpressValidator.Options.IsURLOptions): Validator;
     isMACAddress(): Validator;
     /**
-     * Combines isIPv4 and isIPv6
+     *
+     * @param version IP version number 4 or 6
      */
     isIP(version?: number): Validator;
     isFQDN(options?: ExpressValidator.Options.IsFQDNOptions): Validator;
@@ -130,54 +128,60 @@ declare namespace ExpressValidator {
     isMultibyte(): Validator;
     isSurrogatePair(): Validator;
     isInt(options?: ExpressValidator.Options.IsIntOptions): Validator;
-    /**
-     * Alias for isDecimal
-     */
     isFloat(options?: ExpressValidator.Options.MinMaxExtendedOptions): Validator;
     isDecimal(): Validator;
     isHexadecimal(): Validator;
     isDivisibleBy(num: number): Validator;
-    /**
-     * Accepts valid hexcolors with or without # prefix
-     */
     isHexColor(): Validator;
     isMD5(): Validator;
     isJSON(): Validator;
-    /**
-     * Check if length is 0
-     */
     isEmpty(): Validator;
     isLength(options: ExpressValidator.Options.MinMaxOptions): Validator;
     isByteLength(options: ExpressValidator.Options.MinMaxOptions): Validator;
     /**
-     * Version can be 3, 4, 5, 'all' or empty, see http://en.wikipedia.org/wiki/Universally_unique_identifier
+     * @param version 3, 4, 5 or 'all'. Default is 'all'.
+     * @see http://en.wikipedia.org/wiki/Universally_unique_identifier
      */
     isUUID(version?: number | string): Validator; // TODO UUID version type
-    isMongoId(): Validator;
     /**
-     * Uses Date.parse() - regex is probably a better choice
+     * @see https://docs.mongodb.com/manual/reference/bson-types/#objectid
      */
+    isMongoId(): Validator;
     isDate(): Validator;
     /**
-     * Argument is optional and defaults to today. Comparison is non-inclusive
+     * @param date Optional. Default to now.
      */
     isAfter(date?: Date): Validator;
     /**
-     * Argument is optional and defaults to today. Comparison is non-inclusive
+     * @param date Optional. Default to now.
      */
     isBefore(date?: Date): Validator;
     isIn(options: string | string[]): Validator;
-    /**
-     * Will work against Visa, MasterCard, American Express, Discover, Diners Club, and JCB card numbering formats
-     */
     isCreditCard(): Validator;
     isISIN(): Validator;
+    /**
+     * @param version
+     * @see https://en.wikipedia.org/wiki/International_Standard_Book_Number
+     */
     isISBN(version?: number): Validator;
+    /**
+     * @param options
+     * @see https://en.wikipedia.org/wiki/International_Standard_Serial_Number
+     */
     isISSN(options?: ExpressValidator.Options.IsISSNOptions): Validator
     isMobilePhone(locale: string): Validator; // TODO MobilePhoneLocale
     isCurrency(options: ExpressValidator.Options.IsCurrencyOptions): Validator;
+    /**
+     * @see https://en.wikipedia.org/wiki/ISO_8601
+     */
     isISO8601(): Validator;
+    /**
+     * @see https://en.wikipedia.org/wiki/Base64
+     */
     isBase64(): Validator;
+    /**
+     * @see https://en.wikipedia.org/wiki/Data_URI_scheme
+     */
     isDataURI(): Validator;
     isWhitelisted(chars: string | string[]): Validator;
 
@@ -186,17 +190,14 @@ declare namespace ExpressValidator {
 
     equals(equals: any): Validator;
     contains(str: string): Validator;
-    /**
-     * Usage: matches(/[a-z]/i) or matches('[a-z]','i')
-     */
-    matches(str: string, pattern: RegExp | string, modifiers?: string): Validator;
+    matches(pattern: RegExp | string, modifiers?: string): Validator;
 
 
     // Additional ValidatorChain.prototype.* validators
 
     notEmpty(): Validator;
     len(options: ExpressValidator.Options.MinMaxOptions): Validator;
-    optional(options?: { checkFalsy?: boolean }): Validator;
+    optional(options?: ExpressValidator.Options.OptionalOptions): Validator;
     withMessage(message: string): Validator;
   }
 
@@ -205,18 +206,32 @@ declare namespace ExpressValidator {
      * Convert the input string to a date, or null if the input is not a date.
      */
     toDate(): Sanitizer;
+    /**
+     * Convert the input string to a float, or NaN if the input is not a float.
+     */
     toFloat(): Sanitizer;
+    /**
+     * Convert the input string to a float, or NaN if the input is not a float.
+     */
     toInt(radix?: number): Sanitizer;
     /**
-     * True unless str = '0', 'false', or str.length == 0. In strict mode only '1' and 'true' return true.
+     * Cnvert the input string to a boolean.
+     * Everything except for '0', 'false' and '' returns true.
+     * @param strict If true, only '1' and 'true' return true.
      */
     toBoolean(strict?: boolean): Sanitizer;
     /**
-     * Trim optional `chars`, default is to trim whitespace (\r\n\t )
+     * Trim characters (whitespace by default) from both sides of the input.
+     * @param chars Defaults to whitespace
      */
     trim(chars: string): Sanitizer;
     ltrim(chars: string): Sanitizer;
     rtrim(chars: string): Sanitizer;
+    /**
+     * Remove characters with a numerical value < 32 and 127, mostly control characters.
+     * Unicode-safe in JavaScript.
+     * @param keep_new_lines If true, newline characters are preserved (\n and \r, hex 0xA and 0xD).
+     */
     stripLow(keep_new_lines?: boolean): Sanitizer;
     /**
      * Escape &, <, >, and "
@@ -263,12 +278,36 @@ declare namespace ExpressValidator.Options {
     allow_leading_zeroes: boolean;
   }
 
+  /**
+   * defaults to
+   * {
+   *    allow_display_name: false,
+   *    require_display_name: false,
+   *    allow_utf8_local_part: true,
+   *    require_tld: true
+   * }
+   */
   interface IsEmailOptions {
     allow_display_name?: boolean;
     allow_utf8_local_part?: boolean;
     require_tld?: boolean;
   }
 
+  /**
+   * defaults to
+   * {
+   *    protocols: ['http','https','ftp'],
+   *    require_tld: true,
+   *    require_protocol: false,
+   *    require_host: true,
+   *    require_valid_protocol: true,
+   *    allow_underscores: false,
+   *    host_whitelist: false,
+   *    host_blacklist: false,
+   *    allow_trailing_dot: false,
+   *    allow_protocol_relative_urls: false
+   * }
+   */
   interface IsURLOptions {
     protocols?: string[];
     require_tld?: boolean;
@@ -282,17 +321,49 @@ declare namespace ExpressValidator.Options {
     allow_protocol_relative_urls?: boolean;
   }
 
+  /**
+   * defaults to
+   * {
+   *    require_tld: true,
+   *    allow_underscores: false,
+   *    allow_trailing_dot: false
+   * }
+   */
   interface IsFQDNOptions {
     require_tld?: boolean;
     allow_underscores?: boolean;
     allow_trailing_dot?: boolean;
   }
 
+  /**
+   * defaults to
+   * {
+   *    case_sensitive: false,
+   *    require_hyphen: false
+   * }
+   */
   interface IsISSNOptions {
     case_sensitive: boolean
     require_hyphen: boolean
   }
 
+  /**
+   * defaults to
+   * {
+   *   symbol: '$',
+   *   require_symbol: false,
+   *   allow_space_after_symbol: false,
+   *   symbol_after_digits: false,
+   *   allow_negatives: true,
+   *   parens_for_negatives: false,
+   *   negative_sign_before_digits: false,
+   *   negative_sign_after_digits: false,
+   *   allow_negative_sign_placeholder: false,
+   *   thousands_separator: ',',
+   *   decimal_separator: '.',
+   *   allow_space_after_digits: false
+   * }
+   */
   interface IsCurrencyOptions {
     symbol?: string;
     require_symbol?: boolean;
@@ -308,9 +379,29 @@ declare namespace ExpressValidator.Options {
     allow_space_after_digits?: boolean;
   }
 
+  interface OptionalOptions {
+    checkFalsy?: boolean;
+  }
+
 
   // SANITIZERS
 
+  /**
+   * Defaults to
+   * {
+   *   all_lowercase: true
+   *   gmail_lowercase: true
+   *   gmail_remove_dots: true
+   *   gmail_remove_subaddress: true
+   *   gmail_convert_googlemaildotcom: true
+   *   outlookdotcom_lowercase: true
+   *   outlookdotcom_remove_subaddress: true
+   *   yahoo_lowercase: true
+   *   yahoo_remove_subaddress: true
+   *   icloud_lowercase: true
+   *   icloud_remove_subaddress: true
+   * }
+   */
   interface NormalizeEmailOptions {
     all_lowercase: boolean
     gmail_lowercase: boolean
