@@ -293,9 +293,10 @@ req.check(schema);        // will check 'password' no matter where it is but 'em
 req.checkQuery(schema);   // will check 'password' and 'email' in query params
 req.checkBody(schema);    // will check 'password' in body but 'email' in query params
 req.checkParams(schema);  // will check 'password' in path params but 'email' in query params
+req.checkHeaders(schema);  // will check 'password' in headers but 'email' in query params
 ```
 
-Currently supported location are `'body', 'params', 'query'`. If you provide a location parameter that is not supported, the validation process for current parameter will be skipped.
+Currently supported location are `'body', 'params', 'query', 'headers'`. If you provide a location parameter that is not supported, the validation process for current parameter will be skipped.
 
 ## Validation result
 
