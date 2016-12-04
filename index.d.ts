@@ -2,8 +2,9 @@
 // Project: https://github.com/ctavan/express-validator
 // Definitions by: Ayman Nedjmeddine <https://github.com/IOAyman>, Nathan Ridley <https://github.com/axefrog/>, Jonathan Häberle <http://dreampulse.de>, Peter Harris <https://github.com/codeanimal/>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-import * as express from 'express'
-import * as Promise from 'bluebird'
+
+///<reference types="express"/>
+///<reference types="bluebird"/>
 
 // Add RequestValidation Interface on to Express's Request Interface.
 declare namespace Express {
@@ -12,6 +13,7 @@ declare namespace Express {
 
 // External express-validator module.
 declare module "express-validator" {
+  import express = require('express');
 
   /**
    * @param options see: https://github.com/ctavan/express-validator#middleware-options
@@ -257,9 +259,9 @@ declare namespace ExpressValidator {
 declare namespace ExpressValidator.Options {
 
   export interface ExpressValidatorOptions {
-    customValidators: { [validatorName: string]: (value: any) => boolean }
-    customSanitizers: { [sanitizername: string]: (value: any) => any }
-    errorFormatter: (param: string, msg: string, value: any) => {param: string, msg: string, value: any}
+    customValidators?: { [validatorName: string]: (value: any) => boolean }
+    customSanitizers?: { [sanitizername: string]: (value: any) => any }
+    errorFormatter?: (param: string, msg: string, value: any) => {param: string, msg: string, value: any}
   }
 
   // VALIDATORS
