@@ -28,6 +28,10 @@ declare module "express-validator" {
 declare namespace ExpressValidator {
 
   interface ValidatorFunction { (item: string | {}, message?: string): Validator; }
+  /**
+   * This one's used for RegexRoutes
+   * @see https://github.com/ctavan/express-validator#regex-routes
+   */
   interface ValidatorExtraFunction extends ValidatorFunction { (matchIndex: number, message?: string): Validator; }
   interface SanitizerFunction { (item: string): Sanitizer; }
   interface Dictionary<T> { [key: string]: T; }
@@ -67,7 +71,7 @@ declare namespace ExpressValidator {
     validate: ValidatorExtraFunction;
     check: ValidatorExtraFunction;
     checkBody: ValidatorFunction;
-    checkFiles: ValidatorFunction;
+    checkCookies: ValidatorFunction;
     checkHeaders: ValidatorFunction;
     checkParams: ValidatorFunction;
     checkQuery: ValidatorFunction;
@@ -78,6 +82,7 @@ declare namespace ExpressValidator {
     sanitizeQuery: SanitizerFunction;
     sanitizeParams: SanitizerFunction;
     sanitizeHeaders: SanitizerFunction;
+    sanitizeCookies: SanitizerFunction;
 
     /**
      * @deprecated
@@ -277,7 +282,7 @@ declare namespace ExpressValidator.Options {
   }
 
   interface IsIntOptions extends MinMaxExtendedOptions {
-    allow_leading_zeroes: boolean;
+    allow_leading_zeroes?: boolean;
   }
 
   /**
@@ -311,10 +316,10 @@ declare namespace ExpressValidator.Options {
    * }
    */
   interface IsURLOptions {
-    protocols?: string[];
+    protocols?: string[]; // TODO Protocol type
     require_tld?: boolean;
     require_protocol?: boolean;
-    require_host: boolean;
+    require_host?: boolean;
     require_valid_protocol?: boolean;
     allow_underscores?: boolean;
     host_whitelist?: (string | RegExp)[];
@@ -345,8 +350,8 @@ declare namespace ExpressValidator.Options {
    * }
    */
   interface IsISSNOptions {
-    case_sensitive: boolean
-    require_hyphen: boolean
+    case_sensitive?: boolean
+    require_hyphen?: boolean
   }
 
   /**
@@ -405,16 +410,16 @@ declare namespace ExpressValidator.Options {
    * }
    */
   interface NormalizeEmailOptions {
-    all_lowercase: boolean
-    gmail_lowercase: boolean
-    gmail_remove_dots: boolean
-    gmail_remove_subaddress: boolean
-    gmail_convert_googlemaildotcom: boolean
-    outlookdotcom_lowercase: boolean
-    outlookdotcom_remove_subaddress: boolean
-    yahoo_lowercase: boolean
-    yahoo_remove_subaddress: boolean
-    icloud_lowercase: boolean
-    icloud_remove_subaddress: boolean
+    all_lowercase?: boolean
+    gmail_lowercase?: boolean
+    gmail_remove_dots?: boolean
+    gmail_remove_subaddress?: boolean
+    gmail_convert_googlemaildotcom?: boolean
+    outlookdotcom_lowercase?: boolean
+    outlookdotcom_remove_subaddress?: boolean
+    yahoo_lowercase?: boolean
+    yahoo_remove_subaddress?: boolean
+    icloud_lowercase?: boolean
+    icloud_remove_subaddress?: boolean
   }
 }
