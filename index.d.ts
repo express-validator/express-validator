@@ -27,12 +27,19 @@ declare module "express-validator" {
 // Internal Module.
 declare namespace ExpressValidator {
 
+  export type URLProtocol = 'http' | 'https' | 'ftp'
+  export type UUIDVersion = 3 | 4 | 5 | 'all'
+  export type AlphaLocale = 'ar' | 'ar-AE' | 'ar-BH' | 'ar-DZ' | 'ar-EG' | 'ar-IQ' | 'ar-JO' | 'ar-KW' | 'ar-LB' | 'ar-LY' | 'ar-MA' | 'ar-QA' | 'ar-QM' | 'ar-SA' | 'ar-SD' | 'ar-SY' | 'ar-TN' | 'ar-YE' | 'cs-CZ' | 'da-DK' | 'de-DE' | 'en-AU' | 'en-GB' | 'en-HK' | 'en-IN' | 'en-NZ' | 'en-US' | 'en-ZA' | 'en-ZM' | 'es-ES' | 'fr-FR' | 'hu-HU' | 'nl-NL' | 'pl-PL' | 'pt-BR' | 'pt-PT' | 'ru-RU' | 'sr-RS' | 'sr-RS@latin' | 'tr-TR' | 'uk-UA'
+  export type AlphanumericLocale = 'ar' | 'ar-AE' | 'ar-BH' | 'ar-DZ' | 'ar-EG' | 'ar-IQ' | 'ar-JO' | 'ar-KW' | 'ar-LB' | 'ar-LY' | 'ar-MA' | 'ar-QA' | 'ar-QM' | 'ar-SA' | 'ar-SD' | 'ar-SY' | 'ar-TN' | 'ar-YE' | 'cs-CZ' | 'da-DK' | 'de-DE' | 'en-AU' | 'en-GB' | 'en-HK' | 'en-IN' | 'en-NZ' | 'en-US' | 'en-ZA' | 'en-ZM' | 'es-ES' | 'fr-FR' | 'fr-BE' | 'hu-HU' | 'nl-BE' | 'nl-NL' | 'pl-PL' | 'pt-BR' | 'pt-PT' | 'ru-RU' | 'sr-RS' | 'sr-RS@latin' | 'tr-TR' | 'uk-UA'
+  export type MobilePhoneLocal = 'ar-DZ' | 'ar-SA' | 'ar-SY' | 'cs-CZ' | 'de-DE' | 'da-DK' | 'el-GR' | 'en-AU' | 'en-GB' | 'en-HK' | 'en-IN' | 'en-NZ' | 'en-US' | 'en-CA' | 'en-ZA' | 'en-ZM' | 'es-ES' | 'fi-FI' | 'fr-FR' | 'hu-HU' | 'it-IT' | 'ja-JP' | 'ms-MY' | 'nb-NO' | 'nn-NO' | 'pl-PL' | 'pt-PT' | 'ru-RU' | 'sr-RS' | 'tr-TR' | 'vi-VN' | 'zh-CN' | 'zh-TW'
+
+
   interface ValidatorFunction { (item: string | {}, message?: string): Validator; }
   /**
    * This one's used for RegexRoutes
    * @see https://github.com/ctavan/express-validator#regex-routes
    */
-  interface ValidatorExtraFunction extends ValidatorFunction { (matchIndex: number, message?: string): Validator; }
+  interface ValidatorFunctionRegExp extends ValidatorFunction { (matchIndex: number, message?: string): Validator; }
   interface SanitizerFunction { (item: string): Sanitizer; }
   interface Dictionary<T> { [key: string]: T; }
   interface Result {
@@ -67,9 +74,9 @@ declare namespace ExpressValidator {
   }
 
   export interface RequestValidation {
-    assert: ValidatorExtraFunction;
-    validate: ValidatorExtraFunction;
-    check: ValidatorExtraFunction;
+    assert: ValidatorFunctionRegExp;
+    validate: ValidatorFunctionRegExp;
+    check: ValidatorFunctionRegExp;
     checkBody: ValidatorFunction;
     checkCookies: ValidatorFunction;
     checkHeaders: ValidatorFunction;
@@ -123,8 +130,8 @@ declare namespace ExpressValidator {
     isIP(version?: number): Validator;
     isFQDN(options?: ExpressValidator.Options.IsFQDNOptions): Validator;
     isBoolean(): Validator;
-    isAlpha(locale?: string): Validator; // TODO AlphaLocale type
-    isAlphanumeric(locale?: string): Validator; // TODO AlphanumericLocale type
+    isAlpha(locale?: AlphaLocale): Validator;
+    isAlphanumeric(locale?: AlphanumericLocale): Validator;
     isNumeric(): Validator;
     isLowercase(): Validator;
     isUppercase(): Validator;
@@ -149,7 +156,7 @@ declare namespace ExpressValidator {
      * @param version 3, 4, 5 or 'all'. Default is 'all'.
      * @see http://en.wikipedia.org/wiki/Universally_unique_identifier
      */
-    isUUID(version?: number | string): Validator; // TODO UUID version type
+    isUUID(version?: UUIDVersion): Validator;
     /**
      * @see https://docs.mongodb.com/manual/reference/bson-types/#objectid
      */
@@ -176,7 +183,7 @@ declare namespace ExpressValidator {
      * @see https://en.wikipedia.org/wiki/International_Standard_Serial_Number
      */
     isISSN(options?: ExpressValidator.Options.IsISSNOptions): Validator
-    isMobilePhone(locale: string): Validator; // TODO MobilePhoneLocale
+    isMobilePhone(locale: MobilePhoneLocal): Validator;
     isCurrency(options: ExpressValidator.Options.IsCurrencyOptions): Validator;
     /**
      * @see https://en.wikipedia.org/wiki/ISO_8601
@@ -316,7 +323,7 @@ declare namespace ExpressValidator.Options {
    * }
    */
   interface IsURLOptions {
-    protocols?: string[]; // TODO Protocol type
+    protocols?: URLProtocol[];
     require_tld?: boolean;
     require_protocol?: boolean;
     require_host?: boolean;
