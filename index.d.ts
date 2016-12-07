@@ -32,10 +32,19 @@ declare namespace ExpressValidator {
   export type AlphaLocale = 'ar' | 'ar-AE' | 'ar-BH' | 'ar-DZ' | 'ar-EG' | 'ar-IQ' | 'ar-JO' | 'ar-KW' | 'ar-LB' | 'ar-LY' | 'ar-MA' | 'ar-QA' | 'ar-QM' | 'ar-SA' | 'ar-SD' | 'ar-SY' | 'ar-TN' | 'ar-YE' | 'cs-CZ' | 'da-DK' | 'de-DE' | 'en-AU' | 'en-GB' | 'en-HK' | 'en-IN' | 'en-NZ' | 'en-US' | 'en-ZA' | 'en-ZM' | 'es-ES' | 'fr-FR' | 'hu-HU' | 'nl-NL' | 'pl-PL' | 'pt-BR' | 'pt-PT' | 'ru-RU' | 'sr-RS' | 'sr-RS@latin' | 'tr-TR' | 'uk-UA'
   export type AlphanumericLocale = 'ar' | 'ar-AE' | 'ar-BH' | 'ar-DZ' | 'ar-EG' | 'ar-IQ' | 'ar-JO' | 'ar-KW' | 'ar-LB' | 'ar-LY' | 'ar-MA' | 'ar-QA' | 'ar-QM' | 'ar-SA' | 'ar-SD' | 'ar-SY' | 'ar-TN' | 'ar-YE' | 'cs-CZ' | 'da-DK' | 'de-DE' | 'en-AU' | 'en-GB' | 'en-HK' | 'en-IN' | 'en-NZ' | 'en-US' | 'en-ZA' | 'en-ZM' | 'es-ES' | 'fr-FR' | 'fr-BE' | 'hu-HU' | 'nl-BE' | 'nl-NL' | 'pl-PL' | 'pt-BR' | 'pt-PT' | 'ru-RU' | 'sr-RS' | 'sr-RS@latin' | 'tr-TR' | 'uk-UA'
   export type MobilePhoneLocal = 'ar-DZ' | 'ar-SA' | 'ar-SY' | 'cs-CZ' | 'de-DE' | 'da-DK' | 'el-GR' | 'en-AU' | 'en-GB' | 'en-HK' | 'en-IN' | 'en-NZ' | 'en-US' | 'en-CA' | 'en-ZA' | 'en-ZM' | 'es-ES' | 'fi-FI' | 'fr-FR' | 'hu-HU' | 'it-IT' | 'ja-JP' | 'ms-MY' | 'nb-NO' | 'nn-NO' | 'pl-PL' | 'pt-PT' | 'ru-RU' | 'sr-RS' | 'tr-TR' | 'vi-VN' | 'zh-CN' | 'zh-TW'
+  export type Location = 'body' | 'params' | 'query' | 'headers' // TODO add cookies if #292 is accepted
 
+  export type ValidationSchema = {
+    [param: string]:
+      ExpressValidator.Options.ValidationSchemaParamOptions // standard validators
+      | // or
+      { [customValidator: string]: ExpressValidator.Options.ValidatorSchemaOptions } // custom ones
+  }
 
-  interface ValidatorFunction { (item: string | string[], message?: string): Validator; }
-  interface ValidatorFunction { (schema: {}): Validator; }
+  interface ValidatorFunction {
+    (item: string | string[], message?: string): Validator;
+    (schema: {}): Validator;
+  }
   /**
    * This one's used for RegexRoutes
    * @see https://github.com/ctavan/express-validator#regex-routes
@@ -121,6 +130,13 @@ declare namespace ExpressValidator {
   }
 
   export interface Validator {
+
+    /*
+     * Hi fellow contributor,
+     * TODO if you add a validator here, please add it also to ValidationSchemaParamOptions
+     * preferably in the same order/position, just to make it easier for comparision.
+     */
+
     isEmail(options?: ExpressValidator.Options.IsEmailOptions): Validator;
     isURL(options?: ExpressValidator.Options.IsURLOptions): Validator;
     isMACAddress(): Validator;
@@ -276,6 +292,74 @@ declare namespace ExpressValidator.Options {
     customSanitizers?: { [sanitizername: string]: (value: any) => any }
     errorFormatter?: (param: string, msg: string, value: any) => {param: string, msg: string, value: any}
   }
+
+
+  interface ValidatorSchemaOptions {
+    options?: any[]
+    errorMessage?: string
+  }
+
+  interface ValidationSchemaParamOptions {
+    in?: Location
+    errorMessage?: string
+
+    // Additional ValidatorChain.prototype.* validators
+    optional?: boolean | { checkFalsy: boolean }
+    notEmpty?: boolean | { errorMessage: string }
+    len?: ValidatorSchemaOptions
+
+    // exported from validator.js
+    isEmail?: ValidatorSchemaOptions
+    isURL?: ValidatorSchemaOptions
+    isMACAddress?: ValidatorSchemaOptions
+    isIP?: ValidatorSchemaOptions
+    isFQDN?: ValidatorSchemaOptions
+    isBoolean?: ValidatorSchemaOptions
+    isAlpha?: ValidatorSchemaOptions
+    isAlphanumeric?: ValidatorSchemaOptions
+    isNumeric?: ValidatorSchemaOptions
+    isLowercase?: ValidatorSchemaOptions
+    isUppercase?: ValidatorSchemaOptions
+    isAscii?: ValidatorSchemaOptions
+    isFullWidth?: ValidatorSchemaOptions
+    isHalfWidth?: ValidatorSchemaOptions
+    isVariableWidth?: ValidatorSchemaOptions
+    isMultibyte?: ValidatorSchemaOptions
+    isSurrogatePair?: ValidatorSchemaOptions
+    isInt?: ValidatorSchemaOptions
+    isFloat?: ValidatorSchemaOptions
+    isDecimal?: ValidatorSchemaOptions
+    isHexadecimal?: ValidatorSchemaOptions
+    isDivisibleBy?: ValidatorSchemaOptions
+    isHexColor?: ValidatorSchemaOptions
+    isMD5?: ValidatorSchemaOptions
+    isJSON?: ValidatorSchemaOptions
+    isEmpty?: ValidatorSchemaOptions
+    isLength?: ValidatorSchemaOptions
+    isByteLength?: ValidatorSchemaOptions
+    isUUID?: ValidatorSchemaOptions
+    isMongoId?: ValidatorSchemaOptions
+    isDate?: ValidatorSchemaOptions
+    isAfter?: ValidatorSchemaOptions
+    isBefore?: ValidatorSchemaOptions
+    isIn?: ValidatorSchemaOptions
+    isCreditCard?: ValidatorSchemaOptions
+    isISIN?: ValidatorSchemaOptions
+    isISBN?: ValidatorSchemaOptions
+    isISSN?: ValidatorSchemaOptions
+    isMobilePhone?: ValidatorSchemaOptions
+    isCurrency?: ValidatorSchemaOptions
+    isISO8601?: ValidatorSchemaOptions
+    isBase64?: ValidatorSchemaOptions
+    isDataURI?: ValidatorSchemaOptions
+    isWhitelisted?: ValidatorSchemaOptions
+
+    // Additional Validators provided by validator.js
+    equals?: ValidatorSchemaOptions
+    contains?: ValidatorSchemaOptions
+    matches?: ValidatorSchemaOptions
+  }
+
 
   // VALIDATORS
 

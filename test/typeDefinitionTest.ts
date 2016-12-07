@@ -49,7 +49,13 @@ app.use((req: express.Request, res: express.Response, next: express.NextFunction
 
   // VALIDATIONS
 
-  const schema = { param: { in: 'headers' } };
+  const schema: ExpressValidator.ValidationSchema = {
+    param: {
+      in: 'headers',
+      contains: { errorMessage: 'message', options: [] },
+      isAwesomeLib: { errorMessage: 'message', options: [] }
+    }
+  };
 
   req.assert('param').isEmail({ require_tld: true });
   req.assert('param', 'message');
