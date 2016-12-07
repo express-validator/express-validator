@@ -21,6 +21,13 @@ var schema = {
         errorMessage: errorMsg
       }
   },
+  testheader: {
+    in: 'headers',
+    notEmpty: true,
+      isInt: {
+        errorMessage: errorMsg
+      }
+  },
   testquery: {
     in: 'query',
     notEmpty: true,
@@ -63,6 +70,7 @@ function validationSendResponse(req, res) {
   }
 
   res.send({
+    testheader: req.headers.testheader,
     testparam: req.params.testparam,
     testquery: req.query.testquery,
     skipped: req.query.skipped,
@@ -94,6 +102,12 @@ function validationBody(req, res) {
   validationSendResponse(req, res);
 }
 
+function validationHeaders(req, res) {
+
+  req.checkHeaders(schema);
+  validationSendResponse(req, res);
+}
+
 function failParams(body, length) {
   expect(body).to.have.length(length);
   expect(body[0]).to.have.property('msg', errorMsg);
@@ -111,6 +125,7 @@ function failAll(body, length) {
 }
 
 function pass(params) {
+  expect(params).to.have.property('testheader', '45');
   expect(params).to.have.property('testparam', '25');
   expect(params).to.have.property('testquery', '6');
   expect(params).to.have.property('skipped', '34');
@@ -123,9 +138,10 @@ function failQueryParams(params, length) {
   expect(params[1]).to.have.property('msg', errorMsgOutOfRange);
 }
 
-function getRoute(path, test, length, done) {
+function getRoute(path, headers, test, length, done) {
   request(app)
     .get(path)
+    .set(headers || {})
     .end(function(err, res) {
       test(res.body, length);
       done();
@@ -142,19 +158,19 @@ describe('Check defining validator location inside schema validators', function(
   });
 
   it('should validate against schema with query and params locations', function(done) {
-    getRoute('/25?testquery=6&skipped=34&numInQuery=0', pass, 1, done);
+    getRoute('/25?testquery=6&skipped=34&numInQuery=0', { testheader: 45 }, pass, 1, done);
   });
 
   it('should fail when param is not integer', function(done) {
-    getRoute('/ImNot?testquery=6&skipped=34&numInQuery=0', failParams, 1, done);
+    getRoute('/ImNot?testquery=6&skipped=34&numInQuery=0', { testheader: 45 }, failParams, 1, done);
   });
 
   it('should fail when query param is out of range', function(done) {
-    getRoute('/25?testquery=20&skipped=34&numInQuery=0', failQuery, 1, done);
+    getRoute('/25?testquery=20&skipped=34&numInQuery=0', { testheader: 45 }, failQuery, 1, done);
   });
 
   it('should fail when non of params are valid', function(done) {
-    getRoute('/ImNot?testquery=20&skipped=34&numInQuery=0', failAll, 2, done);
+    getRoute('/ImNot?testquery=20&skipped=34&numInQuery=0', { testheader: 45 }, failAll, 2, done);
   });
 
 });
@@ -169,11 +185,11 @@ describe('Check defining validator location inside schema validators by checkQue
   });
 
   it('should validate against schema with query and params locations', function(done) {
-    getRoute('/25?testquery=6&skipped=34&numInQuery=0', pass, 1, done);
+    getRoute('/25?testquery=6&skipped=34&numInQuery=0', { testheader: 45 }, pass, 1, done);
   });
 
   it('should fail when query param is out of range', function(done) {
-    getRoute('/25?testquery=6&skipped=34&numInQuery=666', failQuery, 1, done);
+    getRoute('/25?testquery=6&skipped=34&numInQuery=666', { testheader: 45 }, failQuery, 1, done);
   });
 
 });
@@ -188,7 +204,7 @@ describe('Check defining validator location inside schema validators by checkPar
   });
 
   it('should fail when searching for query param in the path params', function(done) {
-    getRoute('/25?testquery=6&skipped=34&numInQuery=666', failQueryParams, 2, done);
+    getRoute('/25?testquery=6&skipped=34&numInQuery=666', { testheader: 45 }, failQueryParams, 2, done);
   });
 
 });
@@ -203,7 +219,22 @@ describe('Check defining validator location inside schema validators by checkBod
   });
 
   it('should fail when searching for query param in the body', function(done) {
-    getRoute('/25?testquery=6&skipped=34&numInQuery=666', failQueryParams, 2, done);
+    getRoute('/25?testquery=6&skipped=34&numInQuery=666', { testheader: 45 }, failQueryParams, 2, done);
+  });
+
+});
+
+describe('Check defining validator location inside schema validators by checkHeaders()', function() {
+
+  // This before() is required in each set of tests in
+  // order to use a new validation function in each file
+  before(function() {
+    delete require.cache[require.resolve('./helpers/app')];
+    app = require('./helpers/app')(validationHeaders);
+  });
+
+  it('should fail when searching for query param in the headers', function(done) {
+    getRoute('/25?testquery=6&skipped=34&numInQuery=1', { testheader: 45 }, failQueryParams, 2, done);
   });
 
 });
