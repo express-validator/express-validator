@@ -5,6 +5,8 @@ node_js:
   - "0.12"
   - "4"
   - "6"
+before_install:
+  - npm install -g npm
 install:
   - npm install
 script:
