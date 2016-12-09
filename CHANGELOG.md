@@ -1,5 +1,10 @@
 ## Change Log
 
+### upcoming 2016/12/09
+- [b2877ce](https://github.com/ctavan/express-validator/commit/b2877ce76a6ade87620db10091e335165b708628) Updated REAMDME, added tests for req.check with in: headers (@pascalopitz)
+- [28935b9](https://github.com/ctavan/express-validator/commit/28935b916de617cda9e80b58276c31f8079d975b) Adding checkHeaders schema functionality (@pascalopitz)
+- [c84820f](https://github.com/ctavan/express-validator/commit/c84820ff1b50bbeb7b82bb6c58bd08cc17541e49) Update changelog up to v3. (@rustybailey)
+
 ### v3.0.0 2016/11/24
 - [cdfb5dc](https://github.com/ctavan/express-validator/commit/cdfb5dc114bea4bfb481ae360406bc163496d3da) Upgrade to 3.0.0 (@gustavohenke)
 - [fa25f11](https://github.com/ctavan/express-validator/commit/fa25f11fe211663e902160b921db8e1eb7a07ce3) Specify fail message of optional when using schema (@gustavohenke)
@@ -109,12 +114,12 @@
 - [c704a22](https://github.com/ctavan/express-validator/commit/c704a2203f430dacff765e83862e36e1cc45471d) Upgrade to 2.19.2 (@rustybailey)
 - [9b74fb4](https://github.com/ctavan/express-validator/commit/9b74fb4ffd4edce7268b9d1e9303829cdb8ae14e) Fix matches example in README (resolves #209) (@rustybailey)
 - [20f033a](https://github.com/ctavan/express-validator/commit/20f033a9f6a7ba6ad1f3d9eb6c34e8e804071d0a) Added missing require that broke build of tests on node v0.10.43
-- [981239f](https://github.com/ctavan/express-validator/commit/981239fd7d7841b2c862c28e1d3f92836f52dcaa) Readme and tests updated after review.
+- [981239f](https://github.com/ctavan/express-validator/commit/981239fd7d7841b2c862c28e1d3f92836f52dcaa) Readme and tests updated after review. (@JaniszM)
 - [f6f88bc](https://github.com/ctavan/express-validator/commit/f6f88bcfd69179f2fdae87c02903bc04eba92029) #203 - Fixed bug where .withMessage() would not apply to a custom async validator (@chrissinclair)
-- [4fdc7a9](https://github.com/ctavan/express-validator/commit/4fdc7a9a711485e792886accdc9160725ad67d9b) Extended test schema to check if not supported location type force validator to skip.
-- [d1894e8](https://github.com/ctavan/express-validator/commit/d1894e88a15f5a135aaf6090e9a771eff0bbee48) Formatter updated.
-- [d87a4f1](https://github.com/ctavan/express-validator/commit/d87a4f1a06b98ef466513decec6428fef3d3c6d6) Readme updated.
-- [a300751](https://github.com/ctavan/express-validator/commit/a30075162b721c5cdb3c2dee196704aab3d30f5b) Issue #206. Added support for new field in validators structure allowing to define location of validation.
+- [4fdc7a9](https://github.com/ctavan/express-validator/commit/4fdc7a9a711485e792886accdc9160725ad67d9b) Extended test schema to check if not supported location type force validator to skip. (@JaniszM)
+- [d1894e8](https://github.com/ctavan/express-validator/commit/d1894e88a15f5a135aaf6090e9a771eff0bbee48) Formatter updated. (@JaniszM)
+- [d87a4f1](https://github.com/ctavan/express-validator/commit/d87a4f1a06b98ef466513decec6428fef3d3c6d6) Readme updated. (@JaniszM)
+- [a300751](https://github.com/ctavan/express-validator/commit/a30075162b721c5cdb3c2dee196704aab3d30f5b) Issue #206. Added support for new field in validators structure allowing to define location of validation. (@JaniszM)
 
 ### v2.19.1 2016/02/05
 - [f3ed152](https://github.com/ctavan/express-validator/commit/f3ed152ef28bcc49d7c67c3842fb1ff1bb2067ed) 2.19.1 (@rustybailey)

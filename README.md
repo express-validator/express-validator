@@ -21,6 +21,7 @@ An [express.js]( https://github.com/visionmedia/express ) middleware for
 - [Optional input](#optional-input)
 - [Sanitizer](#sanitizer)
 - [Regex routes](#regex-routes)
+- [TypeScript](#typescript)
 - [Changelog](#changelog)
 - [License](#license)
 
@@ -514,15 +515,25 @@ You can validate the extracted matches like this:
 req.assert(0, 'Not a three-digit integer.').len(3, 3).isInt();
 ```
 
+## TypeScript
+If you have been using this library with [TypeScript](http://www.typescriptlang.org/),
+you must have been using the type definitions from [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/e2af6d0/express-validator/express-validator.d.ts).
+
+However, as of v3.1.0, the type definitions are shipped with the library.
+So please uninstall the typings from DT. Otherwise they may cause conflicts
+
+
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md)
 
 ## Contributors
 
-- Christoph Tavan <dev@tavan.de> - Wrap the gist in an npm package
-- @orfaust - Add `validationErrors()` and nested field support
-- @zero21xxx - Added `checkBody` function
+- [@ctavan](https://github.com/ctavan)- Wrap the gist in an npm package.
+- [@orfaust](https://github.com/orfaust) - Add `validationErrors()` and nested field support.
+- [@zero21xxx](https://github.com/zero21xxx) - Added `checkBody` function.
+- [@gustavohenke](https://github.com/gustavohenke) - Introduced validation result API.
+- [@IOAyman](https://github.com/IOAyman) - Added type definitions.
 
 ## License
 
