@@ -7,7 +7,9 @@
     "@orfaust",
     "@zero21xxx",
     "Roman Kalyakin <roman@kalyakin.com>",
-    "Rusty Bailey <rustylbailey@gmail.com>"
+    "Rusty Bailey <rustylbailey@gmail.com>",
+    "Gustavo Henke <guhenke@gmail.com>",
+    "Ayman Nedjmeddine <theycallmethedr@gmail.com>"
   ],
   "version": "3.0.0",
   "homepage": "https://github.com/ctavan/express-validator",
