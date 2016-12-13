@@ -527,14 +527,6 @@ So please uninstall the typings from DT. Otherwise they may cause conflicts
 
 See [CHANGELOG.md](CHANGELOG.md)
 
-## Contributors
-
-- [@ctavan](https://github.com/ctavan)- Wrap the gist in an npm package.
-- [@orfaust](https://github.com/orfaust) - Add `validationErrors()` and nested field support.
-- [@zero21xxx](https://github.com/zero21xxx) - Added `checkBody` function.
-- [@gustavohenke](https://github.com/gustavohenke) - Introduced validation result API.
-- [@IOAyman](https://github.com/IOAyman) - Added type definitions.
-
 ## License
 
 Copyright (c) 2010 Chris O'Hara <cohara87@gmail.com>, MIT License
