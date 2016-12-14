@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es6",
+    "charset": "utf-8",
+    "pretty": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strictNullChecks": true,
+    "outDir": "./build"
+  },
+  "files": [ "index.d.ts", "./test/typeDefinitionTest.ts" ],
+  "exclude": [ "node_modules", "coverage" ]
+}
