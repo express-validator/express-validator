@@ -221,7 +221,7 @@ Only checks `req.cookies`. This method is not covered by the general `req.check(
 Alternatively you can define all your validations at once using a simple schema.
 Schema validation will be used if you pass an object to any of the validator methods.
 
-You may pass per-validator error messages with the `errorMessage` key.  
+You may pass per-validator error messages with the `errorMessage` key.
 Validator options may be passed via `options` key as an array when various values are needed,
 or as a single non-null value otherwise.
 
@@ -414,9 +414,9 @@ req.asyncValidationErrors().then(function() {
 
 Error messages can be customized to include both the value provided by the user, as well as the value of any parameters passed to the validation function, using a standard string replacement format:
 
-`%0` is replaced with user input  
-`%1` is replaced with the first parameter to the validator  
-`%2` is replaced with the second parameter to the validator  
+`%0` is replaced with user input
+`%1` is replaced with the first parameter to the validator
+`%2` is replaced with the second parameter to the validator
 etc...
 
 Example:
@@ -525,7 +525,7 @@ So please uninstall the typings from DT. Otherwise they may cause conflicts
 
 ## Changelog
 
-See [CHANGELOG.md](CHANGELOG.md)
+Check the [GitHub Releases page](https://github.com/ctavan/express-validator/releases).
 
 ## License
 

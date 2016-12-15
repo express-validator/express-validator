@@ -25,8 +25,7 @@
     "jshint": "jshint ./test ./lib",
     "jscs": "jscs ./test ./lib",
     "travis-build": "npm test && npm run jshint && npm run jscs",
-    "report-coverage": "cat coverage/lcov.info | coveralls",
-    "changelog": "github-changes -o ctavan -r express-validator -a -m YYYY/MM/DD --no-merges"
+    "report-coverage": "cat coverage/lcov.info | coveralls"
   },
   "engines": {
     "node": ">= 0.10"
@@ -44,7 +43,6 @@
     "chai": "2.3.0",
     "coveralls": "2.11.14",
     "express": "4.12.3",
-    "github-changes": "1.0.2",
     "jscs": "1.13.1",
     "jshint": "2.7.0",
     "mocha": "2.2.4",
