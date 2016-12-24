@@ -158,6 +158,44 @@ Use them with their validator name:
 req.checkBody('users', 'Users must be an array').isArray();
 req.checkQuery('time', 'Time must be an integer great than or equal to 5').isInt().gte(5)
 ```
+
+##### Using the `req` object in a custom validator
+
+For cases where we want to test against a value in the request, we can define custom validator that can call a function in a dynamic schema. For example:
+
+```javascript
+app.use(expressValidator({
+ customValidators: {
+    isEqual: function(value, fn, obj) {
+        return fn(obj) === value;
+    }
+ }
+}));
+```
+
+In our schema, we can set the validation function on the `options` value. For instance, to test that one parameter equals another:
+
+```javascript
+var schema = {
+  testquery: {
+    in: 'query',
+    isEqualTo: { 
+      // obj contains { req, name, schema }
+      options: function(obj) {
+        const req = obj.req;
+        return req.query.otherQuery;
+      }
+    }
+  }
+}
+```
+
+The function defined here is called with an object with the following parameters:
+
+* req - the original request object
+* name - the name of the parameter we are testing
+* schema - the schema we are testing against
+
 ####`customSanitizers`
 _{ "sanitizerName": function(value, [additional arguments]), ... }_
 

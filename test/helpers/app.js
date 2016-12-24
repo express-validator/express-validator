@@ -30,6 +30,9 @@ module.exports = function(validation) {
             reject();
           }, 200);
         });
+      },
+      isEqualTo: function(val, fn, req) {
+        return fn(req) === val;
       }
     },
     customSanitizers: {
@@ -41,6 +44,7 @@ module.exports = function(validation) {
 
   app.get(/\/test(\d+)/, validation);
   app.get('/:testparam?', validation);
+  app.get('/:testparam/:otherParam', validation);
   app.post('/:testparam?', validation);
 
   return app;
