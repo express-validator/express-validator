@@ -11,7 +11,7 @@
     "Gustavo Henke <guhenke@gmail.com>",
     "Ayman Nedjmeddine <theycallmethedr@gmail.com>"
   ],
-  "version": "3.1.1",
+  "version": "3.1.2",
   "homepage": "https://github.com/ctavan/express-validator",
   "license": "MIT",
   "repository": {
