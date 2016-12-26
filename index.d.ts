@@ -295,7 +295,7 @@ declare namespace ExpressValidator {
 declare namespace ExpressValidator.Options {
 
   export interface ExpressValidatorOptions {
-    customValidators?: { [validatorName: string]: (value: any) => boolean }
+    customValidators?: { [validatorName: string]: (...value: any[]) => boolean }
     customSanitizers?: { [sanitizername: string]: (value: any) => any }
     errorFormatter?: (param: string, msg: string, value: any) => {param: string, msg: string, value: any}
   }
