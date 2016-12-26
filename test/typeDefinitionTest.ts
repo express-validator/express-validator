@@ -4,7 +4,7 @@ const app = express();
 
 
 app.use(validator({
-  customValidators: { isAwesomeLib: (value: any) => isNaN(value) ? true : true },
+  customValidators: { isAwesomeLib: (value: any, param: any) => value == param },
   customSanitizers: { toAwesome: (lib: any) => [lib] },
   errorFormatter: (param: string, msg: string, value: any) => ({ param, msg, value })
 }));
