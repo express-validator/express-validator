@@ -72,7 +72,7 @@ app.post('/:urlparam', function(req, res) {
   // when using generators e.g. with co-express
   req.getValidationResult().then(function(result) {
     if (!result.isEmpty()) {
-      res.send('There have been validation errors: ' + util.inspect(result.array()), 400);
+      res.status(400).send('There have been validation errors: ' + util.inspect(result.array()));
       return;
     }
     res.json({
