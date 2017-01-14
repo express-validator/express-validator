@@ -21,7 +21,7 @@ declare module "express-validator" {
    */
   function ExpressValidator(options?: ExpressValidator.Options.ExpressValidatorOptions): express.RequestHandler;
 
-  export = ExpressValidator;
+  export default ExpressValidator;
 }
 
 // Internal Module.
