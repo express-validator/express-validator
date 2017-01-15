@@ -22,9 +22,8 @@
   "types": "./index.d.ts",
   "scripts": {
     "test": "nyc mocha && tsc",
-    "jshint": "jshint ./test ./lib",
-    "jscs": "jscs ./test ./lib",
-    "travis-build": "npm test && npm run jshint && npm run jscs",
+    "lint": "eslint lib test",
+    "travis-build": "npm test && npm run lint",
     "report-coverage": "cat coverage/lcov.info | coveralls"
   },
   "engines": {
@@ -39,9 +38,10 @@
   },
   "devDependencies": {
     "body-parser": "1.12.3",
-    "cookie-parser": "1.4.1",
     "chai": "2.3.0",
+    "cookie-parser": "1.4.1",
     "coveralls": "2.11.14",
+    "eslint": "^3.13.1",
     "express": "4.12.3",
     "jscs": "1.13.1",
     "jshint": "2.7.0",
