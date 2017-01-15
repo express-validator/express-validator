@@ -17,39 +17,39 @@ var schema = {
   testparam: {
     in: 'params',
     notEmpty: true,
-      isInt: {
-        errorMessage: errorMsg
-      }
+    isInt: {
+      errorMessage: errorMsg
+    }
   },
   testheader: {
     in: 'headers',
     notEmpty: true,
-      isInt: {
-        errorMessage: errorMsg
-      }
+    isInt: {
+      errorMessage: errorMsg
+    }
   },
   testquery: {
     in: 'query',
     notEmpty: true,
-      isInt: {
-        options: [{
-          min: 2,
-          max: 10
-        }],
-        errorMessage: errorMsgOutOfRange
-      }
+    isInt: {
+      options: [{
+        min: 2,
+        max: 10
+      }],
+      errorMessage: errorMsgOutOfRange
+    }
   },
   'skipped': {
     // this validator is a fake validator which cannot raise any error, should be always skipped
     in: 'notSupportedOne',
     notEmpty: true,
-      isInt: {
-        options: [{
-          min: 2,
-          max: 10
-        }],
-        errorMessage: errorMsgOutOfRange
-      }
+    isInt: {
+      options: [{
+        min: 2,
+        max: 10
+      }],
+      errorMessage: errorMsgOutOfRange
+    }
   },
   'numInQuery': {
     notEmpty: true,

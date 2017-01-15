@@ -1,0 +1,51 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "globals": {},
+  "rules": {
+    "dot-notation": "off",
+    "curly": [ "error", "all" ],
+    "eqeqeq": [ "error", "always", {
+      "null": "ignore"
+    }],
+    "indent": [ "error", 2, {
+      "SwitchCase": 1
+    }],
+    "no-use-before-define": [ "error", {
+      "functions": false
+    }],
+    "new-cap": "error",
+    "no-unused-vars": "error",
+    "no-bitwise": "error",
+    "no-caller": "error",
+    "no-empty": [ "error", {
+      "allowEmptyCatch": true
+    }],
+    "no-new": "error",
+    "brace-style": [ "error", "1tbs", {
+      "allowSingleLine": true
+    }],
+    "no-with": "error",
+    "key-spacing": [ "error", {
+      "beforeColon": false,
+      "afterColon": true
+    }],
+    "space-unary-ops": [ "error", {
+      "words": false,
+      "nonwords": false
+    }],
+    "space-before-function-paren": [ "error", {
+      "anonymous": "ignore",
+      "named": "never"
+    }],
+    "no-spaced-func": "error",
+    "comma-dangle": [ "error", "never" ],
+    "no-trailing-spaces": "error",
+    "comma-style": [ "error", "last" ],
+    "space-infix-ops": "error",
+    "keyword-spacing": "error"
+  }
+}

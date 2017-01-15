@@ -5,15 +5,15 @@ var decorateAsValidationResult = require('../index').utils.decorateAsValidationR
 describe('#decorateAsValidationResult()', function() {
   beforeEach(function() {
     this.result = decorateAsValidationResult({}, [{
-        param: 'foo',
-        message: '1'
-      }, {
-        param: 'foo',
-        message: '2'
-      }, {
-        param: 'bar',
-        message: '1'
-      }]);
+      param: 'foo',
+      message: '1'
+    }, {
+      param: 'foo',
+      message: '2'
+    }, {
+      param: 'bar',
+      message: '1'
+    }]);
   });
 
   it('returns original object', function() {

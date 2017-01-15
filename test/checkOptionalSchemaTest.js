@@ -14,51 +14,51 @@ var invalidOptionalBodyValue = 'aa';
 var invalidRequiredBodyValue = 'bb';
 
 var schema = {
-	optional_body: {
-		optional: true,
-		isInt: true,
-		errorMessage: optionalBodyErr
-	},
-	required_body: {
-		isInt: true,
-		errorMessage: requiredBodyErr
-	}
+  optional_body: {
+    optional: true,
+    isInt: true,
+    errorMessage: optionalBodyErr
+  },
+  required_body: {
+    isInt: true,
+    errorMessage: requiredBodyErr
+  }
 };
 
 var validAll = {
-	optional_body: optionalBodyValue,
-	required_body: requiredBodyValue
+  optional_body: optionalBodyValue,
+  required_body: requiredBodyValue
 };
 
 var validRequired = {
-	required_body: requiredBodyValue
+  required_body: requiredBodyValue
 };
 
 var validOptional = {
-	optional_body: optionalBodyValue
+  optional_body: optionalBodyValue
 };
 
 var invalidAll = {
-	optional_body: invalidOptionalBodyValue,
-	required_body: invalidRequiredBodyValue
+  optional_body: invalidOptionalBodyValue,
+  required_body: invalidRequiredBodyValue
 };
 
 var invalidRequired = {
-	optional_body: optionalBodyValue,
-	required_body: invalidRequiredBodyValue
+  optional_body: optionalBodyValue,
+  required_body: invalidRequiredBodyValue
 };
 
 var invalidRequiredOnly = {
-	required_body: invalidRequiredBodyValue
+  required_body: invalidRequiredBodyValue
 };
 
 var invalidOptional = {
-	optional_body: invalidOptionalBodyValue,
-	required_body: requiredBodyValue
+  optional_body: invalidOptionalBodyValue,
+  required_body: requiredBodyValue
 };
 
 var invalidOptionalOnly = {
-	optional_body: invalidOptionalBodyValue
+  optional_body: invalidOptionalBodyValue
 };
 
 function validationSendResponse(req, res) {
@@ -81,41 +81,41 @@ function validation(req, res) {
 
 function passAll(body) {
 
-	expect(body).to.have.property('optional_body', optionalBodyValue);
-	expect(body).to.have.property('required_body', requiredBodyValue);
+  expect(body).to.have.property('optional_body', optionalBodyValue);
+  expect(body).to.have.property('required_body', requiredBodyValue);
 }
 
 function passRequired(body) {
 
-	expect(body).to.have.property('required_body', requiredBodyValue);
-	expect(body).to.not.have.property('optional_body');
+  expect(body).to.have.property('required_body', requiredBodyValue);
+  expect(body).to.not.have.property('optional_body');
 }
 
 function failAll(body) {
 
-	expect(body).to.deep.include({ msg: optionalBodyErr, param: 'optional_body', value: invalidOptionalBodyValue });
-	expect(body).to.deep.include({ msg: requiredBodyErr, param: 'required_body', value: invalidRequiredBodyValue });
+  expect(body).to.deep.include({ msg: optionalBodyErr, param: 'optional_body', value: invalidOptionalBodyValue });
+  expect(body).to.deep.include({ msg: requiredBodyErr, param: 'required_body', value: invalidRequiredBodyValue });
 }
 
 function failRequired(body) {
 
-	expect(body).to.deep.include({ msg: requiredBodyErr, param: 'required_body', value: invalidRequiredBodyValue });
+  expect(body).to.deep.include({ msg: requiredBodyErr, param: 'required_body', value: invalidRequiredBodyValue });
 }
 
 function failOptional(body) {
 
-	expect(body).to.deep.include({ msg: optionalBodyErr, param: 'optional_body', value: invalidOptionalBodyValue });
+  expect(body).to.deep.include({ msg: optionalBodyErr, param: 'optional_body', value: invalidOptionalBodyValue });
 }
 
 function failUndefinedRequired(body) {
 
-	expect(body).to.deep.include({ msg: requiredBodyErr, param: 'required_body' });
+  expect(body).to.deep.include({ msg: requiredBodyErr, param: 'required_body' });
 }
 
 function failUndefinedRequiredInvalidOptional(body) {
 
-	expect(body).to.deep.include({ msg: requiredBodyErr, param: 'required_body' });
-	expect(body).to.deep.include({ msg: optionalBodyErr, param: 'optional_body', value: invalidOptionalBodyValue });
+  expect(body).to.deep.include({ msg: requiredBodyErr, param: 'required_body' });
+  expect(body).to.deep.include({ msg: optionalBodyErr, param: 'optional_body', value: invalidOptionalBodyValue });
 }
 
 
@@ -137,37 +137,37 @@ before(function() {
 });
 
 describe('Check with optional validators in schema', function() {
-	it('should pass validation with all parameters sent', function(done) {
-		postRoute('/', validAll, passAll, done);
-	});
+  it('should pass validation with all parameters sent', function(done) {
+    postRoute('/', validAll, passAll, done);
+  });
 
-	it('should pass validation with only required parameter sent', function(done) {
-		postRoute('/', validRequired, passRequired, done);
-	});
+  it('should pass validation with only required parameter sent', function(done) {
+    postRoute('/', validRequired, passRequired, done);
+  });
 
-	it('should fail validation with all invalid parameters sent', function(done) {
-		postRoute('/', invalidAll, failAll, done);
-	});
+  it('should fail validation with all invalid parameters sent', function(done) {
+    postRoute('/', invalidAll, failAll, done);
+  });
 
-	it('should fail validation with invalid required parameter sent', function(done) {
-		postRoute('/', invalidRequired, failRequired, done);
-	});
+  it('should fail validation with invalid required parameter sent', function(done) {
+    postRoute('/', invalidRequired, failRequired, done);
+  });
 
-	it('should fail validation with only invalid parameter', function(done) {
-		postRoute('/', invalidRequiredOnly, failRequired, done);
-	});
+  it('should fail validation with only invalid parameter', function(done) {
+    postRoute('/', invalidRequiredOnly, failRequired, done);
+  });
 
-	it('should fail validation with invalid optional parameter sent', function(done) {
-		postRoute('/', invalidOptional, failOptional, done);
-	});
+  it('should fail validation with invalid optional parameter sent', function(done) {
+    postRoute('/', invalidOptional, failOptional, done);
+  });
 
-	it('should fail validation with only valid optional parameter sent', function(done) {
-		postRoute('/', validOptional, failUndefinedRequired, done);
-	});
+  it('should fail validation with only valid optional parameter sent', function(done) {
+    postRoute('/', validOptional, failUndefinedRequired, done);
+  });
 
-	it('should fail validation with only invalid optional parameter sent', function(done) {
-		postRoute('/', invalidOptionalOnly, failUndefinedRequiredInvalidOptional, done);
-	});
+  it('should fail validation with only invalid optional parameter sent', function(done) {
+    postRoute('/', invalidOptionalOnly, failUndefinedRequiredInvalidOptional, done);
+  });
 });
 
 

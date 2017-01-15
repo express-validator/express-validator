@@ -57,37 +57,37 @@ before(function() {
 });
 
 describe('#withMessage()', function() {
-    it('should return one error per validation failure, with custom message where defined', function(done) {
-      getRoute('/test', fail([mustBeIntegerMessage, errorMessage, mustBeTwoDigitsMessage]), 3, done);
-    });
+  it('should return one error per validation failure, with custom message where defined', function(done) {
+    getRoute('/test', fail([mustBeIntegerMessage, errorMessage, mustBeTwoDigitsMessage]), 3, done);
+  });
 
-    it('should return four errors when param is missing, with default message for the first and third errors, and custom messages for the rest, as defined', function(done) {
-      getRoute('/', fail([errorMessage, mustBeIntegerMessage, errorMessage, mustBeTwoDigitsMessage]), 4, done);
-    });
+  it('should return four errors when param is missing, with default message for the first and third errors, and custom messages for the rest, as defined', function(done) {
+    getRoute('/', fail([errorMessage, mustBeIntegerMessage, errorMessage, mustBeTwoDigitsMessage]), 4, done);
+  });
 
-    it('should return a success when param validates', function(done) {
-      getRoute('/42', pass, null, done);
-    });
+  it('should return a success when param validates', function(done) {
+    getRoute('/42', pass, null, done);
+  });
 
-    it('should provide a custom message when an invalid value is provided, and the validation is followed by withMessage', function(done) {
-      getRoute('/199', fail(mustBeTwoDigitsMessage), 1, done);
-    });
+  it('should provide a custom message when an invalid value is provided, and the validation is followed by withMessage', function(done) {
+    getRoute('/199', fail(mustBeTwoDigitsMessage), 1, done);
+  });
 
-    it('should update the error message only if the preceeding validation was the one to fail', function() {
-      var validator = require('../lib/express_validator')();
-      var req = {
-        body: {
-          testParam: 'abc'
-        }
-      };
+  it('should update the error message only if the preceeding validation was the one to fail', function() {
+    var validator = require('../lib/express_validator')();
+    var req = {
+      body: {
+        testParam: 'abc'
+      }
+    };
 
-      validator(req, {}, function() {});
-      req.check('testParam', 'Default Error Message')
-        .isInt() // should produce 'Default Error Message'
-        .isLength({ min: 2 }).withMessage('Custom Error Message');
+    validator(req, {}, function() {});
+    req.check('testParam', 'Default Error Message')
+      .isInt() // should produce 'Default Error Message'
+      .isLength({ min: 2 }).withMessage('Custom Error Message');
 
-      expect(req.validationErrors()).to.deep.equal([
-        { param: 'testParam', msg: 'Default Error Message', value: 'abc' }
-      ]);
-    });
+    expect(req.validationErrors()).to.deep.equal([
+      { param: 'testParam', msg: 'Default Error Message', value: 'abc' }
+    ]);
+  });
 });
