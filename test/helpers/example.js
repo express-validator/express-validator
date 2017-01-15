@@ -1,7 +1,7 @@
 var util = require('util'),
-    express = require('express'),
-    expressValidator = require('../../index'),
-    app = express.createServer();
+  express = require('express'),
+  expressValidator = require('../../index'),
+  app = express.createServer();
 
 app.use(express.bodyParser());
 app.use(expressValidator);
