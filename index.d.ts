@@ -1,28 +1,20 @@
 // Type definitions for express-validator 3.0.0
 // Project: https://github.com/ctavan/express-validator
-// Definitions by: Ayman Nedjmeddine <https://github.com/IOAyman>, Nathan Ridley <https://github.com/axefrog/>, Jonathan Häberle <http://dreampulse.de>, Peter Harris <https://github.com/codeanimal/>
+// Definitions by: Ayman Nedjmeddine <https://github.com/IOAyman>, Nathan Ridley <https://github.com/axefrog/>, Jonathan Häberle <http://dreampulse.de>, Peter Harris <https://github.com/codeanimal/>, Kacper Polak <kacper@hypequality.com>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 ///<reference types="express"/>
 ///<reference types="bluebird"/>
 
-// Add RequestValidation Interface on to Express's Request Interface.
-declare namespace Express {
-  interface Request extends ExpressValidator.RequestValidation {}
-}
-
 // External express-validator module.
-declare module "express-validator" {
-  import express = require('express');
-
-  /**
-   * @param options see: https://github.com/ctavan/express-validator#middleware-options
-   * @constructor
-   */
-  function ExpressValidator(options?: ExpressValidator.Options.ExpressValidatorOptions): express.RequestHandler;
-
-  export = ExpressValidator;
-}
+import express = require('express');
+export = ExpressValidatoFn;
+/**
+ * @param options see: https://github.com/ctavan/express-validator#middleware-options
+ * @constructor
+ */
+declare namespace ExpressValidatoFn{}
+declare function ExpressValidatoFn(options?: ExpressValidator.Options.ExpressValidatorOptions): express.RequestHandler;
 
 // Internal Module.
 declare namespace ExpressValidator {
@@ -37,9 +29,9 @@ declare namespace ExpressValidator {
 
   export type ValidationSchema = {
     [param: string]:
-      ExpressValidator.Options.ValidationSchemaParamOptions // standard validators
-      | // or
-      { [customValidator: string]: ExpressValidator.Options.ValidatorSchemaOptions } // custom ones
+        ExpressValidator.Options.ValidationSchemaParamOptions // standard validators
+            | // or
+            { [customValidator: string]: ExpressValidator.Options.ValidatorSchemaOptions } // custom ones
   }
 
   interface ValidatorFunction {
@@ -297,7 +289,7 @@ declare namespace ExpressValidator.Options {
   export interface ExpressValidatorOptions {
     customValidators?: { [validatorName: string]: (...value: any[]) => boolean }
     customSanitizers?: { [sanitizername: string]: (value: any) => any }
-    errorFormatter?: (param: string, msg: string, value: any) => {param: string, msg: string, value: any}
+    errorFormatter?: (param: string, msg: string, value: any) => any
   }
 
 
@@ -520,5 +512,11 @@ declare namespace ExpressValidator.Options {
     yahoo_remove_subaddress?: boolean
     icloud_lowercase?: boolean
     icloud_remove_subaddress?: boolean
+  }
+}
+// Add RequestValidation Interface on to Express's Request Interface.
+declare global {
+  namespace Express {
+    export interface Request extends ExpressValidator.RequestValidation {}
   }
 }
