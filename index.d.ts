@@ -1,6 +1,6 @@
 // Type definitions for express-validator 3.0.0
 // Project: https://github.com/ctavan/express-validator
-// Definitions by: Ayman Nedjmeddine <https://github.com/IOAyman>, Nathan Ridley <https://github.com/axefrog/>, Jonathan Häberle <http://dreampulse.de>, Peter Harris <https://github.com/codeanimal/>
+// Definitions by: Ayman Nedjmeddine <https://github.com/IOAyman>, Nathan Ridley <https://github.com/axefrog/>, Jonathan Häberle <http://dreampulse.de>, Peter Harris <https://github.com/codeanimal/>, Kacper Polak <kacper@hypequality.com>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 ///<reference types="express"/>
@@ -297,7 +297,7 @@ declare namespace ExpressValidator.Options {
   export interface ExpressValidatorOptions {
     customValidators?: { [validatorName: string]: (...value: any[]) => boolean }
     customSanitizers?: { [sanitizername: string]: (value: any) => any }
-    errorFormatter?: (param: string, msg: string, value: any) => {param: string, msg: string, value: any}
+    errorFormatter?: (param?: string, msg?: string, value?: any) => any
   }
 
 
