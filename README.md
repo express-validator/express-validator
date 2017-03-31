@@ -133,7 +133,7 @@ app.use(expressValidator({
 }));
 ```
 
-####`customValidators`
+#### `customValidators`
 _{ "validatorName": function(value, [additional arguments]), ... }_
 
 
@@ -158,7 +158,7 @@ Use them with their validator name:
 req.checkBody('users', 'Users must be an array').isArray();
 req.checkQuery('time', 'Time must be an integer great than or equal to 5').isInt().gte(5)
 ```
-####`customSanitizers`
+#### `customSanitizers`
 _{ "sanitizerName": function(value, [additional arguments]), ... }_
 
 The `customSanitizers` option can be used to add additional sanitizers methods as needed. This option should be an `Object` defining the sanitizer names and associated functions.
