@@ -40,7 +40,7 @@ var util = require('util'),
     expressValidator = require('express-validator'),
     app = express();
 
-app.use(bodyParser.json());
+app.use(bodyParser.bodyParser({ extended: true }));
 app.use(expressValidator([options])); // this line must be immediately after any of the bodyParser middlewares!
 
 app.post('/:urlparam', function(req, res) {
@@ -77,8 +77,8 @@ app.post('/:urlparam', function(req, res) {
     }
     res.json({
       urlparam: req.params.urlparam,
-      getparam: req.params.getparam,
-      postparam: req.params.postparam
+      getparam: req.query.getparam,
+      postparam: req.body.postparam
     });
   });
 });
