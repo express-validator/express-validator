@@ -26,6 +26,8 @@ app.use((req: express.Request, res: express.Response, next: express.NextFunction
     .toFloat()
     .toInt().toInt(10)
     .toBoolean().toBoolean(true)
+    .trim()
+    .ltrim().rtrim()
     .trim('')
     .ltrim('').rtrim('')
     .stripLow().stripLow(true)
