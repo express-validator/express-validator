@@ -262,9 +262,9 @@ declare namespace ExpressValidator {
      * Trim characters (whitespace by default) from both sides of the input.
      * @param chars Defaults to whitespace
      */
-    trim(chars: string): Sanitizer;
-    ltrim(chars: string): Sanitizer;
-    rtrim(chars: string): Sanitizer;
+    trim(chars?: string): Sanitizer;
+    ltrim(chars?: string): Sanitizer;
+    rtrim(chars?: string): Sanitizer;
     /**
      * Remove characters with a numerical value < 32 and 127, mostly control characters.
      * Unicode-safe in JavaScript.
