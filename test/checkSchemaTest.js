@@ -28,6 +28,13 @@ var schema = {
       errorMessage: errorMsg
     }
   },
+  testheader: {
+    in: 'headers',
+    notEmpty: true,
+      isInt: {
+        errorMessage: errorMsg
+      }
+  },
   testquery: {
     in: 'query',
     notEmpty: true,
