@@ -10,16 +10,17 @@
 declare namespace Express {
   interface Request extends ExpressValidator.RequestValidation {}
 }
+
+// External express-validator module.
+declare module "express-validator" {
   import express = require('express');
 
   /**
    * @param options see: https://github.com/ctavan/express-validator#middleware-options
    * @constructor
    */
-  declare function ExpressValidator(options?: ExpressValidator.Options.ExpressValidatorOptions): express.RequestHandler;
-
-  export = ExpressValidator;
-
+  export function ExpressValidator(options?: ExpressValidator.Options.ExpressValidatorOptions): express.RequestHandler;  
+}
 // Internal Module.
 declare namespace ExpressValidator {
 
