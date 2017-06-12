@@ -5,25 +5,19 @@
 
 ///<reference types="express"/>
 ///<reference types="bluebird"/>
-
+import * as express from 'express';
 // Add RequestValidation Interface on to Express's Request Interface.
-declare namespace Express {
-  interface Request extends ExpressValidator.RequestValidation {}
+declare global {
+  namespace Express {
+    interface Request extends ExpressValidator.RequestValidation { }
+  }
 }
-
-// External express-validator module.
-declare module "express-validator" {
-  import express = require('express');
-
-  /**
-   * @param options see: https://github.com/ctavan/express-validator#middleware-options
-   * @constructor
-   */
-  function ExpressValidator(options?: ExpressValidator.Options.ExpressValidatorOptions): express.RequestHandler;
-
-  export = ExpressValidator;
-}
-
+/**
+ * @param options see: https://github.com/ctavan/express-validator#middleware-options
+ * @constructor
+ */
+declare function ExpressValidator(options?: ExpressValidator.Options.ExpressValidatorOptions): express.RequestHandler;
+export = ExpressValidator;
 // Internal Module.
 declare namespace ExpressValidator {
 
