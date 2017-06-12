@@ -12,6 +12,7 @@ declare global {
     interface Request extends ExpressValidator.RequestValidation { }
   }
 }
+export as namespace ExpressValidator;
 /**
  * @param options see: https://github.com/ctavan/express-validator#middleware-options
  * @constructor
@@ -31,9 +32,9 @@ declare namespace ExpressValidator {
 
   export type ValidationSchema = {
     [param: string]:
-      ExpressValidator.Options.ValidationSchemaParamOptions // standard validators
-      | // or
-      { [customValidator: string]: ExpressValidator.Options.ValidatorSchemaOptions } // custom ones
+    ExpressValidator.Options.ValidationSchemaParamOptions // standard validators
+    | // or
+    { [customValidator: string]: ExpressValidator.Options.ValidatorSchemaOptions } // custom ones
   }
 
   interface ValidatorFunction {
