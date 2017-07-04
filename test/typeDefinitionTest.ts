@@ -1,4 +1,4 @@
-import * as validator from '../lib/express_validator'
+import * as validator from '..'
 import * as express from 'express'
 const app = express();
 
