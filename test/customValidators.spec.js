@@ -62,7 +62,7 @@ describe('Custom validators', () => {
 
     expressValidator({
       customValidators: {
-        usernameAvailable: value => Promise.reject()
+        usernameAvailable: () => Promise.reject()
       }
     })(req, {}, () => {});
 

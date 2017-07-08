@@ -73,7 +73,7 @@ describe('General', () => {
 
       expressValidator({
         customValidators: {
-          available: value => Promise.reject()
+          available: () => Promise.reject()
         }
       })(req, {}, () => {});
 
@@ -97,7 +97,7 @@ describe('General', () => {
 
       expressValidator({
         customValidators: {
-          available: value => Promise.reject()
+          available: () => Promise.reject()
         }
       })(req, {}, () => {});
 
