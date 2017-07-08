@@ -46,7 +46,7 @@
     "mocha": "2.2.4",
     "nyc": "8.4.0",
     "supertest": "0.15.0",
-    "typescript": "~2.0.10"
+    "typescript": "^2.3.4"
   },
   "keywords": [
     "express",
