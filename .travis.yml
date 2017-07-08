@@ -2,10 +2,10 @@ sudo: false
 language: node_js
 node_js:
   # LTS
-  - "4.7"
-  - "6.9"
+  - "4"
+  - "6"
   # Current version
-  - "7"
+  - "8"
 before_install:
   - npm install -g npm
 install:
