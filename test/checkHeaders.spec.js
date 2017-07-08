@@ -1,5 +1,5 @@
-const { expect } = require('chai');
-const { checkObjectSpec } = require('./spec-helpers');
+const expect = require('chai').expect;
+const checkObjectSpec = require('./spec-helpers').checkObjectSpec;
 const expressValidator = require('..');
 
 describe('req.checkHeaders()', () => {

@@ -1,5 +1,5 @@
-const { expect } = require('chai');
-const { sanitizeObjectSpec } = require('./spec-helpers');
+const expect = require('chai').expect;
+const sanitizeObjectSpec = require('./spec-helpers').sanitizeObjectSpec;
 const expressValidator = require('..');
 
 describe('req.sanitizeHeaders()', () => {

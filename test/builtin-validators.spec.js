@@ -1,4 +1,4 @@
-const { expect } = require('chai');
+const expect = require('chai').expect;
 const expressValidator = require('..');
 
 describe('Built-ins', () => {
