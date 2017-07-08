@@ -1,6 +1,5 @@
 var chai = require('chai');
 var expect = chai.expect;
-var Promise = require('bluebird');
 
 describe('#validatorReturn()', function() {
   before(function() {
