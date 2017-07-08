@@ -14,6 +14,6 @@
     "strictNullChecks": true,
     "outDir": "./build"
   },
-  "files": [ "index.d.ts", "./test/typeDefinitionTest.ts" ],
+  "files": [ "index.d.ts", "./test/type-definition.spec.ts" ],
   "exclude": [ "node_modules", "coverage" ]
 }
