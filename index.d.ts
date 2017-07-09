@@ -184,11 +184,11 @@ declare namespace ExpressValidator {
     /**
      * @param date Optional. Default to now.
      */
-    isAfter(date?: Date): Validator;
+    isAfter(date?: string): Validator;
     /**
      * @param date Optional. Default to now.
      */
-    isBefore(date?: Date): Validator;
+    isBefore(date?: string): Validator;
     isIn(options: string | string[]): Validator;
     isCreditCard(): Validator;
     isISIN(): Validator;
