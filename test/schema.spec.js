@@ -96,4 +96,24 @@ describe('Schema validation', () => {
       expect(result.mapped()).to.eql({});
     });
   });
+
+  it('ignores validators which values are falsy', () => {
+    const req = {
+      body: {
+        int: 'asd',
+        upper: 'qwe'
+      }
+    };
+
+    expressValidator()(req, {}, () => {});
+    req.check({
+      int: { isInt: true },
+      upper: { isUppercase: false }
+    });
+
+    return req.getValidationResult().then(result => {
+      expect(result.mapped()).to.have.property('int');
+      expect(result.mapped()).to.not.have.property('upper');
+    });
+  });
 });
