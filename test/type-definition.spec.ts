@@ -4,7 +4,10 @@ const app = express();
 
 
 app.use(validator({
-  customValidators: { isAwesomeLib: (value: any, param: any) => value == param },
+  customValidators: {
+    isAwesomeLib: (value: any, param: any) => value == param,
+    isAsync: () => Promise.resolve(true)
+  },
   customSanitizers: { toAwesome: (lib: any) => [lib] },
   errorFormatter: (param: string, msg: string, value: any) => ({ param, msg, value })
 }));
