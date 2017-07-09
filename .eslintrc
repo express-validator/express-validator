@@ -4,6 +4,9 @@
     "browser": true,
     "node": true
   },
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
   "globals": {},
   "rules": {
     "dot-notation": "off",
