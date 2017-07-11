@@ -2,6 +2,13 @@ import * as validator from '..'
 import * as express from 'express'
 const app = express();
 
+// customValidators defined right below
+declare module '..' {
+  export interface Validator {
+    isAwesomeLib(): Validator;
+    isAsync(): Validator;
+  }
+}
 
 app.use(validator({
   customValidators: {
@@ -115,6 +122,8 @@ app.use((req: express.Request, res: express.Response, next: express.NextFunction
 
 
   req.check('param', 'message')
+    .isAwesomeLib()
+    .isAsync()
     .isEmail().isEmail({ allow_display_name: true, allow_utf8_local_part: true, require_tld: true })
     .isURL({
       protocols: ['http', 'https', 'ftp'],
