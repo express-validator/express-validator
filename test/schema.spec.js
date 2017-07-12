@@ -28,6 +28,7 @@ describe('Schema validation', () => {
   };
 
   checkObject('body');
+  checkObject('cookies');
   checkObject('headers');
   checkObject('params');
   checkObject('query');
