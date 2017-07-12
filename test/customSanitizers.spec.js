@@ -29,6 +29,24 @@ describe('Custom sanitizers', () => {
     expect(req.body.foobar).to.equal('foo');
   });
 
+  it('are appended to existing custom validators built by another middleware instance on the same app', () => {
+    const req = {};
+    expressValidator({
+      customSanitizers: {
+        toFoo: () => 'foo'
+      }
+    })(req, {}, () => {});
+
+    expressValidator({
+      customSanitizers: {
+        toBar: () => 'bar'
+      }
+    })(req, {}, () => {});
+
+    expect(req.sanitize('foo')).to.have.property('toFoo').and.to.be.a('function');
+    expect(req.sanitize('foo')).to.have.property('toBar').and.to.be.a('function');
+  });
+
   it('are not shared across apps', () => {
     const req1 = {};
     expressValidator({

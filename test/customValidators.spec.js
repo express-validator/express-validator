@@ -36,6 +36,24 @@ describe('Custom validators', () => {
     });
   });
 
+  it('are appended to existing custom validators built by another middleware instance on the same app', () => {
+    const req = {};
+    expressValidator({
+      customValidators: {
+        isFoo: () => true
+      }
+    })(req, {}, () => {});
+
+    expressValidator({
+      customValidators: {
+        isBar: () => true
+      }
+    })(req, {}, () => {});
+
+    expect(req.check('foo')).to.have.property('isFoo').and.to.be.a('function');
+    expect(req.check('foo')).to.have.property('isBar').and.to.be.a('function');
+  });
+
   it('are not shared across apps', () => {
     const req1 = {};
     expressValidator({
