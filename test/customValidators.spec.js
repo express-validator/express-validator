@@ -90,4 +90,35 @@ describe('Custom validators', () => {
       expect(result.mapped()).to.have.deep.property('username.msg', 'username taken');
     });
   });
+
+  it('work with schemas', () => {
+    const req = {
+      body: { foo: 'foo', foo2: 'FoO', foo3: 'bar!' }
+    };
+
+    expressValidator({
+      customValidators: {
+        isFoo: (val, options = {}) => {
+          const checkedVal = options.caseInsensitive ? val.toLowerCase() : val;
+          return checkedVal === 'foo';
+        }
+      }
+    })(req, {}, () => {});
+
+    req.check({
+      foo: { isFoo: true },
+      foo2: {
+        isFoo: {
+          options: { caseInsensitive: true }
+        }
+      },
+      foo3: { isFoo: true }
+    });
+
+    return req.getValidationResult().then(result => {
+      expect(result.mapped()).to.not.have.property('foo');
+      expect(result.mapped()).to.not.have.property('foo2');
+      expect(result.mapped()).to.have.property('foo3');
+    });
+  });
 });
