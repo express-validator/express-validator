@@ -98,8 +98,8 @@ describe('Custom validators', () => {
 
     expressValidator({
       customValidators: {
-        isFoo: (val, options = {}) => {
-          const checkedVal = options.caseInsensitive ? val.toLowerCase() : val;
+        isFoo: (val, options) => {
+          const checkedVal = options && options.caseInsensitive ? val.toLowerCase() : val;
           return checkedVal === 'foo';
         }
       }
