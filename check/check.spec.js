@@ -141,6 +141,19 @@ describe('low-level check middleware', () => {
         });
       });
     });
+
+    it('are kept from other middleware calls', () => {
+      const req = {
+        query: { foo: '123', bar: 'BAR' }
+      };
+
+      return Promise.all([
+        check('foo', ['query']).isAlpha()(req, {}, () => {}),
+        check('bar', ['query']).isInt()(req, {}, () => {})
+      ]).then(() => {
+        expect(req._validationErrors).to.have.length(2);
+      });
+    });
   });
 
   describe('error messages', () => {

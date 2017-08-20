@@ -42,7 +42,7 @@ module.exports = (fields, locations) => {
     });
 
     return Promise.all(promises).then(() => {
-      req._validationErrors = validationErrors;
+      req._validationErrors = (req._validationErrors || []).concat(validationErrors);
       next();
     }, next);
   };
