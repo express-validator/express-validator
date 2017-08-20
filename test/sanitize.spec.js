@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const expressValidator = require('..');
 
-describe('req.sanitize()/req.filter()', () => {
+describe('Legacy: req.sanitize()/req.filter()', () => {
   it('has all the aliases', () => {
     const req = {};
     expressValidator()(req, {}, () => {});

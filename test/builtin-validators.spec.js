@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const expressValidator = require('..');
 
-describe('Built-ins', () => {
+describe('Legacy: Built-ins', () => {
   describe('validator .notEmpty()', () => {
     const req = {
       params: { foo: '' }

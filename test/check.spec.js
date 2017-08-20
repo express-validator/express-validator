@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const expressValidator = require('..');
 
-describe('req.check()/req.assert()/req.validate()', () => {
+describe('Legacy: req.check()/req.assert()/req.validate()', () => {
   it('has all the aliases', () => {
     const req = {};
     expressValidator()(req, {}, () => {});

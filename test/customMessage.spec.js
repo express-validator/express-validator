@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const expressValidator = require('..');
 
-describe('Message customization', () => {
+describe('Legacy: Message customization', () => {
   const checkObject = checkedObject => {
     const methodName = 'check' + checkedObject[0].toUpperCase() + checkedObject.substr(1);
 

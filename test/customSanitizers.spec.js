@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const expressValidator = require('..');
 
-describe('Custom sanitizers', () => {
+describe('Legacy: Custom sanitizers', () => {
   it('exist in the sanitizer chain', () => {
     const req = {};
     expressValidator({

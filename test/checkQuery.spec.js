@@ -1,5 +1,5 @@
 const checkObjectSpec = require('./spec-helpers').checkObjectSpec;
 
-describe('req.checkQuery()', () => {
+describe('Legacy: req.checkQuery()', () => {
   checkObjectSpec('query');
 });

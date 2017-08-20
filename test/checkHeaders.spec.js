@@ -2,7 +2,7 @@ const expect = require('chai').expect;
 const checkObjectSpec = require('./spec-helpers').checkObjectSpec;
 const expressValidator = require('..');
 
-describe('req.checkHeaders()', () => {
+describe('Legacy: req.checkHeaders()', () => {
   checkObjectSpec('headers');
 
   it('checks "referrer" as alias to "referer"', () => {

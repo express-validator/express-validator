@@ -1,5 +1,5 @@
 const checkObjectSpec = require('./spec-helpers').checkObjectSpec;
 
-describe('req.checkParams()', () => {
+describe('Legacy: req.checkParams()', () => {
   checkObjectSpec('params');
 });

@@ -1,5 +1,5 @@
 const sanitizeObjectSpec = require('./spec-helpers').sanitizeObjectSpec;
 
-describe('req.sanitizeParams()', () => {
+describe('Legacy: req.sanitizeParams()', () => {
   sanitizeObjectSpec('params');
 });

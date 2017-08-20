@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const expressValidator = require('..');
 
-describe('Schema validation', () => {
+describe('Legacy: Schema validation', () => {
   const checkObject = checkedObject => {
     const methodName = 'check' + checkedObject[0].toUpperCase() + checkedObject.substr(1);
 

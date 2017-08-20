@@ -2,7 +2,7 @@ const expect = require('chai').expect;
 const sanitizeObjectSpec = require('./spec-helpers').sanitizeObjectSpec;
 const expressValidator = require('..');
 
-describe('req.sanitizeHeaders()', () => {
+describe('Legacy: req.sanitizeHeaders()', () => {
   sanitizeObjectSpec('headers');
 
   it('sanitizes "referrer" as alias to "referer"', () => {

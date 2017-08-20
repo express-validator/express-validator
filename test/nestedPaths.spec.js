@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const expressValidator = require('..');
 
-describe('Nested paths', () => {
+describe('Legacy: Nested paths', () => {
   const checkDotNotation = checkedObject => {
     const methodName = 'check' + checkedObject[0].toUpperCase() + checkedObject.substr(1);
 
