@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const checkBody = require('./check-body');
 
-describe('checkBody middleware', () => {
+describe('check: checkBody middleware', () => {
   it('checks only the body location', () => {
     const req = {
       body: { foo: 'asd' },

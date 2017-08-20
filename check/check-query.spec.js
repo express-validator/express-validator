@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const checkQuery = require('./check-query');
 
-describe('checkQuery middleware', () => {
+describe('check: checkQuery middleware', () => {
   it('checks only the query location', () => {
     const req = {
       body: { foo: 'asd' },

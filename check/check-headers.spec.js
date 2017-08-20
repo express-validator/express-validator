@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const checkHeaders = require('./check-headers');
 
-describe('checkHeaders middleware', () => {
+describe('check: checkHeaders middleware', () => {
   it('checks only the params location', () => {
     const req = {
       body: { foo: 'asd' },

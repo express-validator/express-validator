@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const checkAll = require('./check-all');
 
-describe('checkAll middleware', () => {
+describe('check: checkAll middleware', () => {
   it('checks body', () => {
     const req = {
       body: { foo: 'asd' },

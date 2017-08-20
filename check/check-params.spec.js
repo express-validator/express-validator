@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const checkParams = require('./check-params');
 
-describe('checkParams middleware', () => {
+describe('check: checkParams middleware', () => {
   it('checks only the params location', () => {
     const req = {
       body: { foo: 'asd' },

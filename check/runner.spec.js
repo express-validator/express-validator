@@ -2,7 +2,7 @@ const validator = require('validator');
 const expect = require('chai').expect;
 const runner = require('./runner');
 
-describe('Validation context runner', () => {
+describe('check: context runner', () => {
   describe('validation errors', () => {
     it('contain the location, path, value and message', () => {
       const req = {

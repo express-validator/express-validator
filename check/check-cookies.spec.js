@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const checkCookies = require('./check-cookies');
 
-describe('checkCookies middleware', () => {
+describe('check: checkCookies middleware', () => {
   it('checks only the cookies location', () => {
     const req = {
       body: { foo: 'asd' },

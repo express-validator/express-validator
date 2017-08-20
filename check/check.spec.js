@@ -2,7 +2,7 @@ const validator = require('validator');
 const expect = require('chai').expect;
 const check = require('./check');
 
-describe('low-level check middleware', () => {
+describe('check: low-level middleware', () => {
   it('returns chain with all validator\'s validation methods', () => {
     const chain = check('foo', []);
     Object.keys(validator)
