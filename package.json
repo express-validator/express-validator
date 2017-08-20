@@ -30,9 +30,7 @@
     "node": ">= 0.10"
   },
   "dependencies": {
-    "@types/bluebird": "^3.4.0",
     "@types/express": "~4.0.34",
-    "bluebird": "^3.4.0",
     "lodash": "^4.16.0",
     "validator": "~6.2.0"
   },
