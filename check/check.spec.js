@@ -16,36 +16,6 @@ describe('low-level check middleware', () => {
     expect(chain).to.have.property('matches');
   });
 
-  describe('validators', () => {
-    it('receive value and request when is a custom', () => {
-      const req = {
-        body: { foo: 'wut', bar: '123', suffix: '4' }
-      };
-
-      const middleware = check(['foo', 'bar'], ['body']).custom((value, req) => {
-        return /^\d+$/.test(value + req.body.suffix);
-      });
-
-      return middleware(req, {}, () => {}).then(() => {
-        expect(req._validationErrors[0]).to.have.property('path', 'foo');
-      });
-    });
-
-    it('receive value and options when is a default', () => {
-      const req = {
-        query: { withzero: '0123', withoutzero: '123' }
-      };
-
-      const middleware = check(['withzero', 'withoutzero'], ['query']).isInt({
-        allow_leading_zeroes: false
-      });
-
-      return middleware(req, {}, () => {}).then(() => {
-        expect(req._validationErrors[0].path).to.equal('withzero');
-      });
-    });
-  });
-
   describe('fields selection', () => {
     it('is done in all given request locations', () => {
       const req = {
@@ -107,41 +77,6 @@ describe('low-level check middleware', () => {
       });
     });
 
-    it('contain the location, path, value and message', () => {
-      const req = {
-        params: { foo: 'not_email_params' },
-        query: { foo: 'not_email_query' },
-        body: { foo: 'not_email_body' }
-      };
-
-      return check('foo', [
-        'params',
-        'query',
-        'body'
-      ]).isEmail()(req, {}, () => {}).then(() => {
-        expect(req._validationErrors).to.deep.include({
-          location: 'params',
-          path: 'foo',
-          value: 'not_email_params',
-          message: 'Invalid value'
-        });
-
-        expect(req._validationErrors).to.deep.include({
-          location: 'body',
-          path: 'foo',
-          value: 'not_email_body',
-          message: 'Invalid value'
-        });
-
-        expect(req._validationErrors).to.deep.include({
-          location: 'query',
-          path: 'foo',
-          value: 'not_email_query',
-          message: 'Invalid value'
-        });
-      });
-    });
-
     it('are kept from other middleware calls', () => {
       const req = {
         query: { foo: '123', bar: 'BAR' }
@@ -152,68 +87,6 @@ describe('low-level check middleware', () => {
         check('bar', ['query']).isInt()(req, {}, () => {})
       ]).then(() => {
         expect(req._validationErrors).to.have.length(2);
-      });
-    });
-  });
-
-  describe('error messages', () => {
-    it('are by default "Invalid value"', () => {
-      const req = {
-        query: { foo: 'aa' }
-      };
-
-      return check('foo', ['query']).isInt()(req, {}, () => {}).then(() => {
-        expect(req._validationErrors[0]).to.have.property('message', 'Invalid value');
-      });
-    });
-
-    it('use validator\'s exception message', () => {
-      const req = {
-        query: { foo: 'foo' }
-      };
-
-      const middleware = check('foo', ['query']).custom(() => {
-        throw new Error('wat');
-      });
-
-      return middleware(req, {}, () => {}).then(() => {
-        expect(req._validationErrors[0]).to.have.property('message', 'wat');
-      });
-    });
-
-    it('are overwritten for the last validator by .withMessage() chain method', () => {
-      const req = {
-        query: { foo: 123, bar: 'not int' }
-      };
-
-      const middleware = check(['foo', 'bar'], ['query'])
-        .isInt()
-        .custom(value => {
-          throw new Error('wat');
-        })
-        .withMessage('wut!');
-
-      return middleware(req, {}, () => {}).then(() => {
-        expect(req._validationErrors).to.deep.include({
-          path: 'foo',
-          value: 123,
-          location: 'query',
-          message: 'wut!'
-        });
-
-        expect(req._validationErrors).to.deep.include({
-          path: 'bar',
-          value: 'not int',
-          location: 'query',
-          message: 'Invalid value'
-        });
-
-        expect(req._validationErrors).to.deep.include({
-          path: 'bar',
-          value: 'not int',
-          location: 'query',
-          message: 'wut!'
-        });
       });
     });
   });
