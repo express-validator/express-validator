@@ -1,6 +1,6 @@
 exports.check = require('./check-all');
-exports.checkBody = require('./check-body');
-exports.checkCookies = require('./check-cookies');
-exports.checkHeaders = require('./check-headers');
-exports.checkParams = require('./check-params');
-exports.checkQuery = require('./check-query');
+exports.body = require('./check-body');
+exports.cookies = require('./check-cookies');
+exports.headers = require('./check-headers');
+exports.params = require('./check-params');
+exports.query = require('./check-query');
