@@ -8,7 +8,7 @@ describe('check: checkBody middleware', () => {
       cookies: { foo: 'asd' },
       params: { foo: 'asd' },
       query: { foo: 'asd' },
-      get: () => 'asd'
+      get: { headers: 'asd' }
     };
 
     return checkBody('foo').isInt()(req, {}, () => {}).then(() => {

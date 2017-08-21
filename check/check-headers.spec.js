@@ -8,7 +8,7 @@ describe('check: checkHeaders middleware', () => {
       cookies: { foo: 'asd' },
       params: { foo: 'asd' },
       query: { foo: 'asd' },
-      get: () => 'asd'
+      headers: { Foo: 'asd' }
     };
 
     return checkHeaders('foo').isInt()(req, {}, () => {}).then(() => {

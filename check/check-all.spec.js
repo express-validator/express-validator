@@ -4,8 +4,7 @@ const checkAll = require('./check-all');
 describe('check: checkAll middleware', () => {
   it('checks body', () => {
     const req = {
-      body: { foo: 'asd' },
-      get () {}
+      body: { foo: 'asd' }
     };
 
     return checkAll('foo').isInt()(req, {}, () => {}).then(() => {
@@ -15,8 +14,7 @@ describe('check: checkAll middleware', () => {
 
   it('checks query', () => {
     const req = {
-      query: { foo: 'asd' },
-      get () {}
+      query: { foo: 'asd' }
     };
 
     return checkAll('foo').isInt()(req, {}, () => {}).then(() => {
@@ -26,8 +24,7 @@ describe('check: checkAll middleware', () => {
 
   it('checks params', () => {
     const req = {
-      params: { foo: 'asd' },
-      get () {}
+      params: { foo: 'asd' }
     };
 
     return checkAll('foo').isInt()(req, {}, () => {}).then(() => {
@@ -37,8 +34,7 @@ describe('check: checkAll middleware', () => {
 
   it('checks cookies', () => {
     const req = {
-      cookies: { foo: 'asd' },
-      get () {}
+      cookies: { foo: 'asd' }
     };
 
     return checkAll('foo').isInt()(req, {}, () => {}).then(() => {
@@ -48,7 +44,7 @@ describe('check: checkAll middleware', () => {
 
   it('checks headers', () => {
     const req = {
-      get: () => 'asd'
+      headers: { Foo: 'asd' }
     };
 
     return checkAll('foo').isInt()(req, {}, () => {}).then(() => {
@@ -62,7 +58,7 @@ describe('check: checkAll middleware', () => {
       cookies: { foo: 'asd' },
       params: { foo: 'asd' },
       query: { foo: 'asd' },
-      get: () => 'asd'
+      headers: { foo: 'asd' }
     };
 
     return checkAll('foo').isInt()(req, {}, () => {}).then(() => {

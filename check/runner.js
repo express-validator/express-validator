@@ -1,21 +1,8 @@
-const get = require('lodash.get');
+const selectFields = require('./select-fields');
 
 module.exports = (req, context) => {
   const validationErrors = [];
-  const allFields = [];
-  const { locations } = context;
-
-  context.fields.forEach(field => locations.forEach(location => {
-    allFields.push({
-      location,
-      path: field,
-      value: location === 'headers' ? req.get(field) : get(req[location], field)
-    });
-  }));
-
-  const promises = allFields.filter(field => {
-    return locations.length > 1 ? field.value !== undefined : true;
-  }).map(field => {
+  const promises = selectFields(req, context).map(field => {
     return context.validators.reduce((promise, validatorCfg) => promise.then(() => {
       const result = validatorCfg.custom ?
         validatorCfg.validator(field.value, req) :

@@ -8,7 +8,7 @@ describe('check: checkQuery middleware', () => {
       cookies: { foo: 'asd' },
       params: { foo: 'asd' },
       query: { foo: 'asd' },
-      get: () => 'asd'
+      get: { headers: 'asd' }
     };
 
     return checkQuery('foo').isInt()(req, {}, () => {}).then(() => {

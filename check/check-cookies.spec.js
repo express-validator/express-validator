@@ -8,7 +8,7 @@ describe('check: checkCookies middleware', () => {
       cookies: { foo: 'asd' },
       params: { foo: 'asd' },
       query: { foo: 'asd' },
-      get: () => 'asd'
+      headers: { foo: 'asd' }
     };
 
     return checkCookies('foo').isInt()(req, {}, () => {}).then(() => {
