@@ -70,6 +70,24 @@ describe('check: context runner', () => {
       });
     });
 
+    it('use context\'s message', () => {
+      const req = {
+        query: { foo: 'foo' }
+      };
+
+      return runner(req, {
+        message: 'wawat',
+        locations: ['query'],
+        fields: ['foo'],
+        validators: [{
+          validator: () => false,
+          options: []
+        }]
+      }).then(errors => {
+        expect(errors[0]).to.have.property('message', 'wawat');
+      });
+    });
+
     it('are overwritten via custom validator message', () => {
       const req = {
         query: { foo: 123, bar: 'not int' }

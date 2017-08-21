@@ -10,7 +10,7 @@ module.exports = (req, context) => {
 
       return Promise.resolve(result).then(result => {
         if (!result) {
-          throw new Error('Invalid value');
+          throw new Error(context.message || 'Invalid value');
         }
       });
     }).catch(err => {
