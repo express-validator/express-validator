@@ -16,6 +16,26 @@ describe('check: low-level middleware', () => {
     expect(chain).to.have.property('matches');
   });
 
+  describe('.optional()', () => {
+    it('sets optional flag in context', () => {
+      const chain = check('foo', []).optional();
+      expect(chain._context).to.have.property('optional');
+    });
+  });
+
+  describe('.withMessage()', () => {
+    it('sets error message for last validator', () => {
+      const chain = check('foo', [])
+        .isUppercase()
+        .isEmail()
+        .withMessage('wat');
+
+      const { validators } = chain._context;
+      expect(validators).to.not.have.deep.property('[0].message');
+      expect(validators).to.have.deep.property('[1].message', 'wat');
+    });
+  });
+
   describe('validation errors', () => {
     it('are pushed to req._validationErrors', () => {
       const req = {

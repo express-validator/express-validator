@@ -5,6 +5,7 @@ const runner = require('./runner');
 const extraValidators = ['contains', 'equals', 'matches'];
 
 module.exports = (fields, locations) => {
+  let optional;
   const validators = [];
   fields = Array.isArray(fields) ? fields : [fields];
 
@@ -28,6 +29,11 @@ module.exports = (fields, locations) => {
       };
     });
 
+  middleware.optional = (options = {}) => {
+    optional = options;
+    return middleware;
+  };
+
   middleware.custom = validator => {
     validators.push({
       validator,
@@ -43,6 +49,9 @@ module.exports = (fields, locations) => {
   };
 
   middleware._context = {
+    get optional () {
+      return optional;
+    },
     fields,
     locations,
     validators

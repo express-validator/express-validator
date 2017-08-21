@@ -70,7 +70,7 @@ describe('check: context runner', () => {
       });
     });
 
-    it('are overwritten for the last validator by .withMessage() chain method', () => {
+    it('are overwritten via custom validator message', () => {
       const req = {
         query: { foo: 123, bar: 'not int' }
       };
