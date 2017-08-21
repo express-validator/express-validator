@@ -4,7 +4,7 @@ const runner = require('./runner');
 
 const extraValidators = ['contains', 'equals', 'matches'];
 
-module.exports = (fields, locations) => {
+module.exports = (fields, locations, message) => {
   let optional;
   const validators = [];
   fields = Array.isArray(fields) ? fields : [fields];
@@ -52,6 +52,7 @@ module.exports = (fields, locations) => {
     get optional () {
       return optional;
     },
+    message,
     fields,
     locations,
     validators

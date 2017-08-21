@@ -1,2 +1,2 @@
 const check = require('./check');
-module.exports = fields => check(fields, ['params']);
+module.exports = (fields, message) => check(fields, ['params'], message);

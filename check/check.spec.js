@@ -16,6 +16,18 @@ describe('check: low-level middleware', () => {
     expect(chain).to.have.property('matches');
   });
 
+  it('is built with field search locations set via 2rd arg', () => {
+    const chain = check('foo', ['foo', 'bar']);
+    expect(chain._context)
+      .to.have.property('locations')
+      .that.eqls(['foo', 'bar']);
+  });
+
+  it('is built with a context message set via 3rd arg', () => {
+    const chain = check('foo', [], 'Fail!');
+    expect(chain._context).to.have.property('message', 'Fail!');
+  });
+
   describe('.optional()', () => {
     it('sets optional flag in context', () => {
       const chain = check('foo', []).optional();
