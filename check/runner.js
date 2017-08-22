@@ -3,10 +3,11 @@ const selectFields = require('./select-fields');
 module.exports = (req, context) => {
   const validationErrors = [];
   const promises = selectFields(req, context).map(field => {
+    const { location, path, value } = field;
     return context.validators.reduce((promise, validatorCfg) => promise.then(() => {
       const result = validatorCfg.custom ?
-        validatorCfg.validator(field.value, req) :
-        validatorCfg.validator(String(field.value), ...validatorCfg.options);
+        validatorCfg.validator(value, { req, location, path }) :
+        validatorCfg.validator(String(value), ...validatorCfg.options);
 
       return Promise.resolve(result).then(result => {
         if (!result) {
@@ -15,9 +16,9 @@ module.exports = (req, context) => {
       });
     }).catch(err => {
       validationErrors.push({
-        location: field.location,
-        path: field.path,
-        value: field.value,
+        location,
+        path,
+        value,
         message: validatorCfg.message || err.message
       });
     }), Promise.resolve());

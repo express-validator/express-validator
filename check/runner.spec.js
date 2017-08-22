@@ -130,25 +130,25 @@ describe('check: context runner', () => {
   });
 
   describe('validators', () => {
-    it('receive value and request when is a custom', () => {
+    it('receive value, request, location and path when is a custom', () => {
       const req = {
-        body: { foo: 'wut', bar: '123', suffix: '4' }
+        body: { foo: ['wut'], bar: '123' }
       };
 
       return runner(req, {
         locations: ['body'],
-        fields: ['foo', 'bar'],
+        fields: ['foo[0]'],
         validators: [{
           custom: true,
           options: [],
-          validator (value, req) {
-            return /^\d+$/.test(value + req.body.suffix);
+          validator (value, { req, location, path }) {
+            throw new Error([value, req.body.bar, location, path].join(' '));
           }
         }]
       }).then(errors => {
         expect(errors)
           .to.have.length(1)
-          .and.to.have.deep.property('[0].path', 'foo');
+          .and.to.have.deep.property('[0].message', 'wut 123 body foo[0]');
       });
     });
 
