@@ -1,5 +1,5 @@
 const checkObjectSpec = require('./spec-helpers').checkObjectSpec;
 
-describe('req.checkCookies()', () => {
+describe('Legacy: req.checkCookies()', () => {
   checkObjectSpec('cookies');
 });

@@ -2,7 +2,6 @@ sudo: false
 language: node_js
 node_js:
   # LTS
-  - "4"
   - "6"
   # Current version
   - "8"

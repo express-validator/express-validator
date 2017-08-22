@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const expressValidator = require('..');
 
-describe('Error formatting', () => {
+describe('Legacy: Error formatting', () => {
   it('returns object { msg, value, param } by default', () => {
     const req = {
       headers: { int: 'asd' }

@@ -1,7 +1,13 @@
+# npm
+package-lock.json
 node_modules
+npm-debug.log*
+
+# Editors
 .idea
 .vscode
-npm-debug.log
+
+# Misc
 coverage
 .nyc_output
 build

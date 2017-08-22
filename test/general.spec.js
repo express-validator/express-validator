@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const expressValidator = require('..');
 
-describe('General', () => {
+describe('Legacy: General', () => {
   it('does not throw if validator returns nil', () => {
     const req = {
       body: { foo: 'bar' }

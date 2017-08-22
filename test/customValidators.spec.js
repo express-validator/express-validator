@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const expressValidator = require('..');
 
-describe('Custom validators', () => {
+describe('Legacy: Custom validators', () => {
   it('exist in the validator chain', () => {
     const req = {};
     expressValidator({

@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const expressValidator = require('..');
 
-describe('.optional()', () => {
+describe('Legacy: .optional()', () => {
   it('ignores validation if the key does not exist in the request', () => {
     const req = {
       query: {}
