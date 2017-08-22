@@ -1,0 +1,345 @@
+export type URLProtocol = 'http' | 'https' | 'ftp'
+export type UUIDVersion = 3 | 4 | 5 | 'all'
+export type IPVersion = 4 | 6
+export type AlphaLocale = 'ar' | 'ar-AE' | 'ar-BH' | 'ar-DZ' | 'ar-EG' | 'ar-IQ' | 'ar-JO' | 'ar-KW' | 'ar-LB' | 'ar-LY' | 'ar-MA' | 'ar-QA' | 'ar-QM' | 'ar-SA' | 'ar-SD' | 'ar-SY' | 'ar-TN' | 'ar-YE' | 'cs-CZ' | 'da-DK' | 'de-DE' | 'en-AU' | 'en-GB' | 'en-HK' | 'en-IN' | 'en-NZ' | 'en-US' | 'en-ZA' | 'en-ZM' | 'es-ES' | 'fr-FR' | 'hu-HU' | 'nl-NL' | 'pl-PL' | 'pt-BR' | 'pt-PT' | 'ru-RU' | 'sr-RS' | 'sr-RS@latin' | 'tr-TR' | 'uk-UA'
+export type AlphanumericLocale = 'ar' | 'ar-AE' | 'ar-BH' | 'ar-DZ' | 'ar-EG' | 'ar-IQ' | 'ar-JO' | 'ar-KW' | 'ar-LB' | 'ar-LY' | 'ar-MA' | 'ar-QA' | 'ar-QM' | 'ar-SA' | 'ar-SD' | 'ar-SY' | 'ar-TN' | 'ar-YE' | 'cs-CZ' | 'da-DK' | 'de-DE' | 'en-AU' | 'en-GB' | 'en-HK' | 'en-IN' | 'en-NZ' | 'en-US' | 'en-ZA' | 'en-ZM' | 'es-ES' | 'fr-FR' | 'fr-BE' | 'hu-HU' | 'nl-BE' | 'nl-NL' | 'pl-PL' | 'pt-BR' | 'pt-PT' | 'ru-RU' | 'sr-RS' | 'sr-RS@latin' | 'tr-TR' | 'uk-UA'
+export type MobilePhoneLocal = 'ar-DZ' | 'ar-SA' | 'ar-SY' | 'cs-CZ' | 'de-DE' | 'da-DK' | 'el-GR' | 'en-AU' | 'en-GB' | 'en-HK' | 'en-IN' | 'en-NZ' | 'en-US' | 'en-CA' | 'en-ZA' | 'en-ZM' | 'es-ES' | 'fi-FI' | 'fr-FR' | 'hu-HU' | 'it-IT' | 'ja-JP' | 'ms-MY' | 'nb-NO' | 'nn-NO' | 'pl-PL' | 'pt-PT' | 'ru-RU' | 'sr-RS' | 'tr-TR' | 'vi-VN' | 'zh-CN' | 'zh-TW'
+export type Location = 'body' | 'params' | 'query' | 'headers' // TODO add cookies if #292 is accepted
+
+export interface Validator {
+
+  /*
+    * Hi fellow contributor,
+    * TODO if you add a validator here, please add it also to ValidationSchemaParamOptions
+    * preferably in the same order/position, just to make it easier for comparision.
+    */
+
+  isEmail(options?: Options.IsEmailOptions): this;
+  isURL(options?: Options.IsURLOptions): this;
+  isMACAddress(): this;
+  /**
+   *
+   * @param version IP version number 4 or 6
+   */
+  isIP(version?: IPVersion): this;
+  isFQDN(options?: Options.IsFQDNOptions): this;
+  isBoolean(): this;
+  /**
+   * @param locale Optional. Defaults to en-US
+   */
+  isAlpha(locale?: AlphaLocale): this;
+  /**
+   * @param locale Optional. Defaults to en-US
+   */
+  isAlphanumeric(locale?: AlphanumericLocale): this;
+  isNumeric(): this;
+  isLowercase(): this;
+  isUppercase(): this;
+  isAscii(): this;
+  isFullWidth(): this;
+  isHalfWidth(): this;
+  isVariableWidth(): this;
+  isMultibyte(): this;
+  isSurrogatePair(): this;
+  isInt(options?: Options.IsIntOptions): this;
+  isFloat(options?: Options.MinMaxExtendedOptions): this;
+  isDecimal(): this;
+  isHexadecimal(): this;
+  isDivisibleBy(num: number): this;
+  isHexColor(): this;
+  isMD5(): this;
+  isJSON(): this;
+  isEmpty(): this;
+  isLength(options: Options.MinMaxOptions): this;
+  isByteLength(options: Options.MinMaxOptions): this;
+  /**
+   * @param version 3, 4, 5 or 'all'. Default is 'all'.
+   * @see http://en.wikipedia.org/wiki/Universally_unique_identifier
+   */
+  isUUID(version?: UUIDVersion): this;
+  /**
+   * @see https://docs.mongodb.com/manual/reference/bson-types/#objectid
+   */
+  isMongoId(): this;
+  isDate(): this;
+  /**
+   * @param date Optional. Default to now.
+   */
+  isAfter(date?: string): this;
+  /**
+   * @param date Optional. Default to now.
+   */
+  isBefore(date?: string): this;
+  isIn(options: string | string[]): this;
+  isCreditCard(): this;
+  isISIN(): this;
+  /**
+   * @param version
+   * @see https://en.wikipedia.org/wiki/International_Standard_Book_Number
+   */
+  isISBN(version?: number): this;
+  /**
+   * @param options
+   * @see https://en.wikipedia.org/wiki/International_Standard_Serial_Number
+   */
+  isISSN(options?: Options.IsISSNOptions): this
+  isMobilePhone(locale: MobilePhoneLocal): this;
+  isCurrency(options: Options.IsCurrencyOptions): this;
+  /**
+   * @see https://en.wikipedia.org/wiki/ISO_8601
+   */
+  isISO8601(): this;
+  /**
+   * @see https://en.wikipedia.org/wiki/Base64
+   */
+  isBase64(): this;
+  /**
+   * @see https://en.wikipedia.org/wiki/Data_URI_scheme
+   */
+  isDataURI(): this;
+  isWhitelisted(chars: string | string[]): this;
+
+
+  // Additional validators provided by validator.js
+
+  equals(equals: any): this;
+  contains(str: string): this;
+  matches(pattern: RegExp | string, modifiers?: string): this;
+
+
+  // Additional ValidatorChain.prototype.* validators
+
+  optional(options?: Options.OptionalOptions): this;
+  withMessage(message: string): this;
+}
+
+declare namespace Options {
+
+  export interface ExpressValidatorOptions {
+    customValidators?: { [validatorName: string]: (...value: any[]) => boolean | Promise<any> }
+    customSanitizers?: { [sanitizername: string]: (value: any) => any }
+    errorFormatter?: (param?: string, msg?: string, value?: any) => any
+  }
+
+
+  interface ValidatorSchemaOptions {
+    options?: any[]
+    errorMessage?: string
+  }
+
+  interface ValidationSchemaParamOptions {
+    in?: Location
+    errorMessage?: string
+
+    // Additional ValidatorChain.prototype.* validators
+    optional?: boolean | { checkFalsy: boolean }
+    notEmpty?: boolean | { errorMessage: string }
+    len?: ValidatorSchemaOptions
+
+    // exported from validator.js
+    isEmail?: ValidatorSchemaOptions
+    isURL?: ValidatorSchemaOptions
+    isMACAddress?: ValidatorSchemaOptions
+    isIP?: ValidatorSchemaOptions
+    isFQDN?: ValidatorSchemaOptions
+    isBoolean?: ValidatorSchemaOptions
+    isAlpha?: ValidatorSchemaOptions
+    isAlphanumeric?: ValidatorSchemaOptions
+    isNumeric?: ValidatorSchemaOptions
+    isLowercase?: ValidatorSchemaOptions
+    isUppercase?: ValidatorSchemaOptions
+    isAscii?: ValidatorSchemaOptions
+    isFullWidth?: ValidatorSchemaOptions
+    isHalfWidth?: ValidatorSchemaOptions
+    isVariableWidth?: ValidatorSchemaOptions
+    isMultibyte?: ValidatorSchemaOptions
+    isSurrogatePair?: ValidatorSchemaOptions
+    isInt?: ValidatorSchemaOptions
+    isFloat?: ValidatorSchemaOptions
+    isDecimal?: ValidatorSchemaOptions
+    isHexadecimal?: ValidatorSchemaOptions
+    isDivisibleBy?: ValidatorSchemaOptions
+    isHexColor?: ValidatorSchemaOptions
+    isMD5?: ValidatorSchemaOptions
+    isJSON?: ValidatorSchemaOptions
+    isEmpty?: ValidatorSchemaOptions
+    isLength?: ValidatorSchemaOptions
+    isByteLength?: ValidatorSchemaOptions
+    isUUID?: ValidatorSchemaOptions
+    isMongoId?: ValidatorSchemaOptions
+    isDate?: ValidatorSchemaOptions
+    isAfter?: ValidatorSchemaOptions
+    isBefore?: ValidatorSchemaOptions
+    isIn?: ValidatorSchemaOptions
+    isCreditCard?: ValidatorSchemaOptions
+    isISIN?: ValidatorSchemaOptions
+    isISBN?: ValidatorSchemaOptions
+    isISSN?: ValidatorSchemaOptions
+    isMobilePhone?: ValidatorSchemaOptions
+    isCurrency?: ValidatorSchemaOptions
+    isISO8601?: ValidatorSchemaOptions
+    isBase64?: ValidatorSchemaOptions
+    isDataURI?: ValidatorSchemaOptions
+    isWhitelisted?: ValidatorSchemaOptions
+
+    // Additional Validators provided by validator.js
+    equals?: ValidatorSchemaOptions
+    contains?: ValidatorSchemaOptions
+    matches?: ValidatorSchemaOptions
+  }
+
+
+  // VALIDATORS
+
+  interface MinMaxOptions {
+    min?: number;
+    max?: number;
+  }
+
+  interface MinMaxExtendedOptions extends MinMaxOptions {
+    lt?: number;
+    gt?: number;
+  }
+
+  interface IsIntOptions extends MinMaxExtendedOptions {
+    allow_leading_zeroes?: boolean;
+  }
+
+  /**
+   * defaults to
+   * {
+   *    allow_display_name: false,
+   *    require_display_name: false,
+   *    allow_utf8_local_part: true,
+   *    require_tld: true
+   * }
+   */
+  interface IsEmailOptions {
+    allow_display_name?: boolean;
+    allow_utf8_local_part?: boolean;
+    require_tld?: boolean;
+  }
+
+  /**
+   * defaults to
+   * {
+   *    protocols: ['http','https','ftp'],
+   *    require_tld: true,
+   *    require_protocol: false,
+   *    require_host: true,
+   *    require_valid_protocol: true,
+   *    allow_underscores: false,
+   *    host_whitelist: false,
+   *    host_blacklist: false,
+   *    allow_trailing_dot: false,
+   *    allow_protocol_relative_urls: false
+   * }
+   */
+  interface IsURLOptions {
+    protocols?: URLProtocol[];
+    require_tld?: boolean;
+    require_protocol?: boolean;
+    require_host?: boolean;
+    require_valid_protocol?: boolean;
+    allow_underscores?: boolean;
+    host_whitelist?: (string | RegExp)[];
+    host_blacklist?: (string | RegExp)[];
+    allow_trailing_dot?: boolean;
+    allow_protocol_relative_urls?: boolean;
+  }
+
+  /**
+   * defaults to
+   * {
+   *    require_tld: true,
+   *    allow_underscores: false,
+   *    allow_trailing_dot: false
+   * }
+   */
+  interface IsFQDNOptions {
+    require_tld?: boolean;
+    allow_underscores?: boolean;
+    allow_trailing_dot?: boolean;
+  }
+
+  /**
+   * defaults to
+   * {
+   *    case_sensitive: false,
+   *    require_hyphen: false
+   * }
+   */
+  interface IsISSNOptions {
+    case_sensitive?: boolean
+    require_hyphen?: boolean
+  }
+
+  /**
+   * defaults to
+   * {
+   *   symbol: '$',
+   *   require_symbol: false,
+   *   allow_space_after_symbol: false,
+   *   symbol_after_digits: false,
+   *   allow_negatives: true,
+   *   parens_for_negatives: false,
+   *   negative_sign_before_digits: false,
+   *   negative_sign_after_digits: false,
+   *   allow_negative_sign_placeholder: false,
+   *   thousands_separator: ',',
+   *   decimal_separator: '.',
+   *   allow_space_after_digits: false
+   * }
+   */
+  interface IsCurrencyOptions {
+    symbol?: string;
+    require_symbol?: boolean;
+    allow_space_after_symbol?: boolean;
+    symbol_after_digits?: boolean;
+    allow_negatives?: boolean;
+    parens_for_negatives?: boolean;
+    negative_sign_before_digits?: boolean;
+    negative_sign_after_digits?: boolean;
+    allow_negative_sign_placeholder?: boolean;
+    thousands_separator?: string;
+    decimal_separator?: string;
+    allow_space_after_digits?: boolean;
+  }
+
+  interface OptionalOptions {
+    checkFalsy?: boolean;
+  }
+
+
+  // SANITIZERS
+
+  /**
+   * Defaults to
+   * {
+   *   all_lowercase: true
+   *   gmail_lowercase: true
+   *   gmail_remove_dots: true
+   *   gmail_remove_subaddress: true
+   *   gmail_convert_googlemaildotcom: true
+   *   outlookdotcom_lowercase: true
+   *   outlookdotcom_remove_subaddress: true
+   *   yahoo_lowercase: true
+   *   yahoo_remove_subaddress: true
+   *   icloud_lowercase: true
+   *   icloud_remove_subaddress: true
+   * }
+   */
+  interface NormalizeEmailOptions {
+    all_lowercase?: boolean
+    gmail_lowercase?: boolean
+    gmail_remove_dots?: boolean
+    gmail_remove_subaddress?: boolean
+    gmail_convert_googlemaildotcom?: boolean
+    outlookdotcom_lowercase?: boolean
+    outlookdotcom_remove_subaddress?: boolean
+    yahoo_lowercase?: boolean
+    yahoo_remove_subaddress?: boolean
+    icloud_lowercase?: boolean
+    icloud_remove_subaddress?: boolean
+  }
+}

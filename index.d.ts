@@ -4,8 +4,8 @@
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 ///<reference types="express"/>
-///<reference types="bluebird"/>
 import * as express from 'express';
+import { Options, Validator as BaseValidator } from './shared-typings';
 // Add RequestValidation Interface on to Express's Request Interface.
 declare global {
   namespace Express {
@@ -17,7 +17,7 @@ export as namespace ExpressValidator;
  * @param options see: https://github.com/ctavan/express-validator#middleware-options
  * @constructor
  */
-declare function ExpressValidator(options?: ExpressValidator.Options.ExpressValidatorOptions): express.RequestHandler;
+declare function ExpressValidator(options?: Options.ExpressValidatorOptions): express.RequestHandler;
 export = ExpressValidator;
 // Internal Module.
 declare namespace ExpressValidator {
@@ -32,9 +32,9 @@ declare namespace ExpressValidator {
 
   export type ValidationSchema = {
     [param: string]:
-    ExpressValidator.Options.ValidationSchemaParamOptions // standard validators
+    Options.ValidationSchemaParamOptions // standard validators
     | // or
-    { [customValidator: string]: ExpressValidator.Options.ValidatorSchemaOptions } // custom ones
+    { [customValidator: string]: Options.ValidatorSchemaOptions } // custom ones
   }
 
   interface ValidatorFunction {
@@ -125,113 +125,11 @@ declare namespace ExpressValidator {
     getValidationResult(): Promise<Result>
   }
 
-  export interface Validator {
+  export interface Validator extends BaseValidator {
+    // Additional legacy validators
 
-    /*
-     * Hi fellow contributor,
-     * TODO if you add a validator here, please add it also to ValidationSchemaParamOptions
-     * preferably in the same order/position, just to make it easier for comparision.
-     */
-
-    isEmail(options?: ExpressValidator.Options.IsEmailOptions): Validator;
-    isURL(options?: ExpressValidator.Options.IsURLOptions): Validator;
-    isMACAddress(): Validator;
-    /**
-     *
-     * @param version IP version number 4 or 6
-     */
-    isIP(version?: IPVersion): Validator;
-    isFQDN(options?: ExpressValidator.Options.IsFQDNOptions): Validator;
-    isBoolean(): Validator;
-    /**
-     * @param locale Optional. Defaults to en-US
-     */
-    isAlpha(locale?: AlphaLocale): Validator;
-    /**
-     * @param locale Optional. Defaults to en-US
-     */
-    isAlphanumeric(locale?: AlphanumericLocale): Validator;
-    isNumeric(): Validator;
-    isLowercase(): Validator;
-    isUppercase(): Validator;
-    isAscii(): Validator;
-    isFullWidth(): Validator;
-    isHalfWidth(): Validator;
-    isVariableWidth(): Validator;
-    isMultibyte(): Validator;
-    isSurrogatePair(): Validator;
-    isInt(options?: ExpressValidator.Options.IsIntOptions): Validator;
-    isFloat(options?: ExpressValidator.Options.MinMaxExtendedOptions): Validator;
-    isDecimal(): Validator;
-    isHexadecimal(): Validator;
-    isDivisibleBy(num: number): Validator;
-    isHexColor(): Validator;
-    isMD5(): Validator;
-    isJSON(): Validator;
-    isEmpty(): Validator;
-    isLength(options: ExpressValidator.Options.MinMaxOptions): Validator;
-    isByteLength(options: ExpressValidator.Options.MinMaxOptions): Validator;
-    /**
-     * @param version 3, 4, 5 or 'all'. Default is 'all'.
-     * @see http://en.wikipedia.org/wiki/Universally_unique_identifier
-     */
-    isUUID(version?: UUIDVersion): Validator;
-    /**
-     * @see https://docs.mongodb.com/manual/reference/bson-types/#objectid
-     */
-    isMongoId(): Validator;
-    isDate(): Validator;
-    /**
-     * @param date Optional. Default to now.
-     */
-    isAfter(date?: string): Validator;
-    /**
-     * @param date Optional. Default to now.
-     */
-    isBefore(date?: string): Validator;
-    isIn(options: string | string[]): Validator;
-    isCreditCard(): Validator;
-    isISIN(): Validator;
-    /**
-     * @param version
-     * @see https://en.wikipedia.org/wiki/International_Standard_Book_Number
-     */
-    isISBN(version?: number): Validator;
-    /**
-     * @param options
-     * @see https://en.wikipedia.org/wiki/International_Standard_Serial_Number
-     */
-    isISSN(options?: ExpressValidator.Options.IsISSNOptions): Validator
-    isMobilePhone(locale: MobilePhoneLocal): Validator;
-    isCurrency(options: ExpressValidator.Options.IsCurrencyOptions): Validator;
-    /**
-     * @see https://en.wikipedia.org/wiki/ISO_8601
-     */
-    isISO8601(): Validator;
-    /**
-     * @see https://en.wikipedia.org/wiki/Base64
-     */
-    isBase64(): Validator;
-    /**
-     * @see https://en.wikipedia.org/wiki/Data_URI_scheme
-     */
-    isDataURI(): Validator;
-    isWhitelisted(chars: string | string[]): Validator;
-
-
-    // Additional Validators provided by validator.js
-
-    equals(equals: any): Validator;
-    contains(str: string): Validator;
-    matches(pattern: RegExp | string, modifiers?: string): Validator;
-
-
-    // Additional ValidatorChain.prototype.* validators
-
-    notEmpty(): Validator;
-    len(options: ExpressValidator.Options.MinMaxOptions): Validator;
-    optional(options?: ExpressValidator.Options.OptionalOptions): Validator;
-    withMessage(message: string): Validator;
+    notEmpty(): this;
+    len(options: Options.MinMaxOptions): this;
   }
 
   interface Sanitizer {
@@ -277,243 +175,12 @@ declare namespace ExpressValidator {
     blacklist(chars: string): Sanitizer;
     whitelist(chars: string): Sanitizer;
 
-    normalizeEmail(options?: ExpressValidator.Options.NormalizeEmailOptions): Sanitizer;
+    normalizeEmail(options?: Options.NormalizeEmailOptions): Sanitizer;
   }
 
   interface MappedError {
     param: string;
     msg: string;
     value: string;
-  }
-}
-
-declare namespace ExpressValidator.Options {
-
-  export interface ExpressValidatorOptions {
-    customValidators?: { [validatorName: string]: (...value: any[]) => boolean | Promise<any> }
-    customSanitizers?: { [sanitizername: string]: (value: any) => any }
-    errorFormatter?: (param?: string, msg?: string, value?: any) => any
-  }
-
-
-  interface ValidatorSchemaOptions {
-    options?: any[]
-    errorMessage?: string
-  }
-
-  interface ValidationSchemaParamOptions {
-    in?: Location
-    errorMessage?: string
-
-    // Additional ValidatorChain.prototype.* validators
-    optional?: boolean | { checkFalsy: boolean }
-    notEmpty?: boolean | { errorMessage: string }
-    len?: ValidatorSchemaOptions
-
-    // exported from validator.js
-    isEmail?: ValidatorSchemaOptions
-    isURL?: ValidatorSchemaOptions
-    isMACAddress?: ValidatorSchemaOptions
-    isIP?: ValidatorSchemaOptions
-    isFQDN?: ValidatorSchemaOptions
-    isBoolean?: ValidatorSchemaOptions
-    isAlpha?: ValidatorSchemaOptions
-    isAlphanumeric?: ValidatorSchemaOptions
-    isNumeric?: ValidatorSchemaOptions
-    isLowercase?: ValidatorSchemaOptions
-    isUppercase?: ValidatorSchemaOptions
-    isAscii?: ValidatorSchemaOptions
-    isFullWidth?: ValidatorSchemaOptions
-    isHalfWidth?: ValidatorSchemaOptions
-    isVariableWidth?: ValidatorSchemaOptions
-    isMultibyte?: ValidatorSchemaOptions
-    isSurrogatePair?: ValidatorSchemaOptions
-    isInt?: ValidatorSchemaOptions
-    isFloat?: ValidatorSchemaOptions
-    isDecimal?: ValidatorSchemaOptions
-    isHexadecimal?: ValidatorSchemaOptions
-    isDivisibleBy?: ValidatorSchemaOptions
-    isHexColor?: ValidatorSchemaOptions
-    isMD5?: ValidatorSchemaOptions
-    isJSON?: ValidatorSchemaOptions
-    isEmpty?: ValidatorSchemaOptions
-    isLength?: ValidatorSchemaOptions
-    isByteLength?: ValidatorSchemaOptions
-    isUUID?: ValidatorSchemaOptions
-    isMongoId?: ValidatorSchemaOptions
-    isDate?: ValidatorSchemaOptions
-    isAfter?: ValidatorSchemaOptions
-    isBefore?: ValidatorSchemaOptions
-    isIn?: ValidatorSchemaOptions
-    isCreditCard?: ValidatorSchemaOptions
-    isISIN?: ValidatorSchemaOptions
-    isISBN?: ValidatorSchemaOptions
-    isISSN?: ValidatorSchemaOptions
-    isMobilePhone?: ValidatorSchemaOptions
-    isCurrency?: ValidatorSchemaOptions
-    isISO8601?: ValidatorSchemaOptions
-    isBase64?: ValidatorSchemaOptions
-    isDataURI?: ValidatorSchemaOptions
-    isWhitelisted?: ValidatorSchemaOptions
-
-    // Additional Validators provided by validator.js
-    equals?: ValidatorSchemaOptions
-    contains?: ValidatorSchemaOptions
-    matches?: ValidatorSchemaOptions
-  }
-
-
-  // VALIDATORS
-
-  interface MinMaxOptions {
-    min?: number;
-    max?: number;
-  }
-
-  interface MinMaxExtendedOptions extends MinMaxOptions {
-    lt?: number;
-    gt?: number;
-  }
-
-  interface IsIntOptions extends MinMaxExtendedOptions {
-    allow_leading_zeroes?: boolean;
-  }
-
-  /**
-   * defaults to
-   * {
-   *    allow_display_name: false,
-   *    require_display_name: false,
-   *    allow_utf8_local_part: true,
-   *    require_tld: true
-   * }
-   */
-  interface IsEmailOptions {
-    allow_display_name?: boolean;
-    allow_utf8_local_part?: boolean;
-    require_tld?: boolean;
-  }
-
-  /**
-   * defaults to
-   * {
-   *    protocols: ['http','https','ftp'],
-   *    require_tld: true,
-   *    require_protocol: false,
-   *    require_host: true,
-   *    require_valid_protocol: true,
-   *    allow_underscores: false,
-   *    host_whitelist: false,
-   *    host_blacklist: false,
-   *    allow_trailing_dot: false,
-   *    allow_protocol_relative_urls: false
-   * }
-   */
-  interface IsURLOptions {
-    protocols?: URLProtocol[];
-    require_tld?: boolean;
-    require_protocol?: boolean;
-    require_host?: boolean;
-    require_valid_protocol?: boolean;
-    allow_underscores?: boolean;
-    host_whitelist?: (string | RegExp)[];
-    host_blacklist?: (string | RegExp)[];
-    allow_trailing_dot?: boolean;
-    allow_protocol_relative_urls?: boolean;
-  }
-
-  /**
-   * defaults to
-   * {
-   *    require_tld: true,
-   *    allow_underscores: false,
-   *    allow_trailing_dot: false
-   * }
-   */
-  interface IsFQDNOptions {
-    require_tld?: boolean;
-    allow_underscores?: boolean;
-    allow_trailing_dot?: boolean;
-  }
-
-  /**
-   * defaults to
-   * {
-   *    case_sensitive: false,
-   *    require_hyphen: false
-   * }
-   */
-  interface IsISSNOptions {
-    case_sensitive?: boolean
-    require_hyphen?: boolean
-  }
-
-  /**
-   * defaults to
-   * {
-   *   symbol: '$',
-   *   require_symbol: false,
-   *   allow_space_after_symbol: false,
-   *   symbol_after_digits: false,
-   *   allow_negatives: true,
-   *   parens_for_negatives: false,
-   *   negative_sign_before_digits: false,
-   *   negative_sign_after_digits: false,
-   *   allow_negative_sign_placeholder: false,
-   *   thousands_separator: ',',
-   *   decimal_separator: '.',
-   *   allow_space_after_digits: false
-   * }
-   */
-  interface IsCurrencyOptions {
-    symbol?: string;
-    require_symbol?: boolean;
-    allow_space_after_symbol?: boolean;
-    symbol_after_digits?: boolean;
-    allow_negatives?: boolean;
-    parens_for_negatives?: boolean;
-    negative_sign_before_digits?: boolean;
-    negative_sign_after_digits?: boolean;
-    allow_negative_sign_placeholder?: boolean;
-    thousands_separator?: string;
-    decimal_separator?: string;
-    allow_space_after_digits?: boolean;
-  }
-
-  interface OptionalOptions {
-    checkFalsy?: boolean;
-  }
-
-
-  // SANITIZERS
-
-  /**
-   * Defaults to
-   * {
-   *   all_lowercase: true
-   *   gmail_lowercase: true
-   *   gmail_remove_dots: true
-   *   gmail_remove_subaddress: true
-   *   gmail_convert_googlemaildotcom: true
-   *   outlookdotcom_lowercase: true
-   *   outlookdotcom_remove_subaddress: true
-   *   yahoo_lowercase: true
-   *   yahoo_remove_subaddress: true
-   *   icloud_lowercase: true
-   *   icloud_remove_subaddress: true
-   * }
-   */
-  interface NormalizeEmailOptions {
-    all_lowercase?: boolean
-    gmail_lowercase?: boolean
-    gmail_remove_dots?: boolean
-    gmail_remove_subaddress?: boolean
-    gmail_convert_googlemaildotcom?: boolean
-    outlookdotcom_lowercase?: boolean
-    outlookdotcom_remove_subaddress?: boolean
-    yahoo_lowercase?: boolean
-    yahoo_remove_subaddress?: boolean
-    icloud_lowercase?: boolean
-    icloud_remove_subaddress?: boolean
   }
 }
