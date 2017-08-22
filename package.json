@@ -27,7 +27,7 @@
     "report-coverage": "cat coverage/lcov.info | coveralls"
   },
   "engines": {
-    "node": ">= 0.10"
+    "node": ">= 6.0.0"
   },
   "dependencies": {
     "@types/express": "~4.0.34",
