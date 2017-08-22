@@ -28,6 +28,19 @@ describe('check: low-level middleware', () => {
     expect(chain._context).to.have.property('message', 'Fail!');
   });
 
+  describe('.custom()', () => {
+    it('adds a custom inline validator', () => {
+      const validator = () => true;
+      const chain = check('foo', []).custom(validator);
+
+      expect(chain._context.validators[0]).to.eql({
+        validator,
+        options: [],
+        custom: true
+      });
+    });
+  });
+
   describe('.optional()', () => {
     it('sets optional flag in context', () => {
       const chain = check('foo', []).optional();
