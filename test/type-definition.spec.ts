@@ -166,7 +166,6 @@ app.use((req: express.Request, res: express.Response, next: express.NextFunction
     .isByteLength({ min: 0, max: 0 })
     .isUUID().isUUID('all').isUUID(3).isUUID(4).isUUID(5)
     .isMongoId()
-    .isDate()
     .isAfter().isAfter(new Date().toString())
     .isBefore().isBefore(new Date().toString())
     .isIn([''])
