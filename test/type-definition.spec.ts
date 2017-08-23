@@ -197,6 +197,7 @@ app.use((req: express.Request, res: express.Response, next: express.NextFunction
     .matches('').matches('', '').matches(/ /, '')
     .notEmpty()
     .len({ min: 0, max: 0 })
+    .not()
     .optional().optional({ checkFalsy: true })
     .withMessage('message');
 
