@@ -42,7 +42,7 @@ describe('Legacy: General', () => {
       expect(errors).to.have.lengthOf(2);
     });
 
-    it('returns an object of the last sync error of each key if mapped = true', () => {
+    it('returns an object of the first sync error of each key if mapped = true', () => {
       const req = {
         params: {
           int: '123',
@@ -58,7 +58,7 @@ describe('Legacy: General', () => {
 
       const errors = req.validationErrors(true);
       expect(errors).to.not.have.property('int');
-      expect(errors).to.have.deep.property('alpha.msg', 'taken');
+      expect(errors).to.have.deep.property('alpha.msg', 'should be alpha only');
     });
   });
 
@@ -110,7 +110,7 @@ describe('Legacy: General', () => {
         throw new Error('validation passed (but it should not)');
       }, errors => {
         expect(errors).to.not.have.property('int');
-        expect(errors).to.have.deep.property('alpha.msg', 'taken');
+        expect(errors).to.have.deep.property('alpha.msg', 'should be alpha only');
       });
     });
 
@@ -123,7 +123,7 @@ describe('Legacy: General', () => {
   });
 
   describe('req.getValidationResult()', () => {
-    it('returns last error of each key as object with .mapped()', () => {
+    it('returns first error of each key as object with .mapped()', () => {
       const req = {
         params: {
           int: '123',
@@ -138,28 +138,6 @@ describe('Legacy: General', () => {
         .isLength({ min: 4 }).withMessage('min length is 4');
 
       return req.getValidationResult().then(result => {
-        expect(result.mapped()).to.not.have.property('int');
-        expect(result.mapped()).to.have.deep.property('alpha.msg', 'min length is 4');
-      });
-    });
-
-    it('returns first error of each key as object with .useFirstErrorOnly().mapped()', () => {
-      const req = {
-        params: {
-          int: '123',
-          alpha: '456'
-        }
-      };
-
-      expressValidator()(req, {}, () => {});
-      req.check('int').isInt();
-      req.check('alpha')
-        .isAlpha().withMessage('should be alpha only')
-        .isLength({ min: 4 }).withMessage('min length is 4');
-
-      return req.getValidationResult().then(result => {
-        result.useFirstErrorOnly();
-
         expect(result.mapped()).to.not.have.property('int');
         expect(result.mapped()).to.have.deep.property('alpha.msg', 'should be alpha only');
       });
@@ -182,7 +160,7 @@ describe('Legacy: General', () => {
       });
     });
 
-    it('returns first error of each key as array with .useFirstErrorOnly().array()', () => {
+    it('returns first error of each key as array with .array({ onlyFirstError: true })', () => {
       const req = {
         params: {
           int: '123',
@@ -195,8 +173,7 @@ describe('Legacy: General', () => {
       req.check('alpha').isAlpha().isLength({ min: 4 });
 
       return req.getValidationResult().then(result => {
-        result.useFirstErrorOnly();
-        expect(result.array()).to.have.lengthOf(1);
+        expect(result.array({ onlyFirstError: true })).to.have.lengthOf(1);
       });
     });
 

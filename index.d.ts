@@ -5,7 +5,14 @@
 
 ///<reference types="express"/>
 import * as express from 'express';
-import { Options, Validator as BaseValidator } from './shared-typings';
+import {
+  Dictionary,
+  Result,
+  MappedError,
+  Options,
+  Validator as BaseValidator
+} from './shared-typings';
+
 // Add RequestValidation Interface on to Express's Request Interface.
 declare global {
   namespace Express {
@@ -47,37 +54,6 @@ declare namespace ExpressValidator {
    */
   interface ValidatorFunctionRegExp extends ValidatorFunction { (matchIndex: number, message?: string): Validator; }
   interface SanitizerFunction { (item: string): Sanitizer; }
-  interface Dictionary<T> { [key: string]: T; }
-  interface Result {
-    /**
-     * @return A boolean determining whether there were errors or not.
-     */
-    isEmpty(): boolean
-    /**
-     * @return All errors for all validated parameters will be included, unless you specify that you want only the first
-     * error of each param by invoking `result.useFirstErrorOnly()`.
-     */
-    array(): MappedError[]
-    /**
-     * @return An object of errors, where the key is the parameter name, and the value is an error object as returned by
-     *  the error formatter.
-     * Because of historical reasons, by default this method will return the last error of each parameter.
-     * You can change this behavior by invoking result.useFirstErrorOnly(), so the first error is returned instead.
-     */
-    mapped(): Dictionary<MappedError>
-    /**
-     * Sets the `firstErrorOnly` flag of this result object, which modifies the way other methods like `result.array()`
-     * and `result.mapped()` work.
-     */
-    useFirstErrorOnly(): Result
-    /**
-     * Useful for dealing with the validation errors in the catch block of a try..catch or promise.
-     *
-     * @throws If there are errors, throws an Error object which is decorated with the same API as the validation
-     * result object.
-     */
-    throw(): Result
-  }
 
   export interface RequestValidation {
     assert: ValidatorFunctionRegExp;
@@ -178,9 +154,4 @@ declare namespace ExpressValidator {
     normalizeEmail(options?: Options.NormalizeEmailOptions): Sanitizer;
   }
 
-  interface MappedError {
-    param: string;
-    msg: string;
-    value: string;
-  }
 }
