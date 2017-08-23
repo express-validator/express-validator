@@ -7,3 +7,5 @@
 .travis.yml
 coverage
 test
+*.spec.js
+*.spec.ts
