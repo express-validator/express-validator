@@ -195,5 +195,34 @@ describe('check: context runner', () => {
           .and.to.have.deep.property('[0].path', 'withzero');
       });
     });
+
+    it('are run serially', () => {
+      let execution1, execution2;
+      const req = {
+        params: { foo: 'bar' }
+      };
+
+      return runner(req, {
+        fields: ['foo'],
+        locations: ['params'],
+        validators: [{
+          options: [],
+          validator: () => {
+            return new Promise(resolve => {
+              execution1 = new Date();
+              setTimeout(() => resolve(true), 10);
+            });
+          }
+        }, {
+          options: [],
+          validator: () => {
+            execution2 = new Date();
+            return true;
+          }
+        }]
+      }).then(() => {
+        expect(execution1).to.be.lt(execution2);
+      });
+    });
   });
 });
