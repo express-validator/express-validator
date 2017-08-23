@@ -33,6 +33,31 @@ describe('check: context runner', () => {
         });
       });
     });
+
+    it('are not pushed in case negated flag is set to true, and no error was thrown', () => {
+      const req = {
+        params: { foo: 'not_email' }
+      };
+
+      return runner(req, {
+        fields: ['foo'],
+        locations: ['params'],
+        validators: [{
+          options: [],
+          negated: true,
+          validator: validator.isEmail
+        }, {
+          options: [],
+          negated: true,
+          custom: true,
+          validator () {
+            throw new Error('wat');
+          }
+        }]
+      }).then(errors => {
+        expect(errors).to.have.length(1);
+      });
+    });
   });
 
   describe('error messages', () => {

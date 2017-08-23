@@ -22,9 +22,11 @@ module.exports = (fields, locations, message) => {
       const validationFn = validator[methodName];
       middleware[methodName] = (...options) => {
         validators.push({
+          negated: middleware._context.negateNext,
           validator: validationFn,
           options
         });
+        middleware._context.negateNext = false;
         return middleware;
       };
     });
@@ -38,8 +40,10 @@ module.exports = (fields, locations, message) => {
     validators.push({
       validator,
       custom: true,
+      negated: middleware._context.negateNext,
       options: []
     });
+    middleware._context.negateNext = false;
     return middleware;
   };
 
@@ -48,10 +52,16 @@ module.exports = (fields, locations, message) => {
     return middleware;
   };
 
+  middleware.not = () => {
+    middleware._context.negateNext = true;
+    return middleware;
+  };
+
   middleware._context = {
     get optional () {
       return optional;
     },
+    negateNext: false,
     message,
     fields,
     locations,

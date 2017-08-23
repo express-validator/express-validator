@@ -36,6 +36,7 @@ describe('check: low-level middleware', () => {
       expect(chain._context.validators[0]).to.eql({
         validator,
         options: [],
+        negated: false,
         custom: true
       });
     });

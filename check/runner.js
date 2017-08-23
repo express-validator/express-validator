@@ -10,7 +10,7 @@ module.exports = (req, context) => {
         validatorCfg.validator(String(value), ...validatorCfg.options);
 
       return Promise.resolve(result).then(result => {
-        if (!result) {
+        if ((!validatorCfg.negated && !result) || (validatorCfg.negated && result)) {
           throw new Error(context.message || 'Invalid value');
         }
       });
