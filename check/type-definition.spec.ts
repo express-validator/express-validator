@@ -1,14 +1,42 @@
+import { Request, Response } from 'express';
 import {
   check,
   checkBody,
   checkHeaders,
   checkQuery,
   checkCookies,
-  checkParams
+  checkParams,
+  validationResult
 } from './'
 
+const req: Request = <Request>{};
+const res: Response = <Response>{};
+
+// Test results
+const result = validationResult(req);
+result.isEmpty();
+
+const arrayErrors = result.array();
+arrayErrors[0].location;
+arrayErrors[0].msg;
+arrayErrors[0].param;
+arrayErrors[0].value;
+
+result.array({ onlyFirstError: true });
+
+const mappedErrors = result.mapped();
+mappedErrors.foo.location;
+mappedErrors.foo.msg;
+mappedErrors.foo.param;
+mappedErrors.foo.value;
+
 // Test as middleware
-check('foo')(null, null, () => {});
+checkBody('foo');
+checkParams('foo');
+checkQuery('foo');
+checkCookies('foo');
+checkHeaders('foo');
+check('foo')(req, res, () => {});
 
 // Test validation chain methods
 check('foo', 'with error message')

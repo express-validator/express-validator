@@ -4,7 +4,9 @@ export type IPVersion = 4 | 6
 export type AlphaLocale = 'ar' | 'ar-AE' | 'ar-BH' | 'ar-DZ' | 'ar-EG' | 'ar-IQ' | 'ar-JO' | 'ar-KW' | 'ar-LB' | 'ar-LY' | 'ar-MA' | 'ar-QA' | 'ar-QM' | 'ar-SA' | 'ar-SD' | 'ar-SY' | 'ar-TN' | 'ar-YE' | 'cs-CZ' | 'da-DK' | 'de-DE' | 'en-AU' | 'en-GB' | 'en-HK' | 'en-IN' | 'en-NZ' | 'en-US' | 'en-ZA' | 'en-ZM' | 'es-ES' | 'fr-FR' | 'hu-HU' | 'nl-NL' | 'pl-PL' | 'pt-BR' | 'pt-PT' | 'ru-RU' | 'sr-RS' | 'sr-RS@latin' | 'tr-TR' | 'uk-UA'
 export type AlphanumericLocale = 'ar' | 'ar-AE' | 'ar-BH' | 'ar-DZ' | 'ar-EG' | 'ar-IQ' | 'ar-JO' | 'ar-KW' | 'ar-LB' | 'ar-LY' | 'ar-MA' | 'ar-QA' | 'ar-QM' | 'ar-SA' | 'ar-SD' | 'ar-SY' | 'ar-TN' | 'ar-YE' | 'cs-CZ' | 'da-DK' | 'de-DE' | 'en-AU' | 'en-GB' | 'en-HK' | 'en-IN' | 'en-NZ' | 'en-US' | 'en-ZA' | 'en-ZM' | 'es-ES' | 'fr-FR' | 'fr-BE' | 'hu-HU' | 'nl-BE' | 'nl-NL' | 'pl-PL' | 'pt-BR' | 'pt-PT' | 'ru-RU' | 'sr-RS' | 'sr-RS@latin' | 'tr-TR' | 'uk-UA'
 export type MobilePhoneLocal = 'any' | 'ar-DZ' | 'ar-SA' | 'ar-SY' | 'cs-CZ' | 'de-DE' | 'da-DK' | 'el-GR' | 'en-AU' | 'en-GB' | 'en-HK' | 'en-IN' | 'en-KE' | 'en-NG' | 'en-NZ' | 'en-PK' | 'en-RW' | 'en-TZ' | 'en-UG' | 'en-US' | 'en-CA' | 'en-ZA' | 'en-ZM' | 'es-ES' | 'fa-IR' | 'fi-FI' | 'fr-FR' | 'he-IL' | 'hu-HU' | 'id-ID' | 'it-IT' | 'ja-JP' | 'lt-LT' | 'ms-MY' | 'nb-NO' | 'nn-NO' | 'pl-PL' | 'pt-PT' | 'ro-RO' | 'ru-RU' | 'sr-RS' | 'tr-TR' | 'vi-VN' | 'zh-CN' | 'zh-HK' | 'zh-TW'
-export type Location = 'body' | 'params' | 'query' | 'headers' // TODO add cookies if #292 is accepted
+export type Location = 'body' | 'params' | 'query' | 'headers' | 'cookie'
+
+export interface Dictionary<T> { [key: string]: T; }
 
 export interface Validator {
 
@@ -116,6 +118,42 @@ export interface Validator {
   withMessage(message: string): this;
 }
 
+export interface MappedError {
+  param: string;
+  msg: string;
+  value: string;
+  location: Location
+}
+
+export interface Result {
+  /**
+   * @return A boolean determining whether there were errors or not.
+   */
+  isEmpty(): boolean
+
+  /**
+   * @return All errors for all validated parameters will be included, unless you specify that you want only the first
+   * error of each param by invoking `result.useFirstErrorOnly()`.
+   */
+  array(options?: Options.ResultArrayOptions): MappedError[]
+
+  /**
+   * @return An object of errors, where the key is the parameter name, and the value is an error object as returned by
+   *  the error formatter.
+   * Because of historical reasons, by default this method will return the last error of each parameter.
+   * You can change this behavior by invoking result.useFirstErrorOnly(), so the first error is returned instead.
+   */
+  mapped(): Dictionary<MappedError>
+
+  /**
+   * Useful for dealing with the validation errors in the catch block of a try..catch or promise.
+   *
+   * @throws If there are errors, throws an Error object which is decorated with the same API as the validation
+   * result object.
+   */
+  throw(): Result
+}
+
 declare namespace Options {
 
   export interface ExpressValidatorOptions {
@@ -124,6 +162,9 @@ declare namespace Options {
     errorFormatter?: (param?: string, msg?: string, value?: any) => any
   }
 
+  interface ResultArrayOptions {
+    onlyFirstError: boolean;
+  }
 
   interface ValidatorSchemaOptions {
     options?: any[]
