@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 import {
   check,
-  checkBody,
-  checkHeaders,
-  checkQuery,
-  checkCookies,
-  checkParams,
+  body,
+  header,
+  query,
+  cookie,
+  param,
   validationResult
 } from './'
 
@@ -31,11 +31,11 @@ mappedErrors.foo.param;
 mappedErrors.foo.value;
 
 // Test as middleware
-checkBody('foo');
-checkParams('foo');
-checkQuery('foo');
-checkCookies('foo');
-checkHeaders('foo');
+body('foo');
+param('foo');
+query('foo');
+cookie('foo');
+header('foo');
 check('foo')(req, res, () => {});
 
 // Test validation chain methods
