@@ -65,43 +65,21 @@ describe('Legacy: req.check()/req.assert()/req.validate()', () => {
     });
   });
 
-  it('does not check req.headers', () => {
-    const req = {
-      headers: { int: 'asd' }
-    };
-
-    expressValidator()(req, {}, () => {});
-    req.check('int').optional().isInt();
-
-    return req.getValidationResult().then(result => {
-      expect(result.mapped()).to.eql({});
-    });
-  });
-
-  it('does not check req.cookies', () => {
-    const req = {
-      cookies: { int: 'asd' }
-    };
-
-    expressValidator()(req, {}, () => {});
-    req.check('int').optional().isInt();
-
-    return req.getValidationResult().then(result => {
-      expect(result.mapped()).to.eql({});
-    });
-  });
-
-  it('checks req.params, then req.query, then req.body', () => {
+  it('checks req.params, then req.query, then req.body, then req.headers, then req.cookies', () => {
     const req = {
       params: { int: '123' },
       query: { int: 'asd', alpha: 'asd' },
-      body: { int: 'foo', alpha: '123', upper: 'BAR' }
+      body: { int: 'foo', alpha: '123', upper: 'BAR' },
+      headers: { int: 'asd', alpha: '123', upper: 'foo', decimal: '.5' },
+      cookies: { int: 'asd', alpha: '123', upper: 'foo', decimal: '5', json: '{}' }
     };
 
     expressValidator()(req, {}, () => {});
     req.check('int').isInt();
     req.check('alpha').isAlpha();
     req.check('upper').isUppercase();
+    req.check('decimal').isDecimal();
+    req.check('json').isJSON();
 
     return req.getValidationResult().then(result => {
       expect(result.mapped()).to.eql({});
@@ -122,6 +100,22 @@ describe('Legacy: req.check()/req.assert()/req.validate()', () => {
     return req.getValidationResult().then(result => {
       expect(result.mapped()).to.not.have.property('nested.path[0]');
       expect(result.mapped()).to.have.property('nested.path[1]');
+    });
+  });
+
+  it('checks using wildcard * in paths', () => {
+    const req = {
+      params: {
+        foo: { bar: [ 'not_email' ] }
+      }
+    };
+
+    expressValidator()(req, {}, () => {});
+    req.check('*.bar.*').isEmail();
+    req.check('foo.*[0]').isEmail();
+
+    return req.getValidationResult().then(result => {
+      expect(result.mapped()).to.have.property('foo.bar[0]');
     });
   });
 });
