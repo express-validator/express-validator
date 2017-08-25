@@ -68,6 +68,33 @@ describe('check: field selection', () => {
     });
   });
 
+  it('expands "*" wildcards shallowly', () => {
+    const req = {
+      body: {
+        foo: [{ a: 123, b: 456 }]
+      }
+    };
+
+    const instances = selectFields(req, {
+      // Note that the first expression matches both "a" and "b",
+      // so there's some deduplication expected
+      fields: ['*[0].*', 'foo.*.b'],
+      locations: ['body']
+    });
+
+    expect(instances).to.have.length(2);
+    expect(instances).to.deep.include({
+      path: 'foo[0].a',
+      location: 'body',
+      value: 123
+    });
+    expect(instances).to.deep.include({
+      path: 'foo[0].b',
+      location: 'body',
+      value: 456
+    });
+  });
+
   describe('optional context', () => {
     it('ignores fields which are not present in case of checkFalsy = false', () => {
       const instances = selectFields({
