@@ -26,6 +26,18 @@ describe('Legacy: General', () => {
   });
 
   describe('req.validationErrors()', () => {
+    it('returns false if no errors exist', () => {
+      const req = {
+        cookies: { foo: '123' }
+      };
+
+      expressValidator()(req, {}, () => {});
+      req.check('foo').isInt();
+
+      const errors = req.validationErrors();
+      expect(errors).to.be.false;
+    });
+
     it('returns an array of all sync errors', () => {
       const req = {
         params: {
