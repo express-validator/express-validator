@@ -161,6 +161,7 @@ app.use((req: express.Request, res: express.Response, next: express.NextFunction
     .isHexColor()
     .isMD5()
     .isJSON()
+    .isPostalCode('US')
     .isEmpty()
     .isLength({ min: 0, max: 0 })
     .isByteLength({ min: 0, max: 0 })

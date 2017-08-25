@@ -1,9 +1,10 @@
 export type URLProtocol = 'http' | 'https' | 'ftp'
 export type UUIDVersion = 3 | 4 | 5 | 'all'
 export type IPVersion = 4 | 6
-export type AlphaLocale = 'ar' | 'ar-AE' | 'ar-BH' | 'ar-DZ' | 'ar-EG' | 'ar-IQ' | 'ar-JO' | 'ar-KW' | 'ar-LB' | 'ar-LY' | 'ar-MA' | 'ar-QA' | 'ar-QM' | 'ar-SA' | 'ar-SD' | 'ar-SY' | 'ar-TN' | 'ar-YE' | 'cs-CZ' | 'da-DK' | 'de-DE' | 'en-AU' | 'en-GB' | 'en-HK' | 'en-IN' | 'en-NZ' | 'en-US' | 'en-ZA' | 'en-ZM' | 'es-ES' | 'fr-FR' | 'hu-HU' | 'nl-NL' | 'pl-PL' | 'pt-BR' | 'pt-PT' | 'ru-RU' | 'sr-RS' | 'sr-RS@latin' | 'tr-TR' | 'uk-UA'
-export type AlphanumericLocale = 'ar' | 'ar-AE' | 'ar-BH' | 'ar-DZ' | 'ar-EG' | 'ar-IQ' | 'ar-JO' | 'ar-KW' | 'ar-LB' | 'ar-LY' | 'ar-MA' | 'ar-QA' | 'ar-QM' | 'ar-SA' | 'ar-SD' | 'ar-SY' | 'ar-TN' | 'ar-YE' | 'cs-CZ' | 'da-DK' | 'de-DE' | 'en-AU' | 'en-GB' | 'en-HK' | 'en-IN' | 'en-NZ' | 'en-US' | 'en-ZA' | 'en-ZM' | 'es-ES' | 'fr-FR' | 'fr-BE' | 'hu-HU' | 'nl-BE' | 'nl-NL' | 'pl-PL' | 'pt-BR' | 'pt-PT' | 'ru-RU' | 'sr-RS' | 'sr-RS@latin' | 'tr-TR' | 'uk-UA'
+export type AlphaLocale = 'ar' | 'ar-AE' | 'ar-BH' | 'ar-DZ' | 'ar-EG' | 'ar-IQ' | 'ar-JO' | 'ar-KW' | 'ar-LB' | 'ar-LY' | 'ar-MA' | 'ar-QA' | 'ar-QM' | 'ar-SA' | 'ar-SD' | 'ar-SY' | 'ar-TN' | 'ar-YE' | 'cs-CZ' | 'da-DK' | 'de-DE' | 'en-AU' | 'en-GB' | 'en-HK' | 'en-IN' | 'en-NZ' | 'en-US' | 'en-ZA' | 'en-ZM' | 'es-ES' | 'fr-FR' | 'hu-HU' | 'nb-NO' | 'nl-NL' | 'nn-NO' | 'pl-PL' | 'pt-BR' | 'pt-PT' | 'ru-RU' | 'sr-RS' | 'sr-RS@latin' | 'tr-TR' | 'uk-UA'
+export type AlphanumericLocale = 'ar' | 'ar-AE' | 'ar-BH' | 'ar-DZ' | 'ar-EG' | 'ar-IQ' | 'ar-JO' | 'ar-KW' | 'ar-LB' | 'ar-LY' | 'ar-MA' | 'ar-QA' | 'ar-QM' | 'ar-SA' | 'ar-SD' | 'ar-SY' | 'ar-TN' | 'ar-YE' | 'cs-CZ' | 'da-DK' | 'de-DE' | 'en-AU' | 'en-GB' | 'en-HK' | 'en-IN' | 'en-NZ' | 'en-US' | 'en-ZA' | 'en-ZM' | 'es-ES' | 'fr-FR' | 'fr-BE' | 'hu-HU' | 'nb-NO' | 'nl-BE' | 'nl-NL' | 'nn-NO' | 'pl-PL' | 'pt-BR' | 'pt-PT' | 'ru-RU' | 'sr-RS' | 'sr-RS@latin' | 'tr-TR' | 'uk-UA'
 export type MobilePhoneLocal = 'any' | 'ar-DZ' | 'ar-SA' | 'ar-SY' | 'cs-CZ' | 'de-DE' | 'da-DK' | 'el-GR' | 'en-AU' | 'en-GB' | 'en-HK' | 'en-IN' | 'en-KE' | 'en-NG' | 'en-NZ' | 'en-PK' | 'en-RW' | 'en-TZ' | 'en-UG' | 'en-US' | 'en-CA' | 'en-ZA' | 'en-ZM' | 'es-ES' | 'fa-IR' | 'fi-FI' | 'fr-FR' | 'he-IL' | 'hu-HU' | 'id-ID' | 'it-IT' | 'ja-JP' | 'lt-LT' | 'ms-MY' | 'nb-NO' | 'nn-NO' | 'pl-PL' | 'pt-PT' | 'ro-RO' | 'ru-RU' | 'sr-RS' | 'tr-TR' | 'vi-VN' | 'zh-CN' | 'zh-HK' | 'zh-TW'
+export type PostalCodeLocale = 'any' | 'AT' | 'AU' | 'BE' | 'CA' | 'CH' | 'CZ' | 'DE' | 'DK' | 'DZ' | 'ES' | 'FI' | 'FR' | 'GB' | 'GR' | 'IL' | 'IN' | 'IS' | 'IT' | 'JP' | 'KE' | 'LI' | 'MX' | 'NL' | 'NO' | 'PL' | 'PT' | 'RO' | 'RU' | 'SA' | 'SE' | 'TW' | 'US' | 'ZA' | 'ZM';
 export type Location = 'body' | 'params' | 'query' | 'headers' | 'cookie'
 
 export interface Dictionary<T> { [key: string]: T; }
@@ -51,6 +52,8 @@ export interface Validator {
   isHexColor(): this;
   isMD5(): this;
   isJSON(): this;
+  isLatLong(): this;
+  isPostalCode(locale: PostalCodeLocale): this;
   isEmpty(): this;
   isLength(options: Options.MinMaxOptions): this;
   isByteLength(options: Options.MinMaxOptions): this;
@@ -207,9 +210,11 @@ declare namespace Options {
     isHexColor?: ValidatorSchemaOptions
     isMD5?: ValidatorSchemaOptions
     isJSON?: ValidatorSchemaOptions
+    isLatLong?: ValidationSchemaParamOptions
     isEmpty?: ValidatorSchemaOptions
     isLength?: ValidatorSchemaOptions
     isByteLength?: ValidatorSchemaOptions
+    isPostalCode?: ValidationSchemaParamOptions
     isUUID?: ValidatorSchemaOptions
     isMongoId?: ValidatorSchemaOptions
     isDate?: ValidatorSchemaOptions
