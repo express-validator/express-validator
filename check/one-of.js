@@ -1,8 +1,12 @@
 const runner = require('./runner');
 
 module.exports = validationChains => (req, res, next) => {
-  const promises = validationChains.map(chain => runner(req, chain._context));
+  const contexts = validationChains.map(chain => chain._context);
+  const promises = contexts.map(context => runner(req, context));
+
   return Promise.all(promises).then(results => {
+    req._validationContexts = (req._validationContexts || []).concat(contexts);
+
     const empty = results.some(result => result.length === 0);
     if (empty) {
       next();

@@ -11,6 +11,7 @@ module.exports = (fields, locations, message) => {
 
   const middleware = (req, res, next) => {
     return runner(req, middleware._context).then(errors => {
+      req._validationContexts = (req._validationContexts || []).concat(middleware._context);
       req._validationErrors = (req._validationErrors || []).concat(errors);
       next();
     }, next);
