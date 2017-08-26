@@ -1,11 +1,12 @@
 import { Request, Response } from 'express';
 import {
   check,
-  checkBody,
-  checkHeaders,
-  checkQuery,
-  checkCookies,
-  checkParams,
+  body,
+  header,
+  query,
+  cookie,
+  param,
+  oneOf,
   validationResult
 } from './'
 
@@ -31,12 +32,17 @@ mappedErrors.foo.param;
 mappedErrors.foo.value;
 
 // Test as middleware
-checkBody('foo');
-checkParams('foo');
-checkQuery('foo');
-checkCookies('foo');
-checkHeaders('foo');
+body('foo');
+param('foo');
+query('foo');
+cookie('foo');
+header('foo');
 check('foo')(req, res, () => {});
+
+oneOf([
+  check('foo').isInt(),
+  check('bar').isDecimal()
+])(req, res, () => {});
 
 // Test validation chain methods
 check('foo', 'with error message')

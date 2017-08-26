@@ -2,12 +2,13 @@ import * as express from 'express';
 import { Result, Options, Validator } from '../shared-typings';
 
 export const check: ValidationChainBuilder;
-export const checkBody: ValidationChainBuilder;
-export const checkCookies: ValidationChainBuilder;
-export const checkHeaders: ValidationChainBuilder;
-export const checkParams: ValidationChainBuilder;
-export const checkQuery: ValidationChainBuilder;
+export const body: ValidationChainBuilder;
+export const cookie: ValidationChainBuilder;
+export const header: ValidationChainBuilder;
+export const param: ValidationChainBuilder;
+export const query: ValidationChainBuilder;
 export function validationResult (req: express.Request): Result;
+export function oneOf (chains: ValidationChain[]): express.RequestHandler;
 
 export interface ValidationChainBuilder {
   (field: string | string[], message?: string): ValidationChain;
