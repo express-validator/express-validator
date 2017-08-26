@@ -48,6 +48,8 @@ module.exports = (fields, locations, message) => {
     return middleware;
   };
 
+  middleware.exists = () => middleware.custom(existsValidator);
+
   middleware.withMessage = message => {
     validators[validators.length - 1].message = message;
     return middleware;
@@ -71,3 +73,7 @@ module.exports = (fields, locations, message) => {
 
   return middleware;
 };
+
+function existsValidator (value) {
+  return value !== undefined;
+}

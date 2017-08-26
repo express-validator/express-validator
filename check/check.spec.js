@@ -62,6 +62,16 @@ describe('check: low-level middleware', () => {
     });
   });
 
+  describe('.exists()', () => {
+    it('adds validator for checking if value is not undefined', () => {
+      const chain = check('foo').exists();
+      const { validators } = chain._context;
+
+      expect(validators[0].validator(undefined)).to.be.false;
+      expect(validators[0].validator(null)).to.be.true;
+    });
+  });
+
   describe('validation errors', () => {
     it('are pushed to req._validationErrors', () => {
       const req = {
