@@ -2,41 +2,52 @@ const { expect } = require('chai');
 const { check, oneOf } = require('./');
 
 describe('check: checkOneOf middleware', () => {
-  it('does not return errors if any chain succeeded', () => {
+  it('returns errors from all chains', () => {
     const req = {
-      cookies: { foo: '123', bar: 'abc' }
+      cookies: { foo: 123, bar: 'def' }
     };
 
     return oneOf([
       check('foo').isInt(),
       check('bar').isInt()
     ])(req, {}, () => {}).then(errors => {
-      expect(errors).to.eql([]);
+      expect(errors).to.have.length(2);
+      expect(errors[0]).to.eql([]);
+      expect(errors[1]).to.eql([{
+        location: 'cookies',
+        param: 'bar',
+        value: 'def',
+        msg: 'Invalid value'
+      }]);
     });
   });
 
-  it('uses first error list in case all chains failed', () => {
-    const req = {
-      cookies: { foo: 'abc', bar: 'def' }
-    };
+  describe('error message', () => {
+    it('is "Invalid value(s)" by default', done => {
+      const req = {
+        body: { foo: 'not_email' }
+      };
 
-    return oneOf([
-      check('foo').isInt(),
-      check('bar').isInt()
-    ])(req, {}, () => {}).then(errors => {
-      expect(errors)
-        .to.have.length(1)
-        .and.to.deep.include({
-          location: 'cookies',
-          param: 'foo',
-          value: 'abc',
-          msg: 'Invalid value'
-        });
+      oneOf([ check('foo').isEmail() ])(req, {}, () => {
+        expect(req._validationErrors[0]).to.have.property('msg', 'Invalid value(s)');
+        done();
+      });
+    });
+
+    it('is customizable via 2nd arg', done => {
+      const req = {
+        body: { foo: 'not_email' }
+      };
+
+      oneOf([ check('foo').isEmail() ], 'One e-mail must be valid')(req, {}, () => {
+        expect(req._validationErrors[0]).to.have.property('msg', 'One e-mail must be valid');
+        done();
+      });
     });
   });
 
   describe('validation errors', () => {
-    it('are not set in the request if any chain succeeded', done => {
+    it('are not pushed if any chain succeeded', done => {
       const req = {
         cookies: { foo: '123', bar: 'abc' }
       };
@@ -45,12 +56,14 @@ describe('check: checkOneOf middleware', () => {
         check('foo').isInt(),
         check('bar').isInt()
       ])(req, {}, () => {
-        expect(req).to.not.have.property('_validationErrors');
+        expect(req)
+          .to.have.property('_validationErrors')
+          .and.to.eql([]);
         done();
       });
     });
 
-    it('are pushed to req._validationErrors', done => {
+    it('are pushed once to req._validationErrors into _error field', done => {
       const req = {
         body: { foo: 'not_email' }
       };
@@ -62,7 +75,41 @@ describe('check: checkOneOf middleware', () => {
         expect(req)
           .to.have.property('_validationErrors')
           .that.is.an('array')
-          .that.has.lengthOf(1);
+          .that.has.length(1);
+
+        expect(req._validationErrors[0]).to.have.property('param', '_error');
+        done();
+      });
+    });
+
+    it('include all errors in nestedErrors property', done => {
+      const req = {
+        body: { foo: 'not_email' }
+      };
+
+      oneOf([
+        check('foo').isEmail().withMessage('email'),
+        check('foo').isNumeric().withMessage('numeric')
+      ])(req, {}, () => {
+        const error = req._validationErrors[0];
+        expect(error)
+          .to.have.property('nestedErrors')
+          .that.is.an('array')
+          .that.has.length(2);
+
+        expect(error.nestedErrors).to.deep.include({
+          param: 'foo',
+          msg: 'email',
+          location: 'body',
+          value: 'not_email'
+        });
+
+        expect(error.nestedErrors).to.deep.include({
+          param: 'foo',
+          msg: 'numeric',
+          location: 'body',
+          value: 'not_email'
+        });
 
         done();
       });
