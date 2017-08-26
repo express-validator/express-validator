@@ -8,6 +8,7 @@
 An [express.js]( https://github.com/visionmedia/express ) middleware for
 [validator]( https://github.com/chriso/validator.js ).
 
+- [Upgrade notice](#upgrade-notice)
 - [Installation](#installation)
 - [Usage](#usage)
 - [`check` API](#check-api)
@@ -17,6 +18,9 @@ An [express.js]( https://github.com/visionmedia/express ) middleware for
 - [Legacy API](#legacy-api)
 - [Changelog](#changelog)
 - [License](#license)
+
+## Upgrade notice
+If you're arriving here as a express-validator v3 user after upgrading to v4, please check the [upgrade guide](UPGRADE_GUIDE.md) in order to find out what's different!
 
 ## Installation
 
