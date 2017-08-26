@@ -8,6 +8,7 @@ export const header: ValidationChainBuilder;
 export const param: ValidationChainBuilder;
 export const query: ValidationChainBuilder;
 export function validationResult (req: express.Request): Result;
+export function oneOf (chains: ValidationChain[]): express.RequestHandler;
 
 export interface ValidationChainBuilder {
   (field: string | string[], message?: string): ValidationChain;

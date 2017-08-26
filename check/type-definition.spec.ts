@@ -6,6 +6,7 @@ import {
   query,
   cookie,
   param,
+  oneOf,
   validationResult
 } from './'
 
@@ -37,6 +38,11 @@ query('foo');
 cookie('foo');
 header('foo');
 check('foo')(req, res, () => {});
+
+oneOf([
+  check('foo').isInt(),
+  check('bar').isDecimal()
+])(req, res, () => {});
 
 // Test validation chain methods
 check('foo', 'with error message')
