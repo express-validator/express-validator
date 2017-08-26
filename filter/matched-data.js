@@ -4,7 +4,7 @@ const selectFields = require('../check/select-fields');
 module.exports = (req, { onlyValidData = true } = {}) => {
   const validityFilter = !onlyValidData ? () => true : field => {
     return !req._validationErrors.find(error =>
-      error.path === field.path &&
+      error.param === field.path &&
       error.location === field.location
     );
   };

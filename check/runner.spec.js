@@ -20,16 +20,16 @@ describe('check: context runner', () => {
       }).then(errors => {
         expect(errors).to.deep.include({
           location: 'params',
-          path: 'foo',
+          param: 'foo',
           value: 'not_email_params',
-          message: 'Invalid value'
+          msg: 'Invalid value'
         });
 
         expect(errors).to.deep.include({
           location: 'body',
-          path: 'foo',
+          param: 'foo',
           value: 'not_email_body',
-          message: 'Invalid value'
+          msg: 'Invalid value'
         });
       });
     });
@@ -74,7 +74,7 @@ describe('check: context runner', () => {
           options: []
         }]
       }).then(errors => {
-        expect(errors[0]).to.have.property('message', 'Invalid value');
+        expect(errors[0]).to.have.property('msg', 'Invalid value');
       });
     });
 
@@ -91,7 +91,7 @@ describe('check: context runner', () => {
           options: []
         }]
       }).then(errors => {
-        expect(errors[0]).to.have.property('message', 'wat');
+        expect(errors[0]).to.have.property('msg', 'wat');
       });
     });
 
@@ -109,7 +109,7 @@ describe('check: context runner', () => {
           options: []
         }]
       }).then(errors => {
-        expect(errors[0]).to.have.property('message', 'wawat');
+        expect(errors[0]).to.have.property('msg', 'wawat');
       });
     });
 
@@ -131,24 +131,24 @@ describe('check: context runner', () => {
         }]
       }).then(errors => {
         expect(errors).to.deep.include({
-          path: 'foo',
+          param: 'foo',
           value: 123,
           location: 'query',
-          message: 'wut!'
+          msg: 'wut!'
         });
 
         expect(errors).to.deep.include({
-          path: 'bar',
+          param: 'bar',
           value: 'not int',
           location: 'query',
-          message: 'Invalid value'
+          msg: 'Invalid value'
         });
 
         expect(errors).to.deep.include({
-          path: 'bar',
+          param: 'bar',
           value: 'not int',
           location: 'query',
-          message: 'wut!'
+          msg: 'wut!'
         });
       });
     });
@@ -173,7 +173,7 @@ describe('check: context runner', () => {
       }).then(errors => {
         expect(errors)
           .to.have.length(1)
-          .and.to.have.deep.property('[0].message', 'wut 123 body foo[0]');
+          .and.to.have.deep.property('[0].msg', 'wut 123 body foo[0]');
       });
     });
 
@@ -192,7 +192,7 @@ describe('check: context runner', () => {
       }).then(errors => {
         expect(errors)
           .to.have.length(1)
-          .and.to.have.deep.property('[0].path', 'withzero');
+          .and.to.have.deep.property('[0].param', 'withzero');
       });
     });
 

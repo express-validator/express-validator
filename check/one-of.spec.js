@@ -28,9 +28,9 @@ describe('check: checkOneOf middleware', () => {
         .to.have.length(1)
         .and.to.deep.include({
           location: 'cookies',
-          path: 'foo',
+          param: 'foo',
           value: 'abc',
-          message: 'Invalid value'
+          msg: 'Invalid value'
         });
     });
   });

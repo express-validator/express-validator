@@ -17,9 +17,9 @@ module.exports = (req, context) => {
     }).catch(err => {
       validationErrors.push({
         location,
-        path,
+        param: path,
         value,
-        message: validatorCfg.message || err.message
+        msg: validatorCfg.message || err.message
       });
     }), Promise.resolve());
   });
