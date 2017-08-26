@@ -86,6 +86,9 @@ Creates a validation chain for one or more fields. They may be located in any of
 
 If any of the fields are present in more than one location, then all instances of that field value must pass the validation.
 
+The validators will always be executed serially for the same field.  
+This means that if the chain targets more than one field, those will run in parallel, but each of their validators are serial.
+
 ### `body(fields[, message])`
 Same as `check(fields[, message])`, but only checking `req.body`.
 
@@ -127,6 +130,9 @@ app.post('/start-freelancing', oneOf([
   }
 });
 ```
+
+The execution of those validation chains are made in parallel,
+while the execution within a chain still respects the rule defined in the [`check()` function](#checkfield-message).
 
 ### `validationResult(req)`
 - `req`: the express request object.
