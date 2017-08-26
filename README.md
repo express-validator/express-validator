@@ -10,6 +10,11 @@ An [express.js]( https://github.com/visionmedia/express ) middleware for
 
 - [Installation](#installation)
 - [Usage](#usage)
+- [`check` API](#check-api)
+- [`filter` API](#filter-api)
+- [Validation Chain API](#validation-chain-api)
+- [Validation Result API](#validation-result-api)
+- [Legacy API](#legacy-api)
 - [Changelog](#changelog)
 - [License](#license)
 
@@ -70,7 +75,7 @@ These methods are all available via `require('express-validator/check')`.
 ### `check(field[, message])`
 - `field`: a string or an array of strings of field names to validate against.
 - `message` *(optional)*: an error message to use when failed validators don't specify a message. Defaults to `Invalid value`.
-> *Returns:* a validation chain/middleware instance
+> *Returns:* a [Validation Chain](#validation-chain-api)
 
 Creates a validation chain for one or more fields. They may be located in any of the following request objects:
 - `req.body`
@@ -97,7 +102,7 @@ Same as `check(fields[, message])`, but only checking `req.params`.
 Same as `check(fields[, message])`, but only checking `req.query`.
 
 ### `oneOf(validationChains)`
-- `validationChains`: an array of validation chains created with `check()` or any of its variations.
+- `validationChains`: an array of [validation chains](#validation-chain-api) created with `check()` or any of its variations.
 > *Returns:* a middleware instance
 
 Creates a middleware instance that will ensure at least one of the given chains passes the validation.  
@@ -125,7 +130,7 @@ app.post('/start-freelancing', oneOf([
 
 ### `validationResult(req)`
 - `req`: the express request object.
-> *Returns:* a validation result object
+> *Returns:* a [validation result](#validation-result-api) object
 
 Extracts the validation errors from a request and makes it available in the form of a validation result object.
 
@@ -253,7 +258,8 @@ The key will be the name of the validator, while the value is the validation fun
 The key will be the name of the sanitizer, while the value is the sanitization function, receiving the value and any option.
 
 ### Legacy Validation Chain
-The Legacy Validation Chain instances provides further functionality than the one provided by the base Validation Chain objects.
+The Legacy Validation Chain instances provides further functionality than the one provided by the base [Validation Chain](#validation-chain-api) objects.  
+It also differs in that the legacy one is not a middleware *per se*.
 
 Any custom validator specified in the middleware will be made available 
 in instances of this validation chain.
@@ -266,7 +272,7 @@ Additionally, the following validators are also available:
 ### `req.check(field[, message])`
 - `field`: the name of a single field to validate against.
 - `message` *(optional)*: an error message to use when failed validators don't specify a message. Defaults to `Invalid value`.
-> *Returns:* a validation chain
+> *Returns:* a [legacy validation chain](#legacy-validation-chain)
 
 Creates a validation chain for one field. It may be located in any of the following request objects:
 - `req.params`
@@ -326,7 +332,7 @@ Same as `req.sanitize(field[, message])`, but only sanitizing `req.params`.
 Same as `req.sanitize(field[, message])`, but only sanitizing `req.query`.
 
 ### `req.getValidationResult()`
-> *Returns:* a promise for a Validation Result object
+> *Returns:* a promise for a [Validation Result](#validation-result-api) object
 
 Runs all validations and returns a validation result object for the errors gathered, for both sync and async validators.
 
