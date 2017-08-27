@@ -23,10 +23,11 @@ An [express.js]( https://github.com/visionmedia/express ) middleware for
 If you're arriving here as a express-validator v3 user after upgrading to v4, please check the [upgrade guide](UPGRADE_GUIDE.md) in order to find out what's different!
 
 ## Installation
-
 ```
 npm install express-validator
 ```
+
+Also make sure that you have Node.js 6 or newer in order to use it.
 
 ## Usage
 > The version 3 style of doing validations is still available.  
