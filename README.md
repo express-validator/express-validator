@@ -108,12 +108,14 @@ Same as `check(fields[, message])`, but only checking `req.params`.
 ### `query(fields[, message])`
 Same as `check(fields[, message])`, but only checking `req.query`.
 
-### `oneOf(validationChains)`
+### `oneOf(validationChains[, message])`
 - `validationChains`: an array of [validation chains](#validation-chain-api) created with `check()` or any of its variations.
+- `message` *(optional)*: an error message to use when all chains failed. Defaults to `Invalid value(s)`.
 > *Returns:* a middleware instance
 
 Creates a middleware instance that will ensure at least one of the given chains passes the validation.  
-If none of the given chains passes, only the errors from the first validation chain will be used.
+If none of the given chains passes, an error will be pushed to the `_error` pseudo-field,
+using the given `message`, and the errors of each chain will be made available under a key `nestedErrors`.
 
 Example:
 
