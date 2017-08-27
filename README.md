@@ -219,7 +219,7 @@ This is an unified API for dealing with errors, both in legacy and check APIs.
 
 Each error returned by `.array()` and `.mapped()` methods have the following format:
 
-```json
+```js
 {
   "msg": "The error message",
   "param": "param.name.with.index[0]",
