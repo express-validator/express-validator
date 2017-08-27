@@ -29,6 +29,8 @@ npm install express-validator
 ```
 
 ## Usage
+> The version 3 style of doing validations is still available.  
+> Please check the [legacy API](#legacy-api) for the docs.
 
 ```javascript
 const { check, validationResult } = require('express-validator/check');
