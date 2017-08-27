@@ -215,6 +215,24 @@ This will have precedence over errors thrown by a custom validator.
 ---
 
 ## Validation Result API
+This is an unified API for dealing with errors, both in legacy and check APIs.
+
+Each error returned by `.array()` and `.mapped()` methods have the following format:
+
+```json
+{
+  "msg": "The error message",
+  "param": "param.name.with.index[0]",
+  "value": "param value",
+  // Location of the param that generated this error.
+  // It's either body, query, params, cookies or headers.
+  "location": "body",
+
+  // nestedErrors only exist when using the oneOf function
+  "nestedErrors": [{ ... }]
+}
+```
+
 ### `.isEmpty()`
 > *Returns:* a boolean indicating whether this result object contains no errors at all.
 
