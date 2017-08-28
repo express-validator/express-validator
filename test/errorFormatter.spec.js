@@ -2,7 +2,7 @@ const expect = require('chai').expect;
 const expressValidator = require('..');
 
 describe('Legacy: Error formatting', () => {
-  it('returns object { msg, value, param } by default', () => {
+  it('returns object { msg, value, param, location } by default', () => {
     const req = {
       headers: { int: 'asd' }
     };
@@ -12,6 +12,7 @@ describe('Legacy: Error formatting', () => {
 
     return req.getValidationResult().then(result => {
       expect(result.mapped().int).to.eql({
+        location: 'headers',
         param: 'int',
         value: 'asd',
         msg: 'Invalid value'
@@ -25,7 +26,8 @@ describe('Legacy: Error formatting', () => {
     };
 
     expressValidator({
-      errorFormatter: (param, msg, value) => ({
+      errorFormatter: (param, msg, value, location) => ({
+        location,
         param,
         value,
         msg: 'Imma real cool'
@@ -36,6 +38,7 @@ describe('Legacy: Error formatting', () => {
 
     return req.getValidationResult().then(result => {
       expect(result.mapped().int).to.eql({
+        location: 'headers',
         param: 'int',
         value: 'asd',
         msg: 'Imma real cool'
