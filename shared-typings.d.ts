@@ -118,6 +118,7 @@ export interface Validator {
   // Additional ValidatorChain.prototype.* validators
 
   not(): this;
+  exists(): this;
   optional(options?: Options.OptionalOptions): this;
   withMessage(message: string): this;
 }

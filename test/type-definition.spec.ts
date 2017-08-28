@@ -199,6 +199,7 @@ app.use((req: express.Request, res: express.Response, next: express.NextFunction
     .notEmpty()
     .len({ min: 0, max: 0 })
     .not()
+    .exists()
     .optional().optional({ checkFalsy: true })
     .withMessage('message');
 
