@@ -136,6 +136,11 @@ export interface Result {
   isEmpty(): boolean
 
   /**
+   * @return The current validation result instance
+   */
+  formatWith(formatter: ErrorFormatter): this;
+
+  /**
    * @return All errors for all validated parameters will be included, unless you specify that you want only the first
    * error of each param by invoking `result.useFirstErrorOnly()`.
    */
@@ -158,12 +163,16 @@ export interface Result {
   throw(): Result
 }
 
+export interface ErrorFormatter {
+  (error: { location: Location, param: string, msg: any, value: any }): any;
+}
+
 declare namespace Options {
 
   export interface ExpressValidatorOptions {
     customValidators?: { [validatorName: string]: (...value: any[]) => boolean | Promise<any> }
     customSanitizers?: { [sanitizername: string]: (value: any) => any }
-    errorFormatter?: (param?: string, msg?: string, value?: any) => any
+    errorFormatter?: (param?: string, msg?: string, value?: any, location?: Location) => any
   }
 
   interface ResultArrayOptions {

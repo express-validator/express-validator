@@ -16,7 +16,7 @@ app.use(validator({
     isAsync: () => Promise.resolve(true)
   },
   customSanitizers: { toAwesome: (lib: any) => [lib] },
-  errorFormatter: (param: string, msg: string, value: any) => ({ param, msg, value })
+  errorFormatter: (param: string, msg: string, value: any, location: any) => ({ param, msg, value, location })
 }));
 
 app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -207,8 +207,16 @@ app.use((req: express.Request, res: express.Response, next: express.NextFunction
   // getting result
 
   req.getValidationResult()
+    .then(result => {
+      result.formatWith(error => {
+        error.msg;
+        error.location;
+        error.param;
+        error.value;
+      });
 
-    .then(result => result.isEmpty() ? next() : result.throw())
+      result.isEmpty() ? next() : result.throw()
+    })
 
     .catch(result =>
       next({
