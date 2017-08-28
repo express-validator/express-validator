@@ -220,7 +220,7 @@ This will have precedence over errors thrown by a custom validator.
 ## Validation Result API
 This is an unified API for dealing with errors, both in legacy and check APIs.
 
-Each error returned by `.array()` and `.mapped()` methods have the following format:
+Each error returned by `.array()` and `.mapped()` methods have the following format by default:
 
 ```js
 {
@@ -238,6 +238,11 @@ Each error returned by `.array()` and `.mapped()` methods have the following for
 
 ### `.isEmpty()`
 > *Returns:* a boolean indicating whether this result object contains no errors at all.
+
+### `.formatWith(formatter)`
+- `formatter(error)`: the function to use to format when returning errors.  
+  The `error` argument is an object in the format of `{ location, msg, param, value, nestedErrors }`, as described above.
+> *Returns:* this validation result instance
 
 ### `.array([options])`
 - `options` *(optional)*: an object of options. Defaults to `{ onlyFirstError: false }`
@@ -284,7 +289,7 @@ app.use(expressValidator(middlewareOptions));
 ```
 
 ### Middleware options
-- `errorFormatter (param, msg, value)`: a function that formats the error objects before returning them to your route handlers.
+- `errorFormatter (param, msg, value, location)`: a function that formats the error objects before returning them to your route handlers.
 - `customValidators`: an object where you can specify custom validators.  
 The key will be the name of the validator, while the value is the validation function, receiving the value and any option.
 - `customSanitizers`: an object where you can specify custom sanitizers.  

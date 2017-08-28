@@ -16,6 +16,12 @@ const res: Response = <Response>{};
 // Test results
 const result = validationResult(req);
 result.isEmpty();
+result.formatWith(error => {
+  error.msg;
+  error.location;
+  error.param;
+  error.value;
+});
 
 const arrayErrors = result.array();
 arrayErrors[0].location;

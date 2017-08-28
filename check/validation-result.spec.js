@@ -41,6 +41,21 @@ describe('check: validationResult', () => {
         msg: 'yay'
       });
     });
+
+    it('formats using formatter passed via .formatWith()', () => {
+      const result = validationResult({ _validationErrors: allErrors }).formatWith(error => {
+        return Object.assign({ code: 'foo' }, error);
+      });
+
+      let errors = result.array();
+      expect(errors[0]).to.have.property('code', 'foo');
+      expect(errors[1]).to.have.property('code', 'foo');
+      expect(errors[2]).to.have.property('code', 'foo');
+
+      errors = result.array({ onlyFirstError: true });
+      expect(errors[0]).to.have.property('code', 'foo');
+      expect(errors[1]).to.have.property('code', 'foo');
+    });
   });
 
   describe('.mapped()', () => {
@@ -49,6 +64,17 @@ describe('check: validationResult', () => {
       expect(result.mapped()).to.eql({
         foo: { param: 'foo', msg: 'blabla' },
         bar: { param: 'bar', msg: 'yay' }
+      });
+    });
+
+    it('formats using formatter passed via .formatWith()', () => {
+      const result = validationResult({ _validationErrors: allErrors }).formatWith(error => {
+        return Object.assign({ code: 'bar' }, error);
+      });
+
+      expect(result.mapped()).to.eql({
+        foo: { param: 'foo', msg: 'blabla', code: 'bar' },
+        bar: { param: 'bar', msg: 'yay', code: 'bar' }
       });
     });
   });
@@ -74,6 +100,20 @@ describe('check: validationResult', () => {
       } catch (e) {
         expect(e).to.respondTo('mapped');
         expect(e).to.respondTo('array');
+        done();
+      }
+    });
+
+    it('passes previous formatter to the thrown error', done => {
+      const result = validationResult({ _validationErrors: allErrors }).formatWith(error => {
+        return Object.assign({ code: 'foo' }, error);
+      });
+
+      try {
+        result.throw();
+        done(new Error('no errors thrown'));
+      } catch (e) {
+        expect(e.array()).to.have.deep.property('[0].code', 'foo');
         done();
       }
     });
