@@ -42,6 +42,9 @@ describe('Legacy: .optional()', () => {
       upper: {
         isUppercase: true,
         optional: true
+      },
+      none: {
+        optional: true
       }
     });
 

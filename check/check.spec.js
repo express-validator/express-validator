@@ -60,6 +60,11 @@ describe('check: low-level middleware', () => {
       expect(validators).to.not.have.deep.property('[0].message');
       expect(validators).to.have.deep.property('[1].message', 'wat');
     });
+
+    it('does not throw when there are no validators', () => {
+      const chain = check('foo', []);
+      expect(chain.withMessage).to.not.throw(Error);
+    });
   });
 
   describe('.exists()', () => {
