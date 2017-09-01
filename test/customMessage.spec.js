@@ -94,4 +94,22 @@ describe('Legacy: Message customization', () => {
       expect(result.mapped()).to.have.deep.property('password.msg', 'do not use a common password');
     });
   });
+
+  it('works with non-string messages', () => {
+    const req = {
+      body: { color: 'asd' }
+    };
+
+    expressValidator()(req, {}, () => {});
+    req.check('color', { code: 1, msg: 'damn!' }).isHexColor();
+
+    return req.getValidationResult().then(result => {
+      expect(result.mapped())
+        .to.have.deep.property('color.msg')
+        .and.to.eql({
+          code: 1,
+          msg: 'damn!'
+        });
+    });
+  });
 });

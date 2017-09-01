@@ -182,12 +182,12 @@ declare namespace Options {
 
   interface ValidatorSchemaOptions {
     options?: any[]
-    errorMessage?: string
+    errorMessage?: any
   }
 
   interface ValidationSchemaParamOptions {
     in?: Location
-    errorMessage?: string
+    errorMessage?: any
 
     // Additional ValidatorChain.prototype.* validators
     optional?: boolean | { checkFalsy: boolean }

@@ -64,59 +64,60 @@ app.use((req: express.Request, res: express.Response, next: express.NextFunction
   const schema: ExpressValidator.ValidationSchema = {
     param: {
       in: 'headers',
-      contains: { errorMessage: 'message', options: [] },
+      errorMessage: 'msg',
+      contains: { errorMessage: { msg: 'message' }, options: [] },
       isAwesomeLib: { errorMessage: 'message', options: [] }
     }
   };
 
   req.assert('param').isEmail({ require_tld: true });
   req.assert('param', 'message');
-  req.assert('param.child', 'message').optional();
+  req.assert('param.child', { msg: 'message' }).optional();
   req.assert(schema);
 
   req.validate('param');
   req.validate('param', 'message');
-  req.validate('param.child', 'message').optional();
+  req.validate('param.child', { msg: 'message' }).optional();
   req.validate(schema);
 
   req.check('param').isEmail({ require_tld: true });
   req.check('param', 'message');
-  req.check('param.child', 'message');
+  req.check('param.child', { msg: 'message' });
   req.check(['param', 'child'], 'message').optional();
   req.check(schema);
 
 
   req.checkBody('param').isEmail({ require_tld: true });
   req.checkBody('param', 'message');
-  req.checkBody('param.child', 'message');
+  req.checkBody('param.child', { msg: 'message' });
   req.checkBody(['param', 'child'], 'message').optional();
   req.checkBody(schema);
 
 
   req.checkCookies('param').isEmail({ require_tld: true });
   req.checkCookies('param', 'message');
-  req.checkCookies('param.child', 'message');
+  req.checkCookies('param.child', { msg: 'message' });
   req.checkCookies(['param', 'child'], 'message').optional();
   req.checkCookies(schema);
 
 
   req.checkHeaders('param').isEmail({ require_tld: true });
   req.checkHeaders('param', 'message');
-  req.checkHeaders('param.child', 'message');
+  req.checkHeaders('param.child', { msg: 'message' });
   req.checkHeaders(['param', 'child'], 'message').optional();
   req.checkHeaders(schema);
 
 
   req.checkParams('param').isEmail({ require_tld: true });
   req.checkParams('param', 'message');
-  req.checkParams('param.child', 'message');
+  req.checkParams('param.child', { msg: 'message' });
   req.checkParams(['param', 'child'], 'message').optional();
   req.checkParams(schema);
 
 
   req.checkQuery('param').isEmail({ require_tld: true });
   req.checkQuery('param', 'message');
-  req.checkQuery('param.child', 'message');
+  req.checkQuery('param.child', { msg: 'message' });
   req.checkQuery(['param', 'child'], 'message').optional();
   req.checkQuery(schema);
 

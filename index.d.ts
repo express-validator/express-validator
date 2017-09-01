@@ -45,7 +45,7 @@ declare namespace ExpressValidator {
   }
 
   interface ValidatorFunction {
-    (item: string | string[], message?: string): Validator;
+    (item: string | string[], message?: any): Validator;
     (schema: {}): Validator;
   }
   /**
