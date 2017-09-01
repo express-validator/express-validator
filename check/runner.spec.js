@@ -95,6 +95,23 @@ describe('check: context runner', () => {
       });
     });
 
+    it('use validator\'s rejection cause as message', () => {
+      const req = {
+        query: { foo: 'foo' }
+      };
+
+      return runner(req, {
+        locations: ['query'],
+        fields: ['foo'],
+        validators: [{
+          options: [],
+          validator: () => Promise.reject('wat-a-wat!')
+        }]
+      }).then(errors => {
+        expect(errors[0]).to.have.property('msg', 'wat-a-wat!');
+      });
+    });
+
     it('use context\'s message', () => {
       const req = {
         query: { foo: 'foo' }

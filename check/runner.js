@@ -19,7 +19,7 @@ module.exports = (req, context) => {
         location,
         param: path,
         value,
-        msg: validatorCfg.message || err.message
+        msg: validatorCfg.message || err.message || err
       });
     }), Promise.resolve());
   });
