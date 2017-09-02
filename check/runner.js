@@ -7,7 +7,7 @@ module.exports = (req, context) => {
     return context.validators.reduce((promise, validatorCfg) => promise.then(() => {
       const result = validatorCfg.custom ?
         validatorCfg.validator(value, { req, location, path }) :
-        validatorCfg.validator(String(value), ...validatorCfg.options);
+        validatorCfg.validator(toString(value), ...validatorCfg.options);
 
       return Promise.resolve(result).then(result => {
         if ((!validatorCfg.negated && !result) || (validatorCfg.negated && result)) {
@@ -26,3 +26,13 @@ module.exports = (req, context) => {
 
   return Promise.all(promises).then(() => validationErrors);
 };
+
+function toString (value) {
+  if (value && typeof value === 'object' && value.toString) {
+    return value.toString();
+  } else if (value == null || (isNaN(value) && !value.length)) {
+    return '';
+  }
+
+  return String(value);
+}

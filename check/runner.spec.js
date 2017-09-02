@@ -171,6 +171,97 @@ describe('check: context runner', () => {
     });
   });
 
+  describe('default validators', () => {
+    it('receive result of value\'s .toString() method call when object', () => {
+      const req = {
+        body: { foo: {} }
+      };
+
+      return runner(req, {
+        locations: ['body'],
+        fields: ['foo'],
+        validators: [{
+          options: [],
+          validator: value => Promise.reject(value)
+        }]
+      }).then(errors => {
+        expect(errors[0].msg).to.equal(req.body.foo.toString());
+      });
+    });
+
+    it('receive empty string when value is NaN, null, undefined or length == 0', () => {
+      const req = {
+        body: { foo: [], bar: undefined, baz: null, qux: NaN }
+      };
+
+      return runner(req, {
+        locations: ['body'],
+        fields: ['foo', 'bar', 'baz', 'qux'],
+        validators: [{
+          options: [],
+          validator: value => Promise.reject(value)
+        }]
+      }).then(errors => {
+        expect(errors[0].msg).to.equal('');
+        expect(errors[1].msg).to.equal('');
+        expect(errors[2].msg).to.equal('');
+        expect(errors[3].msg).to.equal('');
+      });
+    });
+
+    it('receive string representation when value is number', () => {
+      const req = {
+        body: { foo: 123 }
+      };
+
+      return runner(req, {
+        locations: ['body'],
+        fields: ['foo'],
+        validators: [{
+          options: [],
+          validator: value => Promise.reject(value)
+        }]
+      }).then(errors => {
+        expect(errors[0].msg).to.equal('123');
+      });
+    });
+
+    it('receive string representation when value is boolean', () => {
+      const req = {
+        body: { foo: true, bar: false }
+      };
+
+      return runner(req, {
+        locations: ['body'],
+        fields: ['foo', 'bar'],
+        validators: [{
+          options: [],
+          validator: value => Promise.reject(value)
+        }]
+      }).then(errors => {
+        expect(errors[0].msg).to.equal('true');
+        expect(errors[1].msg).to.equal('false');
+      });
+    });
+
+    it('receive the value itself when it is string', () => {
+      const req = {
+        body: { foo: 'bar' }
+      };
+
+      return runner(req, {
+        locations: ['body'],
+        fields: ['foo'],
+        validators: [{
+          options: [],
+          validator: value => Promise.reject(value)
+        }]
+      }).then(errors => {
+        expect(errors[0].msg).to.equal('bar');
+      });
+    });
+  });
+
   describe('validators', () => {
     it('receive value, request, location and path when is a custom', () => {
       const req = {
