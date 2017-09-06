@@ -25,6 +25,44 @@ describe('Legacy: General', () => {
     });
   });
 
+  it('converts objects with toString method to string', () => {
+    const req = {
+      query: {
+        foo: {},
+        bar: { toString: () => '' }
+      }
+    };
+
+    expressValidator({})(req, {}, () => {});
+
+    req.check('foo').notEmpty();
+    req.check('bar').notEmpty();
+
+    return req.getValidationResult().then(result => {
+      expect(result.mapped()).to.not.have.property('foo');
+      expect(result.mapped()).to.have.property('bar');
+    });
+  });
+
+  it('converts null, undefined or length == 0 to empty string', () => {
+    const req = {
+      query: { foo: null, bar: undefined, baz: [] }
+    };
+
+    expressValidator({})(req, {}, () => {});
+
+    req.check('foo').notEmpty();
+    req.check('bar').notEmpty();
+    req.check('baz').notEmpty();
+    req.check('qux').notEmpty();
+
+    return req.getValidationResult().then(result => {
+      expect(result.mapped()).to.have.property('foo');
+      expect(result.mapped()).to.have.property('bar');
+      expect(result.mapped()).to.have.property('baz');
+    });
+  });
+
   describe('req.validationErrors()', () => {
     it('returns false if no errors exist', () => {
       const req = {
