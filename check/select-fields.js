@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const utils = require('../lib/utils');
+const formatParamOutput = require('../utils/format-param-output');
 
 module.exports = (req, context) => {
   let allFields = [];
@@ -50,7 +50,7 @@ function expand (object, path, paths) {
         .concat(segments.slice(wildcard + 1)))
       .forEach(path => expand(object, path, paths));
   } else {
-    paths.push(utils.formatParamOutput(segments));
+    paths.push(formatParamOutput(segments));
   }
 
   return paths;
