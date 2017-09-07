@@ -376,7 +376,7 @@ Runs all validations and returns a validation result object for the errors gathe
 
 ### `req.asyncValidationErrors([mapped])`
 - `mapped` *(optional)*: whether the result must be an object instead of an array. Defaults to `false`.
-> *Returns:* `false` if no errors happened, an array of errors or an object of errors (in case `mapped` argument is `true`).
+> *Returns:* a promise which will resolve in case all validators passed, or reject with an array of errors or an object of errors (in case `mapped` argument is `true`).
 
 Runs all validations and returns the errors gathered for all of them.
 
