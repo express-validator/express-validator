@@ -8,6 +8,14 @@ describe('check: validationResult', () => {
     { param: 'bar', msg: 'yay' }
   ];
 
+  it('works even though no validators ran', () => {
+    const result = validationResult({});
+    expect(result.throw).not.to.throw(Error);
+    expect(result.mapped()).to.eql({});
+    expect(result.array()).to.eql([]);
+    expect(result.isEmpty()).to.be.true;
+  });
+
   describe('.isEmpty()', () => {
     it('returns whether there are no errors', () => {
       let result = validationResult({ _validationErrors: [] });

@@ -1,6 +1,6 @@
 module.exports = req => decorateAsValidationResult({}, req._validationErrors);
 
-function decorateAsValidationResult(obj, errors) {
+function decorateAsValidationResult(obj, errors = []) {
   let formatter = error => error;
 
   obj.isEmpty = () => !errors.length;
