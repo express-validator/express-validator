@@ -62,8 +62,8 @@ app.post('/user', [
   // Wildcards * are accepted!
   check('addresses.*.postalCode').isPostalCode(),
 ], (req, res, next) => {
-  // Get the validation result whenever you want
-  const errors = validationResult(req).throw();
+  // Get the validation result whenever you want; see the Validation Result API for all options!
+  const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: err.mapped() });
   }
