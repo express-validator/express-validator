@@ -117,4 +117,15 @@ describe('Legacy: Schema validation', () => {
       expect(result.mapped()).to.not.have.property('upper');
     });
   });
+
+  it('does not throw when a validator does not exist', () => {
+    const req = {};
+    expressValidator()(req, {}, () => {});
+
+    const setValidators = () => req.check({
+      foo: { isBar: true }
+    });
+
+    expect(setValidators).not.to.throw(Error);
+  });
 });
