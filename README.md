@@ -183,6 +183,17 @@ The custom validator may return a promise to indicate an async validation task. 
 
 The custom validator may also throw JavaScript exceptions (eg `throw new Error()`) and return falsy values to indicate the field is invalid.
 
+Example:
+
+```js
+app.post('/create-user', [
+  check('password').exists(),
+  check('passwordConfirmation', 'passwordConfirmation field must have the same value as the password field')
+    .exists()
+    .custom((value, { req }) => value === req.body.password)
+], loginHandler);
+```
+
 ### `.exists()`
 > *Returns:* the current validation chain instance
 
