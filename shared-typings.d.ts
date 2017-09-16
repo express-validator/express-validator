@@ -120,7 +120,7 @@ export interface Validator {
   not(): this;
   exists(): this;
   optional(options?: Options.OptionalOptions): this;
-  withMessage(message: string): this;
+  withMessage(message: any): this;
 }
 
 export interface MappedError {

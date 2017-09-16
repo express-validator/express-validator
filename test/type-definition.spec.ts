@@ -202,6 +202,8 @@ app.use((req: express.Request, res: express.Response, next: express.NextFunction
     .not()
     .exists()
     .optional().optional({ checkFalsy: true })
+    .withMessage(new Error('message'))
+    .withMessage(2)
     .withMessage('message');
 
 

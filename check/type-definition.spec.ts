@@ -132,4 +132,6 @@ check('foo', 'with error message')
   .equals(true).equals(0).equals('').equals({}).contains('')
   .matches('').matches('', '').matches(/ /, '')
   .optional().optional({ checkFalsy: true })
+  .withMessage(new Error('message'))
+  .withMessage(2)
   .withMessage('message');
