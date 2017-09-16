@@ -202,6 +202,36 @@ app.use((req: express.Request, res: express.Response, next: express.NextFunction
     .not()
     .exists()
     .optional().optional({ checkFalsy: true })
+    .trim()
+    .trim('abc')
+    .ltrim()
+    .ltrim('abc')
+    .rtrim()
+    .rtrim('abc')
+    .blacklist('a')
+    .whitelist('z')
+    .escape()
+    .unescape()
+    .toInt()
+    .toInt(10)
+    .toFloat()
+    .toDate()
+    .stripLow()
+    .stripLow(true)
+    .normalizeEmail()
+    .normalizeEmail({
+      all_lowercase: true,
+      gmail_lowercase: true,
+      gmail_remove_dots: true,
+      gmail_remove_subaddress: true,
+      gmail_convert_googlemaildotcom: true,
+      outlookdotcom_lowercase: true,
+      outlookdotcom_remove_subaddress: true,
+      yahoo_lowercase: true,
+      yahoo_remove_subaddress: true,
+      icloud_lowercase: true,
+      icloud_remove_subaddress: true
+    })
     .withMessage(new Error('message'))
     .withMessage(2)
     .withMessage('message');
