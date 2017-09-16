@@ -3,10 +3,22 @@ const validator = require('validator');
 const runner = require('./runner');
 
 const extraValidators = ['contains', 'equals', 'matches'];
+const extraSanitizers = [
+  'blacklist',
+  'escape',
+  'unescape',
+  'normalizeEmail',
+  'ltrim',
+  'rtrim',
+  'trim',
+  'stripLow',
+  'whitelist'
+];
 
 module.exports = (fields, locations, message) => {
   let optional;
   const validators = [];
+  const sanitizers = [];
   fields = Array.isArray(fields) ? fields : [fields];
 
   const middleware = (req, res, next) => {
@@ -28,6 +40,19 @@ module.exports = (fields, locations, message) => {
           options
         });
         middleware._context.negateNext = false;
+        return middleware;
+      };
+    });
+
+  Object.keys(validator)
+    .filter(methodName => methodName.startsWith('to') || extraSanitizers.includes(methodName))
+    .forEach(methodName => {
+      const sanitizerFn = validator[methodName];
+      middleware[methodName] = (...options) => {
+        sanitizers.push({
+          sanitizer: sanitizerFn,
+          options
+        });
         return middleware;
       };
     });
@@ -72,6 +97,7 @@ module.exports = (fields, locations, message) => {
     message,
     fields,
     locations,
+    sanitizers,
     validators
   };
 
