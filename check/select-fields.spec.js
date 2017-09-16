@@ -95,6 +95,32 @@ describe('check: field selection', () => {
     });
   });
 
+  it('applies sanitizers to the selected values', () => {
+    const req = {
+      query: { email: ' FOO@BAR.COM ' }
+    };
+
+    const instances = selectFields(req, {
+      locations: ['query'],
+      fields: ['email'],
+      sanitizers: [{
+        sanitizer: (value, side) => {
+          return side === 'left' ? value.replace(/^\s+/, '') : value.replace(/\s+$/, '');
+        },
+        options: ['left']
+      }, {
+        sanitizer: value => value.toLowerCase(),
+        options: []
+      }]
+    });
+
+    expect(instances[0]).to.eql({
+      location: 'query',
+      path: 'email',
+      value: 'foo@bar.com '
+    });
+  });
+
   describe('optional context', () => {
     it('ignores fields which are not present in case of checkFalsy = false', () => {
       const instances = selectFields({
@@ -120,6 +146,19 @@ describe('check: field selection', () => {
         optional: { checkFalsy: true },
         locations: ['params'],
         fields: ['foo', 'bar']
+      });
+
+      expect(instances).to.have.length(0);
+    });
+
+    it('runs with the result of the sanitization', () => {
+      const instances = selectFields({
+        params: { trimmed: '   ' }
+      }, {
+        optional: { checkFalsy: true },
+        locations: ['params'],
+        fields: ['trimmed'],
+        sanitizers: [{ sanitizer: value => value.trim(), options: []}]
       });
 
       expect(instances).to.have.length(0);
