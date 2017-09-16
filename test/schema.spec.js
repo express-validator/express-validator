@@ -98,6 +98,24 @@ describe('Legacy: Schema validation', () => {
     });
   });
 
+  it('applies sanitizers', () => {
+    const req = {
+      body: { trimmed: '  ' }
+    };
+
+    expressValidator()(req, {}, () => {});
+    req.check({
+      trimmed: {
+        trim: true,
+        notEmpty: true
+      }
+    });
+
+    return req.getValidationResult().then(result => {
+      expect(result.mapped()).to.have.property('trimmed');
+    });
+  });
+
   it('ignores validators which values are falsy', () => {
     const req = {
       body: {
