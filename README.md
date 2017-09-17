@@ -13,6 +13,7 @@ An [express.js]( https://github.com/visionmedia/express ) middleware for
 - [Usage](#usage)
 - [`check` API](#check-api)
 - [`filter` API](#filter-api)
+- [Sanitization Chain API](#sanitization-chain-api)
 - [Validation Chain API](#validation-chain-api)
 - [Validation Result API](#validation-result-api)
 - [Legacy API](#legacy-api)
@@ -65,6 +66,9 @@ app.post('/user', [
 
   // Wildcards * are accepted!
   check('addresses.*.postalCode').isPostalCode(),
+
+  // Sanitize the number of each address, making it arrive as an integer
+  sanitize('addresses.*.number').toInt()
 ], (req, res, next) => {
   // Get the validation result whenever you want; see the Validation Result API for all options!
   const errors = validationResult(req);
@@ -169,6 +173,48 @@ an object with them. Nested paths and wildcards are properly handled as well.
 By default, only valid data is included; this means if a field didn't pass
 its validation, it won't be included in the returned object.  
 You can include invalid data by passing the option `onlyValidData` as `false`.
+
+### `sanitize(fields)`
+- `field`: a string or an array of strings of field names to validate against.
+> *Returns:* a [Sanitization Chain](#sanitization-chain-api)
+
+Creates a sanitization chain for one or more fields. They may be located in any of the following request objects:
+- `req.body`
+- `req.cookies`
+- `req.params`
+- `req.query`
+
+_* `req.headers` is **not** supported at the moment._
+
+If any of the fields are present in more than one location, then all instances of that field value will be sanitized.
+
+### `sanitizeBody(fields)`
+Same as `sanitize(fields)`, but only sanitizing `req.body`.
+
+### `sanitizeCookie(fields)`
+Same as `sanitize(fields)`, but only sanitizing `req.cookies`.
+
+### `sanitizeParam(fields)`
+Same as `sanitize(fields)`, but only sanitizing `req.params`.
+
+### `sanitizeQuery(fields)`
+Same as `sanitize(fields)`, but only sanitizing `req.query`.
+
+---
+
+## Sanitization Chain API
+The sanitization chain is a middleware, and it should be passed to an Express route handler.  
+When the middleware runs, it will modify each field in place, applying each of the sanitizers in the order they were specified:
+
+```js
+app.get('/', sanitizeBody('trimMe').trim(), (req, res, next) => {
+  // If req.body.trimMe was originally "  something ",
+  // its sanitized value will be "something"
+  console.log(req.body.trimMe);
+});
+```
+
+Any of the sanitization methods listed by [validator.js](https://github.com/chriso/validator.js) are made available in all sanitization chains created by express-validator, as long as we're supporting the most up-to-date validator version.
 
 ---
 
