@@ -1,19 +1,7 @@
 const validator = require('validator');
 
 const runner = require('./runner');
-
-const extraValidators = ['contains', 'equals', 'matches'];
-const extraSanitizers = [
-  'blacklist',
-  'escape',
-  'unescape',
-  'normalizeEmail',
-  'ltrim',
-  'rtrim',
-  'trim',
-  'stripLow',
-  'whitelist'
-];
+const { extraSanitizers, extraValidators } = require('../utils/constants');
 
 module.exports = (fields, locations, message) => {
   let optional;
