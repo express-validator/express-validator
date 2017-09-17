@@ -16,6 +16,25 @@ describe('check: low-level middleware', () => {
     expect(chain).to.have.property('matches');
   });
 
+  it('returns chain with all validator\'s sanitization methods', () => {
+    const chain = check('foo', []);
+    Object.keys(validator)
+      .filter(methodName => methodName.startsWith('to'))
+      .forEach(methodName => {
+        expect(chain).to.have.property(methodName);
+      });
+
+    expect(chain).to.have.property('blacklist');
+    expect(chain).to.have.property('escape');
+    expect(chain).to.have.property('unescape');
+    expect(chain).to.have.property('normalizeEmail');
+    expect(chain).to.have.property('ltrim');
+    expect(chain).to.have.property('rtrim');
+    expect(chain).to.have.property('trim');
+    expect(chain).to.have.property('stripLow');
+    expect(chain).to.have.property('whitelist');
+  });
+
   it('is built with field search locations set via 2rd arg', () => {
     const chain = check('foo', ['foo', 'bar']);
     expect(chain._context)
@@ -74,6 +93,18 @@ describe('check: low-level middleware', () => {
 
       expect(validators[0].validator(undefined)).to.be.false;
       expect(validators[0].validator(null)).to.be.true;
+    });
+  });
+
+  describe('sanitization methods', () => {
+    it('add a sanitizer to the chain context', () => {
+      const chain = check('foo').trim();
+
+      expect(chain._context.sanitizers).to.have.length(1);
+      expect(chain._context.sanitizers).to.deep.include({
+        sanitizer: validator.trim,
+        options: []
+      });
     });
   });
 

@@ -4,10 +4,12 @@ const formatParamOutput = require('../utils/format-param-output');
 module.exports = (req, context) => {
   let allFields = [];
   const optionalityFilter = createOptionalityFilter(context);
+  const sanitizerMapper = createSanitizerMapper(context);
 
   context.fields.forEach(field => {
     let instances = _(context.locations)
       .flatMap(createFieldExpander(req, field))
+      .map(sanitizerMapper)
       .filter(optionalityFilter)
       .value();
 
@@ -54,6 +56,14 @@ function expand (object, path, paths) {
   }
 
   return paths;
+}
+
+function createSanitizerMapper ({ sanitizers = [] }) {
+  return field => sanitizers.reduce((prev, sanitizer) => {
+    return Object.assign({}, prev, {
+      value: sanitizer.sanitizer(prev.value, ...sanitizer.options)
+    });
+  }, field);
 }
 
 function createOptionalityFilter ({ optional }) {

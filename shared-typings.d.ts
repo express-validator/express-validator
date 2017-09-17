@@ -107,6 +107,21 @@ export interface Validator {
   isDataURI(): this;
   isWhitelisted(chars: string | string[]): this;
 
+  // Sanitizers
+
+  blacklist(chars: string): this;
+  escape(): this;
+  unescape(): this;
+  normalizeEmail(options?: Options.NormalizeEmailOptions): this;
+  ltrim(chars?: string): this;
+  rtrim(chars?: string): this;
+  trim(chars?: string): this;
+  stripLow(keep_new_lines?: boolean): this;
+  toBoolean(strict?: boolean): this;
+  toDate(): this;
+  toFloat(): this;
+  toInt(radix?: number): this;
+  whitelist(chars: string): this;
 
   // Additional validators provided by validator.js
 

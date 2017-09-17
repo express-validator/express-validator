@@ -44,6 +44,10 @@ app.post('/user', [
     // You can customize per validator messages with .withMessage()
     .isEmail().withMessage('must be an email')
 
+    // Every sanitizer method in the validator lib is available as well!
+    .trim()
+    .normalizeEmail()
+
     // ...or throw your own errors using validators created with .custom()
     .custom(value => {
       return findUserByEmail(value).then(user => {
@@ -169,7 +173,8 @@ You can include invalid data by passing the option `onlyValidData` as `false`.
 ---
 
 ## Validation Chain API
-Any of the validation methods listed by [validator.js](https://github.com/chriso/validator.js) are made available in all validation chains created by express-validator, as long as we're supporting the most up-to-date validator version.
+Any of the validation and sanitization methods listed by [validator.js](https://github.com/chriso/validator.js) are made available in all validation chains created by express-validator, as long as we're supporting the most up-to-date validator version.  
+If you use any of the sanitizers together with validators, the validated value is the sanitized one.
 
 Additionally, the following methods are also available:
 

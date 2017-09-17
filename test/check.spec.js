@@ -118,4 +118,22 @@ describe('Legacy: req.check()/req.assert()/req.validate()', () => {
       expect(result.mapped()).to.have.property('foo.bar[0]');
     });
   });
+
+  it('chains standard/custom sanitizers', () => {
+    const req = {
+      params: { trimmed: ' foo  ' }
+    };
+
+    expressValidator({
+      customSanitizers: {
+        noFoo: value => value.replace('foo', '')
+      }
+    })(req, {}, () => {});
+    req.check('trimmed').trim().noFoo().notEmpty();
+
+    return req.getValidationResult().then(result => {
+      console.log(result.mapped());
+      expect(result.mapped()).to.have.property('trimmed');
+    });
+  });
 });
