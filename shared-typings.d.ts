@@ -9,7 +9,7 @@ export type Location = 'body' | 'params' | 'query' | 'headers' | 'cookie'
 
 export interface Dictionary<T> { [key: string]: T; }
 
-export interface Validator {
+export interface Validator extends Sanitizer {
 
   /*
     * Hi fellow contributor,
@@ -107,22 +107,6 @@ export interface Validator {
   isDataURI(): this;
   isWhitelisted(chars: string | string[]): this;
 
-  // Sanitizers
-
-  blacklist(chars: string): this;
-  escape(): this;
-  unescape(): this;
-  normalizeEmail(options?: Options.NormalizeEmailOptions): this;
-  ltrim(chars?: string): this;
-  rtrim(chars?: string): this;
-  trim(chars?: string): this;
-  stripLow(keep_new_lines?: boolean): this;
-  toBoolean(strict?: boolean): this;
-  toDate(): this;
-  toFloat(): this;
-  toInt(radix?: number): this;
-  whitelist(chars: string): this;
-
   // Additional validators provided by validator.js
 
   equals(equals: any): this;
@@ -136,6 +120,52 @@ export interface Validator {
   exists(): this;
   optional(options?: Options.OptionalOptions): this;
   withMessage(message: any): this;
+}
+
+interface Sanitizer {
+  /**
+   * Convert the input string to a date, or null if the input is not a date.
+   */
+  toDate(): this;
+  /**
+   * Convert the input string to a float, or NaN if the input is not a float.
+   */
+  toFloat(): this;
+  /**
+   * Convert the input string to a float, or NaN if the input is not a float.
+   */
+  toInt(radix?: number): this;
+  /**
+   * Cnvert the input string to a boolean.
+   * Everything except for '0', 'false' and '' returns true.
+   * @param strict If true, only '1' and 'true' return true.
+   */
+  toBoolean(strict?: boolean): this;
+  /**
+   * Trim characters (whitespace by default) from both sides of the input.
+   * @param chars Defaults to whitespace
+   */
+  trim(chars?: string): this;
+  ltrim(chars?: string): this;
+  rtrim(chars?: string): this;
+  /**
+   * Remove characters with a numerical value < 32 and 127, mostly control characters.
+   * Unicode-safe in JavaScript.
+   * @param keep_new_lines If true, newline characters are preserved (\n and \r, hex 0xA and 0xD).
+   */
+  stripLow(keep_new_lines?: boolean): this;
+  /**
+   * Escape &, <, >, and "
+   */
+  escape(): this;
+  /**
+   * Replaces HTML encoded entities with <, >, &, ', " and /.
+   */
+  unescape(): this;
+  blacklist(chars: string): this;
+  whitelist(chars: string): this;
+
+  normalizeEmail(options?: Options.NormalizeEmailOptions): this;
 }
 
 export interface MappedError {

@@ -10,6 +10,7 @@ import {
   Result,
   MappedError,
   Options,
+  Sanitizer,
   Validator as BaseValidator
 } from './shared-typings';
 
@@ -106,52 +107,6 @@ declare namespace ExpressValidator {
 
     notEmpty(): this;
     len(options: Options.MinMaxOptions): this;
-  }
-
-  interface Sanitizer {
-    /**
-     * Convert the input string to a date, or null if the input is not a date.
-     */
-    toDate(): Sanitizer;
-    /**
-     * Convert the input string to a float, or NaN if the input is not a float.
-     */
-    toFloat(): Sanitizer;
-    /**
-     * Convert the input string to a float, or NaN if the input is not a float.
-     */
-    toInt(radix?: number): Sanitizer;
-    /**
-     * Cnvert the input string to a boolean.
-     * Everything except for '0', 'false' and '' returns true.
-     * @param strict If true, only '1' and 'true' return true.
-     */
-    toBoolean(strict?: boolean): Sanitizer;
-    /**
-     * Trim characters (whitespace by default) from both sides of the input.
-     * @param chars Defaults to whitespace
-     */
-    trim(chars?: string): Sanitizer;
-    ltrim(chars?: string): Sanitizer;
-    rtrim(chars?: string): Sanitizer;
-    /**
-     * Remove characters with a numerical value < 32 and 127, mostly control characters.
-     * Unicode-safe in JavaScript.
-     * @param keep_new_lines If true, newline characters are preserved (\n and \r, hex 0xA and 0xD).
-     */
-    stripLow(keep_new_lines?: boolean): Sanitizer;
-    /**
-     * Escape &, <, >, and "
-     */
-    escape(): Sanitizer;
-    /**
-     * Replaces HTML encoded entities with <, >, &, ', " and /.
-     */
-    unescape(): Sanitizer;
-    blacklist(chars: string): Sanitizer;
-    whitelist(chars: string): Sanitizer;
-
-    normalizeEmail(options?: Options.NormalizeEmailOptions): Sanitizer;
   }
 
 }
