@@ -27,7 +27,7 @@ module.exports = (req, context) => {
   return Promise.all(promises).then(() => validationErrors);
 };
 
-function toString (value) {
+function toString(value) {
   if (value && typeof value === 'object' && value.toString) {
     return value.toString();
   } else if (value == null || (isNaN(value) && !value.length)) {

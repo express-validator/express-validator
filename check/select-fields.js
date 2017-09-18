@@ -24,7 +24,7 @@ module.exports = (req, context) => {
   return _.uniqWith(allFields, _.isEqual);
 };
 
-function createFieldExpander (req, field) {
+function createFieldExpander(req, field) {
   return location => {
     const fieldPath = location === 'headers' ? field.toLowerCase() : field;
     return expand(req[location], fieldPath, []).map(path => ({
@@ -35,7 +35,7 @@ function createFieldExpander (req, field) {
   };
 }
 
-function expand (object, path, paths) {
+function expand(object, path, paths) {
   const segments = _.toPath(path);
   const wildcard = segments.indexOf('*');
 
@@ -58,7 +58,7 @@ function expand (object, path, paths) {
   return paths;
 }
 
-function createSanitizerMapper ({ sanitizers = [] }) {
+function createSanitizerMapper({ sanitizers = [] }) {
   return field => sanitizers.reduce((prev, sanitizer) => {
     return Object.assign({}, prev, {
       value: sanitizer.sanitizer(prev.value, ...sanitizer.options)
@@ -66,7 +66,7 @@ function createSanitizerMapper ({ sanitizers = [] }) {
   }, field);
 }
 
-function createOptionalityFilter ({ optional }) {
+function createOptionalityFilter({ optional }) {
   return field => {
     if (!optional) {
       return true;

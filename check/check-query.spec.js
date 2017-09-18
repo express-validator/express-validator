@@ -13,8 +13,8 @@ describe('check: checkQuery middleware', () => {
 
     return checkQuery('foo').isInt()(req, {}, () => {}).then(() => {
       expect(req._validationErrors)
-      .to.have.length(1)
-      .and.to.have.deep.property('[0].location', 'query');
+        .to.have.length(1)
+        .and.to.have.deep.property('[0].location', 'query');
     });
   });
 });

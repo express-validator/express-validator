@@ -50,7 +50,7 @@ describe('check: context runner', () => {
           options: [],
           negated: true,
           custom: true,
-          validator () {
+          validator() {
             throw new Error('wat');
           }
         }]
@@ -274,7 +274,7 @@ describe('check: context runner', () => {
         validators: [{
           custom: true,
           options: [],
-          validator (value, { req, location, path }) {
+          validator(value, { req, location, path }) {
             throw new Error([value, req.body.bar, location, path].join(' '));
           }
         }]

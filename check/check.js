@@ -78,7 +78,7 @@ module.exports = (fields, locations, message) => {
   };
 
   middleware._context = {
-    get optional () {
+    get optional() {
       return optional;
     },
     negateNext: false,
@@ -92,6 +92,6 @@ module.exports = (fields, locations, message) => {
   return middleware;
 };
 
-function existsValidator (value) {
+function existsValidator(value) {
   return value !== undefined;
 }

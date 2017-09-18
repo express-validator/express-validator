@@ -13,8 +13,8 @@ describe('check: checkBody middleware', () => {
 
     return checkBody('foo').isInt()(req, {}, () => {}).then(() => {
       expect(req._validationErrors)
-      .to.have.length(1)
-      .and.to.have.deep.property('[0].location', 'body');
+        .to.have.length(1)
+        .and.to.have.deep.property('[0].location', 'body');
     });
   });
 });
