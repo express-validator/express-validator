@@ -22,7 +22,7 @@
   "types": "./index.d.ts",
   "scripts": {
     "test": "nyc mocha && tsc",
-    "lint": "eslint lib test",
+    "lint": "eslint lib test check filter",
     "travis-build": "npm test && npm run lint",
     "report-coverage": "cat coverage/lcov.info | coveralls"
   },
