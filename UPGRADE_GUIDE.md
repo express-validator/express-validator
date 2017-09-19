@@ -41,4 +41,4 @@ The validation result API (the object that `req.getValidationResult()` returns a
 no longer provides a method called `.useFirstErrorOnly()`.  
 
 Usages of `.mapped()` will always return only the first error, and usages of `.array()` may be configured
-to return only the first error for each field by passing `{ firstErrorOnly: true }` as an argument.
+to return only the first error for each field by passing `{ onlyFirstError: true }` as an argument.
