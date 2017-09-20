@@ -152,6 +152,7 @@ app.use((req: express.Request, res: express.Response, next: express.NextFunction
     .isFullWidth()
     .isHalfWidth()
     .isVariableWidth()
+    .isHash('md5')
     .isMultibyte()
     .isSurrogatePair()
     .isInt().isInt({ min: 0, max: 0, lt: 0, gt: 0, allow_leading_zeroes: true })
