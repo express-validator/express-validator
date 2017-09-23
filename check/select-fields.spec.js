@@ -95,29 +95,52 @@ describe('check: field selection', () => {
     });
   });
 
-  it('applies sanitizers to the selected values', () => {
-    const req = {
-      query: { email: ' FOO@BAR.COM ' }
-    };
+  describe('sanitization', () => {
+    it('runs on the selected values', () => {
+      const req = {
+        query: { email: ' FOO@BAR.COM ' }
+      };
 
-    const instances = selectFields(req, {
-      locations: ['query'],
-      fields: ['email'],
-      sanitizers: [{
-        sanitizer: (value, side) => {
-          return side === 'left' ? value.replace(/^\s+/, '') : value.replace(/\s+$/, '');
-        },
-        options: ['left']
-      }, {
-        sanitizer: value => value.toLowerCase(),
-        options: []
-      }]
+      const instances = selectFields(req, {
+        locations: ['query'],
+        fields: ['email'],
+        sanitizers: [{
+          sanitizer: (value, side) => {
+            return side === 'left' ? value.replace(/^\s+/, '') : value.replace(/\s+$/, '');
+          },
+          options: ['left']
+        }, {
+          sanitizer: value => value.toLowerCase(),
+          options: []
+        }]
+      });
+
+      expect(instances[0]).to.eql({
+        location: 'query',
+        path: 'email',
+        value: 'foo@bar.com '
+      });
     });
 
-    expect(instances[0]).to.eql({
-      location: 'query',
-      path: 'email',
-      value: 'foo@bar.com '
+    it('does not run on non-string fields', () => {
+      const req = {
+        body: { answer: 42 }
+      };
+
+      const instances = selectFields(req, {
+        locations: ['body'],
+        fields: ['answer'],
+        sanitizers: [{
+          options: [],
+          sanitizer: value => 'best number is ' +  value
+        }]
+      });
+
+      expect(instances[0]).to.eql({
+        location: 'body',
+        path: 'answer',
+        value: 42
+      });
     });
   });
 
@@ -151,7 +174,7 @@ describe('check: field selection', () => {
       expect(instances).to.have.length(0);
     });
 
-    it('runs with the result of the sanitization', () => {
+    it('runs with the result of the sanitization when checkFalsy = true', () => {
       const instances = selectFields({
         params: { trimmed: '   ' }
       }, {
