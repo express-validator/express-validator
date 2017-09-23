@@ -132,7 +132,6 @@ describe('Legacy: req.check()/req.assert()/req.validate()', () => {
     req.check('trimmed').trim().noFoo().notEmpty();
 
     return req.getValidationResult().then(result => {
-      console.log(result.mapped());
       expect(result.mapped()).to.have.property('trimmed');
     });
   });
