@@ -5,6 +5,7 @@ npm-debug.log*
 # Editors
 .idea
 .vscode
+*.iml
 
 # Misc
 coverage
