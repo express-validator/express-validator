@@ -36,7 +36,7 @@ Also make sure that you have Node.js 6 or newer in order to use it.
 
 ```javascript
 const { check, validationResult } = require('express-validator/check');
-const { matchedData } = require('express-validator/filter');
+const { matchedData, sanitize } = require('express-validator/filter');
 
 app.post('/user', [
   check('username')
