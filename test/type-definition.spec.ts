@@ -202,7 +202,7 @@ app.use((req: express.Request, res: express.Response, next: express.NextFunction
     .len({ min: 0, max: 0 })
     .not()
     .exists()
-    .optional().optional({ checkFalsy: true })
+    .optional().optional({ checkFalsy: true }).optional({ nullable: true })
     .trim()
     .trim('abc')
     .ltrim()

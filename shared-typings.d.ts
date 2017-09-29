@@ -237,7 +237,7 @@ declare namespace Options {
     errorMessage?: any
 
     // Additional ValidatorChain.prototype.* validators
-    optional?: boolean | { checkFalsy: boolean }
+    optional?: boolean | OptionalOptions
     notEmpty?: boolean | { errorMessage: string }
     len?: ValidatorSchemaOptions
 
@@ -420,6 +420,7 @@ declare namespace Options {
 
   interface OptionalOptions {
     checkFalsy?: boolean;
+    nullable?: boolean;
   }
 
 
