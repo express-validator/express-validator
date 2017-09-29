@@ -114,6 +114,7 @@ export interface Validator extends Sanitizer {
   equals(equals: any): this;
   contains(str: string): this;
   matches(pattern: RegExp | string, modifiers?: string): this;
+  custom(callback: Function): this;
 
 
   // Additional ValidatorChain.prototype.* validators
@@ -295,6 +296,7 @@ declare namespace Options {
     equals?: ValidatorSchemaOptions
     contains?: ValidatorSchemaOptions
     matches?: ValidatorSchemaOptions
+    custom?: ValidatorSchemaOptions
   }
 
 
