@@ -1,3 +1,5 @@
+import * as express from 'express';
+
 export type URLProtocol = 'http' | 'https' | 'ftp'
 export type UUIDVersion = 3 | 4 | 5 | 'all'
 export type IPVersion = 4 | 6
@@ -114,6 +116,7 @@ export interface Validator extends Sanitizer {
   equals(equals: any): this;
   contains(str: string): this;
   matches(pattern: RegExp | string, modifiers?: string): this;
+  custom(validator: CustomValidator): this;
 
 
   // Additional ValidatorChain.prototype.* validators
@@ -175,6 +178,10 @@ export interface MappedError {
   msg: string;
   value: string;
   location: Location
+}
+
+export interface CustomValidator {
+  (value: any, options: { req: express.Request, location: string, path: string }): any;
 }
 
 export interface Result {
@@ -295,6 +302,7 @@ declare namespace Options {
     equals?: ValidatorSchemaOptions
     contains?: ValidatorSchemaOptions
     matches?: ValidatorSchemaOptions
+    custom?: ValidatorSchemaOptions
   }
 
 
