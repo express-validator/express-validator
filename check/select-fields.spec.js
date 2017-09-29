@@ -174,6 +174,18 @@ describe('check: field selection', () => {
       expect(instances).to.have.length(0);
     });
 
+    it('ignores fields which are undefined or null in case of nullable = true', () => {
+      const instances = selectFields({
+        params: { bar: null }
+      }, {
+        optional: { nullable: true },
+        locations: ['params'],
+        fields: ['foo', 'bar']
+      });
+
+      expect(instances).to.have.length(0);
+    });
+
     it('runs with the result of the sanitization when checkFalsy = true', () => {
       const instances = selectFields({
         params: { trimmed: '   ' }

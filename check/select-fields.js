@@ -69,13 +69,17 @@ function createSanitizerMapper({ sanitizers = [] }) {
 }
 
 function createOptionalityFilter({ optional }) {
+  const checks = [
+    value => value !== undefined,
+    value => optional.nullable ? value != null : true,
+    value => optional.checkFalsy ? value : true
+  ];
+
   return field => {
     if (!optional) {
       return true;
-    } else if (optional.checkFalsy) {
-      return field.value;
-    } else {
-      return field.value !== undefined;
     }
+
+    return checks.every(check => check(field.value));
   };
 }
