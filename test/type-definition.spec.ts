@@ -123,9 +123,6 @@ app.use((req: express.Request, res: express.Response, next: express.NextFunction
 
 
   req.check('param', 'message')
-    .custom((value, { req, location, path }) => {
-      throw new Error([value, req.body.foo, location, path].join(' '));
-    })
     .isAwesomeLib()
     .isAsync()
     .isEmail().isEmail({ allow_display_name: true, allow_utf8_local_part: true, require_tld: true })
