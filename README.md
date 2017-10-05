@@ -261,14 +261,17 @@ check('weekday').not().isIn(['sunday', 'saturday'])
 ```
 
 ### `.optional(options)`
-- `options` *(optional)*: an object of options to customize the optionality behaviour. Defaults to `{ checkFalsy: false }`.
+- `options` *(optional)*: an object of options to customize the optionality behaviour. Please check it below.
 > *Returns:* the current validation chain instance
 
 Marks the current validation chain as optional.  
 This is useful to remove values that are not essential to your busines and that would cause validation failures in case they were not provided in the request.
 
-By default, this means fields with `undefined` values will be completely ignored.  
-However, if you specify the option `{ checkFalsy: true }`, then falsy values (eg `""`, `0`, `false`, `null`) will also be ignored.
+By default, fields with `undefined` values will be ignored from the validation.
+
+You can further customize this behavior by passing an object with the following options:
+- `nullable`: if `true`, fields with `null` values will be considered optional
+- `checkFalsy`: if `true`, fields with falsy values (eg `""`, `0`, `false`, `null`) will also be considered optional
 
 ### `.withMessage(message)`
 - `message`: the error message to use for the previous validator
