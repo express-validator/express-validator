@@ -47,8 +47,10 @@ check('foo')(req, res, () => {});
 
 oneOf([
   check('foo').isInt(),
-  check('bar').isDecimal()
+  [ check('bar').isDecimal(), check('baz').isHexColor() ]
 ])(req, res, () => {});
+
+oneOf([ check('foo').isInt(), check('bar').isDecimal() ], 'some message');
 
 // Test validation chain methods
 check('foo', 'with error message')

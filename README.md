@@ -120,7 +120,8 @@ Same as `check(fields[, message])`, but only checking `req.params`.
 Same as `check(fields[, message])`, but only checking `req.query`.
 
 ### `oneOf(validationChains[, message])`
-- `validationChains`: an array of [validation chains](#validation-chain-api) created with `check()` or any of its variations.
+- `validationChains`: an array of [validation chains](#validation-chain-api) created with `check()` or any of its variations,
+  or an array of arrays containing validation chains.
 - `message` *(optional)*: an error message to use when all chains failed. Defaults to `Invalid value(s)`.
 > *Returns:* a middleware instance
 
@@ -146,6 +147,21 @@ app.post('/start-freelancing', oneOf([
     res.status(422).json(...);
   }
 });
+```
+
+If an item of the array is an array containing validation chains, then all of those must pass in order for this
+group be considered valid:
+
+```js
+// This protected route must be accessed either by passing both username + password,
+// or by passing an access token
+app.post('/protected/route', oneOf([
+  [
+    check('username').exists(),
+    check('password').exists()
+  ],
+  check('access_token').exists()
+]), someRouteHandler);
 ```
 
 The execution of those validation chains are made in parallel,

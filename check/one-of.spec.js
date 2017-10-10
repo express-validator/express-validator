@@ -22,6 +22,38 @@ describe('check: checkOneOf middleware', () => {
     });
   });
 
+  it('groups arrays of chains', () => {
+    const req = {
+      cookies: { foo: 'abc', bar: 'def', baz: 123 }
+    };
+
+    return oneOf([
+      [ check('foo').isInt(), check('bar').isInt() ],
+      check('baz').isAlpha()
+    ])(req, {}, () => {}).then(errors => {
+      expect(errors[0]).to.eql([{
+        location: 'cookies',
+        param: 'foo',
+        value: 'abc',
+        msg: 'Invalid value'
+      }, {
+        location: 'cookies',
+        param: 'bar',
+        value: 'def',
+        msg: 'Invalid value'
+      }]);
+
+      expect(errors[1]).to.eql([{
+        location: 'cookies',
+        param: 'baz',
+        value: 123,
+        msg: 'Invalid value'
+      }]);
+
+      expect(req._validationErrors[0].nestedErrors).to.have.lengthOf(3);
+    });
+  });
+
   describe('error message', () => {
     it('is "Invalid value(s)" by default', done => {
       const req = {

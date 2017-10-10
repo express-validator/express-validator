@@ -2,8 +2,16 @@ const _ = require('lodash');
 const runner = require('./runner');
 
 module.exports = (validationChains, message) => (req, res, next) => {
-  const contexts = validationChains.map(chain => chain._context);
-  const promises = contexts.map(context => runner(req, context));
+  const run = chain => runner(req, chain._context);
+
+  const contexts = _.flatMap(validationChains, chain => chain._context);
+  const promises = validationChains.map(chain => {
+    if (!Array.isArray(chain)) {
+      return run(chain);
+    }
+
+    return Promise.all(chain.map(run)).then(results => _.flatten(results, true));
+  });
 
   return Promise.all(promises).then(results => {
     req._validationContexts = (req._validationContexts || []).concat(contexts);
