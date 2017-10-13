@@ -31,7 +31,7 @@ describe('filter: matchedData', () => {
     });
   });
 
-  describe('when { onlyValidData: false } flag is passed', () => {
+  describe('when option onlyValidData is set to false', () => {
     it('returns object with all data validated in the request', () => {
       const req = {
         query: { foo: '123', bar: 'abc', baz: 'def' }
@@ -61,6 +61,59 @@ describe('filter: matchedData', () => {
         expect(data).to.eql({
           foo: 'foo',
           bar: 'bar'
+        });
+      });
+    });
+  });
+
+  describe('when option locations is passed', () => {
+    it('gathers only data from the locations specified in the array', () => {
+      const req = {
+        query: { foo: '123', bar: 'abc' },
+        body: { baz: '234' }
+      };
+
+      return check(['foo', 'bar', 'baz']).isInt()(req, {}, () => {}).then(() => {
+        const data = matchedData(req, { locations: ['body'] });
+
+        expect(data).to.eql({
+          baz: '234'
+        });
+      });
+    });
+
+    it('gathers data from all locations if empty array', () => {
+      const req = {
+        query: { foo: '123', bar: 'abc' },
+        body: { baz: '234' }
+      };
+
+      return check(['foo', 'bar', 'baz']).isInt()(req, {}, () => {}).then(() => {
+        const data = matchedData(req, {
+          locations: []
+        });
+
+        expect(data).to.eql({
+          foo: '123',
+          baz: '234'
+        });
+      });
+    });
+
+    it('gathers data from all locations if not an array', () => {
+      const req = {
+        query: { foo: '123', bar: 'abc' },
+        body: { baz: '234' }
+      };
+
+      return check(['foo', 'bar', 'baz']).isInt()(req, {}, () => {}).then(() => {
+        const data = matchedData(req, {
+          locations: false
+        });
+
+        expect(data).to.eql({
+          foo: '123',
+          baz: '234'
         });
       });
     });
