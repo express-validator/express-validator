@@ -3,7 +3,7 @@ const runner = require('./runner');
 
 module.exports = (validationChains, message) => (req, res, next) => {
   const run = chain => runner(req, getContext(chain));
-  
+
   const contexts = _.flatMap(validationChains, chain => {
     return Array.isArray(chain) ? chain.map(getContext) : getContext(chain);
   });
