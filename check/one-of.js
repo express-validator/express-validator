@@ -2,9 +2,12 @@ const _ = require('lodash');
 const runner = require('./runner');
 
 module.exports = (validationChains, message) => (req, res, next) => {
-  const run = chain => runner(req, chain._context);
+  const run = chain => runner(req, getContext(chain));
+  
+  const contexts = _.flatMap(validationChains, chain => {
+    return Array.isArray(chain) ? chain.map(getContext) : getContext(chain);
+  });
 
-  const contexts = _.flatMap(validationChains, chain => chain._context);
   const promises = validationChains.map(chain => {
     if (!Array.isArray(chain)) {
       return run(chain);
@@ -30,3 +33,7 @@ module.exports = (validationChains, message) => (req, res, next) => {
     return results;
   }).catch(next);
 };
+
+function getContext(chain) {
+  return chain._context;
+}

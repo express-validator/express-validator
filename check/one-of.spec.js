@@ -78,6 +78,35 @@ describe('check: checkOneOf middleware', () => {
     });
   });
 
+  describe('validation contexts', () => {
+    it('are pushed into the request for shallow array of validations', () => {
+      const req = {};
+
+      return oneOf([
+        check('foo').isInt(),
+        check('bar').isInt()
+      ])(req, {}, () => {}).then(() => {
+        expect(req._validationContexts).to.have.lengthOf(2);
+        expect(req._validationContexts[0]).to.be.an('object');
+        expect(req._validationContexts[1]).to.be.an('object');
+      });
+    });
+
+    it('are pushed into the request for grouped array of validations', () => {
+      const req = {};
+
+      return oneOf([
+        [ check('foo').isInt(), check('bar').isInt() ],
+        check('baz').isAlpha()
+      ])(req, {}, () => {}).then(() => {
+        expect(req._validationContexts).to.have.lengthOf(3);
+        expect(req._validationContexts[0]).to.be.an('object');
+        expect(req._validationContexts[1]).to.be.an('object');
+        expect(req._validationContexts[2]).to.be.an('object');
+      });
+    });
+  });
+
   describe('validation errors', () => {
     it('are not pushed if any chain succeeded', done => {
       const req = {
