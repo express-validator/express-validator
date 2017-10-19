@@ -13,6 +13,7 @@ const res: Response = <Response>{};
 
 matchedData(req).foo;
 matchedData(req, { onlyValidData: true }).bar;
+matchedData(req, { locations: ['body', 'params'] }).bar;
 
 // Sanitization
 sanitize('foo')(req, res, () => {});
