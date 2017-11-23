@@ -1,7 +1,15 @@
-import { ErrorFormatter } from '../shared-typings';
+import * as express from 'express';
+import { Result, ErrorFormatter } from '../shared-typings';
 
-export function withDefaults(options: WithDefaultsOptions) : object;
+export const validationResult: validationResult;
+
+export interface validationResult {
+  (req: express.Request): Result;
+  withDefaults(options: WithDefaultsOptions) : this;
+}
 
 interface WithDefaultsOptions {
-  formatter: ErrorFormatter
+  formatter: ErrorFormatter;
 }
+
+export default validationResult;

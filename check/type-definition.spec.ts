@@ -9,7 +9,6 @@ import {
   oneOf,
   validationResult
 } from './'
-import { withDefaults } from './validation-result'
 
 const req: Request = <Request>{};
 const res: Response = <Response>{};
@@ -24,7 +23,7 @@ result.formatWith(error => {
   error.value;
 });
 
-withDefaults({
+const resultWithDefaults: validationResult = validationResult.withDefaults({
   formatter: error => {
     error.msg;
     error.location;
@@ -32,6 +31,7 @@ withDefaults({
     error.value;
   }
 });
+resultWithDefaults(req);
 
 const arrayErrors = result.array();
 arrayErrors[0].location;

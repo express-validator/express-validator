@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { Result, Options, Validator } from '../shared-typings';
+import { Validator } from '../shared-typings';
 
 export type ValidationChains = ValidationChain | ValidationChain[];
 
@@ -9,7 +9,7 @@ export const cookie: ValidationChainBuilder;
 export const header: ValidationChainBuilder;
 export const param: ValidationChainBuilder;
 export const query: ValidationChainBuilder;
-export function validationResult (req: express.Request): Result;
+export { default as validationResult } from './validation-result';
 export function oneOf (chains: ValidationChains[], message?: string): express.RequestHandler;
 
 export interface ValidationChainBuilder {
