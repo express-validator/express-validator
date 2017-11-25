@@ -367,6 +367,28 @@ try {
 }
 ```
 
+### `.withDefaults(options)`
+- `options` *(optional)*: an object of options. Defaults to `{ formatter: error => error }`
+> *Returns:* a new [validationResult](#validationresultreq) function is returned, using the provided options
+
+This is useful when you have a consistent set of options you would like to use for all validation results throughout your application.
+
+Below is an example which sets a default error formatter:
+
+```
+const { validationResult } = require('express-validator/check');
+
+const result = validationResult.withDefaults({
+    formatter: (error) => {
+        return {
+            myLocation: error.location,
+        };
+    }
+});
+
+module.exports = result;
+```
+
 ---
 
 ## Legacy API

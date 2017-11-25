@@ -23,6 +23,16 @@ result.formatWith(error => {
   error.value;
 });
 
+const resultWithDefaults: validationResult = validationResult.withDefaults({
+  formatter: error => {
+    error.msg;
+    error.location;
+    error.param;
+    error.value;
+  }
+});
+resultWithDefaults(req);
+
 const arrayErrors = result.array();
 arrayErrors[0].location;
 arrayErrors[0].msg;
