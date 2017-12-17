@@ -146,5 +146,4 @@ describe('Legacy: Schema validation', () => {
 
     expect(setValidators).not.to.throw(Error);
   });
-});
-
+ });
