@@ -42,3 +42,4 @@ module.exports = (fields, locations) => {
 
   return middleware;
 };
+

@@ -137,7 +137,7 @@ describe('check: low-level middleware', () => {
     });
   });
 
-  describe('.custom()', () => {
+  describe('.customSanitizer()', () => {
     it('adds a custom sanitizer inline validator', () => {
       const sanitizer = x => x + 1;
       const options = [1, 2,3];
