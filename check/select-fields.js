@@ -60,7 +60,9 @@ function expand(object, path, paths) {
 
 function createSanitizerMapper({ sanitizers = [] }) {
   return field => sanitizers.reduce((prev, sanitizer) => {
-    const value = typeof prev.value === 'string' ?
+    const value = sanitizer.custom ? (prev.value === undefined ?
+      undefined : sanitizer.sanitizer(prev.value, ...sanitizer.options, prev)
+    ) : typeof prev.value === 'string' ?
       sanitizer.sanitizer(prev.value, ...sanitizer.options) :
       prev.value;
 

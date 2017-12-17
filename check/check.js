@@ -39,6 +39,7 @@ module.exports = (fields, locations, message) => {
       middleware[methodName] = (...options) => {
         sanitizers.push({
           sanitizer: sanitizerFn,
+          custom: false,
           options
         });
         return middleware;
@@ -76,6 +77,15 @@ module.exports = (fields, locations, message) => {
     middleware._context.negateNext = true;
     return middleware;
   };
+
+  middleware.customSanitizer = (sanitizer, ...options) => {
+    sanitizers.push({
+      sanitizer,
+      custom: true,
+      options
+    });
+    return middleware;
+  }
 
   middleware._context = {
     get optional() {

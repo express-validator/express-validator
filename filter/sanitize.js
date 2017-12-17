@@ -24,11 +24,21 @@ module.exports = (fields, locations) => {
       middleware[methodName] = (...options) => {
         sanitizers.push({
           sanitizer: sanitizerFn,
+          custom: false,
           options
         });
         return middleware;
       };
     });
+
+  middleware.customSanitizer = (sanitizer, ...options) => {
+    sanitizers.push({
+      sanitizer,
+      custom: true,
+      options
+    });
+    return middleware;
+  }
 
   return middleware;
 };
