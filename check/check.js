@@ -105,4 +105,3 @@ module.exports = (fields, locations, message) => {
 function existsValidator(value) {
   return value !== undefined;
 }
-

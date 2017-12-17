@@ -85,4 +85,3 @@ function createOptionalityFilter({ optional }) {
     return checks.every(check => check(field.value));
   };
 }
-
