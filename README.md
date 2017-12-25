@@ -233,6 +233,20 @@ Same as `sanitize(fields)`, but only sanitizing `req.query`.
 
 ---
 
+## Wildcards (*)
+To validate or sanitize an array of strings use wildcards(*).
+
+```js
+// Wildcards * are accepted!
+  check('addresses.*.postalCode').isPostalCode(),
+
+// Sanitize the number of each address, making it arrive as an integer
+  sanitize('addresses.*.number').toInt()
+```
+
+---
+
+
 ## Sanitization Chain API
 The sanitization chain is a middleware, and it should be passed to an Express route handler.  
 When the middleware runs, it will modify each field in place, applying each of the sanitizers in the order they were specified:
@@ -388,6 +402,13 @@ const result = validationResult.withDefaults({
 
 module.exports = result;
 ```
+
+---
+
+## Validation and Sanitization are different
+
+Validation and Sanitization of a request are two different process. Do them seprately. Although all the sanitizer methods canbe used during validation but those sanitizations will be effective for the validation purpose only. That sanitization will not persist. 
+For persistent sanitization of request it's must to use 'express-validator/filter' methods
 
 ---
 
