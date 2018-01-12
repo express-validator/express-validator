@@ -68,6 +68,29 @@ describe('check: field selection', () => {
     });
   });
 
+  it('is done in nested wildcard locations with `undefined` values for validation', () => {
+    const req = {
+      body: { foo: [{}, { bar: 'a'}] }
+    };
+
+    const instances = selectFields(req, {
+      fields: ['foo.*.bar'],
+      locations: ['body']
+    });
+
+    expect(instances).to.have.length(2);
+    expect(instances).to.deep.include({
+      path: 'foo[0].bar',
+      location: 'body',
+      value: undefined
+    });
+    expect(instances).to.deep.include({
+      path: 'foo[1].bar',
+      location: 'body',
+      value: 'a'
+    });
+  });
+
   it('expands "*" wildcards shallowly', () => {
     const req = {
       body: {

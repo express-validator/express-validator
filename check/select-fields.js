@@ -13,7 +13,7 @@ module.exports = (req, context) => {
       .filter(optionalityFilter)
       .value();
 
-    if (instances.length > 1) {
+    if (instances.length > 1 && context.locations.length > 1) {
       const withValue = instances.filter(field => field.value !== undefined);
       instances = withValue.length ? withValue : [instances[0]];
     }
