@@ -138,7 +138,7 @@ interface Sanitizer {
    */
   toInt(radix?: number): this;
   /**
-   * Cnvert the input string to a boolean.
+   * Convert the input string to a boolean.
    * Everything except for '0', 'false' and '' returns true.
    * @param strict If true, only '1' and 'true' return true.
    */
