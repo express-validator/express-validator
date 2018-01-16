@@ -3,7 +3,7 @@ const validator = require('validator');
 const runner = require('./runner');
 const { extraSanitizers, extraValidators } = require('../utils/constants');
 
-module.exports = (fields, locations, message) => {
+module.exports = (fields, locations, message, opts) => {
   let optional;
   const validators = [];
   const sanitizers = [];
@@ -86,7 +86,8 @@ module.exports = (fields, locations, message) => {
     fields,
     locations,
     sanitizers,
-    validators
+    validators,
+    opts: opts || {}
   };
 
   return middleware;
