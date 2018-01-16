@@ -95,6 +95,11 @@ module.exports = (fields, locations, message) => {
     return middleware;
   };
 
+  middleware.bail = () => {
+    middleware._context.bail = true;
+    return middleware;
+  };
+
   middleware._context = {
     get optional() {
       return optional;
@@ -104,7 +109,8 @@ module.exports = (fields, locations, message) => {
     fields,
     locations,
     sanitizers,
-    validators
+    validators,
+    bail: false
   };
 
   return middleware;

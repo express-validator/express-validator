@@ -484,5 +484,27 @@ describe('check: context runner', () => {
           .and.to.have.nested.property('[0].msg', 'Invalid value');
       });
     });
+
+    it('returns early if bail set in context', () => {
+      const req = {
+        body: { foo: 'bar' }
+      };
+
+      return runner(req, {
+        fields: ['foo'],
+        locations: ['body'],
+        bail: true,
+        validators: [{
+          options: [],
+          validator: value => Promise.reject(value)
+        },
+        {
+          options: [],
+          validator: value => Promise.reject(value)
+        }]
+      }).then(errors => {
+        expect(errors).to.have.length(1);
+      })
+    });
   });
 });

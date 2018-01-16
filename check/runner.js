@@ -6,6 +6,8 @@ module.exports = (req, context) => {
   const promises = selectFields(req, context).map(field => {
     const { location, path, value } = field;
     return context.validators.reduce((promise, validatorCfg) => promise.then(() => {
+      if (context.bail && validationErrors.length) { return promise; }
+
       const result = validatorCfg.custom ?
         validatorCfg.validator(value, { req, location, path }) :
         validatorCfg.validator(toString(value), ...validatorCfg.options);

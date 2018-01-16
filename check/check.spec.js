@@ -170,6 +170,36 @@ describe('check: low-level middleware', () => {
     });
   });
 
+  describe('.bail()', () => {
+    it('defaults bail flag to false in context', () => {
+      const chain = check('foo');
+      expect(chain._context.bail).to.be.false;
+    });
+
+    it('sets bail flag to true in context', () => {
+      const chain = check('foo').bail();
+      expect(chain._context.bail).to.be.true;
+    });
+
+    it('returns early when validator fails', () => {
+      const req = {
+        body: { foo: 'foo@example.com' }
+      };
+
+      return check('foo', ['body'])
+        .bail()
+        .isEmail()
+        .isUppercase()
+        .isNumeric()(req, {}, () => {})
+        .then(() => {
+          expect(req)
+            .to.have.property('_validationErrors')
+            .that.is.an('array')
+            .that.has.lengthOf(1);
+        });
+    });
+  });
+
   describe('sanitization methods', () => {
     it('add a sanitizer to the chain context', () => {
       const chain = check('foo').trim();

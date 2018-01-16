@@ -56,6 +56,19 @@ Adds a validator to check if a value is an array.
 
 Adds a validator to check if a value is a string.
 
+## `.bail()`
+> *Returns:* the current validation chain instance
+
+The first validator in the chain to return false will cause the chain to
+finish early, without attempting to run the remaining validators. For example:
+
+```js
+check('user_id').bail().isUUID().custom(uuid => someExpensiveDatabaseCall(uuid));
+```
+
+The expensive custom validator above will not run if the isUUID() validator fails. The 
+location of .bail() in the chain is not important.
+
 ## `.not()`
 > *Returns:* the current validation chain instance
 
