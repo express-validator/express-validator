@@ -18,32 +18,32 @@ export interface Validator {
   isBase64(): this;
   isBefore(date?: string): this;
   isBoolean(): this;
-  isByteLength(options: Options.MinMaxOptions): this;
+  isByteLength(options: ValidatorOptions.MinMaxOptions): this;
   isCreditCard(): this;
-  isCurrency(options: Options.IsCurrencyOptions): this;
+  isCurrency(options: ValidatorOptions.IsCurrencyOptions): this;
   isDataURI(): this;
   isDecimal(): this;
   isDivisibleBy(num: number): this;
-  isEmail(options?: Options.IsEmailOptions): this;
+  isEmail(options?: ValidatorOptions.IsEmailOptions): this;
   isEmpty(): this;
-  isFloat(options?: Options.MinMaxExtendedOptions): this;
-  isFQDN(options?: Options.IsFQDNOptions): this;
+  isFloat(options?: ValidatorOptions.MinMaxExtendedOptions): this;
+  isFQDN(options?: ValidatorOptions.IsFQDNOptions): this;
   isFullWidth(): this;
   isHalfWidth(): this;
   isHash(algorithm: HashAlgorithm): this;
   isHexadecimal(): this;
   isHexColor(): this;
   isIn(options: string | string[]): this;
-  isInt(options?: Options.IsIntOptions): this;
+  isInt(options?: ValidatorOptions.IsIntOptions): this;
   isIP(version?: IPVersion): this;
   isISIN(): this;
   isISO8601(): this;
   isISRC(): this;
   isISBN(version?: number): this;
-  isISSN(options?: Options.IsISSNOptions): this
+  isISSN(options?: ValidatorOptions.IsISSNOptions): this
   isJSON(): this;
   isLatLong(): this;
-  isLength(options: Options.MinMaxOptions): this;
+  isLength(options: ValidatorOptions.MinMaxOptions): this;
   isLowercase(): this;
   isMACAddress(): this;
   isMD5(): this;
@@ -54,7 +54,7 @@ export interface Validator {
   isPostalCode(locale: PostalCodeLocale): this;
   isSurrogatePair(): this;
   isUppercase(): this;
-  isURL(options?: Options.IsURLOptions): this;
+  isURL(options?: ValidatorOptions.IsURLOptions): this;
   isUUID(version?: UUIDVersion): this;
   isVariableWidth(): this;
   isWhitelisted(chars: string | string[]): this;
@@ -66,7 +66,7 @@ export interface Validator {
   // Additional validator methods
   not(): this;
   exists(): this;
-  optional(options?: Options.OptionalOptions): this;
+  optional(options?: ValidatorOptions.OptionalOptions): this;
   withMessage(message: any): this;
 }
 
@@ -78,7 +78,7 @@ export interface CustomValidator {
   (value: any, options: { req: express.Request, location: string, path: string }): any;
 }
 
-declare namespace Options {
+export namespace ValidatorOptions {
   interface MinMaxOptions {
     min?: number;
     max?: number;
