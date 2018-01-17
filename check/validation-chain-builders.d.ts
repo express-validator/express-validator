@@ -1,4 +1,4 @@
-import { ValidationChain } from "./validation-chain";
+import { ValidationChain } from './check';
 import { Location } from "./location";
 
 interface ValidationChainBuilder {
