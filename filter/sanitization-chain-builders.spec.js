@@ -2,8 +2,8 @@ const { expect } = require('chai');
 const {
   sanitize,
   sanitizeBody,
-  sanitizeCookies,
-  sanitizeParams,
+  sanitizeCookie,
+  sanitizeParam,
   sanitizeQuery
 } = require('./sanitization-chain-builders');
 
@@ -77,7 +77,7 @@ describe('filter: sanitizeCookies middleware', () => {
       cookies: { foo: '123' }
     };
 
-    sanitizeCookies('foo').toInt()(req, {}, () => {});
+    sanitizeCookie('foo').toInt()(req, {}, () => {});
     expect(req.cookies.foo).to.equal(123);
   });
 });
@@ -88,7 +88,7 @@ describe('filter: sanitizeParams middleware', () => {
       params: { foo: '123' }
     };
 
-    sanitizeParams('foo').toInt()(req, {}, () => {});
+    sanitizeParam('foo').toInt()(req, {}, () => {});
     expect(req.params.foo).to.equal(123);
   });
 });

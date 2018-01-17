@@ -77,7 +77,7 @@ describe('check: checkBody middleware', () => {
       get: { headers: 'asd' }
     };
 
-    return checkBody('foo').isInt()(req, {}, () => {}).then(() => {
+    return body('foo').isInt()(req, {}, () => {}).then(() => {
       expect(req._validationErrors)
         .to.have.length(1)
         .and.to.have.deep.property('[0].location', 'body');
@@ -95,7 +95,7 @@ describe('check: checkCookies middleware', () => {
       headers: { foo: 'asd' }
     };
 
-    return checkCookies('foo').isInt()(req, {}, () => {}).then(() => {
+    return cookie('foo').isInt()(req, {}, () => {}).then(() => {
       expect(req._validationErrors)
         .to.have.length(1)
         .and.to.have.deep.property('[0].location', 'cookies');
@@ -113,7 +113,7 @@ describe('check: checkHeaders middleware', () => {
       headers: { Foo: 'asd' }
     };
 
-    return checkHeaders('foo').isInt()(req, {}, () => {}).then(() => {
+    return header('foo').isInt()(req, {}, () => {}).then(() => {
       expect(req._validationErrors)
         .to.have.length(1)
         .and.to.have.deep.property('[0].location', 'headers');
@@ -131,7 +131,7 @@ describe('check: checkParams middleware', () => {
       get: { headers: 'asd' }
     };
 
-    return checkParams('foo').isInt()(req, {}, () => {}).then(() => {
+    return param('foo').isInt()(req, {}, () => {}).then(() => {
       expect(req._validationErrors)
         .to.have.length(1)
         .and.to.have.deep.property('[0].location', 'params');
@@ -149,7 +149,7 @@ describe('check: checkQuery middleware', () => {
       get: { headers: 'asd' }
     };
 
-    return checkQuery('foo').isInt()(req, {}, () => {}).then(() => {
+    return query('foo').isInt()(req, {}, () => {}).then(() => {
       expect(req._validationErrors)
         .to.have.length(1)
         .and.to.have.deep.property('[0].location', 'query');
