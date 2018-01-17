@@ -1,5 +1,12 @@
+const { check, body, cookie, header, param, query } = require('./validation-chain-builders');
+
 module.exports = {
-  ...require('./validation-chain-builders'),
+  check,
+  body,
+  cookie,
+  header,
+  param,
+  query,
   oneOf: require('./one-of'),
   validationResult: require('./validation-result')
 };

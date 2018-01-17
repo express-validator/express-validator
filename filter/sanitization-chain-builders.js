@@ -2,7 +2,7 @@ const sanitize = require('./sanitize');
 
 const buildSanitizeFunction = locations => fields => sanitize(fields, locations);
 module.exports = {
-  ...buildSanitizeFunction,
+  buildSanitizeFunction,
   sanitize: buildSanitizeFunction(['body', 'cookies', 'params', 'query']),
   sanitizeBody: buildSanitizeFunction(['body']),
   sanitizeCookie: buildSanitizeFunction(['cookies']),
