@@ -1,5 +1,5 @@
 import { check, body, cookie, header, param, query } from './validation-chain-builders';
-import { ValidationChain } from './validation-chain';
+import { ValidationChain } from './check';
 
 let chain: ValidationChain = check('foo');
 chain = body('foo');

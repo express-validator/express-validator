@@ -1,4 +1,5 @@
 import * as express from 'express';
+import { Sanitizer } from '../filter';
 
 export type URLProtocol = 'http' | 'https' | 'ftp'
 export type UUIDVersion = 3 | 4 | 5 | 'all'
@@ -69,7 +70,7 @@ export interface Validator {
   withMessage(message: any): this;
 }
 
-export interface ValidationChain extends express.RequestHandler, Validator {
+export interface ValidationChain extends express.RequestHandler, Validator, Sanitizer {
   custom(validator: CustomValidator): this;
 }
 
