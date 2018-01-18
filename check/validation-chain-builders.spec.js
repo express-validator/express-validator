@@ -1,5 +1,32 @@
 const { expect } = require('chai');
-const { check, body, cookie, header, param, query } = require('./validation-chain-builders');
+const {
+  buildCheckFunction,
+  check,
+  body,
+  cookie,
+  header,
+  param,
+  query
+} = require('./validation-chain-builders');
+
+describe('check: buildCheckFunction', () => {
+  it('creates a validation chain builder that checks custom locations', () => {
+    const req = {
+      body: { foo: 'asd' },
+      cookies: { foo: 'asd' },
+      params: { foo: 'asd' },
+      query: { foo: 'asd' },
+      headers: { foo: 'asd' }
+    };
+
+    const custom = buildCheckFunction(['cookies', 'headers']);
+    return custom('foo').isInt()(req, {}, () => {}).then(() => {
+      expect(req._validationErrors).to.have.length(2);
+      expect(req._validationErrors).to.have.deep.property('[0].location', 'cookies');
+      expect(req._validationErrors).to.have.deep.property('[1].location', 'headers');
+    });
+  });
+});
 
 describe('check: checkAll middleware', () => {
   it('checks body', () => {
@@ -74,7 +101,7 @@ describe('check: checkBody middleware', () => {
       cookies: { foo: 'asd' },
       params: { foo: 'asd' },
       query: { foo: 'asd' },
-      get: { headers: 'asd' }
+      headers: { foo: 'asd' }
     };
 
     return body('foo').isInt()(req, {}, () => {}).then(() => {
@@ -128,7 +155,7 @@ describe('check: checkParams middleware', () => {
       cookies: { foo: 'asd' },
       params: { foo: 'asd' },
       query: { foo: 'asd' },
-      get: { headers: 'asd' }
+      headers: { foo: 'asd' }
     };
 
     return param('foo').isInt()(req, {}, () => {}).then(() => {
@@ -146,7 +173,7 @@ describe('check: checkQuery middleware', () => {
       cookies: { foo: 'asd' },
       params: { foo: 'asd' },
       query: { foo: 'asd' },
-      get: { headers: 'asd' }
+      headers: { foo: 'asd' }
     };
 
     return query('foo').isInt()(req, {}, () => {}).then(() => {

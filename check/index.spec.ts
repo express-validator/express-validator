@@ -7,6 +7,7 @@ import {
 
   // validation-chain-builders.d.ts
   ValidationChainBuilder,
+  buildCheckFunction,
   check,
   body,
   cookie,
