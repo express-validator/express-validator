@@ -53,6 +53,9 @@ app.post('/user', [
     .custom(value => {
       return findUserByEmail(value).then(user => {
         throw new Error('this email is already in use');
+      }).catch(noUserError => {
+        // return true to signal the custom validation has passed
+        return true;
       })
     }),
 
@@ -264,6 +267,8 @@ Adds a custom validator to the current validation chain.
 The custom validator may return a promise to indicate an async validation task. In case it's rejected, the field is considered invalid.
 
 The custom validator may also throw JavaScript exceptions (eg `throw new Error()`) and return falsy values to indicate the field is invalid.
+
+It must return a value, as no return statement will provide `undefined` as the result of the validation, which will be considered as an indication of an invalid field 
 
 Example:
 
