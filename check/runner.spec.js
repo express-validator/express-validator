@@ -58,6 +58,23 @@ describe('check: context runner', () => {
         expect(errors).to.have.length(1);
       });
     });
+
+    it('are not pushed if validator returns promise that resolves', () => {
+      const req = {
+        body: { foo: 'bar' }
+      };
+
+      return runner(req, {
+        fields: ['foo'],
+        locations: ['params'],
+        validators: [{
+          options: [],
+          validator: () => Promise.resolve()
+        }]
+      }).then(errors => {
+        expect(errors).to.have.lengthOf(0);
+      });
+    });
   });
 
   describe('error messages', () => {
