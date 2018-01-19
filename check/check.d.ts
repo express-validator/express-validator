@@ -1,5 +1,6 @@
 import * as express from 'express';
 import { Sanitizer } from '../filter';
+import { Location } from './location';
 
 export type URLProtocol = 'http' | 'https' | 'ftp'
 export type UUIDVersion = 3 | 4 | 5 | 'all'
@@ -67,6 +68,7 @@ export interface Validator {
   not(): this;
   exists(): this;
   optional(options?: ValidatorOptions.OptionalOptions): this;
+  withMessage(message: CustomMessageBuilder): this;
   withMessage(message: any): this;
 }
 
@@ -76,6 +78,10 @@ export interface ValidationChain extends express.RequestHandler, Validator, Sani
 
 export interface CustomValidator {
   (value: any, options: { req: express.Request, location: string, path: string }): any;
+}
+
+export interface CustomMessageBuilder {
+  (value: any, options: { req: express.Request, location: Location, path: string }): any;
 }
 
 export namespace ValidatorOptions {
