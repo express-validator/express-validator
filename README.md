@@ -402,14 +402,6 @@ const result = validationResult.withDefaults({
 
 module.exports = result;
 ```
-
----
-
-## Validation and Sanitization are different
-
-Validation and Sanitization of a request are two different process. Do them seprately. Although all the sanitizer methods canbe used during validation but those sanitizations will be effective for the validation purpose only. That sanitization will not persist. 
-For persistent sanitization of request it's must to use 'express-validator/filter' methods.
-
 ---
 
 ## Legacy API
