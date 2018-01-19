@@ -10,7 +10,7 @@ module.exports = (req, context) => {
         validatorCfg.validator(value, { req, location, path }) :
         validatorCfg.validator(toString(value), ...validatorCfg.options);
 
-      return Promise.resolve(result).then(result => {
+      return getActualResult(result).then(result => {
         if ((!validatorCfg.negated && !result) || (validatorCfg.negated && result)) {
           throw new Error(context.message || 'Invalid value');
         }
@@ -27,3 +27,10 @@ module.exports = (req, context) => {
 
   return Promise.all(promises).then(() => validationErrors);
 };
+
+function getActualResult(result) {
+  const promiseLike = !!result.then;
+  return Promise.resolve(result).then(result => {
+    return result === undefined && promiseLike ? true : result;
+  });
+}
