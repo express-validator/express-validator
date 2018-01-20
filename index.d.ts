@@ -100,6 +100,9 @@ declare namespace ExpressValidator {
     isBase64?: ValidatorSchemaOptions
     isDataURI?: ValidatorSchemaOptions
     isWhitelisted?: ValidatorSchemaOptions
+    isMimeType?: ValidatorSchemaOptions
+    isPort?: ValidatorSchemaOptions
+    isISO31661Alpha2?: ValidatorSchemaOptions
 
     // Additional Validators provided by validator.js
     equals?: ValidatorSchemaOptions
