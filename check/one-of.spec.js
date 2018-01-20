@@ -76,6 +76,19 @@ describe('check: checkOneOf middleware', () => {
         done();
       });
     });
+
+    it('is built dynamically with message builder', done => {
+      const req = {
+        body: { foo: 'not_email' }
+      };
+
+      oneOf([ check('foo').isEmail() ], ({ req }) => {
+        return req.body.foo;
+      })(req, {}, () => {
+        expect(req._validationErrors[0]).to.have.property('msg', 'not_email');
+        done();
+      });
+    });
   });
 
   describe('validation contexts', () => {

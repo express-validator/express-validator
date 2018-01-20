@@ -19,3 +19,8 @@ middleware = oneOf([[check('foo')], [check('bar')], check('baz')]);
 
 // mixed array of chains/arrays of chains, with message
 middleware = oneOf([[check('foo')], [check('bar')], check('baz')], 'message');
+
+// whatever, with dynamic message
+middleware = oneOf([check('foo')], ({ req }: { req: express.Request }) => {
+  return req.baseUrl;
+});

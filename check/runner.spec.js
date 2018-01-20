@@ -186,6 +186,48 @@ describe('check: context runner', () => {
         });
       });
     });
+
+    it('are built dynamically from context\'s message function', () => {
+      const req = {
+        random: 'bla',
+        query: { foo: 'foo' }
+      };
+
+      return runner(req, {
+        message: (value, { req, path, location }) => {
+          return `[req.${location}.${path} ${req.random}] value=${value}`;
+        },
+        locations: ['query'],
+        fields: ['foo'],
+        validators: [{
+          validator: () => false,
+          options: []
+        }]
+      }).then(errors => {
+        expect(errors[0]).to.have.property('msg', '[req.query.foo bla] value=foo');
+      });
+    });
+
+    it('are built dynamically from validator message function', () => {
+      const req = {
+        random: 'bla',
+        query: { foo: 'foo' }
+      };
+
+      return runner(req, {
+        locations: ['query'],
+        fields: ['foo'],
+        validators: [{
+          message: (value, { req, path, location }) => {
+            return `[req.${location}.${path} ${req.random}] value=${value}`;
+          },
+          validator: () => false,
+          options: []
+        }]
+      }).then(errors => {
+        expect(errors[0]).to.have.property('msg', '[req.query.foo bla] value=foo');
+      });
+    });
   });
 
   describe('default validators', () => {

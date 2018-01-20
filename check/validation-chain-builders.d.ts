@@ -1,7 +1,8 @@
-import { ValidationChain } from './check';
+import { CustomMessageBuilder, ValidationChain } from './check';
 import { Location } from "./location";
 
 interface ValidationChainBuilder {
+  (fields: string | string[], message?: CustomMessageBuilder): ValidationChain;
   (fields: string | string[], message?: any): ValidationChain;
 }
 

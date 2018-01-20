@@ -115,4 +115,7 @@ check('foo', 'with error message')
   })
   .withMessage(new Error('message'))
   .withMessage(2)
-  .withMessage('message');
+  .withMessage('message')
+  .withMessage((value, { req, location, path }) => {
+    return value + req.baseUrl + location + path;
+  });
