@@ -24,7 +24,7 @@ module.exports = (validationChains, message) => (req, res, next) => {
     if (!empty) {
       req._validationErrors.push({
         param: '_error',
-        msg: message || 'Invalid value(s)',
+        msg: getDynamicMessage(message || 'Invalid value(s)', req),
         nestedErrors: _.flatten(results, true)
       });
     }
@@ -36,4 +36,12 @@ module.exports = (validationChains, message) => (req, res, next) => {
 
 function getContext(chain) {
   return chain._context;
+}
+
+function getDynamicMessage(message, req) {
+  if (typeof message !== 'function') {
+    return message;
+  }
+
+  return message({ req });
 }
