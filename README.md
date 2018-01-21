@@ -11,6 +11,7 @@ An [express.js]( https://github.com/visionmedia/express ) middleware for
 - [Upgrade notice](#upgrade-notice)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Wildcards (`*`)](#wildcards-)
 - [`check` API](#check-api)
 - [`filter` API](#filter-api)
 - [Sanitization Chain API](#sanitization-chain-api)
@@ -80,6 +81,20 @@ app.post('/user', [
   const user = matchedData(req);
   createUser(user).then(user => res.json(user));
 });
+```
+
+---
+
+## Wildcards (`*`)
+
+To validate or sanitize nested object properties or an array of strings use wildcards (`*`).
+
+```js
+// Validate the postal code of each address, making sure the value is in postal code format 
+check('addresses.*.postalCode').isPostalCode(),
+
+// Sanitize the number of each address, making it arrive as an integer
+sanitize('addresses.*.number').toInt()
 ```
 
 ---
@@ -232,20 +247,6 @@ Same as `sanitize(fields)`, but only sanitizing `req.params`.
 Same as `sanitize(fields)`, but only sanitizing `req.query`.
 
 ---
-
-## Wildcards (*)
-To validate or sanitize nested object properties or an array of strings use wildcards(*).
-
-```js
-// Validate the postal code of each address, making sure the value is in postal code format 
-  check('addresses.*.postalCode').isPostalCode(),
-
-// Sanitize the number of each address, making it arrive as an integer
-  sanitize('addresses.*.number').toInt()
-```
-
----
-
 
 ## Sanitization Chain API
 The sanitization chain is a middleware, and it should be passed to an Express route handler.  
