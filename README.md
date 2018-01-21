@@ -233,6 +233,20 @@ Same as `sanitize(fields)`, but only sanitizing `req.query`.
 
 ---
 
+## Wildcards (*)
+To validate or sanitize nested object properties or an array of strings use wildcards(*).
+
+```js
+// Validate the postal code of each address, making sure the value is in postal code format 
+  check('addresses.*.postalCode').isPostalCode(),
+
+// Sanitize the number of each address, making it arrive as an integer
+  sanitize('addresses.*.number').toInt()
+```
+
+---
+
+
 ## Sanitization Chain API
 The sanitization chain is a middleware, and it should be passed to an Express route handler.  
 When the middleware runs, it will modify each field in place, applying each of the sanitizers in the order they were specified:
@@ -388,7 +402,6 @@ const result = validationResult.withDefaults({
 
 module.exports = result;
 ```
-
 ---
 
 ## Legacy API
