@@ -1,6 +1,15 @@
-const { check, body, cookie, header, param, query } = require('./validation-chain-builders');
+const {
+  buildCheckFunction,
+  check,
+  body,
+  cookie,
+  header,
+  param,
+  query
+} = require('./validation-chain-builders');
 
 module.exports = {
+  buildCheckFunction,
   check,
   body,
   cookie,

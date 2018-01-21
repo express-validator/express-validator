@@ -1,4 +1,5 @@
 const {
+  buildSanitizeFunction,
   sanitize,
   sanitizeBody,
   sanitizeCookie,
@@ -7,6 +8,7 @@ const {
 } = require('./sanitization-chain-builders');
 
 module.exports = {
+  buildSanitizeFunction,
   sanitize,
   sanitizeBody,
   sanitizeCookie,
