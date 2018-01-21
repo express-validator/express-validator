@@ -76,8 +76,8 @@ describe('check: low-level middleware', () => {
         .withMessage('wat');
 
       const { validators } = chain._context;
-      expect(validators).to.not.have.deep.property('[0].message');
-      expect(validators).to.have.deep.property('[1].message', 'wat');
+      expect(validators).to.not.have.nested.property('[0].message');
+      expect(validators).to.have.nested.property('[1].message', 'wat');
     });
 
     it('does not throw when there are no validators', () => {

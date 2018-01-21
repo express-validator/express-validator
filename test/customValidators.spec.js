@@ -87,7 +87,7 @@ describe('Legacy: Custom validators', () => {
     req.check('username').usernameAvailable().withMessage('username taken');
 
     return req.getValidationResult().then(result => {
-      expect(result.mapped()).to.have.deep.property('username.msg', 'username taken');
+      expect(result.mapped()).to.have.nested.property('username.msg', 'username taken');
     });
   });
 

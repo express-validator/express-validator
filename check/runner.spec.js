@@ -340,7 +340,7 @@ describe('check: context runner', () => {
       }).then(errors => {
         expect(errors)
           .to.have.length(1)
-          .and.to.have.deep.property('[0].msg', 'wut 123 body foo[0]');
+          .and.to.have.nested.property('[0].msg', 'wut 123 body foo[0]');
       });
     });
 
@@ -359,7 +359,7 @@ describe('check: context runner', () => {
       }).then(errors => {
         expect(errors)
           .to.have.length(1)
-          .and.to.have.deep.property('[0].param', 'withzero');
+          .and.to.have.nested.property('[0].param', 'withzero');
       });
     });
 

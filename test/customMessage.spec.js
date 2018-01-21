@@ -14,7 +14,7 @@ describe('Legacy: Message customization', () => {
       req[methodName]('color', '"%0" is not a color').isHexColor();
 
       return req.getValidationResult().then(result => {
-        expect(result.mapped()).to.have.deep.property('color.msg', '"asd" is not a color');
+        expect(result.mapped()).to.have.nested.property('color.msg', '"asd" is not a color');
       });
     });
   };
@@ -34,7 +34,7 @@ describe('Legacy: Message customization', () => {
     req.check('color', '"%0" is not a color').isHexColor();
 
     return req.getValidationResult().then(result => {
-      expect(result.mapped()).to.have.deep.property('color.msg', '"asd" is not a color');
+      expect(result.mapped()).to.have.nested.property('color.msg', '"asd" is not a color');
     });
   });
 
@@ -49,7 +49,7 @@ describe('Legacy: Message customization', () => {
       .matches(/^(?!abc123)$/).withMessage('do not use a common password');
 
     return req.getValidationResult().then(result => {
-      expect(result.mapped()).to.have.deep.property('password.msg', 'do not use a common password');
+      expect(result.mapped()).to.have.nested.property('password.msg', 'do not use a common password');
     });
   });
 
@@ -67,7 +67,7 @@ describe('Legacy: Message customization', () => {
     });
 
     return req.getValidationResult().then(result => {
-      expect(result.mapped()).to.have.deep.property('color.msg', '"asd" is not a color');
+      expect(result.mapped()).to.have.nested.property('color.msg', '"asd" is not a color');
     });
   });
 
@@ -91,7 +91,7 @@ describe('Legacy: Message customization', () => {
     });
 
     return req.getValidationResult().then(result => {
-      expect(result.mapped()).to.have.deep.property('password.msg', 'do not use a common password');
+      expect(result.mapped()).to.have.nested.property('password.msg', 'do not use a common password');
     });
   });
 
@@ -105,7 +105,7 @@ describe('Legacy: Message customization', () => {
 
     return req.getValidationResult().then(result => {
       expect(result.mapped())
-        .to.have.deep.property('color.msg')
+        .to.have.nested.property('color.msg')
         .and.to.eql({
           code: 1,
           msg: 'damn!'

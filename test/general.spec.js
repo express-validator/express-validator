@@ -108,7 +108,7 @@ describe('Legacy: General', () => {
 
       const errors = req.validationErrors(true);
       expect(errors).to.not.have.property('int');
-      expect(errors).to.have.deep.property('alpha.msg', 'should be alpha only');
+      expect(errors).to.have.nested.property('alpha.msg', 'should be alpha only');
     });
   });
 
@@ -160,7 +160,7 @@ describe('Legacy: General', () => {
         throw new Error('validation passed (but it should not)');
       }, errors => {
         expect(errors).to.not.have.property('int');
-        expect(errors).to.have.deep.property('alpha.msg', 'should be alpha only');
+        expect(errors).to.have.nested.property('alpha.msg', 'should be alpha only');
       });
     });
 
@@ -189,7 +189,7 @@ describe('Legacy: General', () => {
 
       return req.getValidationResult().then(result => {
         expect(result.mapped()).to.not.have.property('int');
-        expect(result.mapped()).to.have.deep.property('alpha.msg', 'should be alpha only');
+        expect(result.mapped()).to.have.nested.property('alpha.msg', 'should be alpha only');
       });
     });
 

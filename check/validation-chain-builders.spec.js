@@ -22,8 +22,8 @@ describe('check: buildCheckFunction', () => {
     const custom = buildCheckFunction(['cookies', 'headers']);
     return custom('foo').isInt()(req, {}, () => {}).then(() => {
       expect(req._validationErrors).to.have.length(2);
-      expect(req._validationErrors).to.have.deep.property('[0].location', 'cookies');
-      expect(req._validationErrors).to.have.deep.property('[1].location', 'headers');
+      expect(req._validationErrors).to.have.nested.property('[0].location', 'cookies');
+      expect(req._validationErrors).to.have.nested.property('[1].location', 'headers');
     });
   });
 });
@@ -107,7 +107,7 @@ describe('check: checkBody middleware', () => {
     return body('foo').isInt()(req, {}, () => {}).then(() => {
       expect(req._validationErrors)
         .to.have.length(1)
-        .and.to.have.deep.property('[0].location', 'body');
+        .and.to.have.nested.property('[0].location', 'body');
     });
   });
 });
@@ -125,7 +125,7 @@ describe('check: checkCookies middleware', () => {
     return cookie('foo').isInt()(req, {}, () => {}).then(() => {
       expect(req._validationErrors)
         .to.have.length(1)
-        .and.to.have.deep.property('[0].location', 'cookies');
+        .and.to.have.nested.property('[0].location', 'cookies');
     });
   });
 });
@@ -143,7 +143,7 @@ describe('check: checkHeaders middleware', () => {
     return header('foo').isInt()(req, {}, () => {}).then(() => {
       expect(req._validationErrors)
         .to.have.length(1)
-        .and.to.have.deep.property('[0].location', 'headers');
+        .and.to.have.nested.property('[0].location', 'headers');
     });
   });
 });
@@ -161,7 +161,7 @@ describe('check: checkParams middleware', () => {
     return param('foo').isInt()(req, {}, () => {}).then(() => {
       expect(req._validationErrors)
         .to.have.length(1)
-        .and.to.have.deep.property('[0].location', 'params');
+        .and.to.have.nested.property('[0].location', 'params');
     });
   });
 });
@@ -179,7 +179,7 @@ describe('check: checkQuery middleware', () => {
     return query('foo').isInt()(req, {}, () => {}).then(() => {
       expect(req._validationErrors)
         .to.have.length(1)
-        .and.to.have.deep.property('[0].location', 'query');
+        .and.to.have.nested.property('[0].location', 'query');
     });
   });
 });

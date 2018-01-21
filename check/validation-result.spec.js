@@ -187,7 +187,7 @@ describe('check: validationResult', () => {
         result.throw();
         done(new Error('no errors thrown'));
       } catch (e) {
-        expect(e.array()).to.have.deep.property('[0].code', 'foo');
+        expect(e.array()).to.have.nested.property('[0].code', 'foo');
         done();
       }
     });
@@ -204,7 +204,7 @@ describe('check: validationResult', () => {
         result.throw();
         done(new Error('no errors thrown'));
       } catch (e) {
-        expect(e.array()).to.have.deep.property('[0].code', 'foo');
+        expect(e.array()).to.have.nested.property('[0].code', 'foo');
         done();
       }
     });
@@ -223,7 +223,7 @@ describe('check: validationResult', () => {
         result.throw();
         done(new Error('no errors thrown'));
       } catch (e) {
-        expect(e.array()).to.have.deep.property('[0].code', 'foo');
+        expect(e.array()).to.have.nested.property('[0].code', 'foo');
         done();
       }
     });
