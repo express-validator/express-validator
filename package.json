@@ -3,13 +3,8 @@
   "description": "Express middleware for the validator module.",
   "author": "Christoph Tavan <dev@tavan.de>",
   "contributors": [
-    "Chris O'Hara <cohara87@gmail.com>",
-    "@orfaust",
-    "@zero21xxx",
-    "Roman Kalyakin <roman@kalyakin.com>",
     "Rusty Bailey <rustylbailey@gmail.com>",
-    "Gustavo Henke <guhenke@gmail.com>",
-    "Ayman Nedjmeddine <theycallmethedr@gmail.com>"
+    "Gustavo Henke <guhenke@gmail.com>"
   ],
   "version": "4.3.0",
   "homepage": "https://github.com/ctavan/express-validator",
