@@ -11,7 +11,7 @@ import {
   Validator as BaseValidator,
   ValidatorOptions
 } from './check';
-import { Sanitizer } from './filter'
+import { Sanitizer as BaseSanitizer } from './filter'
 
 // Add RequestValidation Interface on to Express's Request Interface.
 declare global {
@@ -94,8 +94,11 @@ declare namespace ExpressValidator {
     isISRC?: ValidatorSchemaOptions
     isISBN?: ValidatorSchemaOptions
     isISSN?: ValidatorSchemaOptions
+    isMimeType?: ValidatorSchemaOptions
     isMobilePhone?: ValidatorSchemaOptions
+    isPort?: ValidatorSchemaOptions
     isCurrency?: ValidatorSchemaOptions
+    isISO31661Alpha2?: ValidatorSchemaOptions
     isISO8601?: ValidatorSchemaOptions
     isBase64?: ValidatorSchemaOptions
     isDataURI?: ValidatorSchemaOptions
@@ -142,5 +145,7 @@ declare namespace ExpressValidator {
     notEmpty(): this;
     len(options: ValidatorOptions.MinMaxOptions): this;
   }
+
+  export interface Sanitizer {}
 
 }
