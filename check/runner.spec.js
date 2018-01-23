@@ -258,13 +258,13 @@ describe('check: context runner', () => {
         fields: ['foo', 'bar', 'baz', 'qux'],
         validators: [{
           options: [],
-          validator: value => Promise.reject(value)
+          validator: value => Promise.reject({ value })
         }]
       }).then(errors => {
-        expect(errors[0].msg).to.equal('');
-        expect(errors[1].msg).to.equal('');
-        expect(errors[2].msg).to.equal('');
-        expect(errors[3].msg).to.equal('');
+        expect(errors[0].msg).to.eql({ value: '' });
+        expect(errors[1].msg).to.eql({ value: '' });
+        expect(errors[2].msg).to.eql({ value: '' });
+        expect(errors[3].msg).to.eql({ value: '' });
       });
     });
 

@@ -12,7 +12,7 @@ module.exports = (req, context) => {
 
       return getActualResult(result).then(result => {
         if ((!validatorCfg.negated && !result) || (validatorCfg.negated && result)) {
-          throw new Error(getDynamicMessage(context.message || 'Invalid value', field, req));
+          return Promise.reject();
         }
       });
     }).catch(err => {
@@ -20,7 +20,13 @@ module.exports = (req, context) => {
         location,
         param: path,
         value,
-        msg: getDynamicMessage(validatorCfg.message || err.message || err, field, req)
+        msg: getDynamicMessage([
+          validatorCfg.message,
+          err && err.message,
+          err,
+          context.message,
+          'Invalid value'
+        ], field, req)
       });
     }), Promise.resolve());
   });
@@ -35,7 +41,8 @@ function getActualResult(result) {
   });
 }
 
-function getDynamicMessage(message, field, req) {
+function getDynamicMessage(messageSources, field, req) {
+  const message = messageSources.find(message => !!message);
   if (typeof message !== 'function') {
     return message;
   }
