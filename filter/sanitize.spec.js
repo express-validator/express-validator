@@ -44,4 +44,18 @@ describe('filter: sanitize', () => {
     sanitize('foo', ['body'])({}, {}, next);
     expect(called).to.be.true;
   });
+
+  it('modifies by custom sanitizer', () => {
+    const req = {
+      body: { foo: 1},
+      query: {baz: 2}
+    };
+
+    const chain = sanitize(['foo', 'baz'], ['body', 'query'])
+      .customSanitizer((val, mul, add) => val * mul + add, 10, 5)
+
+    chain(req, {}, () => {});
+    expect(req.body.foo).to.equal(15)
+    expect(req.query.baz).to.equal(25)
+  });
 });

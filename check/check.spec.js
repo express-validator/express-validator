@@ -103,6 +103,7 @@ describe('check: low-level middleware', () => {
       expect(chain._context.sanitizers).to.have.length(1);
       expect(chain._context.sanitizers).to.deep.include({
         sanitizer: validator.trim,
+        custom: false,
         options: []
       });
     });
@@ -132,6 +133,20 @@ describe('check: low-level middleware', () => {
         check('bar', ['query']).isInt()(req, {}, () => {})
       ]).then(() => {
         expect(req._validationErrors).to.have.length(2);
+      });
+    });
+  });
+
+  describe('.customSanitizer()', () => {
+    it('adds a custom sanitizer inline validator', () => {
+      const sanitizer = x => x + 1;
+      const options = [1, 2,3];
+      const chain = check('foo', []).customSanitizer(sanitizer, ...options);
+
+      expect(chain._context.sanitizers[0]).to.eql({
+        sanitizer,
+        options,
+        custom: true
       });
     });
   });

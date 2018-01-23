@@ -326,6 +326,22 @@ app.post('/create-user', [
 ], loginHandler);
 ```
 
+### `.customSanitizer(sanitizer, [options])`
+- `sanitizer(value, ...options, { value, location, path })`: the custom sanitizer function.  
+Receives the value of the field being sanitized, as well as the express request, the location and the field path.
+> *Returns:* the current validation chain instance
+
+Adds a custom sanitizer to the current validation chain.  
+
+Example:
+
+```js
+app.get('/list/:page', [
+  check('page').toInt()
+ .customSanitizer(page => Math.max(0, page)),
+], listHandler);
+```
+
 ### `.exists()`
 > *Returns:* the current validation chain instance
 
