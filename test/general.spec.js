@@ -15,7 +15,7 @@ describe('Legacy: General', () => {
     })(req, {}, () => {});
 
     const testNull = () => req.check('foo').testNull();
-    const testUndefined = () => req.check('foo').testNull();
+    const testUndefined = () => req.check('foo').testUndefined();
 
     expect(testNull).to.not.throw();
     expect(testUndefined).to.not.throw();

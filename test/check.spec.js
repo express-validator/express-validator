@@ -106,7 +106,7 @@ describe('Legacy: req.check()/req.assert()/req.validate()', () => {
   it('checks using wildcard * in paths', () => {
     const req = {
       params: {
-        foo: { bar: [ 'not_email' ] }
+        foo: { bar: [ 'not_email', 'also_not_email' ] }
       }
     };
 
@@ -115,7 +115,9 @@ describe('Legacy: req.check()/req.assert()/req.validate()', () => {
     req.check('foo.*[0]').isEmail();
 
     return req.getValidationResult().then(result => {
+      expect(result.array()).to.have.lengthOf(3);
       expect(result.mapped()).to.have.property('foo.bar[0]');
+      expect(result.mapped()).to.have.property('foo.bar[1]');
     });
   });
 
