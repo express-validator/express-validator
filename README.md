@@ -12,6 +12,7 @@ An [express.js]( https://github.com/visionmedia/express ) middleware for
 - [Installation](#installation)
 - [Usage](#usage)
 - [Wildcards (`*`)](#wildcards-)
+- [Dynamic messages](#dynamic-messages)
 - [`check` API](#check-api)
 - [`filter` API](#filter-api)
 - [Sanitization Chain API](#sanitization-chain-api)
@@ -99,12 +100,33 @@ sanitize('addresses.*.number').toInt()
 
 ---
 
+## Dynamic messages
+You can build dynamic validation messages by providing functions anywhere a validation message is supported.  
+This is specially useful if you use a translation library to provide tailored messages:
+
+```js
+// check(field, withMessage) and .withMessage() work the same
+check('something').isInt().withMessage((value, { req, location, path }) => {
+  return req.translate('validation.message.path', { value, location, path });
+}),
+check('somethingElse', (value, { req, location, path }) => {
+  return req.translate('validation.message.path', { value, location, path });
+}),
+
+// oneOf is special though - it only receives the req object for now
+oneOf([ someValidation, anotherValidation ], ({ req }) => {
+  return req.translate('validation.multiple_failures');
+});
+```
+
+---
+
 ## `check` API
 These methods are all available via `require('express-validator/check')`.
 
 ### `check(field[, message])`
 - `field`: a string or an array of strings of field names to validate against.
-- `message` *(optional)*: an error message to use when failed validators don't specify a message. Defaults to `Invalid value`.
+- `message` *(optional)*: an error message to use when failed validators don't specify a message. Defaults to `Invalid value`; see also [Dynamic Messages](#dynamic-messages).
 > *Returns:* a [Validation Chain](#validation-chain-api)
 
 Creates a validation chain for one or more fields. They may be located in any of the following request objects:
@@ -137,7 +159,7 @@ Same as `check(fields[, message])`, but only checking `req.query`.
 ### `oneOf(validationChains[, message])`
 - `validationChains`: an array of [validation chains](#validation-chain-api) created with `check()` or any of its variations,
   or an array of arrays containing validation chains.
-- `message` *(optional)*: an error message to use when all chains failed. Defaults to `Invalid value(s)`.
+- `message` *(optional)*: an error message to use when all chains failed. Defaults to `Invalid value(s)`; see also [Dynamic Messages](#dynamic-messages).
 > *Returns:* a middleware instance
 
 Creates a middleware instance that will ensure at least one of the given chains passes the validation.  
@@ -359,6 +381,8 @@ You can further customize this behavior by passing an object with the following 
 
 Sets the error message for the previous validator.  
 This will have precedence over errors thrown by a custom validator.
+
+To build dynamic messages, see also [Dynamic Messages](#dynamic-messages).
 
 ---
 
