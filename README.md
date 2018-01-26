@@ -240,7 +240,7 @@ These methods are all available via `require('express-validator/filter')`.
   - `onlyValidData`: if set to `false`, the returned value includes data from fields
     that didn't pass their validations. Defaults to `true`.
   - `locations`: an array of locations to extract the data from. The acceptable values include
-    `body`, `cookies`, `headers`, `param` and `query`. Defaults to `undefined`, which means all locations.
+    `body`, `cookies`, `headers`, `params` and `query`. Defaults to `undefined`, which means all locations.
 > *Returns:* an object of data validated by the `check` APIs.
 
 Extracts data validated by the `check` APIs from the request and builds
