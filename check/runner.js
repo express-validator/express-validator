@@ -1,5 +1,5 @@
 const toString = require('../utils/to-string');
-const selectFields = require('./select-fields');
+const selectFields = require('../utils/select-fields');
 
 module.exports = (req, context) => {
   const validationErrors = [];

@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const selectFields = require('./select-fields');
 
-describe('check: field selection', () => {
+describe('utils: selectFields', () => {
   it('is done in all given request locations', () => {
     const req = {
       body: { foo: 'a' },

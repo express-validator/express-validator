@@ -2,7 +2,7 @@ const _ = require('lodash');
 const validator = require('validator');
 
 const { extraSanitizers } = require('../utils/constants');
-const selectFields = require('../check/select-fields');
+const selectFields = require('../utils/select-fields');
 
 module.exports = (fields, locations) => {
   const sanitizers = [];

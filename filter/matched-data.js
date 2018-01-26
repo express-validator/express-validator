@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const selectFields = require('../check/select-fields');
+const selectFields = require('../utils/select-fields');
 
 module.exports = (req, options = {}) => {
   const validityFilter = createValidityFilter(req, options);

@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const formatParamOutput = require('../utils/format-param-output');
+const formatParamOutput = require('./format-param-output');
 
 module.exports = (req, context) => {
   let allFields = [];

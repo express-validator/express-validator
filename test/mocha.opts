@@ -1,3 +1,4 @@
 check/**/*.js
 filter/**/*.js
 test/**/*.js
+utils/**/*.js
