@@ -1,10 +1,16 @@
-.editorconfig
+# IDEs
+.vscode
 .idea
-.jscsrc
-.jshintrc
+
+# Misc
+.editorconfig
+.eslintrc
 .nyc_output
 .nycrc
 .travis.yml
+
+# Build artifacts/tests
+build
 coverage
 test
 *.spec.js
