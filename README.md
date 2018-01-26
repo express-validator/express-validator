@@ -102,23 +102,6 @@ sanitize('addresses.*.number').toInt()
 ## `check` API
 These methods are all available via `require('express-validator/check')`.
 
-### `buildCheckFunction(locations)`
-- `locations`: an array of request locations to gather data from.  
-   May include any of `body`, `cookies`, `headers`, `params` or `query`.
-> *Returns:* a variant of [`check()`](#checkfield-message) checking the given request locations.
-
-Creates a variant of [`check()`](#checkfield-message) that checks the given request locations.
-
-```js
-const { buildCheckFunction } = require('express-validator/check');
-const checkBodyAndQuery = buildCheckFunction(['body', 'query']);
-
-app.put('/update-product', [
-  // id must be either in req.body or req.query, and must be an UUID
-  checkBodyAndQuery('id').isUuid()
-], productUpdateHandler)
-```
-
 ### `check(field[, message])`
 - `field`: a string or an array of strings of field names to validate against.
 - `message` *(optional)*: an error message to use when failed validators don't specify a message. Defaults to `Invalid value`.
@@ -205,28 +188,27 @@ while the execution within a chain still respects the rule defined in the [`chec
 
 Extracts the validation errors from a request and makes it available in the form of a validation result object.
 
+### `buildCheckFunction(locations)`
+- `locations`: an array of request locations to gather data from.  
+   May include any of `body`, `cookies`, `headers`, `params` or `query`.
+> *Returns:* a variant of [`check()`](#checkfield-message) checking the given request locations.
+
+Creates a variant of [`check()`](#checkfield-message) that checks the given request locations.
+
+```js
+const { buildCheckFunction } = require('express-validator/check');
+const checkBodyAndQuery = buildCheckFunction(['body', 'query']);
+
+app.put('/update-product', [
+  // id must be either in req.body or req.query, and must be an UUID
+  checkBodyAndQuery('id').isUuid()
+], productUpdateHandler)
+```
+
 ---
 
 ## `filter` API
 These methods are all available via `require('express-validator/filter')`.
-
-### `buildSanitizeFunction(locations)`
-- `locations`: an array of request locations to gather data from.  
-   May include any of `body`, `cookies`, `params` or `query`.
-> *Returns:* a variant of [`sanitize()`](#sanitizefields) sanitizing the given request locations.
-
-Creates a variant of [`sanitize()`](#sanitizefields) that sanitizes the given request locations.
-
-```js
-const { buildSanitizeFunction } = require('express-validator/filter');
-const sanitizeBodyAndQuery = buildSanitizeFunction(['body', 'query']);
-
-app.put('/update-product', [
-  // id being either in req.body or req.query will be converted to int
-  sanitizeBodyAndQuery('id').toInt()
-], productUpdateHandler)
-```
-
 
 ### `matchedData(req[, options])`
 - `req`: the express request object.
@@ -280,6 +262,23 @@ Same as `sanitize(fields)`, but only sanitizing `req.params`.
 
 ### `sanitizeQuery(fields)`
 Same as `sanitize(fields)`, but only sanitizing `req.query`.
+
+### `buildSanitizeFunction(locations)`
+- `locations`: an array of request locations to gather data from.  
+   May include any of `body`, `cookies`, `params` or `query`.
+> *Returns:* a variant of [`sanitize()`](#sanitizefields) sanitizing the given request locations.
+
+Creates a variant of [`sanitize()`](#sanitizefields) that sanitizes the given request locations.
+
+```js
+const { buildSanitizeFunction } = require('express-validator/filter');
+const sanitizeBodyAndQuery = buildSanitizeFunction(['body', 'query']);
+
+app.put('/update-product', [
+  // id being either in req.body or req.query will be converted to int
+  sanitizeBodyAndQuery('id').toInt()
+], productUpdateHandler)
+```
 
 ---
 
