@@ -415,6 +415,23 @@ Each error returned by `.array()` and `.mapped()` methods have the following for
   The `error` argument is an object in the format of `{ location, msg, param, value, nestedErrors }`, as described above.
 > *Returns:* this validation result instance
 
+```js
+app.post('/create-user', yourValidationChains, (req, res, next) => {
+  const errorFormatter = ({ location, msg, param, value, nestedErrors }) => {
+    // Build your resulting errors however you want! String, object, whatever - it works!
+    return `${location}[${param}]: ${msg}`;
+  };
+  const result = validationResult(req).formatWith(errorFormatter);
+  if (!result.isEmpty()) {
+    // Response will contain something like
+    // { errors: [ "body[password]: must be at least 10 chars long" ] }
+    return res.json({ errors: result.array() });
+  }
+
+  // Handle your request as if no errors happened
+});
+```
+
 ### `.array([options])`
 - `options` *(optional)*: an object of options. Defaults to `{ onlyFirstError: false }`
 > *Returns:* an array of validation errors.
