@@ -3,7 +3,6 @@ const validLocations = ['body', 'cookies', 'headers', 'params', 'query'];
 const notValidators = ['errorMessage', 'in'];
 
 module.exports = schema => Object.keys(schema)
-  .filter(field => field !== 'in')
   .map(field => {
     const config = schema[field];
     const chain = check(
