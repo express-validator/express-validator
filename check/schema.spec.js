@@ -29,7 +29,7 @@ describe('check: schema', () => {
         in: 'query',
         errorMessage: 'baz'
       }
-    }, (field, locations, message) => {
+    }, [], (field, locations, message) => {
       return { field, locations, message };
     })[0];
 
@@ -52,6 +52,17 @@ describe('check: schema', () => {
         'headers',
         'params',
         'query'
+      ]);
+    });
+
+    it('includes by default all of the specified ones', () => {
+      const chain = checkSchema({
+        foo: {}
+      }, ['headers', 'cookies'])[0];
+
+      expect(chain._context.locations).to.eql([
+        'headers',
+        'cookies'
       ]);
     });
 
