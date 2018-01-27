@@ -23,6 +23,23 @@ describe('check: schema', () => {
     expect(chain._context).to.have.property('message', 'bar');
   });
 
+  it('creates chain using custom creator', () => {
+    const chain = checkSchema({
+      foo: {
+        in: 'query',
+        errorMessage: 'baz'
+      }
+    }, (field, locations, message) => {
+      return { field, locations, message };
+    })[0];
+
+    expect(chain).to.eql({
+      field: 'foo',
+      locations: ['query'],
+      message: 'baz'
+    });
+  });
+
   describe('locations', () => {
     it('includes by default all of them', () => {
       const chain = checkSchema({

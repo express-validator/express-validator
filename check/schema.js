@@ -2,10 +2,10 @@ const check = require('./check');
 const validLocations = ['body', 'cookies', 'headers', 'params', 'query'];
 const notValidators = ['errorMessage', 'in'];
 
-module.exports = schema => Object.keys(schema)
+module.exports = (schema, chainCreator = check) => Object.keys(schema)
   .map(field => {
     const config = schema[field];
-    const chain = check(
+    const chain = chainCreator(
       field,
       ensureLocations(config),
       config.errorMessage
