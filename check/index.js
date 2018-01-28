@@ -16,6 +16,7 @@ module.exports = {
   header,
   param,
   query,
+  checkSchema: require('./schema'),
   oneOf: require('./one-of'),
   validationResult: require('./validation-result')
 };
