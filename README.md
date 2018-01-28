@@ -93,7 +93,7 @@ app.post('/user', [
 To validate or sanitize nested object properties or an array of strings use wildcards (`*`).
 
 ```js
-// Validate the postal code of each address, making sure the value is in postal code format 
+// Validate the postal code of each address, making sure the value is in postal code format
 check('addresses.*.postalCode').isPostalCode(),
 
 // Sanitize the number of each address, making it arrive as an integer
@@ -508,7 +508,7 @@ The key will be the name of the sanitizer, while the value is the sanitization f
 The Legacy Validation Chain instances provides further functionality than the one provided by the base [Validation Chain](#validation-chain-api) objects.  
 It also differs in that the legacy one is not a middleware *per se*.
 
-Any custom validator specified in the middleware will be made available 
+Any custom validator specified in the middleware will be made available
 in instances of this validation chain.
 
 Additionally, the following validators are also available:
@@ -597,7 +597,7 @@ Runs all validations and returns the errors gathered *only* for the completed va
 This probably means any async validator will not be completed by the time this method responds.
 
 ### Schema validation
-All `req.check` methods can do schema validation. This is a special way of validating data were you pass an object of your expected schema, and all the validations you want:
+All `req.check` methods can do schema validation. This is a special way of validating data where you pass an object of your expected schema, and all the validations you want:
 
 ```js
 req.checkBody({
