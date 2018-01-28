@@ -14,6 +14,7 @@ An [express.js]( https://github.com/visionmedia/express ) middleware for
 - Features
   - [Wildcards (`*`)](#wildcards-)
   - [Dynamic messages](#dynamic-messages)
+  - [Schema validation](#schema-validation)
 - API
   - [`check` API](#check-api)
   - [`filter` API](#filter-api)
@@ -123,6 +124,44 @@ oneOf([ someValidation, anotherValidation ], ({ req }) => {
 
 ---
 
+## Schema Validation
+Schemas are a special, object-based way of defining validations or sanitizations on requests.  
+At the root-level, you specify the field paths as the keys, and an object as values -- which define
+the error messages, locations and validations/sanitizations.
+
+Its syntaxs looks like this:
+
+```js
+const { checkSchema } = require('express-validator/check');
+app.put('/user/:id/password', checkSchema({
+  id: {
+    // The location of the field, can be one or more of body, cookies, headers, params or query.
+    // If omitted, all request locations will be checked
+    in: ['params', 'query'],
+    errorMessage: 'ID is wrong',
+    isInt: true,
+    // Sanitizers can go here as well
+    toInt: true
+  },
+  password: {
+    isLength: {
+      errorMessage: 'Password should be at least 7 chars long',
+      // Multiple options would be expressed as an array
+      options: { min: 7 }
+    }
+  },
+  // Wildcards/dots for nested fields work as well
+  'addresses.*.postalCode': {
+    optional: true,
+    isPostalCode: true
+  }
+}), (req, res, next) => {
+  // handle the request as usual
+})
+```
+
+---
+
 ## `check` API
 These methods are all available via `require('express-validator/check')`.
 
@@ -157,6 +196,10 @@ Same as `check(fields[, message])`, but only checking `req.params`.
 
 ### `query(fields[, message])`
 Same as `check(fields[, message])`, but only checking `req.query`.
+
+### `checkSchema(schema)`
+- `schema`: the schema to validate. Must comply with the format described in [Schema Validation](#schema-validation).
+> *Returns:* an array of validation chains
 
 ### `oneOf(validationChains[, message])`
 - `validationChains`: an array of [validation chains](#validation-chain-api) created with `check()` or any of its variations,
@@ -597,37 +640,7 @@ Runs all validations and returns the errors gathered *only* for the completed va
 This probably means any async validator will not be completed by the time this method responds.
 
 ### Schema validation
-All `req.check` methods can do schema validation. This is a special way of validating data were you pass an object of your expected schema, and all the validations you want:
-
-```js
-req.checkBody({
-  email: {
-    notEmpty: true,
-    isEmail: true
-  },
-  password: {
-    notEmpty: true,
-    matches: {
-      // more than one options must be passed as arrays
-      options: ['someregex', 'i'],
-      // single options may be passed directly
-      // options: /someregex/i
-    },
-    errorMessage: 'Invalid password'
-  },
-  // Wildcards and nested paths are supported as well
-  'name.first': {
-    optional: {
-      options: { checkFalsy: true }
-    }
-  },
-  termsAndConditionsAgreement: {
-    isBoolean: {
-      errorMessage: 'should be a boolean'
-    }
-  }
-});
-```
+All `req.check` methods can do schema validation. The schema syntax is the same as described in [Schema Validation](#schema-validation).
 
 ---
 
