@@ -30,5 +30,14 @@ module.exports = (fields, locations) => {
       };
     });
 
+  middleware.customSanitizer = sanitizer => {
+    sanitizers.push({
+      sanitizer,
+      custom: true,
+      options: []
+    });
+    return middleware;
+  };
+
   return middleware;
 };

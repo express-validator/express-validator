@@ -44,4 +44,17 @@ describe('filter: sanitize', () => {
     sanitize('foo', ['body'])({}, {}, next);
     expect(called).to.be.true;
   });
+
+  describe('.customSanitizer()', () => {
+    it('adds a custom inline sanitizer', () => {
+      const req = {
+        body: { foo: '42' }
+      };
+
+      const chain = sanitize('foo', ['body']).customSanitizer(value => Number(value));
+      chain(req, {}, () => {});
+
+      expect(req.body.foo).to.equal(42);
+    });
+  });
 });

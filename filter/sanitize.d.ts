@@ -1,7 +1,8 @@
 import * as express from 'express';
 
-interface Sanitizer {
+export interface Sanitizer {
   blacklist(chars: string): this;
+  customSanitizer(sanitizer: CustomSanitizer): this;
   escape(): this;
   ltrim(chars?: string): this;
   normalizeEmail(options?: Options.NormalizeEmailOptions): this;
@@ -16,7 +17,11 @@ interface Sanitizer {
   whitelist(chars: string): this;
 }
 
-interface SanitizationChain extends express.RequestHandler, Sanitizer {}
+export interface SanitizationChain extends express.RequestHandler, Sanitizer {}
+
+export interface CustomSanitizer {
+  (value: string, options: { req: express.Request, location: string, path: string }): any;
+}
 
 declare namespace Options {
   interface NormalizeEmailOptions {
