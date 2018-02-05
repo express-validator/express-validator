@@ -61,6 +61,19 @@ describe('check: low-level middleware', () => {
     });
   });
 
+  describe('.customSanitizer()', () => {
+    it('adds a custom inline sanitizer', () => {
+      const sanitizer = () => true;
+      const chain = check('foo', []).customSanitizer(sanitizer);
+
+      expect(chain._context.sanitizers[0]).to.eql({
+        sanitizer,
+        options: [],
+        custom: true
+      });
+    });
+  });
+
   describe('.optional()', () => {
     it('sets optional flag in context', () => {
       const chain = check('foo', []).optional();

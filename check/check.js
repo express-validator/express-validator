@@ -61,6 +61,15 @@ module.exports = (fields, locations, message) => {
     return middleware;
   };
 
+  middleware.customSanitizer = sanitizer => {
+    sanitizers.push({
+      sanitizer,
+      custom: true,
+      options: []
+    });
+    return middleware;
+  };
+
   middleware.exists = () => middleware.custom(existsValidator);
 
   middleware.withMessage = message => {
