@@ -410,7 +410,7 @@ app.post('/create-user', [
 ```
 
 ### `.customSanitizer(sanitizer)`
-Same as [`.customSanitizer` from the Sanitization Chain]().
+Same as [`.customSanitizer` from the Sanitization Chain](#customsanitizersanitizer).
 
 ### `.exists()`
 > *Returns:* the current validation chain instance
