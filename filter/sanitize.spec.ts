@@ -1,6 +1,9 @@
 import { sanitize } from './sanitization-chain-builders';
 
 sanitize(['foo', 'bar'])
+  .customSanitizer((value: string, { req, location, path }) => {
+    return value + req.body.foo + location + path;
+  })
   .blacklist('a')
   .escape()
   .ltrim()

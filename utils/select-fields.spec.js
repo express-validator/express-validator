@@ -165,6 +165,34 @@ describe('utils: selectFields', () => {
         value: 42
       });
     });
+
+    it('runs custom sanitizers', () => {
+      const req = {
+        params: { id: '10' }
+      };
+
+      const instances = selectFields(req, {
+        locations: ['params'],
+        fields: ['id'],
+        sanitizers: [{
+          custom: true,
+          options: [],
+          sanitizer: (value, { req, location, path }) => ({
+            value,
+            req,
+            location,
+            path
+          })
+        }]
+      });
+
+      expect(instances[0].value).to.eql({
+        req,
+        value: '10',
+        location: 'params',
+        path: 'id'
+      });
+    });
   });
 
   describe('optional context', () => {
