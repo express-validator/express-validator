@@ -31,6 +31,20 @@ describe('filter: matchedData', () => {
     });
   });
 
+  it('includes data only from the successful chain in oneOf by default', () => {
+    const req = {
+      headers: { foo: 'foo', bar: '123', baz: 'baz' }
+    };
+
+    return oneOf([
+      check('foo').isInt(),
+      check('bar').isInt()
+    ])(req, {}, () => {}).then(() => {
+      const data = matchedData(req);
+      expect(data).to.eql({ bar: '123' });
+    });
+  });
+
   describe('when option onlyValidData is set to false', () => {
     it('returns object with all data validated in the request', () => {
       const req = {
