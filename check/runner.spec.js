@@ -303,6 +303,24 @@ describe('check: context runner', () => {
       });
     });
 
+    it('receive shallow first value when array', () => {
+      const req = {
+        body: { foo: ['foo', 'foo'], bar: [['bar0', 'bar0'], ['bar1', 'bar1']] }
+      };
+
+      return runner(req, {
+        locations: ['body'],
+        fields: ['foo', 'bar'],
+        validators: [{
+          options: [],
+          validator: value => Promise.reject(value)
+        }]
+      }).then(errors => {
+        expect(errors[0].msg).to.equal('foo');
+        expect(errors[1].msg).to.equal('bar0,bar0');
+      });
+    });
+
     it('receive the value itself when it is string', () => {
       const req = {
         body: { foo: 'bar' }
