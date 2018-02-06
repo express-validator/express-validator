@@ -47,6 +47,17 @@ describe('check: low-level middleware', () => {
     expect(chain._context).to.have.property('message', 'Fail!');
   });
 
+  it('persists sanitized values back to the req', () => {
+    const req = {
+      body: { foo: ' bar ' }
+    };
+    const chain = check('foo', ['body']).trim();
+
+    return chain(req, {}, () => {}).then(() => {
+      expect(req.body.foo).to.equal('bar');
+    });
+  });
+
   describe('.custom()', () => {
     it('adds a custom inline validator', () => {
       const validator = () => true;

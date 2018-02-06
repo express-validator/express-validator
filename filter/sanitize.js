@@ -1,19 +1,14 @@
-const _ = require('lodash');
 const validator = require('validator');
 
 const { extraSanitizers } = require('../utils/constants');
-const selectFields = require('../utils/select-fields');
+const persistValues = require('../utils/persist-values');
 
 module.exports = (fields, locations) => {
   const sanitizers = [];
   fields = Array.isArray(fields) ? fields : [fields];
 
   const middleware = (req, res, next) => {
-    const instances = selectFields(req, { fields, locations, sanitizers });
-    instances.forEach(instance => {
-      _.set(req[instance.location], instance.path, instance.value);
-    });
-
+    persistValues(req, { fields, locations, sanitizers });
     next();
   };
 
