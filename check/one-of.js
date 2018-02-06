@@ -19,6 +19,7 @@ module.exports = (validationChains, message) => (req, res, next) => {
   return Promise.all(promises).then(results => {
     req._validationContexts = (req._validationContexts || []).concat(contexts);
     req._validationErrors = req._validationErrors || [];
+    req._validationErrorsOneOf = _.flatten(results);
 
     const empty = results.some(result => result.length === 0);
     if (!empty) {

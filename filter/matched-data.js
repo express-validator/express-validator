@@ -16,10 +16,16 @@ module.exports = (req, options = {}) => {
 function createValidityFilter(req, { onlyValidData }) {
   onlyValidData = onlyValidData === undefined ? true : onlyValidData;
   return !onlyValidData ? () => true : field => {
-    return !req._validationErrors.find(error =>
+    const isSameRef = error => (
       error.param === field.path &&
       error.location === field.location
     );
+
+    const failed =
+      req._validationErrors.some(isSameRef) ||
+      (req._validationErrorsOneOf || []).some(isSameRef);
+
+    return !failed;
   };
 }
 
