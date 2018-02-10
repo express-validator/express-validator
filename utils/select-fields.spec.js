@@ -118,6 +118,29 @@ describe('utils: selectFields', () => {
     });
   });
 
+  it('returns all root fields if selected field is "*"', () => {
+    const req = {
+      body: ['foo', 'bar']
+    };
+
+    const instances = selectFields(req, {
+      fields: ['*'],
+      locations: ['body']
+    });
+
+    expect(instances).to.have.lengthOf(2);
+    expect(instances).to.deep.include({
+      path: '[0]',
+      location: 'body',
+      value: 'foo'
+    });
+    expect(instances).to.deep.include({
+      path: '[1]',
+      location: 'body',
+      value: 'bar'
+    });
+  });
+
   describe('sanitization', () => {
     it('runs on the selected values', () => {
       const req = {
