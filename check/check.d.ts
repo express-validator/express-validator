@@ -51,7 +51,7 @@ export interface Validator {
   isMD5(): this;
   isMimeType(): this;
   isMongoId(): this;
-  isMobilePhone(locale: MobilePhoneLocal): this;
+  isMobilePhone(locale: MobilePhoneLocal, options?: ValidatorOptions.IsMobilePhoneOptions): this;
   isMultibyte(): this;
   isNumeric(): this;
   isPostalCode(locale: PostalCodeLocale): this;
@@ -125,6 +125,10 @@ export namespace ValidatorOptions {
     allow_display_name?: boolean;
     allow_utf8_local_part?: boolean;
     require_tld?: boolean;
+  }
+
+  interface IsMobilePhoneOptions {
+    strictMode?: boolean;
   }
 
   /**
