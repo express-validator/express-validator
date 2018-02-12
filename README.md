@@ -26,7 +26,9 @@ An [express.js]( https://github.com/visionmedia/express ) middleware for
 - [License](#license)
 
 ## Upgrade notice
-If you're arriving here as a express-validator v3 user after upgrading to v4, please check the [upgrade guide](UPGRADE_GUIDE.md) in order to find out what's different!
+If you're arriving here as a express-validator v3 user after upgrading to v4+, please check the [upgrade guide](UPGRADE_GUIDE.md) in order to find out what's different!
+
+**Also please note that, starting with v5.0.0, no new features will be accepted into the legacy API. Only bug fixes will be made.**
 
 ## Installation
 ```
