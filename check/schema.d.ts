@@ -15,6 +15,7 @@ interface ValidationParamSchema {
   errorMessage?: any
 
   custom?: ValidatorSchemaOptions<CustomValidator>;
+  exists?: ValidatorSchemaOptions;
   optional?: boolean | ValidatorOptions.OptionalOptions;
 
   equals?: ValidatorSchemaOptions;

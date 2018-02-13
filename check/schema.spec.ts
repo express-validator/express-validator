@@ -12,7 +12,8 @@ const fooSchema: ValidationParamSchema = {
     options: (value, { req, location, path }) => {
       return value + req.body.foo + location + path;
     }
-  }
+  },
+  exists: true
 };
 
 const barSchema: ValidationParamSchema = {
