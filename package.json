@@ -6,7 +6,7 @@
     "Rusty Bailey <rustylbailey@gmail.com>",
     "Gustavo Henke <guhenke@gmail.com>"
   ],
-  "version": "5.0.1",
+  "version": "5.0.2",
   "homepage": "https://github.com/ctavan/express-validator",
   "license": "MIT",
   "repository": {
