@@ -146,6 +146,6 @@ declare namespace ExpressValidator {
     len(options: ValidatorOptions.MinMaxOptions): this;
   }
 
-  export interface Sanitizer {}
+  export interface Sanitizer extends BaseSanitizer {}
 
 }

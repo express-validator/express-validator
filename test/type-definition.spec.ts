@@ -39,6 +39,7 @@ app.use((req: express.Request, res: express.Response, next: express.NextFunction
 
   // Legacy API-specific testing
   let sanitizationChain: validator.Sanitizer = req.filter('param');
+  sanitizationChain.toInt();
   sanitizationChain.toAwesome();
 
   // VALIDATIONS
