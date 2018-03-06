@@ -45,6 +45,26 @@ describe('filter: matchedData', () => {
     });
   });
 
+  it('includes data only from the successful chain in oneOfs with nested chains', () => {
+    const req = {
+      headers: { foo: 'foo', bar: '123', baz: 'baz' }
+    };
+
+    return oneOf([
+      [
+        check('foo').not().exists(),
+        check('bar').not().isInt()
+      ],
+      [
+        check('foo').exists(),
+        check('bar').isInt()
+      ]
+    ])(req, {}, () => {}).then(() => {
+      const data = matchedData(req);
+      expect(data).to.eql({ foo: 'foo', bar: '123' });
+    });
+  });
+
   describe('when option onlyValidData is set to false', () => {
     it('returns object with all data validated in the request', () => {
       const req = {
