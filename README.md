@@ -270,7 +270,7 @@ const checkBodyAndQuery = buildCheckFunction(['body', 'query']);
 
 app.put('/update-product', [
   // id must be either in req.body or req.query, and must be an UUID
-  checkBodyAndQuery('id').isUuid()
+  checkBodyAndQuery('id').isUUID()
 ], productUpdateHandler)
 ```
 
