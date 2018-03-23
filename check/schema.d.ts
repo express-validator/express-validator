@@ -1,5 +1,6 @@
 import { ValidationChain, ValidatorOptions, CustomValidator } from './check';
 import { Location } from './location';
+import { CustomSanitizer } from '../filter/sanitize';
 
 export function checkSchema(schema: ValidationSchema): ValidationChain[];
 
@@ -21,6 +22,8 @@ interface ValidationParamSchema extends ValidatorsSchema, SanitizersSchema {
   custom?: ValidatorSchemaOptions<CustomValidator>;
   exists?: ValidatorSchemaOptions;
   optional?: boolean | ValidatorOptions.OptionalOptions;
+
+  customSanitizer?: SanitizerSchemaOptions<CustomSanitizer>;
 }
 
 interface ValidatorsSchema {
