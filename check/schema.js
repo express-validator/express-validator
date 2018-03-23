@@ -30,7 +30,7 @@ module.exports = (
       }
 
       chain[method](...options);
-      if (method !== 'optional') {
+      if (method !== 'optional' && methodCfg.errorMessage) {
         chain.withMessage(methodCfg.errorMessage);
       }
     });
