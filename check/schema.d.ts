@@ -1,5 +1,6 @@
 import { ValidationChain, ValidatorOptions, CustomValidator } from './check';
 import { Location } from './location';
+import { CustomSanitizer } from '../filter/sanitize';
 
 export function checkSchema(schema: ValidationSchema): ValidationChain[];
 
@@ -10,7 +11,11 @@ type ValidatorSchemaOptions<T = any> = true | {
   errorMessage?: any;
 };
 
-interface ValidationParamSchema {
+type SanitizerSchemaOptions<T = any> = true | {
+  options?: T | T[];
+};
+
+interface ValidationParamSchema extends ValidatorsSchema, SanitizersSchema {
   in: Location | Location[],
   errorMessage?: any
 
@@ -18,8 +23,12 @@ interface ValidationParamSchema {
   exists?: ValidatorSchemaOptions;
   optional?: boolean | ValidatorOptions.OptionalOptions;
 
-  equals?: ValidatorSchemaOptions;
+  customSanitizer?: SanitizerSchemaOptions<CustomSanitizer>;
+}
+
+interface ValidatorsSchema {
   contains?: ValidatorSchemaOptions;
+  equals?: ValidatorSchemaOptions;
   isAfter?: ValidatorSchemaOptions;
   isAlpha?: ValidatorSchemaOptions;
   isAlphanumeric?: ValidatorSchemaOptions;
@@ -72,4 +81,20 @@ interface ValidationParamSchema {
   isVariableWidth?: ValidatorSchemaOptions;
   isWhitelisted?: ValidatorSchemaOptions;
   matches?: ValidatorSchemaOptions;
+}
+
+interface SanitizersSchema {
+  blacklist?: SanitizerSchemaOptions;
+  escape?: true;
+  unescape?: true;
+  ltrim?: true | SanitizerSchemaOptions;
+  normalizeEmail?: true | SanitizerSchemaOptions;
+  rtrim?: true | SanitizerSchemaOptions;
+  stripLow?: true | SanitizerSchemaOptions;
+  toBoolean?: true | SanitizerSchemaOptions;
+  toDate?: true;
+  toFloat?: true;
+  toInt?: true | SanitizerSchemaOptions;
+  trim?: true | SanitizerSchemaOptions;
+  whitelist?: true | SanitizerSchemaOptions;
 }
