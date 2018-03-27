@@ -3,7 +3,7 @@ const selectFields = require('../utils/select-fields');
 
 module.exports = (req, context) => {
   const validationErrors = [];
-  const promises = selectFields(req, context, false).map(field => {
+  const promises = selectFields(req, context, { sanitizeFields: false }).map(field => {
     const { location, path, value } = field;
     return context.validators.reduce((promise, validatorCfg) => promise.then(() => {
       const result = validatorCfg.custom ?
