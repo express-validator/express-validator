@@ -1,5 +1,6 @@
 const { expect } = require('chai');
 const checkSchema = require('./schema');
+const validationResult = require('./validation-result');
 
 describe('check: schema', () => {
   it('creates a validation chain for each field in the schema', () => {
@@ -146,6 +147,42 @@ describe('check: schema', () => {
       expect(chain._context)
         .to.have.property('optional')
         .and.to.eql({});
+    });
+  });
+
+  describe('execute the schema', () => {
+    it('req.notNumber should show a defined error when using sanitizer', () => {
+      const chain = checkSchema({
+        type: {
+          in: ['body'],
+          isNumeric: {
+            errorMessage: 'Should be a number'
+          },
+          toInt: true
+        }
+      });
+
+      const req = {
+        body: {
+          type: "august"
+        }
+      };
+
+      const typeMiddleware = chain[0];
+
+      return new Promise(resolve => {
+        typeMiddleware(req, {}, () => {
+          const errors = validationResult(req);
+          expect(errors).to.be.not.null;
+
+          const mappedErrors = errors.mapped();
+          expect(mappedErrors.type.msg).to.be.equal('Should be a number');
+          expect(mappedErrors.type.value).to.be.equal('august');
+          expect(req.body.type).to.be.NaN;
+
+          resolve();
+        });
+      });
     });
   });
 });

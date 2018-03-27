@@ -1,10 +1,13 @@
 const _ = require('lodash');
 const formatParamOutput = require('./format-param-output');
 
-module.exports = (req, context) => {
+module.exports = (req, context, config) => {
+  const defaults = { sanitizeFields: true };
+  config = Object.assign({}, defaults, config);
+
   let allFields = [];
   const optionalityFilter = createOptionalityFilter(context);
-  const sanitizerMapper = createSanitizerMapper(req, context);
+  const sanitizerMapper = config.sanitizeFields ? createSanitizerMapper(req, context) : e => e;
 
   context.fields.forEach(field => {
     let instances = _(context.locations)
