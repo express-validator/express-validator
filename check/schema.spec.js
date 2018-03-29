@@ -121,6 +121,26 @@ describe('check: schema', () => {
       expect(validator).to.have.property('message', 'fail');
     });
 
+    it('does not set error message from non-validators', () => {
+      const chain = checkSchema({
+        foo: {
+          // Theoretically, object keys have no iteration order..
+          isInt: {
+            errorMessage: 'from isInt'
+          },
+          optional: {
+            errorMessage: 'from optional'
+          },
+          toInt: {
+            errorMessage: 'from toInt'
+          }
+        }
+      })[0];
+
+      const isInt = chain._context.validators[0];
+      expect(isInt).to.have.property('message', 'from isInt');
+    });
+
     it('adds validators with multiple options', () => {
       const chain = checkSchema({
         foo: {

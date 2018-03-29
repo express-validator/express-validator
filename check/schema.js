@@ -1,3 +1,4 @@
+const { isValidator } = require('../utils/filters');
 const check = require('./check');
 const validLocations = ['body', 'cookies', 'headers', 'params', 'query'];
 const notValidators = ['errorMessage', 'in'];
@@ -30,7 +31,7 @@ module.exports = (
       }
 
       chain[method](...options);
-      if (method !== 'optional') {
+      if (isValidator(method) || method === 'custom') {
         chain.withMessage(methodCfg.errorMessage);
       }
     });
