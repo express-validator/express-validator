@@ -175,9 +175,13 @@ app.put('/user/:id/password', checkSchema({
     }
   },
   firstName: {
+    isUpperCase: {
+      // To negate a validator
+      negated: true,
+    },
     rtrim: {
       // Options as an array
-        options: [[" ", "-"]],
+      options: [[" ", "-"]],
     },
   },
   // Wildcards/dots for nested fields work as well

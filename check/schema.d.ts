@@ -9,6 +9,7 @@ type ValidationSchema = Record<string, ValidationParamSchema>;
 type ValidatorSchemaOptions<T = any> = true | {
   options?: T | T[];
   errorMessage?: any;
+  negated?: boolean;
 };
 
 type SanitizerSchemaOptions<T = any> = true | {

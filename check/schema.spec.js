@@ -167,5 +167,17 @@ describe('check: schema', () => {
         .to.have.property('optional')
         .and.to.eql({});
     });
+
+    it('negates validators', () => {
+      const chain = checkSchema({
+        foo: {
+          isInt: {
+            negated: true
+          }
+        }
+      })[0];
+
+      expect(chain._context.validators[0]).to.have.property('negated', true);
+    });
   });
 });

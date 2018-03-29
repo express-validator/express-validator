@@ -30,10 +30,11 @@ module.exports = (
         options = [options];
       }
 
+      const methodIsValidator = isValidator(method) || method === 'custom';
+
+      methodIsValidator && methodCfg.negated && chain.not();
       chain[method](...options);
-      if (isValidator(method) || method === 'custom') {
-        chain.withMessage(methodCfg.errorMessage);
-      }
+      methodIsValidator && chain.withMessage(methodCfg.errorMessage);
     });
 
   return chain;

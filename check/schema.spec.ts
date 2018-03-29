@@ -6,6 +6,7 @@ const fooSchema: ValidationParamSchema = {
   isAlpha: true,
   isIn: {
     errorMessage: 'foo',
+    negated: true,
     options: [['foo', 'bar']]
   },
   toInt: true,
