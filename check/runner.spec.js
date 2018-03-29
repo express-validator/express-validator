@@ -34,6 +34,32 @@ describe('check: context runner', () => {
       });
     });
 
+    it('have the original, unsanitized field value', () => {
+      const req = {
+        body: { int: ' 123.45 ' }
+      };
+
+      return runner(req, {
+        fields: ['int'],
+        locations: ['body'],
+        sanitizers: [{
+          options: [],
+          sanitizer: validator.trim
+        }],
+        validators: [{
+          options: [],
+          validator: validator.isInt
+        }]
+      }).then(errors => {
+        expect(errors).to.deep.include({
+          location: 'body',
+          param: 'int',
+          value: ' 123.45 ',
+          msg: 'Invalid value'
+        });
+      });
+    });
+
     it('are not pushed in case negated flag is set to true, and no error was thrown', () => {
       const req = {
         params: { foo: 'not_email' }
@@ -199,6 +225,10 @@ describe('check: context runner', () => {
         },
         locations: ['query'],
         fields: ['foo'],
+        sanitizers: [{
+          options: [],
+          sanitizer: value => value.toUpperCase()
+        }],
         validators: [{
           validator: () => false,
           options: []
@@ -217,6 +247,10 @@ describe('check: context runner', () => {
       return runner(req, {
         locations: ['query'],
         fields: ['foo'],
+        sanitizers: [{
+          options: [],
+          sanitizer: value => value.toUpperCase()
+        }],
         validators: [{
           message: (value, { req, path, location }) => {
             return `[req.${location}.${path} ${req.random}] value=${value}`;

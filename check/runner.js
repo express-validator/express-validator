@@ -19,7 +19,7 @@ module.exports = (req, context) => {
       validationErrors.push({
         location,
         param: path,
-        value,
+        value: field.originalValue,
         msg: getDynamicMessage([
           validatorCfg.message,
           err && err.message,
@@ -47,7 +47,7 @@ function getDynamicMessage(messageSources, field, req) {
     return message;
   }
 
-  return message(field.value, {
+  return message(field.originalValue, {
     req,
     location: field.location,
     path: field.path
