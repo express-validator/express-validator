@@ -18,11 +18,13 @@ describe('utils: selectFields', () => {
     expect(instances).to.deep.include({
       location: 'body',
       path: 'foo',
+      originalValue: 'a',
       value: 'a'
     });
     expect(instances).to.deep.include({
       location: 'query',
       path: 'foo',
+      originalValue: 'c',
       value: 'c'
     });
   });
@@ -41,11 +43,13 @@ describe('utils: selectFields', () => {
     expect(instances).to.deep.include({
       location: 'query',
       path: 'a',
+      originalValue: 'ASD',
       value: 'ASD'
     });
     expect(instances).to.deep.include({
       location: 'query',
       path: 'b',
+      originalValue: 'BCA',
       value: 'BCA'
     });
   });
@@ -64,6 +68,7 @@ describe('utils: selectFields', () => {
     expect(instances).to.deep.include({
       path: 'foo[0].bar',
       location: 'body',
+      originalValue: 'a',
       value: 'a'
     });
   });
@@ -82,11 +87,13 @@ describe('utils: selectFields', () => {
     expect(instances).to.deep.include({
       path: 'foo[0].bar',
       location: 'body',
+      originalValue: undefined,
       value: undefined
     });
     expect(instances).to.deep.include({
       path: 'foo[1].bar',
       location: 'body',
+      originalValue: 'a',
       value: 'a'
     });
   });
@@ -109,11 +116,13 @@ describe('utils: selectFields', () => {
     expect(instances).to.deep.include({
       path: 'foo[0].a',
       location: 'body',
+      originalValue: 123,
       value: 123
     });
     expect(instances).to.deep.include({
       path: 'foo[0].b',
       location: 'body',
+      originalValue: 456,
       value: 456
     });
   });
@@ -132,11 +141,13 @@ describe('utils: selectFields', () => {
     expect(instances).to.deep.include({
       path: '[0]',
       location: 'body',
+      originalValue: 'foo',
       value: 'foo'
     });
     expect(instances).to.deep.include({
       path: '[1]',
       location: 'body',
+      originalValue: 'bar',
       value: 'bar'
     });
   });
@@ -164,6 +175,7 @@ describe('utils: selectFields', () => {
       expect(instances[0]).to.eql({
         location: 'query',
         path: 'email',
+        originalValue: ' FOO@BAR.COM ',
         value: 'foo@bar.com '
       });
     });
@@ -185,6 +197,7 @@ describe('utils: selectFields', () => {
       expect(instances[0]).to.eql({
         location: 'body',
         path: 'answer',
+        originalValue: 42,
         value: 42
       });
     });
@@ -232,6 +245,7 @@ describe('utils: selectFields', () => {
       expect(instances).to.deep.include({
         location: 'params',
         path: 'bar',
+        originalValue: 0,
         value: 0
       });
     });
@@ -290,6 +304,7 @@ describe('utils: selectFields', () => {
       expect(instances).to.deep.include({
         location: 'body',
         path: 'foo',
+        originalValue: 'a',
         value: 'a'
       });
     });
@@ -309,6 +324,7 @@ describe('utils: selectFields', () => {
       expect(instances).to.deep.include({
         location: 'body',
         path: 'foo',
+        originalValue: undefined,
         value: undefined
       });
     });

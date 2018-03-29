@@ -30,7 +30,8 @@ function createFieldExpander(req, field) {
     return expand(req[location], fieldPath, []).map(path => ({
       location,
       path,
-      value: _.get(req[location], path)
+      value: _.get(req[location], path),
+      originalValue: _.get(req[location], path)
     }));
   };
 }
