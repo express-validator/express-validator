@@ -452,6 +452,16 @@ Same as [`.customSanitizer` from the Sanitization Chain](#customsanitizersanitiz
 Adds a validator to check for the existence of the current fields in the request.  
 This means the value of the fields may not be `undefined`; any other values are acceptable.
 
+### `.isArray()`
+> *Returns:* the current validation chain instance
+
+Adds a validator to check if a value is an array.
+
+### `.isString()`
+> *Returns:* the current validation chain instance
+
+Adds a validator to check if a value is a string.
+
 ### `.not()`
 > *Returns:* the current validation chain instance
 

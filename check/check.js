@@ -73,6 +73,8 @@ module.exports = (fields, locations, message) => {
   };
 
   middleware.exists = () => middleware.custom(existsValidator);
+  middleware.isArray = () => middleware.custom(value => Array.isArray(value));
+  middleware.isString = () => middleware.custom(value => typeof value === 'string');
 
   middleware.withMessage = message => {
     const lastValidator = validators[validators.length - 1];

@@ -33,6 +33,7 @@ interface ValidatorsSchema {
   isAfter?: ValidatorSchemaOptions;
   isAlpha?: ValidatorSchemaOptions;
   isAlphanumeric?: ValidatorSchemaOptions;
+  isArray?: ValidatorSchemaOptions;
   isAscii?: ValidatorSchemaOptions;
   isBase64?: ValidatorSchemaOptions;
   isBefore?: ValidatorSchemaOptions;
@@ -75,6 +76,7 @@ interface ValidatorsSchema {
   isMultibyte?: ValidatorSchemaOptions;
   isPostalCode?: ValidatorSchemaOptions;
   isPort?: ValidatorSchemaOptions;
+  isString?: ValidatorSchemaOptions;
   isSurrogatePair?: ValidatorSchemaOptions;
   isUppercase?: ValidatorSchemaOptions;
   isURL?: ValidatorSchemaOptions;

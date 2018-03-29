@@ -120,6 +120,34 @@ describe('check: low-level middleware', () => {
     });
   });
 
+  describe('.isString()', () => {
+    it('adds validator for checking if value is string', () => {
+      const chain = check('foo').isString();
+      const { validators } = chain._context;
+
+      expect(validators[0].validator('foo')).to.be.true;
+      expect(validators[0].validator(123)).to.be.false;
+      expect(validators[0].validator(false)).to.be.false;
+      expect(validators[0].validator({})).to.be.false;
+      expect(validators[0].validator([])).to.be.false;
+      expect(validators[0].validator(null)).to.be.false;
+    });
+  });
+
+  describe('.isArray()', () => {
+    it('adds validator to check if value is array', () => {
+      const chain = check('foo').isArray();
+      const { validators } = chain._context;
+
+      expect(validators[0].validator('foo')).to.be.false;
+      expect(validators[0].validator(123)).to.be.false;
+      expect(validators[0].validator(false)).to.be.false;
+      expect(validators[0].validator({})).to.be.false;
+      expect(validators[0].validator([])).to.be.true;
+      expect(validators[0].validator(null)).to.be.false;
+    });
+  });
+
   describe('sanitization methods', () => {
     it('add a sanitizer to the chain context', () => {
       const chain = check('foo').trim();

@@ -15,6 +15,7 @@ export interface Validator {
   isAfter(date?: string): this;
   isAlpha(locale?: AlphaLocale): this;
   isAlphanumeric(locale?: AlphanumericLocale): this;
+  isArray(): this;
   isAscii(): this;
   isBase64(): this;
   isBefore(date?: string): this;
@@ -56,6 +57,7 @@ export interface Validator {
   isNumeric(): this;
   isPostalCode(locale: PostalCodeLocale): this;
   isPort(): this;
+  isString(): this;
   isSurrogatePair(): this;
   isUppercase(): this;
   isURL(options?: ValidatorOptions.IsURLOptions): this;
