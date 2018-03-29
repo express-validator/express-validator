@@ -1,6 +1,6 @@
 const validator = require('validator');
 
-const { extraSanitizers } = require('../utils/constants');
+const { isSanitizer } = require('../utils/filters');
 const persistValues = require('../utils/persist-values');
 
 module.exports = (fields, locations) => {
@@ -13,7 +13,7 @@ module.exports = (fields, locations) => {
   };
 
   Object.keys(validator)
-    .filter(methodName => methodName.startsWith('to') || extraSanitizers.includes(methodName))
+    .filter(isSanitizer)
     .forEach(methodName => {
       const sanitizerFn = validator[methodName];
       middleware[methodName] = (...options) => {
