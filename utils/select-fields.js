@@ -6,7 +6,7 @@ module.exports = (req, context) => {
   const optionalityFilter = createOptionalityFilter(context);
   const sanitizerMapper = createSanitizerMapper(req, context);
 
-  context.fields.forEach(field => {
+  context.fields.map(field => field == null ? '' : field).forEach(field => {
     let instances = _(context.locations)
       .flatMap(createFieldExpander(req, field))
       .map(sanitizerMapper)
@@ -29,9 +29,11 @@ function createFieldExpander(req, field) {
     const fieldPath = location === 'headers' ? field.toLowerCase() : field;
     return expand(req[location], fieldPath, []).map(path => ({
       location,
-      path,
-      value: _.get(req[location], path),
-      originalValue: _.get(req[location], path)
+      path: path,
+      value: path === '' ? req[location] : _.get(req[location], path)
+    })).map(field => ({
+      ...field,
+      originalValue: field.value
     }));
   };
 }

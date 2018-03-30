@@ -15,6 +15,7 @@ An [express.js]( https://github.com/visionmedia/express ) middleware for
   - [Wildcards (`*`)](#wildcards-)
   - [Dynamic messages](#dynamic-messages)
   - [Schema validation](#schema-validation)
+  - [Whole body validation](#whole-body-validation)
 - API
   - [`check` API](#check-api)
   - [`filter` API](#filter-api)
@@ -196,11 +197,27 @@ app.put('/user/:id/password', checkSchema({
 
 ---
 
+## Whole Body Validation
+Sometimes you need to validate requests whose body is a string, an array, or even a number!
+That's why you can omit the field to validate and check `req.body` directly:
+
+```js
+const { body } = require('express-validator/check');
+app.post('/recover-password', body().isEmail(), (req, res) => {
+  // Assume the validity was already checked
+  User.recoverPassword(req.body).then(() => {
+    res.send('Password recovered!');
+  });
+});
+```
+
+---
+
 ## `check` API
 These methods are all available via `require('express-validator/check')`.
 
-### `check(field[, message])`
-- `field`: a string or an array of strings of field names to validate against.
+### `check([field, message])`
+- `field` *(optional)*: a string or an array of strings of field names to validate against.
 - `message` *(optional)*: an error message to use when failed validators don't specify a message. Defaults to `Invalid value`; see also [Dynamic Messages](#dynamic-messages).
 > *Returns:* a [Validation Chain](#validation-chain-api)
 
@@ -213,23 +230,26 @@ Creates a validation chain for one or more fields. They may be located in any of
 
 If any of the fields are present in more than one location, then all instances of that field value must pass the validation.
 
+**Note:** If `fields` is omitted, then the whole request location will be validated.
+This is only useful for `req.body`, though; see [Whole Body Validation](#whole-body-validation) for examples.
+
 The validators will always be executed serially for the same field.  
 This means that if the chain targets more than one field, those will run in parallel, but each of their validators are serial.
 
-### `body(fields[, message])`
-Same as `check(fields[, message])`, but only checking `req.body`.
+### `body([fields, message])`
+Same as `check([fields, message])`, but only checking `req.body`.
 
-### `cookie(fields[, message])`
-Same as `check(fields[, message])`, but only checking `req.cookies`.
+### `cookie([fields, message])`
+Same as `check([fields, message])`, but only checking `req.cookies`.
 
-### `header(fields[, message])`
-Same as `check(fields[, message])`, but only checking `req.headers`.
+### `header([fields, message])`
+Same as `check([fields, message])`, but only checking `req.headers`.
 
-### `param(fields[, message])`
-Same as `check(fields[, message])`, but only checking `req.params`.
+### `param([fields, message])`
+Same as `check([fields, message])`, but only checking `req.params`.
 
-### `query(fields[, message])`
-Same as `check(fields[, message])`, but only checking `req.query`.
+### `query([fields, message])`
+Same as `check([fields, message])`, but only checking `req.query`.
 
 ### `checkSchema(schema)`
 - `schema`: the schema to validate. Must comply with the format described in [Schema Validation](#schema-validation).

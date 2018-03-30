@@ -26,6 +26,17 @@ describe('check: buildCheckFunction', () => {
       expect(req._validationErrors).to.have.nested.property('[1].location', 'headers');
     });
   });
+
+  it('creates a validation chain builder that handles no fields', () => {
+    const req = {
+      body: ['foo', 'bar']
+    };
+
+    const custom = buildCheckFunction(['body']);
+    return custom().isArray()(req, {}, () => {}).then(() => {
+      expect(req._validationErrors).to.have.length(0);
+    });
+  });
 });
 
 describe('check: checkAll middleware', () => {

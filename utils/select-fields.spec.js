@@ -152,6 +152,25 @@ describe('utils: selectFields', () => {
     });
   });
 
+  it('selects whole request location if no path is given', () => {
+    const req = {
+      body: ['foo', 'bar']
+    };
+
+    const instances = selectFields(req, {
+      fields: [undefined],
+      locations: ['body']
+    });
+
+    expect(instances).to.have.lengthOf(1);
+    expect(instances).to.deep.include({
+      path: '',
+      location: 'body',
+      originalValue: ['foo', 'bar'],
+      value: ['foo', 'bar']
+    });
+  })
+
   describe('sanitization', () => {
     it('runs on the selected values', () => {
       const req = {
