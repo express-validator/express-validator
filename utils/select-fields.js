@@ -31,8 +31,7 @@ function createFieldExpander(req, field) {
       location,
       path: path,
       value: path === '' ? req[location] : _.get(req[location], path)
-    })).map(field => ({
-      ...field,
+    })).map(field => Object.assign(field, {
       originalValue: field.value
     }));
   };
