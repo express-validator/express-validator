@@ -42,7 +42,6 @@ interface ValidatorsSchema {
   isCreditCard?: ValidatorSchemaOptions;
   isCurrency?: ValidatorSchemaOptions;
   isDataURI?: ValidatorSchemaOptions;
-  isDate?: ValidatorSchemaOptions;
   isDecimal?: ValidatorSchemaOptions;
   isDivisibleBy?: ValidatorSchemaOptions;
   isEmail?: ValidatorSchemaOptions;
