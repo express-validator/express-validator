@@ -85,7 +85,6 @@ declare namespace ExpressValidator {
     isPostalCode?: ValidationSchemaParamOptions
     isUUID?: ValidatorSchemaOptions
     isMongoId?: ValidatorSchemaOptions
-    isDate?: ValidatorSchemaOptions
     isAfter?: ValidatorSchemaOptions
     isBefore?: ValidatorSchemaOptions
     isIn?: ValidatorSchemaOptions
