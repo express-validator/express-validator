@@ -440,6 +440,9 @@ app.get('/object/:id', sanitizeParam('id').customSanitizer((value, { req }) => {
 Any of the validation and sanitization methods listed by [validator.js](https://github.com/chriso/validator.js) are made available in all validation chains created by express-validator, as long as we're supporting the most up-to-date validator version.  
 If you use any of the sanitizers together with validators, the validated value is the sanitized one.
 
+**Note:** Chains are mutable. Every time you call one of its methods, you're adding more behavior to the same chain.  
+Keep this in mind and note that you probably want to use a factory function when reusing some chain base.
+
 Additionally, the following methods are also available:
 
 ### `.custom(validator)`
