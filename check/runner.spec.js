@@ -155,7 +155,8 @@ describe('check: context runner', () => {
       });
     });
 
-    it('use context\'s message', () => {
+    // This refers to check(field, message)
+    it('use message set in the validation chain', () => {
       const req = {
         query: { foo: 'foo' }
       };
@@ -173,7 +174,8 @@ describe('check: context runner', () => {
       });
     });
 
-    it('are overwritten via custom validator message', () => {
+    // This refers to #withMessage(message)
+    it('use message set in the validator config', () => {
       const req = {
         query: { foo: 123, bar: 'not int' }
       };
@@ -213,7 +215,8 @@ describe('check: context runner', () => {
       });
     });
 
-    it('are built dynamically from context\'s message function', () => {
+    // This refers to check(field, messageFunction)
+    it('are built dynamically from chain\'s message function', () => {
       const req = {
         random: 'bla',
         query: { foo: 'foo' }
@@ -238,7 +241,8 @@ describe('check: context runner', () => {
       });
     });
 
-    it('are built dynamically from validator message function', () => {
+    // This refers to using #withMessage(messageFunction)
+    it('are built dynamically from validator config message function', () => {
       const req = {
         random: 'bla',
         query: { foo: 'foo' }
