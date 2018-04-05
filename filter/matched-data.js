@@ -2,30 +2,36 @@ const _ = require('lodash');
 const selectFields = require('../utils/select-fields');
 
 module.exports = (req, options = {}) => {
+  const fieldExtractor = createFieldExtractor(req);
   const validityFilter = createValidityFilter(req, options);
   const locationsFilter = createLocationFilter(options);
 
   return _(req._validationContexts)
-    .flatMap(context => selectFields(req, context))
+    .flatMap(fieldExtractor)
     .filter(validityFilter)
+    .map(field => field.instance)
     .filter(locationsFilter)
     .reduce((state, field) => _.set(state, field.path, field.value), {})
     .valueOf();
 };
 
+function createFieldExtractor(req) {
+  return context => [].concat(selectFields(req, context)).map(instance => ({
+    instance,
+    context
+  }));
+}
+
 function createValidityFilter(req, { onlyValidData }) {
   onlyValidData = onlyValidData === undefined ? true : onlyValidData;
   return !onlyValidData ? () => true : field => {
-    const isSameRef = error => (
-      error.param === field.path &&
-      error.location === field.location
-    );
+    const hasError = req._validationErrors.some(error => (
+      error.param === field.instance.path &&
+      error.location === field.instance.location
+    ));
+    const isFailedOneOfGroup = (req._validationOneOfFailures || []).includes(field.context);
 
-    const failed =
-      req._validationErrors.some(isSameRef) ||
-      (req._validationErrorsOneOf || []).some(isSameRef);
-
-    return !failed;
+    return !(hasError || isFailedOneOfGroup);
   };
 }
 
