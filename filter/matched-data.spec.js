@@ -31,17 +31,54 @@ describe('filter: matchedData', () => {
     });
   });
 
-  it('includes data only from the successful chain in oneOf by default', () => {
-    const req = {
-      headers: { foo: 'foo', bar: '123', baz: 'baz' }
-    };
+  describe('with oneOf()', () => {
+    it('includes data only from the successful chains by default', () => {
+      const req = {
+        headers: { foo: 'foo', bar: '123', baz: 'baz', qux: 456 }
+      };
 
-    return oneOf([
-      check('foo').isInt(),
-      check('bar').isInt()
-    ])(req, {}, () => {}).then(() => {
-      const data = matchedData(req);
-      expect(data).to.eql({ bar: '123' });
+      return oneOf([
+        check('foo').isInt(),
+        check('bar').isInt(),
+        check('qux').isInt()
+      ])(req, {}, () => {}).then(() => {
+        const data = matchedData(req);
+        expect(data).to.eql({ bar: '123', qux: 456 });
+      });
+    });
+
+    it('includes data only from successful subchains by default', () => {
+      const req = {
+        headers: { foo: 'foo', bar: '123', baz: 'baz', qux: 456 }
+      };
+
+      return oneOf([
+        [
+          check('foo').custom(val => val === 'foo'),
+          check('bar').not().isInt()
+        ], [
+          check('bar').isInt(),
+          check('baz').custom(val => val === 'baz')
+        ],
+        check('qux').isInt()
+      ])(req, {}, () => {}).then(() => {
+        const data = matchedData(req);
+        expect(data).to.eql({ bar: '123', baz: 'baz', qux: 456 });
+      });
+    });
+
+    it('works with multiple oneOf()s', () => {
+      const req = {
+        headers: { foo: 'foo', bar: '123', baz: 'baz' }
+      };
+
+      return Promise.all([
+        oneOf([ check('bar').isInt(), check('baz').isInt() ])(req, {}, () => {}),
+        oneOf([ check('bar').not().isInt(), check('baz').not().isInt() ])(req, {}, () => {})
+      ]).then(() => {
+        const data = matchedData(req);
+        expect(data).to.eql({ bar: '123', baz: 'baz' });
+      });
     });
   });
 

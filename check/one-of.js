@@ -9,17 +9,16 @@ module.exports = (validationChains, message) => (req, res, next) => {
   });
 
   const promises = validationChains.map(chain => {
-    if (!Array.isArray(chain)) {
-      return run(chain);
-    }
-
-    return Promise.all(chain.map(run)).then(results => _.flatten(results, true));
+    const group = Array.isArray(chain) ? chain : [chain];
+    return Promise.all(group.map(run)).then(results => _.flatten(results));
   });
 
   return Promise.all(promises).then(results => {
     req._validationContexts = (req._validationContexts || []).concat(contexts);
     req._validationErrors = req._validationErrors || [];
-    req._validationErrorsOneOf = _.flatten(results);
+
+    const failedGroupContexts = findFailedGroupContexts(results, validationChains);
+    req._validationOneOfFailures = (req._validationOneOfFailures || []).concat(failedGroupContexts);
 
     const empty = results.some(result => result.length === 0);
     if (!empty) {
@@ -37,6 +36,14 @@ module.exports = (validationChains, message) => (req, res, next) => {
 
 function getContext(chain) {
   return chain._context;
+}
+
+function findFailedGroupContexts(results, validationChains) {
+  return _(results)
+    // If the group is free of errors, the empty array plays the trick of filtering such group.
+    .flatMap((result, index) => result.length > 0 ? validationChains[index] : [])
+    .map(getContext)
+    .value();
 }
 
 function getDynamicMessage(message, req) {
