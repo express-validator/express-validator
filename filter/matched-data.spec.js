@@ -31,6 +31,17 @@ describe('filter: matchedData', () => {
     });
   });
 
+  it('does not double sanitize data', () => {
+    const req = {
+      body: { text: '<tag>' }
+    };
+
+    return check('text').escape()(req, {}, () => {}).then(() => {
+      const data = matchedData(req);
+      expect(data).to.eql({ text: '&lt;tag&gt;' });
+    });
+  });
+
   describe('with oneOf()', () => {
     it('includes data only from the successful chains by default', () => {
       const req = {

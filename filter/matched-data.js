@@ -16,7 +16,10 @@ module.exports = (req, options = {}) => {
 };
 
 function createFieldExtractor(req) {
-  return context => [].concat(selectFields(req, context)).map(instance => ({
+  return context => [].concat(selectFields(req, context, {
+    // By the time we get here, all sanitizers did run, so we don't want double sanitization.
+    sanitize: false
+  })).map(instance => ({
     instance,
     context
   }));
