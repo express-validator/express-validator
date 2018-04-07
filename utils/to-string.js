@@ -7,7 +7,9 @@ module.exports = value => {
 };
 
 function toString(value) {
-  if (value && typeof value === 'object' && value.toString) {
+  if (value instanceof Date) {
+    return value.toISOString();
+  } else if (value && typeof value === 'object' && value.toString) {
     return value.toString();
   } else if (value == null || (isNaN(value) && !value.length)) {
     return '';
