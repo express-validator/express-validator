@@ -248,6 +248,25 @@ describe('utils: selectFields', () => {
         path: 'id'
       });
     });
+
+    it('does not run if options.sanitize is false', () => {
+      const req = {
+        body: { text: 'bla' }
+      };
+
+      const instances = selectFields(req, {
+        locations: ['body'],
+        fields: ['text'],
+        sanitizers: [{
+          options: [],
+          sanitizer: value => value + 'bla'
+        }]
+      }, {
+        sanitize: false
+      });
+
+      expect(instances[0].value).to.equal('bla');
+    });
   });
 
   describe('optional context', () => {

@@ -1,10 +1,10 @@
 const _ = require('lodash');
 const formatParamOutput = require('./format-param-output');
 
-module.exports = (req, context) => {
+module.exports = (req, context, options = {}) => {
   let allFields = [];
   const optionalityFilter = createOptionalityFilter(context);
-  const sanitizerMapper = createSanitizerMapper(req, context);
+  const sanitizerMapper = createSanitizerMapper(req, context, options);
 
   context.fields.map(field => field == null ? '' : field).forEach(field => {
     let instances = _(context.locations)
@@ -60,8 +60,8 @@ function expand(object, path, paths) {
   return paths;
 }
 
-function createSanitizerMapper(req, { sanitizers = [] }) {
-  return field => sanitizers.reduce((prev, sanitizer) => {
+function createSanitizerMapper(req, { sanitizers = [] }, { sanitize = true }) {
+  return !sanitize ? field => field : field => sanitizers.reduce((prev, sanitizer) => {
     const value = typeof prev.value === 'string' ?
       callSanitizer(sanitizer, prev) :
       prev.value;
