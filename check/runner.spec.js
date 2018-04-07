@@ -359,6 +359,23 @@ describe('check: context runner', () => {
       });
     });
 
+    it('receive ISO representation when Date', () => {
+      const req = {
+        headers: { bestdate: new Date(Date.UTC(2012, 11, 12)) }
+      };
+
+      return runner(req, {
+        locations: ['headers'],
+        fields: ['bestdate'],
+        validators: [{
+          options: [],
+          validator: value => Promise.reject(value)
+        }]
+      }).then(errors => {
+        expect(errors[0].msg).to.equal('2012-12-12T00:00:00.000Z');
+      });
+    });
+
     it('receive the value itself when it is string', () => {
       const req = {
         body: { foo: 'bar' }
