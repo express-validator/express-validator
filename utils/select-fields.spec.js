@@ -2,33 +2,6 @@ const { expect } = require('chai');
 const selectFields = require('./select-fields');
 
 describe('utils: selectFields', () => {
-  it('is done in all given request locations', () => {
-    const req = {
-      body: { foo: 'a' },
-      params: { foo: 'b' },
-      query: { foo: 'c' }
-    };
-
-    const instances = selectFields(req, {
-      locations: ['body', 'query'],
-      fields: ['foo']
-    });
-
-    expect(instances).to.have.length(2);
-    expect(instances).to.deep.include({
-      location: 'body',
-      path: 'foo',
-      originalValue: 'a',
-      value: 'a'
-    });
-    expect(instances).to.deep.include({
-      location: 'query',
-      path: 'foo',
-      originalValue: 'c',
-      value: 'c'
-    });
-  });
-
   it('accepts multiple fields using array', () => {
     const req = {
       query: { a: 'ASD', b: 'BCA' }
@@ -327,6 +300,33 @@ describe('utils: selectFields', () => {
   });
 
   describe('when there are multiple locations', () => {
+    it('is done in all of them', () => {
+      const req = {
+        body: { foo: 'a' },
+        params: { foo: 'b' },
+        query: { foo: 'c' }
+      };
+
+      const instances = selectFields(req, {
+        locations: ['body', 'query'],
+        fields: ['foo']
+      });
+
+      expect(instances).to.have.length(2);
+      expect(instances).to.deep.include({
+        location: 'body',
+        path: 'foo',
+        originalValue: 'a',
+        value: 'a'
+      });
+      expect(instances).to.deep.include({
+        location: 'query',
+        path: 'foo',
+        originalValue: 'c',
+        value: 'c'
+      });
+    });
+
     it('ignores those which do not have value in case others do', () => {
       const req = {
         body: { foo: 'a' },
@@ -365,6 +365,25 @@ describe('utils: selectFields', () => {
         originalValue: undefined,
         value: undefined
       });
+    });
+
+    it('includes all occurrences when there is a wildcard', () => {
+      const req = {
+        body: { foo: [{ bar: 0 }, {}] },
+        cookies: { foo: [{ bar: 0 }, { baz: [{}] }] },
+      };
+
+      const instances = selectFields(req, {
+        fields: ['foo.*.bar', 'foo.*.baz.*.qux'],
+        locations: ['body', 'cookies']
+      });
+
+      expect(instances).to.have.length(5);
+      expect(instances[0]).to.include({ path: 'foo[0].bar', location: 'body' });
+      expect(instances[1]).to.include({ path: 'foo[1].bar', location: 'body' });
+      expect(instances[2]).to.include({ path: 'foo[0].bar', location: 'cookies' });
+      expect(instances[3]).to.include({ path: 'foo[1].bar', location: 'cookies' });
+      expect(instances[4]).to.include({ path: 'foo[1].baz[0].qux', location: 'cookies' });
     });
   });
 });
