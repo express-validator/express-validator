@@ -30,7 +30,7 @@ module.exports = (
         options = [options];
       }
 
-      const methodIsValidator = isValidator(method) || method === 'custom';
+      const methodIsValidator = isValidator(method) || method === 'custom' || method === 'exists';
 
       methodIsValidator && methodCfg.negated && chain.not();
       chain[method](...options);
