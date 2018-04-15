@@ -13,7 +13,11 @@ module.exports = (req, context, options = {}) => {
       .filter(optionalityFilter)
       .value();
 
-    if (instances.length > 1 && context.locations.length > 1) {
+    // #331 - When multiple locations are involved, all of them must pass the validation.
+    // If none of the locations contain the field, we at least include one for error reporting.
+    // #458, #531 - Wildcards are an exception though: they may yield 0..* instances with different
+    // paths, so we may want to skip this filtering.
+    if (instances.length > 1 && context.locations.length > 1 && !field.includes('*')) {
       const withValue = instances.filter(field => field.value !== undefined);
       instances = withValue.length ? withValue : [instances[0]];
     }
