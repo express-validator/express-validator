@@ -1,9 +1,9 @@
 # express-validator
 
 [![npm version](https://img.shields.io/npm/v/express-validator.svg)](https://www.npmjs.com/package/express-validator)
-[![Build Status](https://img.shields.io/travis/ctavan/express-validator.svg)](http://travis-ci.org/ctavan/express-validator)
-[![Dependency Status](https://img.shields.io/david/ctavan/express-validator.svg)](https://david-dm.org/ctavan/express-validator)
-[![Coverage Status](https://img.shields.io/coveralls/ctavan/express-validator.svg)](https://coveralls.io/github/ctavan/express-validator?branch=master)
+[![Build Status](https://img.shields.io/travis/express-validator/express-validator.svg)](http://travis-ci.org/express-validator/express-validator)
+[![Dependency Status](https://img.shields.io/david/express-validator/express-validator.svg)](https://david-dm.org/express-validator/express-validator)
+[![Coverage Status](https://img.shields.io/coveralls/express-validator/express-validator.svg)](https://coveralls.io/github/express-validator/express-validator?branch=master)
 
 An [express.js]( https://github.com/visionmedia/express ) middleware for
 [validator]( https://github.com/chriso/validator.js ).
@@ -733,7 +733,7 @@ All `req.check` methods can do schema validation. The schema syntax is the same 
 
 ## Changelog
 
-Check the [GitHub Releases page](https://github.com/ctavan/express-validator/releases).
+Check the [GitHub Releases page](https://github.com/express-validator/express-validator/releases).
 
 ## License
 
