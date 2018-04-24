@@ -21,7 +21,7 @@ interface ValidationParamSchema extends ValidatorsSchema, SanitizersSchema {
   errorMessage?: any
 
   custom?: ValidatorSchemaOptions<CustomValidator>;
-  exists?: ValidatorSchemaOptions;
+  exists?: ValidatorSchemaOptions<ValidatorOptions.ExistsOptions>;
   optional?: boolean | ValidatorOptions.OptionalOptions;
 
   customSanitizer?: SanitizerSchemaOptions<CustomSanitizer>;

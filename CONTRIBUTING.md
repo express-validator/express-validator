@@ -12,7 +12,7 @@ When opening a new issue, please provide us some code that reproduces the errors
 Every detail you can give will be of great help.
 
 ## Pull Requests
-Do you ant to dedicate your time to help improve the codebase? Great! Then submitting a pull request is the best way to do this.
+Do you want to dedicate your time to help improve the codebase? Great! Then submitting a pull request is the best way to do this.
 
 In case you opened a issue, then fixing it yourself is the fastest way to get it done.  
 Otherwise, feel free to browse through the open issues and find some ideas on what needs some implementation.

@@ -469,11 +469,16 @@ app.post('/create-user', [
 ### `.customSanitizer(sanitizer)`
 Same as [`.customSanitizer` from the Sanitization Chain](#customsanitizersanitizer).
 
-### `.exists()`
+### `.exists(options)`
+- `options` *(optional)*: an object of options to customize the behavior of exists.
 > *Returns:* the current validation chain instance
 
-Adds a validator to check for the existence of the current fields in the request.  
-This means the value of the fields may not be `undefined`; any other values are acceptable.
+Adds a validator to check for the existence of the current fields in the request.
+This means the value of the fields may not be `undefined`; all other values are acceptable.
+
+You can customize this behavior by passing an object with the following options:
+- `checkNull`: if `true`, fields with `null` values will not exist
+- `checkFalsy`: if `true`, fields with falsy values (eg `""`, `0`, `false`, `null`) will also not exist
 
 ### `.isArray()`
 > *Returns:* the current validation chain instance
@@ -495,7 +500,7 @@ check('weekday').not().isIn(['sunday', 'saturday'])
 ```
 
 ### `.optional(options)`
-- `options` *(optional)*: an object of options to customize the optionality behaviour. Please check it below.
+- `options` *(optional)*: an object of options to customize the behaviour of optional.
 > *Returns:* the current validation chain instance
 
 Marks the current validation chain as optional.  
@@ -503,7 +508,7 @@ This is useful to remove values that are not essential to your busines and that 
 
 By default, fields with `undefined` values will be ignored from the validation.
 
-You can further customize this behavior by passing an object with the following options:
+You can customize this behavior by passing an object with the following options:
 - `nullable`: if `true`, fields with `null` values will be considered optional
 - `checkFalsy`: if `true`, fields with falsy values (eg `""`, `0`, `false`, `null`) will also be considered optional
 
