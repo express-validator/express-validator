@@ -54,6 +54,19 @@ describe('check: checkOneOf middleware', () => {
     });
   });
 
+  it('persists sanitized values', () => {
+    const req = {
+      cookies: { foo: ' bar ' }
+    };
+
+    return oneOf([
+      check('foo').trim(),
+      [check('foo').customSanitizer(value => value.toUpperCase())]
+    ])(req, {}, () => {}).then(() => {
+      expect(req.cookies.foo).to.equal('BAR');
+    });
+  });
+
   describe('error message', () => {
     it('is "Invalid value(s)" by default', done => {
       const req = {
