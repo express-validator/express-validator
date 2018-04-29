@@ -5,6 +5,9 @@
     "moduleResolution": "node",
     "target": "es6",
     "charset": "utf-8",
+    "lib": [
+      "es6"
+    ],
     "pretty": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
