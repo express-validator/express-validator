@@ -12,7 +12,7 @@ module.exports = (req, context) => {
 
       return getActualResult(result).then(result => {
         if ((!validatorCfg.negated && !result) || (validatorCfg.negated && result)) {
-          return Promise.reject();
+          return Promise.reject(new Error());
         }
       });
     }).catch(err => {
