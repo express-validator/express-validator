@@ -51,7 +51,7 @@ app.post('/user', [
     // Every validator method in the validator lib is available as a
     // method in the check() APIs.
     // You can customize per validator messages with .withMessage()
-    .isEmail().withMessage('must be an email')
+    .isEmail().withMessage('username must be an email')
 
     // Every sanitizer method in the validator lib is available as well!
     .trim()
