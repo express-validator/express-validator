@@ -72,7 +72,14 @@ module.exports = (fields, locations, message) => {
     return middleware;
   };
 
-  middleware.exists = () => middleware.custom(existsValidator);
+  middleware.exists = (options = {}) => {
+    const validator = options.checkFalsy
+      ? existsValidatorCheckFalsy
+      : (options.checkNull ? existsValidatorCheckNull : existsValidator);
+
+    return middleware.custom(validator);
+  };
+
   middleware.isArray = () => middleware.custom(value => Array.isArray(value));
   middleware.isString = () => middleware.custom(value => typeof value === 'string');
 
@@ -107,4 +114,12 @@ module.exports = (fields, locations, message) => {
 
 function existsValidator(value) {
   return value !== undefined;
+}
+
+function existsValidatorCheckNull(value) {
+  return value != null;
+}
+
+function existsValidatorCheckFalsy(value) {
+  return !!value;
 }

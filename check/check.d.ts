@@ -71,7 +71,7 @@ export interface Validator {
 
   // Additional validator methods
   not(): this;
-  exists(): this;
+  exists(options?: ValidatorOptions.ExistsOptions): this;
   optional(options?: ValidatorOptions.OptionalOptions): this;
   withMessage(message: CustomMessageBuilder): this;
   withMessage(message: any): this;
@@ -225,5 +225,17 @@ export namespace ValidatorOptions {
   interface OptionalOptions {
     checkFalsy?: boolean;
     nullable?: boolean;
+  }
+
+  /**
+   * defaults to
+   * {
+   *    checkNull: false,
+   *    checkFalsy: false
+   * }
+   */
+  interface ExistsOptions {
+    checkNull?: boolean;
+    checkFalsy?: boolean;
   }
 }

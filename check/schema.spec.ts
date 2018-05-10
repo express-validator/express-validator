@@ -36,7 +36,8 @@ const fooSchema: ValidationParamSchema = {
 
 const barSchema: ValidationParamSchema = {
   in: ['body', 'params'],
-  errorMessage: 'foo'
+  errorMessage: 'foo',
+  exists: { options: { checkNull: true, checkFalsy: true } }
 };
 
 const schema: ValidationSchema = { fooSchema, barSchema };

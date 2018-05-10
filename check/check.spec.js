@@ -118,6 +118,28 @@ describe('check: low-level middleware', () => {
       expect(validators[0].validator(undefined)).to.be.false;
       expect(validators[0].validator(null)).to.be.true;
     });
+
+    it('adds validator for checking if value is not null in case of checkNull = true', () => {
+      const chain = check('foo').exists({ checkNull: true });
+      const { validators } = chain._context;
+
+      expect(validators[0].validator(undefined)).to.be.false;
+      expect(validators[0].validator(null)).to.be.false;
+      expect(validators[0].validator(false)).to.be.true;
+    });
+
+    it('adds validator for checking if value is not falsy in case of checkFalsy = true', () => {
+      const chain = check('foo').exists({ checkFalsy: true });
+      const { validators } = chain._context;
+
+      expect(validators[0].validator(undefined)).to.be.false;
+      expect(validators[0].validator(null)).to.be.false;
+      expect(validators[0].validator(false)).to.be.false;
+      expect(validators[0].validator(0)).to.be.false;
+      expect(validators[0].validator(NaN)).to.be.false;
+      expect(validators[0].validator('')).to.be.false;
+      expect(validators[0].validator(true)).to.be.true;
+    });
   });
 
   describe('.isString()', () => {
