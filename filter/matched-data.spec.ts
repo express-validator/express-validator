@@ -4,6 +4,7 @@ let dataRecord: Record<string, any> = matchedData({} as any);
 dataRecord = matchedData({} as any, {});
 dataRecord = matchedData({} as any, {
   locations: ['body', 'cookies'],
+  filterOptionals: true,
   onlyValidData: true
 });
 
