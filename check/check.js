@@ -115,7 +115,7 @@ function existsValidator(value) {
 }
 
 function existsValidatorCheckNull(value) {
-  return value !== undefined && value !== null;
+  return value != null;
 }
 
 function existsValidatorCheckFalsy(value) {
