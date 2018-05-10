@@ -73,8 +73,11 @@ module.exports = (fields, locations, message) => {
   };
 
   middleware.exists = (options = {}) => {
-    const validator = options.checkFalsy ? existsValidatorCheckFalsy
-      : options.checkNull ? existsValidatorCheckNull : existsValidator;
+    const validator =
+      options.checkFalsy ? existsValidatorCheckFalsy :
+      options.checkNull ? existsValidatorCheckNull :
+      existsValidator;
+
     return middleware.custom(validator);
   };
 
