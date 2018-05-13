@@ -2,7 +2,7 @@ const _ = require('lodash');
 const selectFields = require('../utils/select-fields');
 
 module.exports = (req, options = {}) => {
-  const fieldExtractor = createFieldExtractor(req);
+  const fieldExtractor = createFieldExtractor(req, options);
   const validityFilter = createValidityFilter(req, options);
   const locationsFilter = createLocationFilter(options);
 
@@ -15,8 +15,9 @@ module.exports = (req, options = {}) => {
     .valueOf();
 };
 
-function createFieldExtractor(req) {
+function createFieldExtractor(req, { includeOptionals }) {
   return context => [].concat(selectFields(req, context, {
+    filterOptionals: includeOptionals !== true,
     // By the time we get here, all sanitizers did run, so we don't want double sanitization.
     sanitize: false
   })).map(instance => ({

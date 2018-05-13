@@ -3,7 +3,9 @@ const formatParamOutput = require('./format-param-output');
 
 module.exports = (req, context, options = {}) => {
   let allFields = [];
-  const optionalityFilter = createOptionalityFilter(context);
+  const optionalityFilter = options.filterOptionals == null || options.filterOptionals
+    ? createOptionalityFilter(context)
+    : Boolean;
   const sanitizerMapper = createSanitizerMapper(req, context, options);
 
   context.fields.map(field => field == null ? '' : field).forEach(field => {

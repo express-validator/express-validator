@@ -3,13 +3,13 @@ const { check, oneOf } = require('../check');
 const { matchedData } = require('./');
 
 describe('filter: matchedData', () => {
-  it('includes only valid data in the request', () => {
+  it('includes only valid, non-optional data in the request', () => {
     const req = {
       query: { foo: '123', bar: 'abc', baz: 'def' },
       body: { foo: 'abc' }
     };
 
-    return check(['foo', 'bar']).isInt()(req, {}, () => {}).then(() => {
+    return check(['foo', 'bar', 'qux']).optional().isInt()(req, {}, () => {}).then(() => {
       const data = matchedData(req);
       expect(data).to.eql({ foo: '123' });
     });
@@ -89,6 +89,19 @@ describe('filter: matchedData', () => {
       ]).then(() => {
         const data = matchedData(req);
         expect(data).to.eql({ bar: '123', baz: 'baz' });
+      });
+    });
+  });
+
+  describe('when option includeOptionals is set to true', () => {
+    it('returns object with optional data validated in the request', () => {
+      const req = {
+        body: { foo: '123' }
+      };
+
+      return check(['foo', 'bar']).optional().isInt()(req, {}, () => {}).then(() => {
+        const data = matchedData(req, { includeOptionals: true });
+        expect(data).to.eql({ foo: '123', bar: undefined });
       });
     });
   });

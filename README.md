@@ -334,6 +334,7 @@ These methods are all available via `require('express-validator/filter')`.
 ### `matchedData(req[, options])`
 - `req`: the express request object.
 - `options` *(optional)*: an object which accepts the following options:
+  - `includeOptionals`: if set to `true`, the returned value includes optional data. Defaults to `false`.
   - `onlyValidData`: if set to `false`, the returned value includes data from fields
     that didn't pass their validations. Defaults to `true`.
   - `locations`: an array of locations to extract the data from. The acceptable values include

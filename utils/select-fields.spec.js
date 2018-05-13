@@ -297,6 +297,20 @@ describe('utils: selectFields', () => {
 
       expect(instances).to.have.length(0);
     });
+
+    it('keeps optional data if option filterOptionals is false', () => {
+      const instances = selectFields({
+        params: { bar: null }
+      }, {
+        optional: { nullable: true },
+        locations: ['params'],
+        fields: ['foo', 'bar']
+      }, {
+        filterOptionals: false
+      });
+
+      expect(instances).to.have.length(2);
+    });
   });
 
   describe('when there are multiple locations', () => {
