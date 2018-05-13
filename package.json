@@ -16,6 +16,10 @@
   "main": "./index.js",
   "types": "./index.d.ts",
   "scripts": {
+    "docs:build": "npm --prefix ./webbsite run build",
+    "docs:publish": "npm --prefix ./website run publish",
+    "docs:start": "npm --prefix ./website start",
+    "docs:version": "npm --prefix ./website run version",
     "test": "nyc mocha && tsc",
     "lint": "eslint lib test check filter",
     "travis-build": "npm test && npm run lint",
@@ -32,6 +36,7 @@
     "@types/express": "^4.11.1",
     "chai": "^4.1.2",
     "coveralls": "^3.0.0",
+    "docusaurus": "^1.0.15",
     "eslint": "^4.19.1",
     "mocha": "^5.1.1",
     "nyc": "^11.7.1",
