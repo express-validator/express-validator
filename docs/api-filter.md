@@ -35,7 +35,7 @@ app.post('/room-availability', check(['from', 'to']).isISO8601(), (req, res, nex
 
 ## `sanitize(fields)`
 - `field`: a string or an array of strings of field names to validate against.
-> *Returns:* a [Sanitization Chain](#sanitization-chain-api)
+> *Returns:* a [Sanitization Chain](api-sanitization-chain.md)
 
 Creates a sanitization chain for one or more fields. They may be located in any of the following request objects:
 - `req.body`

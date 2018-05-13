@@ -76,5 +76,5 @@ You might want to continue reading about some of the more advanced features avai
 - Sanitizers
 - Custom error messages
 - Custom validators
-- Wildcards
-- Schemas
+- [Wildcards](feature-wildcards.md)
+- [Schema validation](feature-schema-validation.md)

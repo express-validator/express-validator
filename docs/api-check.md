@@ -7,8 +7,8 @@ These methods are all available via `require('express-validator/check')`.
 
 ## `check([field, message])`
 - `field` *(optional)*: a string or an array of strings of field names to validate against.
-- `message` *(optional)*: an error message to use when failed validators don't specify a message. Defaults to `Invalid value`; see also [Dynamic Messages](#dynamic-messages).
-> *Returns:* a [Validation Chain](#validation-chain-api)
+- `message` *(optional)*: an error message to use when failed validators don't specify a message. Defaults to `Invalid value`; see also [Dynamic Messages](feature-dynamic-messages.md).
+> *Returns:* a [Validation Chain](api-validation-chain.md)
 
 Creates a validation chain for one or more fields. They may be located in any of the following request objects:
 - `req.body`
@@ -20,7 +20,7 @@ Creates a validation chain for one or more fields. They may be located in any of
 If any of the fields are present in more than one location, then all instances of that field value must pass the validation.
 
 **Note:** If `fields` is omitted, then the whole request location will be validated.
-This is only useful for `req.body`, though; see [Whole Body Validation](#whole-body-validation) for examples.
+This is only useful for `req.body`, though; see [Whole Body Validation](feature-whole-body-validation.md) for examples.
 
 The validators will always be executed serially for the same field.  
 This means that if the chain targets more than one field, those will run in parallel, but each of their validators are serial.
@@ -41,13 +41,13 @@ Same as `check([fields, message])`, but only checking `req.params`.
 Same as `check([fields, message])`, but only checking `req.query`.
 
 ## `checkSchema(schema)`
-- `schema`: the schema to validate. Must comply with the format described in [Schema Validation](#schema-validation).
+- `schema`: the schema to validate. Must comply with the format described in [Schema Validation](feature-schema-validation.md).
 > *Returns:* an array of validation chains
 
 ## `oneOf(validationChains[, message])`
-- `validationChains`: an array of [validation chains](#validation-chain-api) created with `check()` or any of its variations,
+- `validationChains`: an array of [validation chains](api-validation-chain.md) created with `check()` or any of its variations,
   or an array of arrays containing validation chains.
-- `message` *(optional)*: an error message to use when all chains failed. Defaults to `Invalid value(s)`; see also [Dynamic Messages](#dynamic-messages).
+- `message` *(optional)*: an error message to use when all chains failed. Defaults to `Invalid value(s)`; see also [Dynamic Messages](feature-dynamic-messages.md).
 > *Returns:* a middleware instance
 
 Creates a middleware instance that will ensure at least one of the given chains passes the validation.  
@@ -90,20 +90,20 @@ app.post('/protected/route', oneOf([
 ```
 
 The execution of those validation chains are made in parallel,
-while the execution within a chain still respects the rule defined in the [`check()` function](#checkfield-message).
+while the execution within a chain still respects the rule defined in the [`check()` function](#check-field-message).
 
 ## `validationResult(req)`
 - `req`: the express request object.
-> *Returns:* a [validation result](#validation-result-api) object
+> *Returns:* a [validation result](api-validation-result.md) object
 
 Extracts the validation errors from a request and makes it available in the form of a validation result object.
 
 ## `buildCheckFunction(locations)`
 - `locations`: an array of request locations to gather data from.  
    May include any of `body`, `cookies`, `headers`, `params` or `query`.
-> *Returns:* a variant of [`check()`](#checkfield-message) checking the given request locations.
+> *Returns:* a variant of [`check()`](#check-field-message) checking the given request locations.
 
-Creates a variant of [`check()`](#checkfield-message) that checks the given request locations.
+Creates a variant of [`check()`](#check-field-message) that checks the given request locations.
 
 ```js
 const { buildCheckFunction } = require('express-validator/check');

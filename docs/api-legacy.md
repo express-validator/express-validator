@@ -25,7 +25,7 @@ The key will be the name of the validator, while the value is the validation fun
 The key will be the name of the sanitizer, while the value is the sanitization function, receiving the value and any option.
 
 ## Legacy Validation Chain
-The Legacy Validation Chain instances provides further functionality than the one provided by the base [Validation Chain](#validation-chain-api) objects.  
+The Legacy Validation Chain instances provides further functionality than the one provided by the base [Validation Chain](api-validation-chain.md) objects.  
 It also differs in that the legacy one is not a middleware *per se*.
 
 Any custom validator specified in the middleware will be made available 
@@ -99,7 +99,7 @@ Same as `req.sanitize(field[, message])`, but only sanitizing `req.params`.
 Same as `req.sanitize(field[, message])`, but only sanitizing `req.query`.
 
 ## `req.getValidationResult()`
-> *Returns:* a promise for a [Validation Result](#validation-result-api) object
+> *Returns:* a promise for a [Validation Result](api-validation-result.md) object
 
 Runs all validations and returns a validation result object for the errors gathered, for both sync and async validators.
 
@@ -117,4 +117,4 @@ Runs all validations and returns the errors gathered *only* for the completed va
 This probably means any async validator will not be completed by the time this method responds.
 
 ## Schema validation
-All `req.check` methods can do schema validation. The schema syntax is the same as described in [Schema Validation](#schema-validation).
+All `req.check` methods can do schema validation. The schema syntax is the same as described in [Schema Validation](feature-schema-validation.md).
