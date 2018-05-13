@@ -1,10 +1,19 @@
 {
   "docs": {
-    "Docusaurus": ["doc1"],
-    "First Category": ["doc2"],
-    "Second Category": ["doc3"]
-  },
-  "docs-other": {
-    "First Category": ["doc4", "doc5"]
+    "Introduction": ["index"],
+    "Features": [
+      "wildcards",
+      "dynamic-messages",
+      "schema-validation",
+      "whole-body-validation"
+    ],
+    "API": [
+      "check-api",
+      "filter-api",
+      "sanitization-chain-api",
+      "validation-chain-api",
+      "validation-result-api",
+      "legacy-api"
+    ]
   }
 }
