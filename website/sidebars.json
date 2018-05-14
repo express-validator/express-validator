@@ -2,8 +2,10 @@
   "docs": {
     "Introduction": ["index"],
     "Features": [
+      "sanitization",
+      "custom-validators-sanitizers",
+      "custom-error-messages",
       "wildcards",
-      "dynamic-messages",
       "schema-validation",
       "whole-body-validation"
     ],

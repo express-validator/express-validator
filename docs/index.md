@@ -73,8 +73,8 @@ take a look at validator.js docs [here](https://github.com/chriso/validator.js#v
 This completes the basic guide on getting started with express-validator.  
 You might want to continue reading about some of the more advanced features available:
 
-- Sanitizers
-- Custom error messages
-- Custom validators
+- [Sanitization](feature-sanitization.md)
+- [Custom validators/sanitizers](feature-custom-validators-sanitizers.md)
+- [Custom error messages](feature-error-messages.md)
 - [Wildcards](feature-wildcards.md)
 - [Schema validation](feature-schema-validation.md)
