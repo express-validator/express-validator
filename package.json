@@ -16,7 +16,7 @@
   "main": "./index.js",
   "types": "./index.d.ts",
   "scripts": {
-    "docs:build": "npm --prefix ./webbsite run build",
+    "docs:build": "npm --prefix ./website run build",
     "docs:publish": "npm --prefix ./website run publish",
     "docs:start": "npm --prefix ./website start",
     "docs:version": "npm --prefix ./website run version",
