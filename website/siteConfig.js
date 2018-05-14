@@ -28,11 +28,8 @@ const siteConfig = {
   headerLinks: [
     {doc: 'index', label: 'Docs'},
     {doc: 'check-api', label: 'API'},
-    {page: 'help', label: 'Help'},
+    {href: 'https://github.com/express-validator/express-validator', label: 'GitHub'},
   ],
-
-  // If you have users set above, you add it here:
-  users: [],
 
   /* path to images for header/footer */
   headerIcon: 'img/logo.svg',
@@ -74,15 +71,7 @@ const siteConfig = {
   scripts: ['https://buttons.github.io/buttons.js'],
 
   /* On page navigation for the current documentation page */
-  onPageNav: 'separate',
-
-  /* Open Graph and Twitter card images */
-  ogImage: 'img/docusaurus.png',
-  twitterImage: 'img/docusaurus.png',
-
-  // You may provide arbitrary config keys to be used as needed by your
-  // template. For example, if you need your repo's URL...
-  //   repoUrl: 'https://github.com/facebook/test-site',
+  onPageNav: 'separate'
 };
 
 module.exports = siteConfig;
