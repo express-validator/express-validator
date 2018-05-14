@@ -45,6 +45,8 @@ const siteConfig = {
     secondaryColor: 'rgb(93, 0, 154)',
   },
 
+  editUrl: 'https://github.com/express-validator/express-validator/edit/master/docs/  ',
+
   /* custom fonts for website */
   /*fonts: {
     myFont: [
@@ -61,7 +63,7 @@ const siteConfig = {
   copyright:
     'Copyright © ' +
     new Date().getFullYear() +
-    ' Your Name or Your Company Name',
+    ' express-validator',
 
   highlight: {
     // Highlight.js theme to use for syntax highlighting in code blocks
