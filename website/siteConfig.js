@@ -45,7 +45,7 @@ const siteConfig = {
     secondaryColor: 'rgb(93, 0, 154)',
   },
 
-  editUrl: 'https://github.com/express-validator/express-validator/edit/master/docs/  ',
+  editUrl: 'https://github.com/express-validator/express-validator/edit/master/docs/',
 
   /* custom fonts for website */
   /*fonts: {
