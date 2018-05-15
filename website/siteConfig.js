@@ -5,7 +5,6 @@ const siteConfig = {
   tagline: 'express-validator docs',
   url: 'https://express-validator.github.io',
   baseUrl: '/',
-  cname: 'express-validator.js.org',
   repoPath: 'express-validator/express-validator',
   projectName: 'express-validator.github.io',
   organizationName: 'express-validator',
