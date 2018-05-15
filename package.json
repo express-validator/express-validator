@@ -7,7 +7,7 @@
     "Gustavo Henke <guhenke@gmail.com>"
   ],
   "version": "5.2.0",
-  "homepage": "https://github.com/express-validator/express-validator",
+  "homepage": "https://express-validator.github.io",
   "license": "MIT",
   "repository": {
     "type": "git",
