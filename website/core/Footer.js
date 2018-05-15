@@ -9,8 +9,8 @@ const React = require('react');
 
 class Footer extends React.Component {
   get repoUrl() {
-    const { config: { organizationName, projectName } } = this.props;
-    return `https://github.com/${organizationName}/${projectName}`;
+    const { config: { repoPath } } = this.props;
+    return `https://github.com/${repoPath}`;
   }
 
   docUrl(doc) {

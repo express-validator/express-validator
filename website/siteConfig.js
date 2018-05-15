@@ -3,10 +3,11 @@ const siteConfig = {
   // Metadata
   title: 'express-validator',
   tagline: 'express-validator docs',
-  url: 'https://express-validator.js.org',
+  url: 'https://express-validator.github.io',
   baseUrl: '/',
   cname: 'express-validator.js.org',
-  projectName: 'express-validator',
+  repoPath: 'express-validator/express-validator',
+  projectName: 'express-validator.github.io',
   organizationName: 'express-validator',
 
   // Website customization

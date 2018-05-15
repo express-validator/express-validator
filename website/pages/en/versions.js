@@ -16,8 +16,8 @@ const CWD = process.cwd();
 const siteConfig = require(CWD + '/siteConfig.js');
 const versions = require(CWD + '/versions.json');
 
-const repoUrl = `https://github.com/${siteConfig.organizationName}/${siteConfig.projectName}`;
-const docsUrl = `${siteConfig.baseUrl}/docs`;
+const repoUrl = `https://github.com/${siteConfig.repoPath}`;
+const docsUrl = `${siteConfig.baseUrl}docs`;
 
 const VersionsTable = ({ versions }) => (
   <table className="versions">
