@@ -22,7 +22,8 @@
     "docs:version": "npm --prefix ./website run version",
     "test": "nyc mocha && tsc",
     "lint": "eslint lib test check filter",
-    "report-coverage": "cat coverage/lcov.info | coveralls"
+    "report-coverage": "cat coverage/lcov.info | coveralls",
+    "version": "npm run docs:version -- $npm_package_version && git add -A website"
   },
   "engines": {
     "node": ">= 6.0.0"
