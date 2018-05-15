@@ -11,6 +11,8 @@ before_install:
 install:
   - npm install
 script:
-  - npm run travis-build
+  - npm test
+  - npm run lint
+  - npm run docs:build
 after_success:
   - npm run report-coverage

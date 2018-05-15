@@ -1,0 +1,23 @@
+{
+  "version-5.2.0-docs": {
+    "Introduction": [
+      "version-5.2.0-index"
+    ],
+    "Features": [
+      "version-5.2.0-sanitization",
+      "version-5.2.0-custom-validators-sanitizers",
+      "version-5.2.0-custom-error-messages",
+      "version-5.2.0-wildcards",
+      "version-5.2.0-schema-validation",
+      "version-5.2.0-whole-body-validation"
+    ],
+    "API": [
+      "version-5.2.0-check-api",
+      "version-5.2.0-filter-api",
+      "version-5.2.0-sanitization-chain-api",
+      "version-5.2.0-validation-chain-api",
+      "version-5.2.0-validation-result-api",
+      "version-5.2.0-legacy-api"
+    ]
+  }
+}

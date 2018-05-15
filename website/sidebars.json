@@ -1,0 +1,21 @@
+{
+  "docs": {
+    "Introduction": ["index"],
+    "Features": [
+      "sanitization",
+      "custom-validators-sanitizers",
+      "custom-error-messages",
+      "wildcards",
+      "schema-validation",
+      "whole-body-validation"
+    ],
+    "API": [
+      "check-api",
+      "filter-api",
+      "sanitization-chain-api",
+      "validation-chain-api",
+      "validation-result-api",
+      "legacy-api"
+    ]
+  }
+}

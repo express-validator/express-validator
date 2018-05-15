@@ -7,7 +7,7 @@
     "Gustavo Henke <guhenke@gmail.com>"
   ],
   "version": "5.2.0",
-  "homepage": "https://github.com/express-validator/express-validator",
+  "homepage": "https://express-validator.github.io",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -16,10 +16,14 @@
   "main": "./index.js",
   "types": "./index.d.ts",
   "scripts": {
+    "docs:build": "npm --prefix ./website run build",
+    "docs:publish": "USE_SSH=true CURRENT_BRANCH=master npm --prefix ./website run publish-gh-pages",
+    "docs:start": "npm --prefix ./website start",
+    "docs:version": "npm --prefix ./website run version",
     "test": "nyc mocha && tsc",
     "lint": "eslint lib test check filter",
-    "travis-build": "npm test && npm run lint",
-    "report-coverage": "cat coverage/lcov.info | coveralls"
+    "report-coverage": "cat coverage/lcov.info | coveralls",
+    "version": "npm run docs:version -- $npm_package_version && git add -A website"
   },
   "engines": {
     "node": ">= 6.0.0"
@@ -32,6 +36,7 @@
     "@types/express": "^4.11.1",
     "chai": "^4.1.2",
     "coveralls": "^3.0.0",
+    "docusaurus": "^1.0.15",
     "eslint": "^4.19.1",
     "mocha": "^5.1.1",
     "nyc": "^11.7.1",
