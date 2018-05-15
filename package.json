@@ -17,7 +17,7 @@
   "types": "./index.d.ts",
   "scripts": {
     "docs:build": "npm --prefix ./website run build",
-    "docs:publish": "npm --prefix ./website run publish",
+    "docs:publish": "USE_SSH=true CURRENT_BRANCH=master npm --prefix ./website run publish-gh-pages",
     "docs:start": "npm --prefix ./website start",
     "docs:version": "npm --prefix ./website run version",
     "test": "nyc mocha && tsc",
