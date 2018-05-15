@@ -60,7 +60,7 @@ class Versions extends React.Component {
   get olderVersions() {
     return versions.slice(1).map(version => ({
       name: version,
-      docs: `${docsUrl}/${version}`,
+      docs: `${docsUrl}/${version}/`,
       infoLabel: 'Release Notes',
       infoUrl: `${repoUrl}/releases/v${version}`
     }));
@@ -84,7 +84,7 @@ class Versions extends React.Component {
             <VersionsTable versions={this.nextVersion}/>
 
             {this.olderVersions.length > 0 && (
-              <React.Fragment>
+              <div>
                 <h3 id="archive">Past versions</h3>
                 <p>Here you can find documentation for previous versions of express-validator.</p>
                 <VersionsTable versions={this.olderVersions}/>
@@ -92,7 +92,7 @@ class Versions extends React.Component {
                   You can find past versions of this project{' '}
                   <a href={this.repoUrl}> on GitHub </a>.
                 </p>
-              </React.Fragment>
+              </div>
             )}
           </div>
         </Container>
