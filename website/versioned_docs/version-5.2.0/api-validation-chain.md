@@ -36,16 +36,11 @@ app.post('/create-user', [
 ## `.customSanitizer(sanitizer)`
 Same as [`.customSanitizer` from the Sanitization Chain](#customsanitizersanitizer).
 
-## `.exists(options)`
-- `options` *(optional)*: an object of options to customize the behavior of exists.
+## `.exists()`
 > *Returns:* the current validation chain instance
 
 Adds a validator to check for the existence of the current fields in the request.
 This means the value of the fields may not be `undefined`; all other values are acceptable.
-
-You can customize this behavior by passing an object with the following options:
-- `checkNull`: if `true`, fields with `null` values will not exist
-- `checkFalsy`: if `true`, fields with falsy values (eg `""`, `0`, `false`, `null`) will also not exist
 
 ## `.isArray()`
 > *Returns:* the current validation chain instance
