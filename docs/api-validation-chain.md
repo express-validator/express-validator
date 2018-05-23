@@ -25,8 +25,8 @@ Example:
 
 ```js
 app.post('/create-user', [
-  check('password').exists(),
-  check('passwordConfirmation', 'passwordConfirmation field must have the same value as the password field')
+  check('password').exists(),
+  check('passwordConfirmation', 'passwordConfirmation field must have the same value as the password field')
     .exists()
     .custom((value, { req }) => value === req.body.password)
 ], loginHandler);
