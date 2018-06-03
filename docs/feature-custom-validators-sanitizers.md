@@ -24,6 +24,8 @@ app.post('/user', body('email').custom(value => {
   return User.findUserByEmail(value).then(user => {
     if (user) {
       return Promise.reject('E-mail already in use');
+    } else {
+      Promise.resolve(true);
     }
   });
 }), (req, res) => {
@@ -38,7 +40,9 @@ const { body } = require('express-validator/check');
 app.post('/user', body('passwordConfirmation').custom((value, { req }) => {
   if (value !== req.body.password) {
     throw new Error('Password confirmation does not match password');
-  }
+  } else {
+    return true;
+   }
 }), (req, res) => {
   // Handle the request
 });
