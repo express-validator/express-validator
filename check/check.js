@@ -2,7 +2,6 @@ const validator = require('validator');
 
 const runner = require('./runner');
 const { isSanitizer, isValidator } = require('../utils/filters');
-const persistValues = require('../utils/persist-values');
 
 module.exports = (fields, locations, message) => {
   let optional;
@@ -14,7 +13,6 @@ module.exports = (fields, locations, message) => {
     return runner(req, middleware._context).then(errors => {
       req._validationContexts = (req._validationContexts || []).concat(middleware._context);
       req._validationErrors = (req._validationErrors || []).concat(errors);
-      persistValues(req, middleware._context);
       next();
     }, next);
   };

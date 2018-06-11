@@ -2,20 +2,16 @@ const { expect } = require('chai');
 const persistValues = require('./persist-values');
 
 describe('utils: persistValues', () => {
-  it('persists selected fields back into req', () => {
+  it('persists a list of fields back into req', () => {
     const req = {
       query: { foo: ' bar ' },
       body: { bar: { baz: ' qux ' } }
     };
 
-    persistValues(req, {
-      fields: ['foo', 'bar.baz'],
-      locations: ['query', 'body'],
-      sanitizers: [{
-        options: [],
-        sanitizer: value => value.trim()
-      }]
-    });
+    persistValues(req, [
+      { location: 'query', path: 'foo', value: 'bar' },
+      { location: 'body', path: 'bar.baz', value: 'qux' },
+    ]);
 
     expect(req.query.foo).to.equal('bar');
     expect(req.body.bar.baz).to.equal('qux');
@@ -26,10 +22,9 @@ describe('utils: persistValues', () => {
       query: {}
     };
 
-    persistValues(req, {
-      fields: ['foo'],
-      locations: ['query']
-    });
+    persistValues(req, [
+      { location: 'query', path: 'foo', value: undefined },
+    ]);
 
     expect(req.query).not.to.have.key('foo');
   });

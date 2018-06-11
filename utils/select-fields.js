@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const formatParamOutput = require('./format-param-output');
+const persistValues = require('./persist-values');
 
 module.exports = (req, context, options = {}) => {
   let allFields = [];
@@ -27,6 +28,7 @@ module.exports = (req, context, options = {}) => {
     allFields = allFields.concat(instances);
   });
 
+  persistValues(req, allFields);
   return _.uniqWith(allFields, _.isEqual);
 };
 

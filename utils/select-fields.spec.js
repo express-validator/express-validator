@@ -144,6 +144,20 @@ describe('utils: selectFields', () => {
     });
   })
 
+  it('persists values right after selection', () => {
+    const req = {
+      body: { foo: 'a' }
+    };
+
+    selectFields(req, {
+      fields: ['foo'],
+      locations: ['body'],
+      sanitizers: [{ sanitizer: value => value.toUpperCase(), options: [] }]
+    });
+
+    expect(req.body.foo).to.equal('A');
+  });
+
   describe('sanitization', () => {
     it('runs on the selected values', () => {
       const req = {

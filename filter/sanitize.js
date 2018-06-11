@@ -1,14 +1,14 @@
 const validator = require('validator');
 
 const { isSanitizer } = require('../utils/filters');
-const persistValues = require('../utils/persist-values');
+const selectFields = require('../utils/select-fields');
 
 module.exports = (fields, locations) => {
   const sanitizers = [];
   fields = Array.isArray(fields) ? fields : [fields];
 
   const middleware = (req, res, next) => {
-    persistValues(req, { fields, locations, sanitizers });
+    selectFields(req, { fields, locations, sanitizers });
     next();
   };
 

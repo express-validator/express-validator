@@ -1,5 +1,4 @@
 const _ = require('lodash');
-const persistValues = require('../utils/persist-values');
 const runner = require('./runner');
 
 module.exports = (validationChains, message) => (req, res, next) => {
@@ -30,7 +29,6 @@ module.exports = (validationChains, message) => (req, res, next) => {
       });
     }
 
-    contexts.forEach(context => persistValues(req, context));
     next();
     return results;
   }).catch(next);
