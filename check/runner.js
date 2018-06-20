@@ -16,7 +16,6 @@ module.exports = (req, context) => {
         }
       });
     }).catch(err => {
-      console.log(err);
       validationErrors.push({
         location,
         param: path,
