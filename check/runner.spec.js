@@ -464,5 +464,25 @@ describe('check: context runner', () => {
         expect(execution1).to.be.lt(execution2);
       });
     });
+
+    it('work if they return nothing', () => {
+      const req = {
+        cookies: { foo: '123' }
+      };
+
+      return runner(req, {
+        locations: ['cookies'],
+        fields: ['foo'],
+        validators: [{
+          custom: true,
+          options: [],
+          validator() {}
+        }]
+      }).then(errors => {
+        expect(errors)
+          .to.have.length(1)
+          .and.to.have.nested.property('[0].msg', 'Invalid value');
+      });
+    });
   });
 });

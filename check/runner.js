@@ -16,6 +16,7 @@ module.exports = (req, context) => {
         }
       });
     }).catch(err => {
+      console.log(err);
       validationErrors.push({
         location,
         param: path,
@@ -35,7 +36,7 @@ module.exports = (req, context) => {
 };
 
 function getActualResult(result) {
-  const promiseLike = !!result.then;
+  const promiseLike = result && !!result.then;
   return Promise.resolve(result).then(result => {
     return result === undefined && promiseLike ? true : result;
   });
