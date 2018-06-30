@@ -5,6 +5,8 @@ module.exports = (req, fieldInstances) => {
     const initialValue = _.get(req[instance.location], instance.path);
     return initialValue !== instance.value;
   }).forEach(instance => {
-    _.set(req[instance.location], instance.path, instance.value);
+    instance.path === ''
+      ? _.set(req, instance.location, instance.value)
+      : _.set(req[instance.location], instance.path, instance.value);
   });
 };

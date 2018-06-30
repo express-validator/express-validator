@@ -17,6 +17,13 @@ describe('utils: persistValues', () => {
     expect(req.body.bar.baz).to.equal('qux');
   });
 
+  it('persists empty paths as the req location itself', () => {
+    const req = {};
+    persistValues(req, [{ location: 'body', path: '', value: 'noice' }]);
+
+    expect(req.body).to.equal('noice');
+  });
+
   it('does not persist undefined values into req when the key does not exist', () => {
     const req = {
       query: {}
