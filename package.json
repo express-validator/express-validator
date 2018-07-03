@@ -23,13 +23,15 @@
     "test": "nyc mocha && tsc",
     "lint": "eslint lib test check filter",
     "report-coverage": "cat coverage/lcov.info | coveralls",
-    "version": "npm run docs:version -- $npm_package_version && git add -A website"
+    "version": "npm run docs:version -- $npm_package_version && git add -A website",
+    "postinstall": "opencollective postinstall"
   },
   "engines": {
     "node": ">= 6.0.0"
   },
   "dependencies": {
     "lodash": "^4.17.10",
+    "opencollective": "^1.0.3",
     "validator": "^10.1.0"
   },
   "devDependencies": {
@@ -50,5 +52,9 @@
     "sanitize",
     "sanitization",
     "xss"
-  ]
+  ],
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/express-validator"
+  }
 }
