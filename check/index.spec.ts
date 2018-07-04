@@ -14,7 +14,6 @@ import {
   header,
   param,
   query,
-  createCheckAPI,
 
   // oneOf.d.ts
   oneOf,
