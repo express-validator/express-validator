@@ -3,7 +3,7 @@ const validator = require('validator');
 const runner = require('./runner');
 const { isSanitizer, isValidator } = require('../utils/filters');
 
-module.exports = (fields, locations, message) => {
+module.exports = (fields, locations, message, validatorSet = validator, sanitizerSet = validator) => {
   let optional;
   const validators = [];
   const sanitizers = [];
@@ -17,10 +17,10 @@ module.exports = (fields, locations, message) => {
     }, next);
   };
 
-  Object.keys(validator)
+  Object.keys(validatorSet)
     .filter(isValidator)
     .forEach(methodName => {
-      const validationFn = validator[methodName];
+      const validationFn = validatorSet[methodName];
       middleware[methodName] = (...options) => {
         validators.push({
           negated: middleware._context.negateNext,
@@ -32,10 +32,10 @@ module.exports = (fields, locations, message) => {
       };
     });
 
-  Object.keys(validator)
+  Object.keys(sanitizerSet)
     .filter(isSanitizer)
     .forEach(methodName => {
-      const sanitizerFn = validator[methodName];
+      const sanitizerFn = sanitizerSet[methodName];
       middleware[methodName] = (...options) => {
         sanitizers.push({
           sanitizer: sanitizerFn,

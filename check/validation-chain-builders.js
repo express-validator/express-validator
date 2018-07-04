@@ -1,6 +1,6 @@
-const check = require('./check');
+const checkModule = require('./check');
 
-const buildCheckFunction = locations => (fields, message) => check(fields, locations, message);
+const buildCheckFunction = locations => (fields, message, check = checkModule) => check(fields, locations, message);
 module.exports = {
   buildCheckFunction,
   check: buildCheckFunction(['body', 'cookies', 'headers', 'params', 'query']),

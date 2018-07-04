@@ -18,5 +18,7 @@ module.exports = {
   query,
   checkSchema: require('./schema'),
   oneOf: require('./one-of'),
-  validationResult: require('./validation-result')
+  validationResult: require('./validation-result'),
+  createCheckAPI: require('./create-check-api')
 };
+
