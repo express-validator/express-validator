@@ -56,7 +56,7 @@ moment.
 const { sanitizeParam } = require('express-validator/filter');
 
 app.post('/object/:id', sanitizeParam('id').customSanitizer(value => {
-  return ObjectId(id);
+  return ObjectId(value);
 }), (req, res) => {
   // Handle the request
 });
