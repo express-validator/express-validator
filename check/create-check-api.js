@@ -1,5 +1,4 @@
 const check = require('./check');
-const validator = require('validator');
 const {
   buildCheckFunction
 } = require('./validation-chain-builders');
@@ -13,8 +12,8 @@ const createCheckAPI = ({
       fields,
       locations,
       message,
-      Object.assign({}, customValidators, validator),
-      Object.assign({}, customSanitizers, validator)
+      customValidators,
+      customSanitizers
     );
   return {
     checkSchema: (schema, defaultLocations) =>
