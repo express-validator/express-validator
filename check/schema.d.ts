@@ -56,8 +56,10 @@ interface ValidatorsSchema {
   isIn?: ValidatorSchemaOptions;
   isInt?: ValidatorSchemaOptions;
   isIP?: ValidatorSchemaOptions;
+  isIPRange?: ValidatorSchemaOptions;
   isISIN?: ValidatorSchemaOptions;
   isISO31661Alpha2?: ValidatorSchemaOptions;
+  isISO31661Alpha3?: ValidatorSchemaOptions;
   isISO8601?: ValidatorSchemaOptions;
   isISRC?: ValidatorSchemaOptions;
   isISBN?: ValidatorSchemaOptions;
