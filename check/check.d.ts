@@ -40,6 +40,7 @@ export interface Validator {
   isIP(version?: IPVersion): this;
   isISIN(): this;
   isISO31661Alpha2(): this;
+  isISO31661Alpha3(): this;
   isISO8601(): this;
   isISRC(): this;
   isISBN(version?: number): this;
