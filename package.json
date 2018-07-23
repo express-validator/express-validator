@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "lodash": "^4.17.10",
-    "validator": "^10.1.0"
+    "validator": "^10.4.0"
   },
   "devDependencies": {
     "@types/express": "^4.11.1",
