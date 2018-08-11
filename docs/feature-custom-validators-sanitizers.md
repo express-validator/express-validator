@@ -49,7 +49,7 @@ Custom sanitizers can be implemented by using the method `.customSanitizer()`, n
 the [validation chain one](api-validation-chain.md#customsanitizersanitizer) or
 the [sanitization chain one](api-sanitization-chain.md#customsanitizersanitizer).  
 Just like with the validators, you specify the sanitizer function, which _must_ be synchronous at the
-moment.
+moment. Please note that custom sanitizers only work with string values.
 
 ### Example: converting to MongoDB's ObjectID
 ```js
