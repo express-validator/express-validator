@@ -35,10 +35,7 @@ module.exports = (req, context) => {
 };
 
 function getActualResult(result) {
-  const promiseLike = result && !!result.then;
-  return Promise.resolve(result).then(result => {
-    return result === undefined && promiseLike ? true : result;
-  });
+  return Promise.resolve(result).then(() => true).catch(() => false);
 }
 
 function getDynamicMessage(messageSources, field, req) {
