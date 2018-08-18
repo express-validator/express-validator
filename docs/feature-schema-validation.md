@@ -69,3 +69,5 @@ app.put('/user/:id/password', checkSchema({
   // handle the request as usual
 })
 ```
+
+> For typescript projects make sure to use the ValidationSchema type provided by express-validator/check as described [here]( https://github.com/express-validator/express-validator/issues/626#issuecomment-413384618)
