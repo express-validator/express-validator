@@ -70,10 +70,7 @@ function expand(object, path, paths) {
 
 function createSanitizerMapper(req, { sanitizers = [] }, { sanitize = true }) {
   return !sanitize ? field => field : field => sanitizers.reduce((prev, sanitizer) => {
-    const value = typeof prev.value === 'string' ?
-      callSanitizer(sanitizer, prev) :
-      prev.value;
-
+    const value = callSanitizer(sanitizer, prev);
     return Object.assign({}, prev, { value });
   }, field);
 
