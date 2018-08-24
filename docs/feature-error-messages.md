@@ -68,7 +68,7 @@ const { check } = require('express-validator/check');
 app.post('/user', [
   // ...some other validations...
   check('password', 'The password must be 5+ chars long and contain a number')
-    .not().in(['123', 'password', 'god']).withMessage('Do not use a common word as the password')
+    .not().isIn(['123', 'password', 'god']).withMessage('Do not use a common word as the password')
     .isLength({ min: 5 })
     .matches(/\d/)
 ], (req, res) => {
