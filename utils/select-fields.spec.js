@@ -186,7 +186,7 @@ describe('utils: selectFields', () => {
       });
     });
 
-    it('does not run on non-string fields', () => {
+    it('does run on non-string fields', () => {
       const req = {
         body: { answer: 42 }
       };
@@ -196,7 +196,7 @@ describe('utils: selectFields', () => {
         fields: ['answer'],
         sanitizers: [{
           options: [],
-          sanitizer: value => 'best number is ' +  value
+          sanitizer: value => value
         }]
       });
 
@@ -204,7 +204,7 @@ describe('utils: selectFields', () => {
         location: 'body',
         path: 'answer',
         originalValue: 42,
-        value: 42
+        value: "42"
       });
     });
 
