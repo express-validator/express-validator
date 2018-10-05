@@ -78,7 +78,7 @@ function createSanitizerMapper(req, { sanitizers = [] }, { sanitize = true }) {
 
   function callSanitizer(config, field) {
     return !config.custom ?
-      config.sanitizer(toString(field.value), ...config.options) :
+      config.sanitizer(field.value, ...config.options) :
       config.sanitizer(toString(field.value), {
         req,
         location: field.location,
