@@ -61,7 +61,10 @@ describe('check: checkOneOf middleware', () => {
 
     return oneOf([
       check('foo').trim(),
-      [check('foo').customSanitizer(value => value.toUpperCase())]
+      [check('foo').customSanitizer(value => {
+        console.log(`VALUE: ${value}`);
+        return value.toUpperCase();
+      })]
     ])(req, {}, () => {}).then(() => {
       expect(req.cookies.foo).to.equal('BAR');
     });

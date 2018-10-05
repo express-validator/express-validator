@@ -71,15 +71,15 @@ function expand(object, path, paths) {
 
 function createSanitizerMapper(req, { sanitizers = [] }, { sanitize = true }) {
   return !sanitize ? field => field : field => sanitizers.reduce((prev, sanitizer) => {
-    const value = callSanitizer(sanitizer, prev);
-
+    const value = !!prev.value ? callSanitizer(sanitizer, prev) : prev.value;
+    
     return Object.assign({}, prev, { value });
   }, field);
 
   function callSanitizer(config, field) {
     return !config.custom ?
-      config.sanitizer(field.value, ...config.options) :
-      config.sanitizer(toString(field.value), {
+      config.sanitizer(toString(field.value), ...config.options) :
+      config.sanitizer(field.value, {
         req,
         location: field.location,
         path: field.path
