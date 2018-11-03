@@ -56,5 +56,71 @@ describe('filter: sanitize', () => {
 
       expect(req.body.foo).to.equal(42);
     });
+
+    it('runs a custom inline sanitizer on string types', () => {
+      const req = {
+        body: { foo: '42' }
+      };
+
+      const chain = sanitize('foo', ['body']).customSanitizer(() => true);
+      chain(req, {}, () => {});
+
+      expect(req.body.foo).to.equal(true);
+    });
+
+    it('runs a custom inline sanitizer on undefined types', () => {
+      const req = {
+        body: { foo: undefined }
+      };
+
+      const chain = sanitize('foo', ['body']).customSanitizer(() => true);
+      chain(req, {}, () => {});
+
+      expect(req.body.foo).to.equal(true);
+    });
+
+    it('runs a custom inline sanitizer on number types', () => {
+      const req = {
+        body: { foo: 42 }
+      };
+
+      const chain = sanitize('foo', ['body']).customSanitizer(() => true);
+      chain(req, {}, () => {});
+
+      expect(req.body.foo).to.equal(true);
+    });
+
+    it('runs a custom inline sanitizer on object types', () => {
+      const req = {
+        body: { foo: {} }
+      };
+
+      const chain = sanitize('foo', ['body']).customSanitizer(() => true);
+      chain(req, {}, () => {});
+
+      expect(req.body.foo).to.equal(true);
+    });
+
+    it('runs a custom inline sanitizer on array types', () => {
+      const req = {
+        body: { foo: [] }
+      };
+
+      const chain = sanitize('foo', ['body']).customSanitizer(() => true);
+      chain(req, {}, () => {});
+
+      expect(req.body.foo).to.equal(true);
+    });
+
+    it('runs a custom inline sanitizer on boolean types', () => {
+      const req = {
+        body: { foo: false }
+      };
+
+      const chain = sanitize('foo', ['body']).customSanitizer(() => true);
+      chain(req, {}, () => {});
+
+      expect(req.body.foo).to.equal(true);
+    });
   });
 });

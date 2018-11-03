@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { check, oneOf } = require('./');
+const { check, cookie, oneOf } = require('./');
 
 describe('check: checkOneOf middleware', () => {
   it('returns errors from all chains', () => {
@@ -61,7 +61,7 @@ describe('check: checkOneOf middleware', () => {
 
     return oneOf([
       check('foo').trim(),
-      [check('foo').customSanitizer(value => value.toUpperCase())]
+      [cookie('foo').customSanitizer(value => value.toUpperCase())]
     ])(req, {}, () => {}).then(() => {
       expect(req.cookies.foo).to.equal('BAR');
     });
