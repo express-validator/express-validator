@@ -36,7 +36,7 @@
     "@types/express": "^4.11.1",
     "chai": "^4.1.2",
     "coveralls": "^3.0.0",
-    "docusaurus": "^1.4.0",
+    "docusaurus": "^1.5.1",
     "eslint": "^4.19.1",
     "mocha": "^5.1.1",
     "nyc": "^13.0.1",

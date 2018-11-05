@@ -4,24 +4,105 @@
     "next": "Next",
     "previous": "Previous",
     "tagline": "express-validator docs",
-    "check-api": "check API",
-    "filter-api": "filter API",
-    "legacy-api": "Legacy API",
-    "sanitization-chain-api": "Sanitization Chain API",
-    "validation-chain-api": "Validation Chain API",
-    "validation-result-api": "Validation Result API",
-    "custom-validators-sanitizers": "Custom validators/sanitizers",
-    "custom-error-messages": "Custom Error Messages",
-    "sanitization": "Sanitization",
-    "schema-validation": "Schema Validation",
-    "whole-body-validation": "Whole Body Validation",
-    "wildcards": "Wildcards",
-    "index": "Getting Started",
-    "Docs": "Docs",
-    "API": "API",
-    "GitHub": "GitHub",
-    "Introduction": "Introduction",
-    "Features": "Features"
+    "docs": {
+      "check-api": {
+        "title": "check API"
+      },
+      "filter-api": {
+        "title": "filter API"
+      },
+      "legacy-api": {
+        "title": "Legacy API"
+      },
+      "sanitization-chain-api": {
+        "title": "Sanitization Chain API"
+      },
+      "validation-chain-api": {
+        "title": "Validation Chain API"
+      },
+      "validation-result-api": {
+        "title": "Validation Result API"
+      },
+      "custom-validators-sanitizers": {
+        "title": "Custom validators/sanitizers"
+      },
+      "custom-error-messages": {
+        "title": "Custom Error Messages"
+      },
+      "sanitization": {
+        "title": "Sanitization"
+      },
+      "schema-validation": {
+        "title": "Schema Validation"
+      },
+      "whole-body-validation": {
+        "title": "Whole Body Validation"
+      },
+      "wildcards": {
+        "title": "Wildcards"
+      },
+      "index": {
+        "title": "Getting Started"
+      },
+      "version-5.2.0-check-api": {
+        "title": "check API"
+      },
+      "version-5.2.0-filter-api": {
+        "title": "filter API"
+      },
+      "version-5.2.0-legacy-api": {
+        "title": "Legacy API"
+      },
+      "version-5.2.0-sanitization-chain-api": {
+        "title": "Sanitization Chain API"
+      },
+      "version-5.2.0-validation-chain-api": {
+        "title": "Validation Chain API"
+      },
+      "version-5.2.0-validation-result-api": {
+        "title": "Validation Result API"
+      },
+      "version-5.2.0-custom-validators-sanitizers": {
+        "title": "Custom validators/sanitizers"
+      },
+      "version-5.2.0-custom-error-messages": {
+        "title": "Custom Error Messages"
+      },
+      "version-5.2.0-sanitization": {
+        "title": "Sanitization"
+      },
+      "version-5.2.0-schema-validation": {
+        "title": "Schema Validation"
+      },
+      "version-5.2.0-whole-body-validation": {
+        "title": "Whole Body Validation"
+      },
+      "version-5.2.0-wildcards": {
+        "title": "Wildcards"
+      },
+      "version-5.2.0-index": {
+        "title": "Getting Started"
+      },
+      "version-5.3.0-filter-api": {
+        "title": "filter API"
+      },
+      "version-5.3.0-validation-chain-api": {
+        "title": "Validation Chain API"
+      },
+      "version-5.3.0-custom-validators-sanitizers": {
+        "title": "Custom validators/sanitizers"
+      }
+    },
+    "links": {
+      "Docs": "Docs",
+      "API": "API",
+      "GitHub": "GitHub"
+    },
+    "categories": {
+      "Introduction": "Introduction",
+      "Features": "Features",
+      "API": "API"
+    }
   },
   "pages-strings": {
     "Help Translate|recruit community translators for your project": "Help Translate",
