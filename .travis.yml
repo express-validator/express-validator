@@ -13,6 +13,6 @@ install:
 script:
   - npm test
   - npm run lint
-  - npm run docs:build
+  - if [ $TRAVIS_NODE_VERSION -gt 6 ]; then npm run docs:build; fi
 after_success:
   - npm run report-coverage
