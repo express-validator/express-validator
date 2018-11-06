@@ -7,7 +7,7 @@ These methods are all available via `require('express-validator/check')`.
 
 ## `check([field, message])`
 - `field` *(optional)*: a string or an array of strings of field names to validate against.
-- `message` *(optional)*: an error message to use when failed validators don't specify a message. Defaults to `Invalid value`; see also [Dynamic Messages](feature-dynamic-messages.md).
+- `message` *(optional)*: an error message to use when failed validators don't specify a message. Defaults to `Invalid value`; see also [Dynamic Messages](feature-error-messages.md#dynamic-messages).
 > *Returns:* a [Validation Chain](api-validation-chain.md)
 
 Creates a validation chain for one or more fields. They may be located in any of the following request objects:
