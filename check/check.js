@@ -90,6 +90,17 @@ module.exports = (fields, locations, message) => {
     return middleware;
   };
 
+  middleware.withData = (data, destructure = true) => {
+    const lastValidator = validators[validators.length - 1];
+    if (lastValidator) {
+      lastValidator.extraData =
+        destructure
+          ? data
+          : { data };
+    }
+    return middleware;
+  }
+
   middleware.not = () => {
     middleware._context.negateNext = true;
     return middleware;
@@ -104,7 +115,8 @@ module.exports = (fields, locations, message) => {
     fields,
     locations,
     sanitizers,
-    validators
+    validators,
+    extraData: {}
   };
 
   return middleware;

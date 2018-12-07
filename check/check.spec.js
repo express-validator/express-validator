@@ -53,7 +53,7 @@ describe('check: low-level middleware', () => {
     };
     const chain = check('foo', ['body']).trim();
 
-    return chain(req, {}, () => {}).then(() => {
+    return chain(req, {}, () => { }).then(() => {
       expect(req.body.foo).to.equal('bar');
     });
   });
@@ -107,6 +107,39 @@ describe('check: low-level middleware', () => {
     it('does not throw when there are no validators', () => {
       const chain = check('foo', []);
       expect(chain.withMessage).to.not.throw(Error);
+    });
+  });
+
+  describe('.withData()', () => {
+    it('sets data for last validator', () => {
+      const chain = check('foo', [])
+        .isUppercase()
+        .isEmail().withData({ code: '1' }).withMessage('hi!');
+      const { validators } = chain._context;
+      expect(validators).to.not.have.nested.property('[0].extraData.code');
+      expect(validators).to.have.nested.property('[1].extraData.code', '1');
+    });
+
+    it('sets data for multiple validators', () => {
+      const chain = check('foo', [])
+        .isUppercase().withData({ code: '1' })
+        .isEmail().withData({ code: '2' });
+
+      const { validators } = chain._context;
+      expect(validators).to.have.nested.property('[0].extraData.code', '1');
+      expect(validators).to.have.nested.property('[1].extraData.code', '2');
+    });
+
+    it('nests object when requested to not spread', () => {
+      const chain = check('foo', [])
+        .isUppercase().withData({ code: '1' }, false)
+      const { validators } = chain._context;
+      expect(validators).to.have.nested.property('[0].extraData.data.code', '1');
+    });
+
+    it('does not throw error when there are no validators', () => {
+      const chain = check('foo', []);
+      expect(chain.withData).to.not.throw(Error);
     });
   });
 
@@ -188,7 +221,7 @@ describe('check: low-level middleware', () => {
         body: { foo: 'foo@example.com', bar: 'not_email' }
       };
 
-      return check(['foo', 'bar'], ['body']).isEmail()(req, {}, () => {}).then(() => {
+      return check(['foo', 'bar'], ['body']).isEmail()(req, {}, () => { }).then(() => {
         expect(req)
           .to.have.property('_validationErrors')
           .that.is.an('array')
@@ -202,8 +235,8 @@ describe('check: low-level middleware', () => {
       };
 
       return Promise.all([
-        check('foo', ['query']).isAlpha()(req, {}, () => {}),
-        check('bar', ['query']).isInt()(req, {}, () => {})
+        check('foo', ['query']).isAlpha()(req, {}, () => { }),
+        check('bar', ['query']).isInt()(req, {}, () => { })
       ]).then(() => {
         expect(req._validationErrors).to.have.length(2);
       });

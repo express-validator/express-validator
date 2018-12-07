@@ -16,7 +16,7 @@ module.exports = (req, context) => {
         }
       });
     }).catch(err => {
-      validationErrors.push({
+      let validationError = {
         location,
         param: path,
         value: field.originalValue,
@@ -27,7 +27,9 @@ module.exports = (req, context) => {
           context.message,
           'Invalid value'
         ], field, req)
-      });
+      };
+      validationError = Object.assign(validationError, validatorCfg.extraData);
+      validationErrors.push(validationError);
     }), Promise.resolve());
   });
 
