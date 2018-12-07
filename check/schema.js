@@ -3,81 +3,46 @@ const check = require('./check');
 const validLocations = ['body', 'cookies', 'headers', 'params', 'query'];
 const notValidators = ['errorMessage', 'in'];
 
-module.exports = function (schema, defaultLocations = validLocations, chainCreator = check) {
-  return new Schema(schema, defaultLocations, chainCreator).toChains();
-}
-
-
-function Schema(schema, defaultLocations, chainCreator) {
-  this._schema = schema;
-  this._defaultLocations = defaultLocations;
-  this._chainCreator = chainCreator;
-}
-
-Schema.prototype.toChains = function () {
-
-  return Object.keys(this._schema).map(
-    (field) => {
-      config = this._schema[field];
-      return new SchemaItem(
-        field, config, this._defaultLocations, this._chainCreator
-      ).toChain();
-    }
-  );
-}
-
-
-function SchemaItem(field, config, defaultLocations, chainCreator) {
-  this._field = field;
-  this._config = config;
-  this._defaultLocations = defaultLocations;
-  this._chainCreator = chainCreator;
-}
-
-SchemaItem.prototype.toChain = function () {
-  const config = this._config;
-  const chain = this._chainCreator(
-    this._field,
-    this._getLocations(),
+module.exports = (
+  schema,
+  defaultLocations = validLocations,
+  chainCreator = check
+) => Object.keys(schema).map(field => {
+  const config = schema[field];
+  const chain = chainCreator(
+    field,
+    ensureLocations(config, defaultLocations),
     config.errorMessage
   );
 
-  for (let methodTitle of Object.keys(config)) {
-    const methodConfig = config[methodTitle];
-    if (!methodConfig || notValidators.includes(methodTitle)) {
-      continue;
-    }
-    if (typeof chain[methodTitle] !== 'function') {
-      console.warn(`express-validator: a validator with name ${methodTitle} does not exist`);
-      break;
-    }
-    const options = obtainOptionsFromMethodConfig(methodConfig);
+  Object.keys(config)
+    .filter(method => config[method] && !notValidators.includes(method))
+    .forEach(method => {
+      if (typeof chain[method] !== 'function') {
+        console.warn(`express-validator: a validator with name ${method} does not exist`);
+        return;
+      }
 
-    const methodIsValidator = isValidator(methodTitle) || methodTitle === 'custom' || methodTitle === 'exists';
+      const methodCfg = config[method];
 
-    methodIsValidator && methodConfig.negated && chain.not();
-    chain[methodTitle](...options);
-    methodIsValidator && chain.withMessage(methodConfig.errorMessage);
-  }
+      let options = methodCfg.options || [];
+      if (options != null && !Array.isArray(options)) {
+        options = [options];
+      }
+
+      const methodIsValidator = isValidator(method) || method === 'custom' || method === 'exists';
+
+      methodIsValidator && methodCfg.negated && chain.not();
+      chain[method](...options);
+      methodIsValidator && chain.withMessage(methodCfg.errorMessage);
+    });
+
   return chain;
-}
+});
 
-SchemaItem.prototype._getLocations = function () {
-  const config = this._config;
-  let locations = (Array.isArray(config.in) ? config.in : [config.in]).filter(Boolean);
-  if (!locations.length) {
-    locations = this._defaultLocations;
-  }
+function ensureLocations(config, defaults) {
+  const locations = (Array.isArray(config.in) ? config.in : [config.in]).filter(Boolean);
+  const actualLocations = locations.length ? locations : defaults;
 
-  return locations.filter(location => validLocations.includes(location));
-}
-
-
-
-function obtainOptionsFromMethodConfig(methodConfig) {
-  let options = methodConfig.options || [];
-  if (options != null && !Array.isArray(options)) {
-    options = [options];
-  }
-  return options;
+  return actualLocations.filter(location => validLocations.includes(location));
 }
