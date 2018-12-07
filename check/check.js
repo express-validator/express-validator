@@ -90,11 +90,11 @@ module.exports = (fields, locations, message) => {
     return middleware;
   };
 
-  middleware.withData = (data, destructure = true) => {
+  middleware.withData = (data, spread = true) => {
     const lastValidator = validators[validators.length - 1];
     if (lastValidator) {
       lastValidator.extraData =
-        destructure
+        spread
           ? data
           : { data };
     }

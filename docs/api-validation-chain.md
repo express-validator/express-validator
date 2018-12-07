@@ -86,3 +86,10 @@ Sets the error message for the previous validator.
 This will have precedence over errors thrown by a custom validator.
 
 To build dynamic messages, see also [Dynamic Messages](feature-dynamic-messages.md).
+
+## `.withData(data[, spread])`
+- `data`: the data to send if validation fails
+- `spread`: whether or not the object provided should be spread. If not, `data` will instead be placed in a property `data`. Defaults to true.
+> *Returns:* the current validation chain instance
+
+Sets extra data for the previous validator.
