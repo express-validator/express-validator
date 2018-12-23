@@ -45,7 +45,7 @@ export interface Validator {
   isISO8601(): this;
   isISRC(): this;
   isISBN(version?: number): this;
-  isISSN(options?: ValidatorOptions.IsISSNOptions): this
+  isISSN(options?: ValidatorOptions.IsISSNOptions): this;
   isJSON(): this;
   isLatLong(): this;
   isLength(options: ValidatorOptions.MinMaxOptions): this;
