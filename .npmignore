@@ -12,6 +12,7 @@
 # Build artifacts/tests
 build
 coverage
+website
 test
 *.spec.js
 *.spec.ts
