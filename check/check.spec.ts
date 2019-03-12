@@ -88,7 +88,7 @@ check('foo', 'with error message')
   .exists().exists({ checkNull: true }).exists({ checkFalsy: true })
   .equals(true).equals(0).equals('').equals({}).contains('')
   .matches('').matches('', '').matches(/ /, '')
-  .optional().optional({ options: { checkFalsy: true } }).optional({ options: { nullable: true } })
+  .optional().optional({ checkFalsy: true }).optional({ nullable: true })
   .customSanitizer((value, { req, location, path }) => {
     return value + req.body.foo + location + path;
   })

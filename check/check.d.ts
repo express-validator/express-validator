@@ -225,10 +225,8 @@ export namespace ValidatorOptions {
   }
 
   interface OptionalOptions {
-    options: {
-      checkFalsy?: boolean;
-      nullable?: boolean;
-    }
+    checkFalsy?: boolean;
+    nullable?: boolean;
   }
 
   /**
