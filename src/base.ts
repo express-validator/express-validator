@@ -1,6 +1,4 @@
-export type Request = any;
 export type Location = 'body' | 'cookies' | 'headers' | 'params' | 'query';
-
 export type Meta = { req: Request, location: Location, path: string };
 
 export type CustomValidator = (input: any, meta: Meta) => any;
@@ -16,4 +14,16 @@ export interface ValidationError {
   param: string;
   value: any;
   msg: any;
+}
+
+export interface Request {
+  body?: Record<string, any>;
+  cookies?: Record<string, any>;
+  headers?: Record<string, any>;
+  params?: Record<string, any>;
+  query?: Record<string, any>;
+}
+
+export interface InternalRequest extends Request {
+  _validationErrors?: ValidationError[];
 }
