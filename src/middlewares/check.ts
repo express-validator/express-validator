@@ -9,12 +9,13 @@ import { Location, InternalRequest } from '../base';
 import { SelectFields, Sanitize, PersistBack, EnsureInstance, RemoveOptionals, Validate, ContextRunner } from '../context-runners';
 
 const bindAll = <T>(object: T) => {
-  for (const key in object) {
+  const protoKeys = Object.getOwnPropertyNames(Object.getPrototypeOf(object)) as (keyof T)[];
+  protoKeys.forEach(key => {
     const maybeFn = object[key];
     if (typeof maybeFn === 'function') {
       object[key] = maybeFn.bind(object);
     }
-  }
+  });
 
   return object;
 };
