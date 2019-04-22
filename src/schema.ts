@@ -21,7 +21,7 @@ export type SanitizersSchema = {
  * and possible field locations.
  */
 export type ParamSchema = ValidatorsSchema & SanitizersSchema & {
-  in: Location | Location[],
+  in?: Location | Location[],
   errorMessage?: DynamicMessageCreator | any,
 };
 
