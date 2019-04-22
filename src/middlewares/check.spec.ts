@@ -65,16 +65,13 @@ it('runs the default runners', done => {
     body: { foo: 123 },
   };
   const middleware = check(['foo', 'bar'], ['body'], 'message');
-  middleware(req, {}, () => {
-    expect(runA).toHaveBeenCalledWith(req, expect.any(Context), []);
-    expect(runB).toHaveBeenCalledWith(req, expect.any(Context), selectedFields);
+  expect(middleware.context.fields).toEqual(['foo', 'bar']);
+  expect(middleware.context.locations).toEqual(['body']);
+  expect(middleware.context.message).toEqual('message');
 
-    expect(runA.mock.calls[0][1]).toBe(runB.mock.calls[0][1]);
-    expect(runA.mock.calls[0][1]).toEqual(new Context(
-      ['foo', 'bar'],
-      ['body'],
-      'message',
-    ));
+  middleware(req, {}, () => {
+    expect(runA).toHaveBeenCalledWith(req, middleware.context, []);
+    expect(runB).toHaveBeenCalledWith(req, middleware.context, selectedFields);
 
     done();
   });
