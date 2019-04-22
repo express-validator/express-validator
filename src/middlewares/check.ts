@@ -7,18 +7,7 @@ import {
 import { Context } from '../context';
 import { Location, InternalRequest } from '../base';
 import { SelectFields, Sanitize, PersistBack, EnsureInstance, RemoveOptionals, Validate, ContextRunner } from '../context-runners';
-
-const bindAll = <T>(object: T) => {
-  const protoKeys = Object.getOwnPropertyNames(Object.getPrototypeOf(object)) as (keyof T)[];
-  protoKeys.forEach(key => {
-    const maybeFn = object[key];
-    if (typeof maybeFn === 'function') {
-      object[key] = maybeFn.bind(object);
-    }
-  });
-
-  return object;
-};
+import { bindAll } from './utils';
 
 // This list of runners is here so it can be checked/extended by tests
 export const defaultRunners: ({ new(): ContextRunner })[] = [
