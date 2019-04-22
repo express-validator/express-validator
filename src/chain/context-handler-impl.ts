@@ -1,5 +1,5 @@
 import { Context } from "../context";
-import { ContextHandler } from "./context-handler";
+import { ContextHandler, OptionalOptions } from "./context-handler";
 
 export class ContextHandlerImpl<Chain> implements ContextHandler<Chain> {
   constructor(private readonly context: Context, private readonly chain: Chain) {}
@@ -18,7 +18,7 @@ export class ContextHandlerImpl<Chain> implements ContextHandler<Chain> {
     return this.chain;
   }
 
-  optional(options: boolean | { nullable?: boolean, checkFalsy?: boolean } = true) {
+  optional(options: OptionalOptions = true) {
     this.context.setOptional(options);
     return this.chain;
   }
