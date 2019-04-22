@@ -61,7 +61,4 @@ export class SanitizersImpl<Chain> implements Sanitizers<Chain> {
   whitelist(chars: string) {
     return this.addStandardSanitization(validator.whitelist, chars);
   }
-  toString() {
-    return this.addStandardSanitization(validator.toString);
-  }
 }

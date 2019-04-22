@@ -19,7 +19,7 @@ it('has methods for all standard validators', () => {
   const validatorModule = validator as any;
 
   Object.keys(validator).filter((key): key is keyof Sanitizers<any> => {
-    return key.startsWith('to') && typeof validatorModule[key] === 'function';
+    return key.startsWith('to') && typeof validatorModule[key] === 'function' && key !== 'toString';
   }).forEach(key => {
     expect(sanitizers).toHaveProperty(key);
 
