@@ -118,3 +118,8 @@ export class Context {
     }
   }
 }
+
+export type ReadonlyContext = Pick<
+  Context,
+  Exclude<keyof Context, 'addSanitization' | 'addValidation' | 'setOptional' | 'negate'>
+>;
