@@ -16,9 +16,26 @@ export type SanitizersSchema = {
   }
 };
 
+/**
+ * Defines a schema of validations/sanitizations plus a general validation error message
+ * and possible field locations.
+ */
 export type ParamSchema = ValidatorsSchema & SanitizersSchema & {
   in: Location | Location[],
   errorMessage?: DynamicMessageCreator | any,
 };
 
+/**
+ * @deprecated  Only here for v5 compatibility. Please use ParamSchema instead.
+ */
+export type ValidationParamSchema = ParamSchema;
+
+/**
+ * Defines a mapping from field name to a validations/sanitizations schema.
+ */
 export type Schema = Record<string, ParamSchema>;
+
+/**
+ * @deprecated  Only here for v5 compatibility. Please use Schema instead.
+ */
+export type ValidationSchema = Schema;
