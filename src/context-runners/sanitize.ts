@@ -5,6 +5,11 @@ export class Sanitize implements ContextRunner {
   async run(req: any, context: Context, instances: FieldInstance[]) {
     return instances.map(instance => {
       const value = context.sanitizations.reduce((prevValue, sanitization) => {
+        // FIXME https://github.com/express-validator/express-validator/issues/580
+        if (typeof prevValue !== 'string') {
+          return prevValue;
+        }
+
         if (sanitization.custom) {
           return sanitization.sanitizer(prevValue, {
             req,

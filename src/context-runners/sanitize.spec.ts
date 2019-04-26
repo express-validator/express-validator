@@ -58,3 +58,26 @@ it('maps instances using standard sanitizers in the context', async () => {
   expect(sanitizer1).toHaveBeenCalledWith('result', '!!');
   expect(sanitizer2).toHaveBeenCalledWith('result!!', 'wow, so much ');
 });
+
+// FIXME https://github.com/express-validator/express-validator/issues/580
+it('stops running sanitizers when value becomes non-string', async () => {
+  const context = new Context([], []);
+  context.addSanitization(() => 123, { custom: true });
+
+  const sanitizer2 = jest.fn(value => value);
+  context.addSanitization(sanitizer2, { custom: true });
+
+  const instances = await runner.run(req, context, [{
+    location: 'query',
+    path: 'search',
+    originalPath: 'search',
+    value: 'result',
+    originalValue: 'result',
+  }]);
+
+  expect(instances).toHaveLength(1);
+  expect(instances[0]).toMatchObject({
+    value: 123,
+  });
+  expect(sanitizer2).not.toHaveBeenCalled();
+});
