@@ -17,6 +17,7 @@ export interface ValidationError {
 }
 
 export interface Request {
+  [k: string]: any;
   body?: any;
   cookies?: Record<string, any>;
   headers?: Record<string, any>;
