@@ -7,7 +7,7 @@ import {
 import { Context } from '../context';
 import { Location, InternalRequest } from '../base';
 import { SelectFields, Sanitize, PersistBack, EnsureInstance, RemoveOptionals, Validate, ContextRunner } from '../context-runners';
-import { bindAll } from './utils';
+import { bindAll } from '../utils';
 
 // This list of runners is here so it can be checked/extended by tests
 export const defaultRunners: ({ new(): ContextRunner })[] = [
