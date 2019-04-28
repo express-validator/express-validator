@@ -1,7 +1,6 @@
 import * as _ from 'lodash';
-import { ValidationError, Request, InternalRequest } from './base';
+import { errorsSymbol, ValidationError, Request, InternalRequest } from './base';
 import { bindAll } from './utils';
-import { errors } from './request-symbols';
 
 export type ErrorFormatter<T = any> = (error: ValidationError) => T;
 export type ResultFactory<T> = (req: Request) => Result<T>;
@@ -22,7 +21,7 @@ function withDefaults<T = any>(options: Partial<ResultFactoryBuilderOptions<T>> 
 
   return (req: InternalRequest) => new Result(
     actualOptions.formatter,
-    req[errors],
+    req[errorsSymbol],
   );
 }
 

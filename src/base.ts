@@ -25,6 +25,7 @@ export interface Request {
   query?: Record<string, any>;
 }
 
+export const errorsSymbol = Symbol('express-validator#validationErrors');
 export interface InternalRequest extends Request {
-  _validationErrors?: ValidationError[];
+  [errorsSymbol]?: ValidationError[];
 }

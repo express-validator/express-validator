@@ -1,6 +1,5 @@
 import { ContextHandlerImpl, SanitizersImpl, ValidatorsImpl } from '../chain';
-import { InternalRequest } from '../base';
-import { Context } from '../context';
+import { errorsSymbol, InternalRequest } from '../base';
 import { SelectFields, Sanitize, PersistBack, EnsureInstance, RemoveOptionals, Validate, ContextRunner, FieldInstance } from '../context-runners';
 import { defaultRunners, check } from './check';
 
@@ -90,7 +89,7 @@ it('sets validation errors thrown by a runner and stops', done => {
 
   const req: InternalRequest = {};
   check('foo')(req, {}, () => {
-    expect(req._validationErrors).toEqual(errorsA);
+    expect(req[errorsSymbol]).toEqual(errorsA);
     expect(runB).not.toHaveBeenCalled();
 
     done();
@@ -124,7 +123,7 @@ it('concats to validation errors thrown by previous chains', done => {
   const req: InternalRequest = {};
   check('foo')(req, {}, () => {
     check('bar')(req, {}, () => {
-      expect(req._validationErrors).toEqual(errorsA.concat(errorsB));
+      expect(req[errorsSymbol]).toEqual(errorsA.concat(errorsB));
 
       done();
     });

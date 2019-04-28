@@ -1,4 +1,4 @@
-import { InternalRequest } from "../base";
+import { errorsSymbol, InternalRequest } from "../base";
 import { buildCheckFunction, check, body, cookie, header, param, query } from "./validation-chain-builders";
 
 let req: InternalRequest;
@@ -16,14 +16,14 @@ describe('buildCheckFunction()', () => {
   it('creates a validation chain builder that checks custom locations', done => {
     const custom = buildCheckFunction(['cookies', 'headers']);
     custom('foo').isInt()(req, {}, () => {
-      expect(req._validationErrors).toHaveLength(2);
-      expect(req._validationErrors![0]).toEqual({
+      expect(req[errorsSymbol]).toHaveLength(2);
+      expect(req[errorsSymbol]![0]).toEqual({
         location: 'cookies',
         msg: 'Invalid value',
         param: 'foo',
         value: 'asd',
       });
-      expect(req._validationErrors![1]).toEqual({
+      expect(req[errorsSymbol]![1]).toEqual({
         location: 'headers',
         msg: 'Invalid value',
         param: 'foo',
@@ -41,8 +41,8 @@ describe('check()', () => {
     it(`checks ${location}`, done => {
       const req: InternalRequest = { [location]: { foo: 'asd' } };
       check('foo').isInt()(req, {}, () => {
-        expect(req._validationErrors).toHaveLength(1);
-        expect(req._validationErrors![0].location).toBe(location);
+        expect(req[errorsSymbol]).toHaveLength(1);
+        expect(req[errorsSymbol]![0].location).toBe(location);
         done();
       });
     });
@@ -50,7 +50,7 @@ describe('check()', () => {
 
   it('checks all locations at the same time', done => {
     check('foo').isInt()(req, {}, () => {
-      expect(req._validationErrors).toHaveLength(5);
+      expect(req[errorsSymbol]).toHaveLength(5);
       done();
     });
   });
@@ -59,8 +59,8 @@ describe('check()', () => {
 describe('body()', () => {
   it('checks only the body location', done => {
     body('foo').isInt()(req, {}, () => {
-      expect(req._validationErrors).toHaveLength(1);
-      expect(req._validationErrors![0].location).toBe('body');
+      expect(req[errorsSymbol]).toHaveLength(1);
+      expect(req[errorsSymbol]![0].location).toBe('body');
       done();
     });
   });
@@ -69,8 +69,8 @@ describe('body()', () => {
 describe('cookie()', () => {
   it('checks only the body location', done => {
     cookie('foo').isInt()(req, {}, () => {
-      expect(req._validationErrors).toHaveLength(1);
-      expect(req._validationErrors![0].location).toBe('cookies');
+      expect(req[errorsSymbol]).toHaveLength(1);
+      expect(req[errorsSymbol]![0].location).toBe('cookies');
       done();
     });
   });
@@ -79,8 +79,8 @@ describe('cookie()', () => {
 describe('header()', () => {
   it('checks only the body location', done => {
     header('foo').isInt()(req, {}, () => {
-      expect(req._validationErrors).toHaveLength(1);
-      expect(req._validationErrors![0].location).toBe('headers');
+      expect(req[errorsSymbol]).toHaveLength(1);
+      expect(req[errorsSymbol]![0].location).toBe('headers');
       done();
     });
   });
@@ -89,8 +89,8 @@ describe('header()', () => {
 describe('param()', () => {
   it('checks only the body location', done => {
     param('foo').isInt()(req, {}, () => {
-      expect(req._validationErrors).toHaveLength(1);
-      expect(req._validationErrors![0].location).toBe('params');
+      expect(req[errorsSymbol]).toHaveLength(1);
+      expect(req[errorsSymbol]![0].location).toBe('params');
       done();
     });
   });
@@ -99,8 +99,8 @@ describe('param()', () => {
 describe('query()', () => {
   it('checks only the body location', done => {
     query('foo').isInt()(req, {}, () => {
-      expect(req._validationErrors).toHaveLength(1);
-      expect(req._validationErrors![0].location).toBe('query');
+      expect(req[errorsSymbol]).toHaveLength(1);
+      expect(req[errorsSymbol]![0].location).toBe('query');
       done();
     });
   });
