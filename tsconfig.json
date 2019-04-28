@@ -7,7 +7,8 @@
     "charset": "utf-8",
     "lib": [
       "es6",
-      "es2016.array.include"
+      "es2016.array.include",
+      "es2017.object"
     ],
     "pretty": true,
     "noImplicitAny": true,
