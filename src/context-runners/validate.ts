@@ -2,6 +2,12 @@ import { Context } from "../context";
 import { ContextRunner, FieldInstance } from "./context-runner";
 import { Request, ValidationError } from "../base";
 
+class UnknownError extends Error {
+  constructor() {
+    super();
+  }
+}
+
 export class Validate implements ContextRunner {
   async run(req: Request, context: Context, instances: FieldInstance[]) {
     const errors: ValidationError[] = [];
@@ -22,7 +28,8 @@ export class Validate implements ContextRunner {
           // If the result was a promise, and the execution flow reached here, this means the
           // promise didn't throw, so it should succeed.
           if (!isPromise && failed) {
-            throw null;
+            // #572, #573, #691: Throwing a custom error so that tools like Bluebird don't complain
+            throw new UnknownError();
           }
         } catch (err) {
           errors.push({
@@ -32,7 +39,7 @@ export class Validate implements ContextRunner {
             msg: this.getDynamicMessage(req, instance, [
               validation.message,
               err && err.message,
-              err,
+              err instanceof UnknownError ? null : err,
               context.message,
               'Invalid value',
             ]),
