@@ -62,7 +62,7 @@ app.put('/user/:id/password', checkSchema({
   },
   // Wildcards/dots for nested fields work as well
   'addresses.*.postalCode': {
-    // Make this field optional and allow it to be null
+    // Make this field optional when undefined or null
     optional: { options: { nullable: true } },
     isPostalCode: true
   }
