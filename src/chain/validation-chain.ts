@@ -8,6 +8,6 @@ export interface ValidationChain extends
   Validators<ValidationChain>,
   Sanitizers<ValidationChain>,
   ContextHandler<ValidationChain> {
-    (req: Request, res: any, next: () => void): void;
+    (req: Request, res: any, next: (error?: any) => void): void;
     context: ReadonlyContext
   }
