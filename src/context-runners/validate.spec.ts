@@ -1,5 +1,5 @@
-import { Validate } from './validate';
-import { Request } from '../base';
+import { Validate, toString } from './validate';
+import { Request, StandardValidator } from '../base';
 import { Context } from '../context';
 import { FieldInstance } from './context-runner';
 
@@ -34,7 +34,7 @@ it('runs standard validators in the context on every field instance', async () =
 
   expect(validator).toHaveBeenCalledTimes(fieldInstances.length);
   fieldInstances.forEach(instance => {
-    expect(validator).toHaveBeenCalledWith(instance.value, 'option');
+    expect(validator).toHaveBeenCalledWith(toString(instance.value), 'option');
   });
 });
 
@@ -81,6 +81,67 @@ it('throws errors if validator rejects', async () => {
   })));
 
   await expect(runner.run(req, context, fieldInstances)).rejects.toEqual(expectation);
+});
+
+describe('standard validator string conversion', () => {
+  let context: Context;
+  let validator: jest.Mock;
+
+  beforeEach(() => {
+    validator = jest.fn(() => true);
+
+    context = new Context([], []);
+    context.addValidation(validator, { custom: false });
+  });
+
+  it('works from boolean', async () => {
+    fieldInstances[0].value = true;
+    fieldInstances[1].value = false;
+    await runner.run(req, context, fieldInstances);
+
+    expect(validator).toHaveBeenCalledWith('true');
+    expect(validator).toHaveBeenCalledWith('false');
+  });
+
+  it('works from number', async () => {
+    fieldInstances[0].value = 10;
+    fieldInstances[1].value = 1.5;
+    await runner.run(req, context, fieldInstances);
+
+    expect(validator).toHaveBeenCalledWith('10');
+    expect(validator).toHaveBeenCalledWith('1.5');
+  });
+
+  it('works from null, undefined and NaN', async () => {
+    fieldInstances[0].value = null;
+    fieldInstances[1].value = undefined;
+    await runner.run(req, context, fieldInstances);
+
+    expect(validator).toHaveBeenNthCalledWith(1, '');
+    expect(validator).toHaveBeenNthCalledWith(2, '');
+  });
+
+  it('works from NaN', async () => {
+    fieldInstances[0].value = NaN;
+    await runner.run(req, context, fieldInstances);
+
+    expect(validator).toHaveBeenNthCalledWith(1, '');
+  });
+
+  it('works from Date', async () => {
+    // new Date(Date.UTC()) makes sure we'll not have to deal with timezones
+    fieldInstances[0].value = new Date(Date.UTC(2019, 4, 1, 10, 30, 50, 0));
+    await runner.run(req, context, fieldInstances);
+
+    expect(validator).toHaveBeenCalledWith('2019-05-01T10:30:50.000Z');
+  });
+
+  it('works from array', async () => {
+    fieldInstances[0].value = ['foo']
+    await runner.run(req, context, fieldInstances);
+
+    expect(validator).toHaveBeenCalledWith('foo');
+  });
 });
 
 describe('error messages', () => {

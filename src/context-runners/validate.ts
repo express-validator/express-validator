@@ -8,6 +8,20 @@ class UnknownError extends Error {
   }
 }
 
+export function toString(value: any, deep = true): string {
+  if (Array.isArray(value) && value.length && deep) {
+    return toString(value[0], false);
+  } else if (value instanceof Date) {
+    return value.toISOString();
+  } else if (value && typeof value === 'object' && value.toString) {
+    return value.toString();
+  } else if (value == null || (isNaN(value) && !value.length)) {
+    return '';
+  }
+
+  return String(value);
+}
+
 export class Validate implements ContextRunner {
   async run(req: Request, context: Context, instances: FieldInstance[]) {
     const errors: ValidationError[] = [];
@@ -19,7 +33,7 @@ export class Validate implements ContextRunner {
 
           const result = validation.custom === true
             ? validation.validator(value, { req, location, path })
-            : validation.validator(value, ...validation.options);
+            : validation.validator(toString(value), ...validation.options);
 
           const actualResult = await result;
           const isPromise = result && result.then;
