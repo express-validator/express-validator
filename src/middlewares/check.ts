@@ -5,7 +5,7 @@ import {
   ValidationChain
 } from '../chain';
 import { Context } from '../context';
-import { errorsSymbol, Location, InternalRequest } from '../base';
+import { errorsSymbol, Location, InternalRequest, middlewareModeSymbol } from '../base';
 import { SelectFields, Sanitize, PersistBack, EnsureInstance, RemoveOptionals, Validate, ContextRunner } from '../context-runners';
 import { bindAll } from '../utils';
 
@@ -41,7 +41,7 @@ export function check(
     } catch (err) {
       // We hope to throw only errors from the Validate runner.
       // Anything else means 💥
-      if (!Array.isArray(err)) {
+      if (req[middlewareModeSymbol] || !Array.isArray(err)) {
         return next(err);
       }
 
