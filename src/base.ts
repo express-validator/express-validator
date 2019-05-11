@@ -12,6 +12,8 @@ export type StandardSanitizer = (input: string, ...options: any[]) => any;
 export type DynamicMessageCreator = (value: any, meta: Meta) => any;
 
 export type ValidationError = {
+  // It's optional and undefined so places don't need to define it, but can reference it
+  location?: undefined,
   param: '_error';
   msg: any;
   nestedErrors: ValidationError[];
