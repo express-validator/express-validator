@@ -2,7 +2,7 @@ import { ContextRunner, FieldInstance } from "./context-runner";
 import { Context } from "../context";
 
 export class RemoveOptionals implements ContextRunner {
-  async run(_req: any, context: Context, instances: FieldInstance[]) {
+  run(_req: any, context: Context, instances: FieldInstance[]) {
     const { optional } = context;
 
     // Short circuit "compulsory" context

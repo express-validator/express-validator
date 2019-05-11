@@ -4,16 +4,16 @@ import { Context } from '../context';
 import { ContextRunner, FieldInstance } from './context-runner';
 
 export class SelectFields implements ContextRunner {
-  async run(req: Request, context: Context, _instances: FieldInstance[]) {
+  run(req: Request, context: Context, _instances: FieldInstance[]) {
     return _(context.fields)
       .flatMap(field => _.flatMap(context.locations, location => {
         return this.expandField(req, field, location);
       }))
-      .uniqWith(_.isEqual)
+      .uniqWith<FieldInstance>(_.isEqual)
       .value();
   }
 
-  private expandField(req: Request, field: string, location: Location) {
+  private expandField(req: Request, field: string, location: Location): FieldInstance[] {
     const originalPath = field;
     const pathToExpand = location === 'headers' ? field.toLowerCase() : field;
 
