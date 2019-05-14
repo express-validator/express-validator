@@ -1,5 +1,5 @@
 import { ContextHandlerImpl, SanitizersImpl, ValidatorsImpl } from '../chain';
-import { errorsSymbol, InternalRequest } from '../base';
+import { errorsSymbol, InternalRequest, contextsSymbol } from '../base';
 import { SelectFields, Sanitize, PersistBack, EnsureInstance, RemoveOptionals, Validate, ContextRunner, FieldInstance } from '../context-runners';
 import { defaultRunners, check } from './check';
 
@@ -125,6 +125,21 @@ it('concats to validation errors thrown by previous chains', done => {
     check('bar')(req, {}, () => {
       expect(req[errorsSymbol]).toEqual(errorsA.concat(errorsB));
 
+      done();
+    });
+  });
+});
+
+it('concats to contexts created by previous chains', done => {
+  const req: InternalRequest = {};
+
+  overrideRunners([]);
+
+  const chainA = check('foo');
+  chainA(req, {}, () => {
+    const chainB = check('bar');
+    chainB(req, {}, () => {
+      expect(req[contextsSymbol]).toEqual([chainA.context, chainB.context]);
       done();
     });
   });

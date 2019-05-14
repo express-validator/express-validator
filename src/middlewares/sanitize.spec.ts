@@ -1,6 +1,7 @@
 import { defaultRunners, sanitize } from './sanitize';
 import { PersistBack, Sanitize, EnsureInstance, RemoveOptionals, SelectFields, ContextRunner, FieldInstance } from '../context-runners';
 import { SanitizersImpl } from '../chain';
+import { InternalRequest, contextsSymbol } from '../base';
 
 // Some tests might change the list of runners, so we keep the original list and reset it afterwards
 const originalRunners = defaultRunners.slice();
@@ -54,6 +55,21 @@ it('runs the default runners', done => {
     expect(runB).toHaveBeenCalledWith(req, middleware.context, selectedFields);
 
     done();
+  });
+});
+
+it('concats to contexts created by previous chains', done => {
+  const req: InternalRequest = {};
+
+  overrideRunners([]);
+
+  const chainA = sanitize('foo');
+  chainA(req, {}, () => {
+    const chainB = sanitize('bar');
+    chainB(req, {}, () => {
+      expect(req[contextsSymbol]).toEqual([chainA.context, chainB.context]);
+      done();
+    });
   });
 });
 

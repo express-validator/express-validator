@@ -3,7 +3,7 @@ import {
   SanitizationChain,
 } from '../chain';
 import { Context } from '../context';
-import { Location, InternalRequest } from '../base';
+import { Location, InternalRequest, contextsSymbol } from '../base';
 import { SelectFields, Sanitize, PersistBack, EnsureInstance, RemoveOptionals, ContextRunner } from '../context-runners';
 import { bindAll } from '../utils';
 
@@ -35,6 +35,8 @@ export function sanitize(
       );
     } catch (err) {
       return next(err);
+    } finally {
+      req[contextsSymbol] = (req[contextsSymbol] || []).concat(context);
     }
 
     next();

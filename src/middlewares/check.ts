@@ -5,7 +5,7 @@ import {
   ValidationChain
 } from '../chain';
 import { Context } from '../context';
-import { errorsSymbol, Location, InternalRequest, middlewareModeSymbol } from '../base';
+import { contextsSymbol, errorsSymbol, Location, InternalRequest, middlewareModeSymbol } from '../base';
 import { SelectFields, Sanitize, PersistBack, EnsureInstance, RemoveOptionals, Validate, ContextRunner } from '../context-runners';
 import { bindAll } from '../utils';
 
@@ -46,6 +46,8 @@ export function check(
       }
 
       req[errorsSymbol] = (req[errorsSymbol] || []).concat(err);
+    } finally {
+      req[contextsSymbol] = (req[contextsSymbol] || []).concat(context);
     }
 
     next();
