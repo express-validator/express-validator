@@ -4,7 +4,7 @@ import { ContextRunner, FieldInstance } from "./context-runner";
 import { Request } from '../base';
 
 export class EnsureInstance implements ContextRunner {
-  async run(_req: Request, context: Context, instances: FieldInstance[]) {
+  run(_req: Request, context: Context, instances: FieldInstance[]) {
     const groups = _.groupBy(instances, 'originalPath');
     return _.flatMap(Object.keys(groups), key => {
       const groupInstances = groups[key];
