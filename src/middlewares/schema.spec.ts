@@ -1,9 +1,9 @@
-import { checkSchema } from "./schema";
+import { checkSchema } from './schema';
 
 it('creates a validation chain for each field in the schema', () => {
   const chains = checkSchema({
     foo: { isInt: true },
-    bar: { isAlpha: true }
+    bar: { isAlpha: true },
   });
 
   expect(chains).toHaveLength(2);
@@ -14,8 +14,8 @@ it('creates a validation chain for each field in the schema', () => {
 it('creates chain with an error message', () => {
   const chain = checkSchema({
     foo: {
-      errorMessage: 'bar'
-    }
+      errorMessage: 'bar',
+    },
   })[0];
 
   expect(chain.context.message).toBe('bar');
@@ -24,22 +24,19 @@ it('creates chain with an error message', () => {
 describe('locations', () => {
   it('includes by default all of them', () => {
     const chain = checkSchema({
-      foo: {}
+      foo: {},
     })[0];
 
-    expect(chain.context.locations).toEqual([
-      'body',
-      'cookies',
-      'headers',
-      'params',
-      'query',
-    ]);
+    expect(chain.context.locations).toEqual(['body', 'cookies', 'headers', 'params', 'query']);
   });
 
   it('includes all of the specified ones', () => {
-    const chain = checkSchema({
-      foo: {}
-    }, ['headers', 'cookies'])[0];
+    const chain = checkSchema(
+      {
+        foo: {},
+      },
+      ['headers', 'cookies']
+    )[0];
 
     expect(chain.context.locations).toEqual(['headers', 'cookies']);
   });
@@ -47,8 +44,8 @@ describe('locations', () => {
   it('includes location in "in" when string', () => {
     const chain = checkSchema({
       foo: {
-        in: 'body'
-      }
+        in: 'body',
+      },
     })[0];
 
     expect(chain.context.locations).toEqual(['body']);
@@ -57,8 +54,8 @@ describe('locations', () => {
   it('includes locations in "in" when array', () => {
     const chain = checkSchema({
       foo: {
-        in: ['params', 'body']
-      }
+        in: ['params', 'body'],
+      },
     })[0];
 
     expect(chain.context.locations).toEqual(['params', 'body']);
@@ -73,7 +70,7 @@ describe('on each field', () => {
         isInt: true,
         isBla: true,
         escape: true,
-      } as any // as any because of JS consumers doing the wrong thing
+      } as any, // as any because of JS consumers doing the wrong thing
     })[0];
 
     expect(chain.context.validations).toHaveLength(1);
@@ -84,12 +81,12 @@ describe('on each field', () => {
     const chain = checkSchema({
       foo: {
         custom: {
-          options: value => value > 0
+          options: value => value > 0,
         },
         whitelist: {
-          options: ['a']
-        }
-      }
+          options: ['a'],
+        },
+      },
     })[0];
 
     const customValidation = chain.context.validations[0];
@@ -119,8 +116,8 @@ describe('on each field', () => {
       foo: {
         isInt: {
           errorMessage: 'bla',
-        }
-      }
+        },
+      },
     })[0];
 
     expect(chain.context.validations[0].message).toBe('bla');
@@ -138,7 +135,7 @@ describe('on each field', () => {
         toInt: {
           errorMessage: 'from toInt',
         },
-      } as any // as any because of JS consumers doing the wrong thing
+      } as any, // as any because of JS consumers doing the wrong thing
     })[0];
 
     const isInt = chain.context.validations[0];
@@ -149,7 +146,7 @@ describe('on each field', () => {
     const chain = checkSchema({
       foo: {
         optional: true,
-      }
+      },
     })[0];
 
     expect(chain.context.optional).toEqual({
@@ -162,9 +159,9 @@ describe('on each field', () => {
     const chain = checkSchema({
       foo: {
         isEmpty: {
-          negated: true
-        }
-      }
+          negated: true,
+        },
+      },
     })[0];
 
     expect(chain.context.validations[0].negated).toBe(true);

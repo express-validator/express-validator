@@ -1,6 +1,12 @@
-import { Request } from "../base";
-import { defaultRunners } from "./sanitize";
-import { buildSanitizeFunction, sanitize, sanitizeBody, sanitizeCookie, sanitizeQuery, sanitizeParam } from "./sanitization-chain-builders";
+import { Request } from '../base';
+import {
+  buildSanitizeFunction,
+  sanitize,
+  sanitizeBody,
+  sanitizeCookie,
+  sanitizeParam,
+  sanitizeQuery,
+} from './sanitization-chain-builders';
 
 let req: Request;
 beforeEach(() => {

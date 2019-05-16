@@ -1,14 +1,7 @@
 import { Context } from '../context';
 import { SelectFields } from './select-fields';
-import { FieldInstance } from './context-runner';
 
 let runner: SelectFields;
-const toLocation = (instance: FieldInstance) => instance.location;
-const toValue = (instance: FieldInstance) => instance.value;
-const toPath = (instance: FieldInstance) => instance.path;
-const toOriginalPath = (instance: FieldInstance) => instance.originalPath;
-const toOriginalValue = (instance: FieldInstance) => instance.originalValue;
-
 beforeEach(() => {
   runner = new SelectFields();
 });
@@ -16,7 +9,7 @@ beforeEach(() => {
 it('selects single field from single location', async () => {
   const req = { cookies: { foo: 'bar' } };
   const context = new Context(['foo'], ['cookies']);
-  const instances = await runner.run(req, context, []);
+  const instances = await runner.run(req, context);
 
   expect(instances).toHaveLength(1);
   expect(instances[0]).toEqual({
@@ -31,7 +24,7 @@ it('selects single field from single location', async () => {
 it('selects multiple fields from single location', async () => {
   const req = { cookies: { foo: 'bar', baz: 'qux' } };
   const context = new Context(['foo', 'baz'], ['cookies']);
-  const instances = await runner.run(req, context, []);
+  const instances = await runner.run(req, context);
 
   expect(instances).toHaveLength(2);
   expect(instances[0]).toMatchObject({
@@ -49,10 +42,10 @@ it('selects multiple fields from single location', async () => {
 it('selects single field from multiple locations', async () => {
   const req = {
     cookies: { foo: 'bar' },
-    params: {}
+    params: {},
   };
   const context = new Context(['foo'], ['cookies', 'params']);
-  const instances = await runner.run(req, context, []);
+  const instances = await runner.run(req, context);
 
   expect(instances).toHaveLength(2);
   expect(instances[0]).toMatchObject({
@@ -70,10 +63,10 @@ it('selects single field from multiple locations', async () => {
 it('selects multiple fields from multiple locations', async () => {
   const req = {
     cookies: { foo: 'bar' },
-    params: { baz: 'qux' }
+    params: { baz: 'qux' },
   };
   const context = new Context(['foo', 'baz'], ['cookies', 'params']);
-  const instances = await runner.run(req, context, []);
+  const instances = await runner.run(req, context);
 
   expect(instances).toHaveLength(4);
   expect(instances[0]).toMatchObject({
@@ -103,7 +96,7 @@ it('selects nested key with dot-notation', async () => {
     body: { foo: { bar: true } },
   };
   const context = new Context(['foo.bar'], ['body']);
-  const instances = await runner.run(req, context, []);
+  const instances = await runner.run(req, context);
 
   expect(instances).toHaveLength(1);
   expect(instances[0]).toMatchObject({
@@ -118,7 +111,7 @@ it('selects array index with square brackets notation', async () => {
     query: { foo: ['bar', 'baz'] },
   };
   const context = new Context(['foo[1]'], ['query']);
-  const instances = await runner.run(req, context, []);
+  const instances = await runner.run(req, context);
 
   expect(instances).toHaveLength(1);
   expect(instances[0]).toMatchObject({
@@ -133,7 +126,7 @@ it('selects from headers using lowercase', async () => {
     headers: { 'content-type': 'application/json' },
   };
   const context = new Context(['Content-Type'], ['headers']);
-  const instances = await runner.run(req, context, []);
+  const instances = await runner.run(req, context);
 
   expect(instances).toHaveLength(1);
   expect(instances[0]).toMatchObject({
@@ -149,7 +142,7 @@ it('selects whole location when path is empty', async () => {
     body: 'shake it, shake it!',
   };
   const context = new Context([''], ['body']);
-  const instances = await runner.run(req, context, []);
+  const instances = await runner.run(req, context);
 
   expect(instances).toHaveLength(1);
   expect(instances[0]).toMatchObject({
@@ -166,7 +159,7 @@ describe('wildcard', () => {
       query: { foo: ['bar', 'baz'] },
     };
     const context = new Context(['foo.*'], ['query']);
-    const instances = await runner.run(req, context, []);
+    const instances = await runner.run(req, context);
 
     expect(instances).toHaveLength(2);
     expect(instances[0]).toMatchObject({
@@ -188,7 +181,7 @@ describe('wildcard', () => {
       body: ['bar', 'baz'],
     };
     const context = new Context(['*'], ['body']);
-    const instances = await runner.run(req, context, []);
+    const instances = await runner.run(req, context);
 
     expect(instances).toHaveLength(2);
     expect(instances[0]).toMatchObject({
@@ -210,7 +203,7 @@ describe('wildcard', () => {
       query: { foo: 'bar' },
     };
     const context = new Context(['foo.*.baz'], ['query']);
-    const instances = await runner.run(req, context, []);
+    const instances = await runner.run(req, context);
 
     expect(instances).toHaveLength(0);
   });

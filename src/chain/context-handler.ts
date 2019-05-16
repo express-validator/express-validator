@@ -1,6 +1,6 @@
-import { DynamicMessageCreator } from "../base";
+import { DynamicMessageCreator } from '../base';
 
-export type OptionalOptions = boolean | { nullable?: boolean, checkFalsy?: boolean };
+export type OptionalOptions = boolean | { nullable?: boolean; checkFalsy?: boolean };
 
 export interface ContextHandler<Chain> {
   not(): Chain;

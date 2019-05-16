@@ -3,7 +3,7 @@ import { CustomValidator } from '../base';
 
 export interface Validators<Return> {
   custom(validator: CustomValidator): Return;
-  exists(options?: { checkFalsy?: boolean, checkNull?: boolean }): Return;
+  exists(options?: { checkFalsy?: boolean; checkNull?: boolean }): Return;
   isArray(): Return;
   isString(): Return;
 
@@ -50,7 +50,10 @@ export interface Validators<Return> {
   isMACAddress(): Return;
   isMD5(): Return;
   isMimeType(): Return;
-  isMobilePhone(locale: validator.MobilePhoneLocale, options?: validator.Options.IsMobilePhoneOptions): Return;
+  isMobilePhone(
+    locale: validator.MobilePhoneLocale,
+    options?: validator.Options.IsMobilePhoneOptions
+  ): Return;
   isMongoId(): Return;
   isMultibyte(): Return;
   isNumeric(options?: validator.Options.IsNumericOptions): Return;

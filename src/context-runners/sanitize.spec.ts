@@ -18,13 +18,15 @@ it('maps instances using custom sanitizers in the context', async () => {
   const sanitizer2 = jest.fn(value => 'wow, so much ' + value);
   context.addSanitization(sanitizer2, { custom: true });
 
-  const instances = await runner.run(req, context, [{
-    location: 'query',
-    path: 'search',
-    originalPath: 'search',
-    value: 'result',
-    originalValue: 'result',
-  }]);
+  const instances = await runner.run(req, context, [
+    {
+      location: 'query',
+      path: 'search',
+      originalPath: 'search',
+      value: 'result',
+      originalValue: 'result',
+    },
+  ]);
 
   expect(instances).toHaveLength(1);
   expect(instances[0]).toMatchObject({
@@ -43,13 +45,15 @@ it('maps instances using standard sanitizers in the context', async () => {
   const sanitizer2 = jest.fn((value, prefix) => prefix + value);
   context.addSanitization(sanitizer2, { custom: false, options: ['wow, so much '] });
 
-  const instances = await runner.run(req, context, [{
-    location: 'query',
-    path: 'search',
-    originalPath: 'search',
-    value: 'result',
-    originalValue: 'result',
-  }]);
+  const instances = await runner.run(req, context, [
+    {
+      location: 'query',
+      path: 'search',
+      originalPath: 'search',
+      value: 'result',
+      originalValue: 'result',
+    },
+  ]);
 
   expect(instances).toHaveLength(1);
   expect(instances[0]).toMatchObject({
@@ -67,13 +71,15 @@ it('stops running sanitizers when value becomes non-string', async () => {
   const sanitizer2 = jest.fn(value => value);
   context.addSanitization(sanitizer2, { custom: true });
 
-  const instances = await runner.run(req, context, [{
-    location: 'query',
-    path: 'search',
-    originalPath: 'search',
-    value: 'result',
-    originalValue: 'result',
-  }]);
+  const instances = await runner.run(req, context, [
+    {
+      location: 'query',
+      path: 'search',
+      originalPath: 'search',
+      value: 'result',
+      originalValue: 'result',
+    },
+  ]);
 
   expect(instances).toHaveLength(1);
   expect(instances[0]).toMatchObject({

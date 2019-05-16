@@ -1,8 +1,8 @@
-import { createMockInstance } from "jest-create-mock-instance";
-import * as validator from "validator";
-import { SanitizersImpl } from "./sanitizers-impl";
-import { Context } from "../context";
-import { Sanitizers } from "./sanitizers";
+import { createMockInstance } from 'jest-create-mock-instance';
+import * as validator from 'validator';
+import { SanitizersImpl } from './sanitizers-impl';
+import { Context } from '../context';
+import { Sanitizers } from './sanitizers';
 
 let chain: any;
 let context: Context;
@@ -18,18 +18,24 @@ it('has methods for all standard validators', () => {
   // Cast is here to workaround the lack of index signature
   const validatorModule = validator as any;
 
-  Object.keys(validator).filter((key): key is keyof Sanitizers<any> => {
-    return key.startsWith('to') && typeof validatorModule[key] === 'function' && key !== 'toString';
-  }).forEach(key => {
-    expect(sanitizers).toHaveProperty(key);
+  Object.keys(validator)
+    .filter(
+      (key): key is keyof Sanitizers<any> => {
+        return (
+          key.startsWith('to') && typeof validatorModule[key] === 'function' && key !== 'toString'
+        );
+      }
+    )
+    .forEach(key => {
+      expect(sanitizers).toHaveProperty(key);
 
-    const ret = sanitizers[key].call(sanitizers);
-    expect(ret).toBe(chain);
-    expect(context.addSanitization).toHaveBeenLastCalledWith(validatorModule[key], {
-      custom: false,
-      options: expect.any(Array),
+      const ret = sanitizers[key].call(sanitizers);
+      expect(ret).toBe(chain);
+      expect(context.addSanitization).toHaveBeenLastCalledWith(validatorModule[key], {
+        custom: false,
+        options: expect.any(Array),
+      });
     });
-  });
 
   sanitizers.blacklist('foo');
   expect(context.addSanitization).toHaveBeenLastCalledWith(validator.blacklist, {
@@ -93,7 +99,7 @@ describe('#customSanitizer()', () => {
 
     expect(ret).toBe(chain);
     expect(context.addSanitization).toHaveBeenCalledWith(sanitizer, {
-      custom: true
+      custom: true,
     });
   });
 });

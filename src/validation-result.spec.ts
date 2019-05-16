@@ -1,5 +1,5 @@
-import { errorsSymbol, ValidationError } from "./base";
-import { validationResult, ErrorFormatter } from "./validation-result";
+import { ValidationError, errorsSymbol } from './base';
+import { ErrorFormatter, validationResult } from './validation-result';
 
 const allErrors: ValidationError[] = [
   { param: 'foo', msg: 'blabla', location: 'body', value: 123 },
@@ -33,10 +33,7 @@ describe('#array()', () => {
 
   it('returns only the first error for each field when onlyFirstError = true', () => {
     const result = validationResult({ [errorsSymbol]: allErrors });
-    expect(result.array({ onlyFirstError: true })).toEqual([
-      allErrors[0],
-      allErrors[2],
-    ]);
+    expect(result.array({ onlyFirstError: true })).toEqual([allErrors[0], allErrors[2]]);
   });
 });
 

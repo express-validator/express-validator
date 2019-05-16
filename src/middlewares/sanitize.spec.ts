@@ -1,11 +1,19 @@
 import { defaultRunners, sanitize } from './sanitize';
-import { PersistBack, Sanitize, EnsureInstance, RemoveOptionals, SelectFields, ContextRunner, FieldInstance } from '../context-runners';
+import {
+  ContextRunner,
+  EnsureInstance,
+  FieldInstance,
+  PersistBack,
+  RemoveOptionals,
+  Sanitize,
+  SelectFields,
+} from '../context-runners';
 import { SanitizersImpl } from '../chain';
 import { InternalRequest, contextsSymbol } from '../base';
 
 // Some tests might change the list of runners, so we keep the original list and reset it afterwards
 const originalRunners = defaultRunners.slice();
-const overrideRunners = (newRunners: ({ new(): ContextRunner })[]) => {
+const overrideRunners = (newRunners: ({ new (): ContextRunner })[]) => {
   defaultRunners.splice(0, defaultRunners.length, ...newRunners);
 };
 afterEach(() => {
@@ -25,23 +33,32 @@ it('has a default list of runners', () => {
 it('has sanitizer methods', () => {
   const chain = sanitize('foo');
   Object.keys(SanitizersImpl.prototype).forEach(method => {
-    expect(chain).toHaveProperty(method);
-    expect(typeof (chain as any)[method]).toBe('function');
+    const fn = (chain as any)[method];
+    expect(typeof fn).toBe('function');
   });
 });
 
 it('runs the default runners', done => {
-  const selectedFields: FieldInstance[] = [{
-    path: 'foo',
-    originalPath: 'foo',
-    location: 'body',
-    value: 123,
-    originalValue: 123,
-  }];
+  const selectedFields: FieldInstance[] = [
+    {
+      path: 'foo',
+      originalPath: 'foo',
+      location: 'body',
+      value: 123,
+      originalValue: 123,
+    },
+  ];
 
   const runA = jest.fn().mockResolvedValue(selectedFields);
   const runB = jest.fn().mockResolvedValue([]);
-  overrideRunners([class { run = runA; }, class { run = runB; }]);
+  overrideRunners([
+    class {
+      run = runA;
+    },
+    class {
+      run = runB;
+    },
+  ]);
 
   const req = {
     body: { foo: 123 },
@@ -75,7 +92,11 @@ it('concats to contexts created by previous chains', done => {
 
 it('passes unexpected errors down to other middlewares', done => {
   const error = new Error();
-  overrideRunners([class { run = jest.fn().mockRejectedValue(error); }]);
+  overrideRunners([
+    class {
+      run = jest.fn().mockRejectedValue(error);
+    },
+  ]);
 
   sanitize('foo')({}, {}, (err?: Error) => {
     expect(err).toBe(error);

@@ -1,16 +1,25 @@
-import {
-  ContextHandlerImpl,
-  SanitizersImpl,
-  ValidatorsImpl,
-  ValidationChain
-} from '../chain';
+import { ContextHandlerImpl, SanitizersImpl, ValidationChain, ValidatorsImpl } from '../chain';
 import { Context } from '../context';
-import { contextsSymbol, errorsSymbol, Location, InternalRequest, middlewareModeSymbol } from '../base';
-import { SelectFields, Sanitize, PersistBack, EnsureInstance, RemoveOptionals, Validate, ContextRunner } from '../context-runners';
+import {
+  InternalRequest,
+  Location,
+  contextsSymbol,
+  errorsSymbol,
+  middlewareModeSymbol,
+} from '../base';
+import {
+  ContextRunner,
+  EnsureInstance,
+  PersistBack,
+  RemoveOptionals,
+  Sanitize,
+  SelectFields,
+  Validate,
+} from '../context-runners';
 import { bindAll } from '../utils';
 
 // This list of runners is here so it can be checked/extended by tests
-export const defaultRunners: ({ new(): ContextRunner })[] = [
+export const defaultRunners: ({ new (): ContextRunner })[] = [
   SelectFields,
   Sanitize,
   RemoveOptionals,
@@ -22,13 +31,9 @@ export const defaultRunners: ({ new(): ContextRunner })[] = [
 export function check(
   fields: string | string[],
   locations: Location[] = [],
-  message?: any,
+  message?: any
 ): ValidationChain {
-  const context = new Context(
-    Array.isArray(fields) ? fields : [fields],
-    locations,
-    message
-  );
+  const context = new Context(Array.isArray(fields) ? fields : [fields], locations, message);
 
   const runners = defaultRunners.map(Runner => new Runner());
 
@@ -36,7 +41,7 @@ export function check(
     try {
       await runners.reduce(
         async (instances, runner) => runner.run(req, context, await instances),
-        Promise.resolve([]),
+        Promise.resolve([])
       );
     } catch (err) {
       // We hope to throw only errors from the Validate runner.
@@ -58,6 +63,6 @@ export function check(
     bindAll(new SanitizersImpl(context, middleware as any)),
     bindAll(new ValidatorsImpl(context, middleware as any)),
     bindAll(new ContextHandlerImpl(context, middleware as any)),
-    { context },
+    { context }
   );
 }

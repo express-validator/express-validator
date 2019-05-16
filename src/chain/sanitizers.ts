@@ -1,5 +1,5 @@
-import * as validator from "validator";
-import { CustomSanitizer } from "../base";
+import * as validator from 'validator';
+import { CustomSanitizer } from '../base';
 
 export interface Sanitizers<Return> {
   customSanitizer(sanitizer: CustomSanitizer): Return;
