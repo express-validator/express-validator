@@ -40,9 +40,10 @@
     "comma-dangle": [ "error", "always-multiline" ],
     "comma-style": [ "error", "last" ],
     "func-call-spacing": ["error", "never"],
-    "indent": [ "error", 2, {
-      "SwitchCase": 1
-    }],
+    "indent": "off",
+    // "@typescript-eslint/indent": [ "error", 2, {
+    //   "SwitchCase": 1
+    // }],
     "no-trailing-spaces": "error",
     "key-spacing": [ "error", {
       "beforeColon": false,
