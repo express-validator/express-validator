@@ -91,6 +91,15 @@
       },
       "version-5.3.0-custom-validators-sanitizers": {
         "title": "Custom validators/sanitizers"
+      },
+      "version-5.3.1-check-api": {
+        "title": "check API"
+      },
+      "version-5.3.1-custom-validators-sanitizers": {
+        "title": "Custom validators/sanitizers"
+      },
+      "version-5.3.1-custom-error-messages": {
+        "title": "Custom Error Messages"
       }
     },
     "links": {
