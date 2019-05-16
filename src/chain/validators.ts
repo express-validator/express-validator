@@ -3,7 +3,7 @@ import { CustomValidator } from '../base';
 
 export interface Validators<Return> {
   custom(validator: CustomValidator): Return;
-  exists(options?: { checkFalsy?: boolean, checkNull?: boolean }): Return;
+  exists(options?: { checkFalsy?: boolean; checkNull?: boolean }): Return;
   isArray(): Return;
   isString(): Return;
 
