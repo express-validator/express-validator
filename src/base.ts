@@ -1,4 +1,4 @@
-import { Context } from "./context";
+import { ReadonlyContext } from "./context";
 
 export type Location = 'body' | 'cookies' | 'headers' | 'params' | 'query';
 export type Meta = { req: Request, location: Location, path: string };
@@ -34,11 +34,13 @@ export interface Request {
 }
 
 export const errorsSymbol = Symbol('express-validator#validationErrors');
+export const failedOneOfContextsSymbol = Symbol('express-validator#validationErrorsOneOf');
 export const contextsSymbol = Symbol('express-validator#contexts');
 export const middlewareModeSymbol = Symbol('express-validator#middlewareMode');
 
 export interface InternalRequest extends Request {
   [errorsSymbol]?: ValidationError[];
-  [contextsSymbol]?: Context[];
+  [failedOneOfContextsSymbol]?: ReadonlyContext[];
+  [contextsSymbol]?: ReadonlyContext[];
   [middlewareModeSymbol]?: true;
 }
