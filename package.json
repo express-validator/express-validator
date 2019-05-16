@@ -20,8 +20,8 @@
     "docs:publish": "USE_SSH=true CURRENT_BRANCH=master npm --prefix ./website run publish-gh-pages",
     "docs:start": "npm --prefix ./website start",
     "docs:version": "npm --prefix ./website run version",
-    "test": "nyc mocha && tsc",
-    "lint": "eslint lib test check filter",
+    "test": "jest",
+    "lint": "eslint src",
     "report-coverage": "cat coverage/lcov.info | coveralls",
     "version": "npm run docs:version -- $npm_package_version && git add -A website"
   },
