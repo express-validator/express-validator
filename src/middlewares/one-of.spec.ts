@@ -1,4 +1,4 @@
-import { errorsSymbol, InternalRequest } from '../base';
+import { errorsSymbol, InternalRequest, failedOneOfContextsSymbol } from '../base';
 import { check } from './validation-chain-builders';
 import { oneOf } from './one-of';
 
@@ -86,6 +86,27 @@ it('concats to validation errors thrown by previous middlewares', done => {
   check('foo').isInt()(req, {}, () => {
     oneOf([ check('bar').exists() ])(req, {}, () => {
       expect(req[errorsSymbol]).toHaveLength(2);
+      done();
+    });
+  });
+});
+
+it('concats to failed validation contexts from previous oneOf()s', done => {
+  const req: InternalRequest = {
+    params: { foo: 'bla' }
+  };
+
+  const chain1 = check('foo').isInt();
+  const chain2 = check('foo').equals('bar');
+
+  oneOf([chain1, chain2])(req, {}, () => {
+    oneOf([chain2])(req, {}, () => {
+      expect(req[failedOneOfContextsSymbol]).toEqual([
+        chain1.context,
+        chain2.context,
+        chain2.context,
+      ]);
+
       done();
     });
   });
