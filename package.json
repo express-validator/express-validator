@@ -21,7 +21,7 @@
     "docs:start": "npm --prefix ./website start",
     "docs:version": "npm --prefix ./website run version",
     "test": "jest",
-    "lint": "eslint src",
+    "lint": "eslint src/**/*.ts",
     "report-coverage": "cat coverage/lcov.info | coveralls",
     "version": "npm run docs:version -- $npm_package_version && git add -A website"
   },
