@@ -1,6 +1,13 @@
 import * as _ from 'lodash';
-import { Location, Request, contextsSymbol, InternalRequest, errorsSymbol, failedOneOfContextsSymbol } from './base';
-import { SelectFields, RemoveOptionals, FieldInstance, EnsureInstance, ContextRunner } from './context-runners';
+import {
+  InternalRequest,
+  Location,
+  Request,
+  contextsSymbol,
+  errorsSymbol,
+  failedOneOfContextsSymbol,
+} from './base';
+import { EnsureInstance, FieldInstance, RemoveOptionals, SelectFields } from './context-runners';
 import { Context } from './context';
 
 interface FieldInstanceBag {
@@ -8,11 +15,14 @@ interface FieldInstanceBag {
   context: Context;
 }
 
-export function matchedData(req: Request, options: {
-  includeOptionals?: boolean,
-  locations?: Location[],
-  onlyValidData?: boolean,
-} = {}) {
+export function matchedData(
+  req: Request,
+  options: {
+    includeOptionals?: boolean;
+    locations?: Location[];
+    onlyValidData?: boolean;
+  } = {}
+) {
   const internalReq: InternalRequest = req;
 
   const fieldExtractor = createFieldExtractor(req, options.includeOptionals !== true);
@@ -49,22 +59,21 @@ function createValidityFilter(req: InternalRequest, onlyValidData = true) {
   const errors = req[errorsSymbol] || [];
   const failedOneOfContexts = req[failedOneOfContextsSymbol] || [];
 
-  return !onlyValidData ? () => true : (field: FieldInstanceBag) => {
-    const hasError = errors.some(error => (
-      error.location === field.instance.location
-      && error.param === field.instance.path
-    ));
+  return !onlyValidData
+    ? () => true
+    : (field: FieldInstanceBag) => {
+        const hasError = errors.some(
+          error => error.location === field.instance.location && error.param === field.instance.path
+        );
 
-    const failedWithinOneOf = failedOneOfContexts.includes(field.context);
+        const failedWithinOneOf = failedOneOfContexts.includes(field.context);
 
-    return !(hasError || failedWithinOneOf);
-  };
+        return !(hasError || failedWithinOneOf);
+      };
 }
 
 function createLocationFilter(locations: Location[] = []) {
   // No locations mean all locations
   const allLocations = locations.length === 0;
-  return allLocations
-    ? () => true
-    : (field: FieldInstance) => locations.includes(field.location);
+  return allLocations ? () => true : (field: FieldInstance) => locations.includes(field.location);
 }

@@ -1,4 +1,11 @@
-import { CustomSanitizer, CustomValidator, StandardSanitizer, StandardValidator, DynamicMessageCreator, Location } from "./base";
+import {
+  CustomSanitizer,
+  CustomValidator,
+  DynamicMessageCreator,
+  Location,
+  StandardSanitizer,
+  StandardValidator,
+} from './base';
 
 // Validation types
 interface BaseValidation {
@@ -36,7 +43,7 @@ interface StandardSanitization extends BaseSanitization {
 export class Context {
   private negated = false;
 
-  private _optional: { nullable: boolean, checkFalsy: boolean } | false = false;
+  private _optional: { nullable: boolean; checkFalsy: boolean } | false = false;
   get optional() {
     return this._optional;
   }
@@ -51,11 +58,7 @@ export class Context {
     return this._validations;
   }
 
-  constructor(
-    readonly fields: string[],
-    readonly locations: Location[],
-    readonly message?: any
-  ) {}
+  constructor(readonly fields: string[], readonly locations: Location[], readonly message?: any) {}
 
   // Validations part
   negate() {
@@ -63,11 +66,14 @@ export class Context {
   }
 
   addValidation(validator: CustomValidator, meta: { custom: true }): void;
-  addValidation(validator: StandardValidator, meta: { custom: false, options?: any[] }): void;
-  addValidation(validator: CustomValidator | StandardValidator, meta: {
-    custom: boolean,
-    options?: any[],
-  }) {
+  addValidation(validator: StandardValidator, meta: { custom: false; options?: any[] }): void;
+  addValidation(
+    validator: CustomValidator | StandardValidator,
+    meta: {
+      custom: boolean;
+      options?: any[];
+    }
+  ) {
     if (meta.custom === true) {
       this._validations.push({
         validator,
@@ -86,24 +92,27 @@ export class Context {
     this.negated = false;
   }
 
-  setOptional(options: boolean | { nullable?: boolean, checkFalsy?: boolean } = true) {
+  setOptional(options: boolean | { nullable?: boolean; checkFalsy?: boolean } = true) {
     if (typeof options === 'boolean') {
       this._optional = options ? { checkFalsy: false, nullable: false } : false;
     } else {
       this._optional = {
         checkFalsy: !!options.checkFalsy,
-        nullable: !!options.nullable
+        nullable: !!options.nullable,
       };
     }
   }
 
   // Sanitizations part
   addSanitization(sanitizer: CustomSanitizer, meta: { custom: true }): void;
-  addSanitization(sanitizer: StandardSanitizer, meta: { custom: false, options?: any[] }): void;
-  addSanitization(sanitizer: CustomSanitizer | StandardSanitizer, meta: {
-    custom: boolean,
-    options?: any[]
-  }) {
+  addSanitization(sanitizer: StandardSanitizer, meta: { custom: false; options?: any[] }): void;
+  addSanitization(
+    sanitizer: CustomSanitizer | StandardSanitizer,
+    meta: {
+      custom: boolean;
+      options?: any[];
+    }
+  ) {
     if (meta.custom) {
       this._sanitizations.push({
         sanitizer,

@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { errorsSymbol, ValidationError, Request, InternalRequest } from './base';
+import { InternalRequest, Request, ValidationError, errorsSymbol } from './base';
 import { bindAll } from './utils';
 
 export type ErrorFormatter<T = any> = (error: ValidationError) => T;
@@ -13,22 +13,10 @@ interface ResultFactoryBuilderOptions<T = any> {
 const withWithDefaults = { withDefaults };
 export const validationResult = Object.assign(withDefaults<ValidationError>(), withWithDefaults);
 
-function withDefaults<T = any>(options: Partial<ResultFactoryBuilderOptions<T>> = {}): ResultFactory<T> {
-  const defaults: ResultFactoryBuilderOptions<ValidationError> = {
-    formatter: error => error,
-  };
-  const actualOptions = _.defaults(options, defaults);
-
-  return (req: InternalRequest) => new Result(
-    actualOptions.formatter,
-    req[errorsSymbol],
-  );
-}
-
 export class Result<T = any> {
   constructor(
     private formatter: ErrorFormatter<T>,
-    private readonly errors: ValidationError[] = [],
+    private readonly errors: ValidationError[] = []
   ) {}
 
   array(options?: { onlyFirstError?: boolean }): T[] {
@@ -38,13 +26,16 @@ export class Result<T = any> {
   }
 
   mapped(): Record<string, T> {
-    return this.errors.reduce((mapping, error) => {
-      if (!mapping[error.param]) {
-        mapping[error.param] = this.formatter(error);
-      }
+    return this.errors.reduce(
+      (mapping, error) => {
+        if (!mapping[error.param]) {
+          mapping[error.param] = this.formatter(error);
+        }
 
-      return mapping;
-    }, {} as Record<string, T>);
+        return mapping;
+      },
+      {} as Record<string, T>
+    );
   }
 
   formatWith<T2>(formatter: ErrorFormatter<T2>): Result<T2> {
@@ -60,4 +51,15 @@ export class Result<T = any> {
       throw Object.assign(new Error(), bindAll(this));
     }
   }
+}
+
+function withDefaults<T = any>(
+  options: Partial<ResultFactoryBuilderOptions<T>> = {}
+): ResultFactory<T> {
+  const defaults: ResultFactoryBuilderOptions<ValidationError> = {
+    formatter: error => error,
+  };
+  const actualOptions = _.defaults(options, defaults);
+
+  return (req: InternalRequest) => new Result(actualOptions.formatter, req[errorsSymbol]);
 }
