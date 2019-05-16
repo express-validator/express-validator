@@ -58,6 +58,26 @@
       "functions": false
     }],
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": "error"
+    "@typescript-eslint/no-unused-vars": "error",
+
+    // ES6+
+    "sort-imports": ["error", {
+      "ignoreCase": false,
+      "ignoreDeclarationSort": true,
+      "ignoreMemberSort": false
+    }],
+
+    // TS-specific
+    "@typescript-eslint/member-delimiter-style": ["error", {
+      "multiline": {
+        "delimiter": "semi",
+        "requireLast": true
+      },
+      "singleline": {
+          "delimiter": "comma",
+          "requireLast": false
+      }
+    }],
+    "@typescript-eslint/no-require-imports": "error"
   }
 }
