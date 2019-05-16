@@ -44,7 +44,7 @@ function createFieldExtractor(req: Request, removeOptionals: boolean) {
   const ensureInstance = new EnsureInstance();
 
   return (context: Context) => {
-    let instances = fieldSelector.run(req, context, []);
+    let instances = fieldSelector.run(req, context);
 
     if (removeOptionals) {
       instances = optionalsRemover.run(req, context, instances);
