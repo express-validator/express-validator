@@ -8,7 +8,14 @@
     "ecmaVersion": 2016,
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint"],
+  "plugins": [
+    "@typescript-eslint",
+    "prettier"
+  ],
+  "extends": [
+    "prettier",
+    "plugin:prettier/recommended"
+  ],
   "globals": {},
   "rules": {
     // Possible errors
