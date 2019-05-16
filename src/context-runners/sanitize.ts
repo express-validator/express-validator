@@ -1,5 +1,5 @@
-import { Context } from "../context";
-import { ContextRunner, FieldInstance } from "./context-runner";
+import { Context } from '../context';
+import { ContextRunner, FieldInstance } from './context-runner';
 
 export class Sanitize implements ContextRunner {
   async run(req: any, context: Context, instances: FieldInstance[]) {
@@ -17,7 +17,7 @@ export class Sanitize implements ContextRunner {
             path: instance.path,
           });
 
-        // TypeScript can't do type inference without `if (custom === false)`
+          // TypeScript can't do type inference without `if (custom === false)`
         } else if (sanitization.custom === false) {
           return sanitization.sanitizer(prevValue, ...sanitization.options);
         }

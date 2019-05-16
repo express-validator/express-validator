@@ -168,7 +168,10 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isMimeType() {
     return this.addStandardValidation(validator.isMimeType);
   }
-  isMobilePhone(locale: validator.MobilePhoneLocale, options?: validator.Options.IsMobilePhoneOptions) {
+  isMobilePhone(
+    locale: validator.MobilePhoneLocale,
+    options?: validator.Options.IsMobilePhoneOptions
+  ) {
     return this.addStandardValidation(validator.isMobilePhone, locale, options);
   }
   isMongoId() {

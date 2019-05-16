@@ -9,19 +9,22 @@ let fieldInstances: FieldInstance[];
 
 beforeEach(() => {
   req = {};
-  fieldInstances = [{
-    location: 'body',
-    path: 'foo',
-    originalPath: 'foo',
-    value: 123,
-    originalValue: '123',
-  }, {
-    location: 'query',
-    path: 'bar',
-    originalPath: 'bar',
-    value: 'bazbaz',
-    originalValue: 'baz',
-  }];
+  fieldInstances = [
+    {
+      location: 'body',
+      path: 'foo',
+      originalPath: 'foo',
+      value: 123,
+      originalValue: '123',
+    },
+    {
+      location: 'query',
+      path: 'bar',
+      originalPath: 'bar',
+      value: 'bazbaz',
+      originalValue: 'baz',
+    },
+  ];
   runner = new Validate();
 });
 
@@ -60,11 +63,15 @@ it('throws errors if validator returns falsy', async () => {
   const validator = jest.fn(() => false);
   context.addValidation(validator, { custom: true });
 
-  const expectation = expect.arrayContaining(fieldInstances.map(instance => expect.objectContaining({
-    location: instance.location,
-    param: instance.path,
-    value: instance.originalValue,
-  })));
+  const expectation = expect.arrayContaining(
+    fieldInstances.map(instance =>
+      expect.objectContaining({
+        location: instance.location,
+        param: instance.path,
+        value: instance.originalValue,
+      })
+    )
+  );
 
   await expect(runner.run(req, context, fieldInstances)).rejects.toEqual(expectation);
 });
@@ -74,11 +81,15 @@ it('throws errors if validator rejects', async () => {
   const validator = jest.fn(() => Promise.reject());
   context.addValidation(validator, { custom: true });
 
-  const expectation = expect.arrayContaining(fieldInstances.map(instance => expect.objectContaining({
-    location: instance.location,
-    param: instance.path,
-    value: instance.originalValue,
-  })));
+  const expectation = expect.arrayContaining(
+    fieldInstances.map(instance =>
+      expect.objectContaining({
+        location: instance.location,
+        param: instance.path,
+        value: instance.originalValue,
+      })
+    )
+  );
 
   await expect(runner.run(req, context, fieldInstances)).rejects.toEqual(expectation);
 });
@@ -137,7 +148,7 @@ describe('standard validator string conversion', () => {
   });
 
   it('works from array', async () => {
-    fieldInstances[0].value = ['foo']
+    fieldInstances[0].value = ['foo'];
     await runner.run(req, context, fieldInstances);
 
     expect(validator).toHaveBeenCalledWith('foo');
@@ -149,9 +160,13 @@ describe('error messages', () => {
     const context = new Context([], []);
     context.addValidation(() => false, { custom: false });
 
-    const expectation = expect.arrayContaining(fieldInstances.map(() => expect.objectContaining({
-      msg: 'Invalid value',
-    })));
+    const expectation = expect.arrayContaining(
+      fieldInstances.map(() =>
+        expect.objectContaining({
+          msg: 'Invalid value',
+        })
+      )
+    );
 
     await expect(runner.run(req, context, fieldInstances)).rejects.toEqual(expectation);
   });
@@ -160,43 +175,74 @@ describe('error messages', () => {
     const context = new Context([], [], 'u fail');
     context.addValidation(() => false, { custom: false });
 
-    const expectation = expect.arrayContaining(fieldInstances.map(() => expect.objectContaining({
-      msg: 'u fail',
-    })));
+    const expectation = expect.arrayContaining(
+      fieldInstances.map(() =>
+        expect.objectContaining({
+          msg: 'u fail',
+        })
+      )
+    );
 
     await expect(runner.run(req, context, fieldInstances)).rejects.toEqual(expectation);
   });
 
   it('can be the error itself', async () => {
     const context = new Context([], [], 'u fail');
-    context.addValidation(() => { throw 'nope :('; }, { custom: false });
+    context.addValidation(
+      () => {
+        throw 'nope :(';
+      },
+      { custom: false }
+    );
 
-    const expectation = expect.arrayContaining(fieldInstances.map(() => expect.objectContaining({
-      msg: 'nope :(',
-    })));
+    const expectation = expect.arrayContaining(
+      fieldInstances.map(() =>
+        expect.objectContaining({
+          msg: 'nope :(',
+        })
+      )
+    );
 
     await expect(runner.run(req, context, fieldInstances)).rejects.toEqual(expectation);
   });
 
   it('can be the message of an Error instance', async () => {
     const context = new Context([], [], 'u fail');
-    context.addValidation(() => { throw new Error('nope :('); }, { custom: false });
+    context.addValidation(
+      () => {
+        throw new Error('nope :(');
+      },
+      { custom: false }
+    );
 
-    const expectation = expect.arrayContaining(fieldInstances.map(() => expect.objectContaining({
-      msg: 'nope :(',
-    })));
+    const expectation = expect.arrayContaining(
+      fieldInstances.map(() =>
+        expect.objectContaining({
+          msg: 'nope :(',
+        })
+      )
+    );
 
     await expect(runner.run(req, context, fieldInstances)).rejects.toEqual(expectation);
   });
 
   it('can be the validation message', async () => {
     const context = new Context([], [], 'u fail');
-    context.addValidation(() => { throw new Error('nope :('); }, { custom: false });
+    context.addValidation(
+      () => {
+        throw new Error('nope :(');
+      },
+      { custom: false }
+    );
     context.validations[0].message = 'dang';
 
-    const expectation = expect.arrayContaining(fieldInstances.map(() => expect.objectContaining({
-      msg: 'dang',
-    })));
+    const expectation = expect.arrayContaining(
+      fieldInstances.map(() =>
+        expect.objectContaining({
+          msg: 'dang',
+        })
+      )
+    );
 
     await expect(runner.run(req, context, fieldInstances)).rejects.toEqual(expectation);
   });
@@ -206,9 +252,13 @@ describe('error messages', () => {
     const context = new Context([], [], message);
     context.addValidation(() => false, { custom: false });
 
-    const expectation = expect.arrayContaining(fieldInstances.map(() => expect.objectContaining({
-      msg: 'bla',
-    })));
+    const expectation = expect.arrayContaining(
+      fieldInstances.map(() =>
+        expect.objectContaining({
+          msg: 'bla',
+        })
+      )
+    );
 
     await expect(runner.run(req, context, fieldInstances)).rejects.toEqual(expectation);
 

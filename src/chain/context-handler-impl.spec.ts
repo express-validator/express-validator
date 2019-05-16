@@ -1,6 +1,6 @@
-import { createMockInstance } from "jest-create-mock-instance";
-import { Context } from "../context";
-import { ContextHandler, ContextHandlerImpl } from "./";
+import { createMockInstance } from 'jest-create-mock-instance';
+import { Context } from '../context';
+import { ContextHandler, ContextHandlerImpl } from './';
 
 let context: jest.Mocked<Context>;
 let contextHandler: ContextHandler<any>;

@@ -6,9 +6,11 @@ import { ContextRunner, FieldInstance } from './context-runner';
 export class SelectFields implements ContextRunner {
   run(req: Request, context: Context) {
     return _(context.fields)
-      .flatMap(field => _.flatMap(context.locations, location => {
-        return this.expandField(req, field, location);
-      }))
+      .flatMap(field =>
+        _.flatMap(context.locations, location => {
+          return this.expandField(req, field, location);
+        })
+      )
       .uniqWith<FieldInstance>(_.isEqual)
       .value();
   }
@@ -37,24 +39,25 @@ export class SelectFields implements ContextRunner {
     const wildcardPos = segments.indexOf('*');
 
     if (wildcardPos > -1) {
-      const subObject = wildcardPos === 0
-        ? object
-        : _.get(object, segments.slice(0, wildcardPos));
+      const subObject = wildcardPos === 0 ? object : _.get(object, segments.slice(0, wildcardPos));
 
       if (!subObject || !_.isObjectLike(subObject)) {
         return;
       }
 
-      Object.keys(subObject).map(key => segments
-        // Before the *
-        .slice(0, wildcardPos)
-        // The part that the * matched
-        .concat(key)
-        // After the *
-        .concat(segments.slice(wildcardPos + 1))
-      ).forEach(subPath => {
-        this.expandPath(object, subPath, accumulator);
-      });
+      Object.keys(subObject)
+        .map(key =>
+          segments
+            // Before the *
+            .slice(0, wildcardPos)
+            // The part that the * matched
+            .concat(key)
+            // After the *
+            .concat(segments.slice(wildcardPos + 1))
+        )
+        .forEach(subPath => {
+          this.expandPath(object, subPath, accumulator);
+        });
     } else {
       const reconstructedPath = segments.reduce((prev, segment) => {
         let part = '';

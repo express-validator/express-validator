@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
-import { Context } from "../context";
-import { ContextRunner, FieldInstance } from "./context-runner";
+import { Context } from '../context';
+import { ContextRunner, FieldInstance } from './context-runner';
 import { Request } from '../base';
 
 export class EnsureInstance implements ContextRunner {
@@ -21,5 +21,4 @@ export class EnsureInstance implements ContextRunner {
       return groupInstances;
     });
   }
-
 }

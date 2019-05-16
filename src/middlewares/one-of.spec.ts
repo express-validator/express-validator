@@ -8,18 +8,17 @@ describe('with a list of chains', () => {
       cookies: { foo: true, bar: 'def' },
     };
 
-    oneOf([
-      check('foo').isInt(),
-      check('bar').isInt(),
-    ])(req, {}, () => {
+    oneOf([check('foo').isInt(), check('bar').isInt()])(req, {}, () => {
       expect(req[errorsSymbol]).toHaveLength(1);
-      expect(req[errorsSymbol]).toContainEqual(expect.objectContaining({
-        param: '_error',
-        nestedErrors: expect.arrayContaining([
-          expect.objectContaining({ param: 'foo' }),
-          expect.objectContaining({ param: 'bar' }),
-        ]),
-      }));
+      expect(req[errorsSymbol]).toContainEqual(
+        expect.objectContaining({
+          param: '_error',
+          nestedErrors: expect.arrayContaining([
+            expect.objectContaining({ param: 'foo' }),
+            expect.objectContaining({ param: 'bar' }),
+          ]),
+        })
+      );
 
       done();
     });
@@ -30,10 +29,7 @@ describe('with a list of chains', () => {
       cookies: { foo: true, bar: 123 },
     };
 
-    oneOf([
-      check('foo').isInt(),
-      check('bar').isInt(),
-    ])(req, {}, () => {
+    oneOf([check('foo').isInt(), check('bar').isInt()])(req, {}, () => {
       expect(req[errorsSymbol]).toBeUndefined();
       done();
     });
@@ -46,19 +42,18 @@ describe('with a list of chain groups', () => {
       cookies: { foo: true, bar: 'def', baz: 123 },
     };
 
-    oneOf([
-      [check('foo').isInt(), check('bar').isInt()],
-      check('baz').isAlpha(),
-    ])(req, {}, () => {
+    oneOf([[check('foo').isInt(), check('bar').isInt()], check('baz').isAlpha()])(req, {}, () => {
       expect(req[errorsSymbol]).toHaveLength(1);
-      expect(req[errorsSymbol]).toContainEqual(expect.objectContaining({
-        param: '_error',
-        nestedErrors: expect.arrayContaining([
-          expect.objectContaining({ param: 'foo' }),
-          expect.objectContaining({ param: 'bar' }),
-          expect.objectContaining({ param: 'baz' }),
-        ]),
-      }));
+      expect(req[errorsSymbol]).toContainEqual(
+        expect.objectContaining({
+          param: '_error',
+          nestedErrors: expect.arrayContaining([
+            expect.objectContaining({ param: 'foo' }),
+            expect.objectContaining({ param: 'bar' }),
+            expect.objectContaining({ param: 'baz' }),
+          ]),
+        })
+      );
 
       done();
     });
@@ -69,10 +64,7 @@ describe('with a list of chain groups', () => {
       cookies: { foo: true, bar: 'def', baz: 'qux' },
     };
 
-    oneOf([
-      [check('foo').isInt(), check('bar').isInt()],
-      check('baz').isAlpha(),
-    ])(req, {}, () => {
+    oneOf([[check('foo').isInt(), check('bar').isInt()], check('baz').isAlpha()])(req, {}, () => {
       expect(req[errorsSymbol]).toBeUndefined();
       done();
     });
@@ -84,7 +76,7 @@ it('concats to validation errors thrown by previous middlewares', done => {
     params: { foo: 'bla' },
   };
   check('foo').isInt()(req, {}, () => {
-    oneOf([ check('bar').exists() ])(req, {}, () => {
+    oneOf([check('bar').exists()])(req, {}, () => {
       expect(req[errorsSymbol]).toHaveLength(2);
       done();
     });

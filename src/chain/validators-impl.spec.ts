@@ -1,9 +1,9 @@
-import { createMockInstance } from "jest-create-mock-instance";
-import * as validator from "validator";
-import { ValidatorsImpl } from "./validators-impl";
-import { Context } from "../context";
-import { Validators } from "./validators";
-import { CustomValidator, Meta } from "../base";
+import { createMockInstance } from 'jest-create-mock-instance';
+import * as validator from 'validator';
+import { ValidatorsImpl } from './validators-impl';
+import { Context } from '../context';
+import { Validators } from './validators';
+import { CustomValidator, Meta } from '../base';
 
 let chain: any;
 let context: jest.Mocked<Context>;
@@ -19,18 +19,22 @@ it('has methods for all standard validators', () => {
   // Cast is here to workaround the lack of index signature
   const validatorModule = validator as any;
 
-  Object.keys(validator).filter((key): key is keyof Validators<any> => {
-    return key.startsWith('is') && typeof validatorModule[key] === 'function';
-  }).forEach(key => {
-    expect(validators).toHaveProperty(key);
+  Object.keys(validator)
+    .filter(
+      (key): key is keyof Validators<any> => {
+        return key.startsWith('is') && typeof validatorModule[key] === 'function';
+      }
+    )
+    .forEach(key => {
+      expect(validators).toHaveProperty(key);
 
-    const ret = validators[key].call(validators);
-    expect(ret).toBe(chain);
-    expect(context.addValidation).toHaveBeenCalledWith(validatorModule[key], {
-      custom: false,
-      options: expect.any(Array),
+      const ret = validators[key].call(validators);
+      expect(ret).toBe(chain);
+      expect(context.addValidation).toHaveBeenCalledWith(validatorModule[key], {
+        custom: false,
+        options: expect.any(Array),
+      });
     });
-  });
 
   validators.contains('foo');
   expect(context.addValidation).toHaveBeenCalledWith(validator.contains, {

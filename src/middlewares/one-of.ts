@@ -1,24 +1,34 @@
 import * as _ from 'lodash';
 import { ValidationChain } from '../chain';
-import { InternalRequest, Request, ValidationError, errorsSymbol, failedOneOfContextsSymbol, middlewareModeSymbol } from '../base';
+import {
+  InternalRequest,
+  Request,
+  ValidationError,
+  errorsSymbol,
+  failedOneOfContextsSymbol,
+  middlewareModeSymbol,
+} from '../base';
 
 export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?: any) {
   return async (req: InternalRequest, _res: any, next: (err?: any) => void) => {
-    const run = (chain: ValidationChain) => new Promise<ValidationError[]>(resolve => {
-      chain(Object.assign(req, { [middlewareModeSymbol]: true }), _res, errors => {
-        resolve(errors || []);
+    const run = (chain: ValidationChain) =>
+      new Promise<ValidationError[]>(resolve => {
+        chain(Object.assign(req, { [middlewareModeSymbol]: true }), _res, errors => {
+          resolve(errors || []);
+        });
       });
-    });
 
     // The shape should be [[group 1's errors], [group 2's errors], [...etc]]
-    const allErrors = await Promise.all(chains.map(async chain => {
-      const group = Array.isArray(chain) ? chain : [chain];
-      return Promise.all(group.map(run)).then(errors => _.flatten(errors));
-    }));
+    const allErrors = await Promise.all(
+      chains.map(async chain => {
+        const group = Array.isArray(chain) ? chain : [chain];
+        return Promise.all(group.map(run)).then(errors => _.flatten(errors));
+      })
+    );
 
     const failedContexts = _(allErrors)
       // If a group is free of errors, the empty array plays the trick of filtering such group.
-      .flatMap((errors, index) => errors.length > 0 ? chains[index] : [])
+      .flatMap((errors, index) => (errors.length > 0 ? chains[index] : []))
       .map(chain => chain.context)
       .valueOf();
 

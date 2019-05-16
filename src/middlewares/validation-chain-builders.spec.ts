@@ -1,5 +1,13 @@
-import { InternalRequest, errorsSymbol } from "../base";
-import { body, buildCheckFunction, check, cookie, header, param, query } from "./validation-chain-builders";
+import { InternalRequest, errorsSymbol } from '../base';
+import {
+  body,
+  buildCheckFunction,
+  check,
+  cookie,
+  header,
+  param,
+  query,
+} from './validation-chain-builders';
 
 let req: InternalRequest;
 beforeEach(() => {

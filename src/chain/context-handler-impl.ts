@@ -1,5 +1,5 @@
-import { Context } from "../context";
-import { ContextHandler, OptionalOptions } from "./context-handler";
+import { Context } from '../context';
+import { ContextHandler, OptionalOptions } from './context-handler';
 
 export class ContextHandlerImpl<Chain> implements ContextHandler<Chain> {
   constructor(private readonly context: Context, private readonly chain: Chain) {}

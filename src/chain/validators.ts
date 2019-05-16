@@ -50,7 +50,10 @@ export interface Validators<Return> {
   isMACAddress(): Return;
   isMD5(): Return;
   isMimeType(): Return;
-  isMobilePhone(locale: validator.MobilePhoneLocale, options?: validator.Options.IsMobilePhoneOptions): Return;
+  isMobilePhone(
+    locale: validator.MobilePhoneLocale,
+    options?: validator.Options.IsMobilePhoneOptions
+  ): Return;
   isMongoId(): Return;
   isMultibyte(): Return;
   isNumeric(options?: validator.Options.IsNumericOptions): Return;

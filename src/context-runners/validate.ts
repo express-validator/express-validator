@@ -1,6 +1,6 @@
-import { Context } from "../context";
-import { ContextRunner, FieldInstance } from "./context-runner";
-import { Request, ValidationError } from "../base";
+import { Context } from '../context';
+import { ContextRunner, FieldInstance } from './context-runner';
+import { Request, ValidationError } from '../base';
 
 class UnknownError extends Error {
   constructor() {
@@ -31,13 +31,15 @@ export class Validate implements ContextRunner {
         try {
           await promise;
 
-          const result = validation.custom === true
-            ? validation.validator(value, { req, location, path })
-            : validation.validator(toString(value), ...validation.options);
+          const result =
+            validation.custom === true
+              ? validation.validator(value, { req, location, path })
+              : validation.validator(toString(value), ...validation.options);
 
           const actualResult = await result;
           const isPromise = result && result.then;
-          const failed = (!validation.negated && !actualResult) || (validation.negated && actualResult);
+          const failed =
+            (!validation.negated && !actualResult) || (validation.negated && actualResult);
 
           // If the result was a promise, and the execution flow reached here, this means the
           // promise didn't throw, so it should succeed.
@@ -82,5 +84,4 @@ export class Validate implements ContextRunner {
       path: instance.path,
     });
   }
-
 }

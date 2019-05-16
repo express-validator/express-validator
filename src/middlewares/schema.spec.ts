@@ -1,4 +1,4 @@
-import { checkSchema } from "./schema";
+import { checkSchema } from './schema';
 
 it('creates a validation chain for each field in the schema', () => {
   const chains = checkSchema({
@@ -27,19 +27,16 @@ describe('locations', () => {
       foo: {},
     })[0];
 
-    expect(chain.context.locations).toEqual([
-      'body',
-      'cookies',
-      'headers',
-      'params',
-      'query',
-    ]);
+    expect(chain.context.locations).toEqual(['body', 'cookies', 'headers', 'params', 'query']);
   });
 
   it('includes all of the specified ones', () => {
-    const chain = checkSchema({
-      foo: {},
-    }, ['headers', 'cookies'])[0];
+    const chain = checkSchema(
+      {
+        foo: {},
+      },
+      ['headers', 'cookies']
+    )[0];
 
     expect(chain.context.locations).toEqual(['headers', 'cookies']);
   });

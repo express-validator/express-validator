@@ -4,23 +4,23 @@ import { DynamicMessageCreator, Location } from '../base';
 import { check } from './check';
 import { OptionalOptions, ValidatorsImpl } from '../chain';
 
-type ValidatorSchemaOptions<K extends keyof Validators<any>> = true | {
-  options?: (Parameters<Validators<any>[K]>|Parameters<Validators<any>[K]>[0]);
-  errorMessage?: any;
-  negated?: boolean;
-};
+type ValidatorSchemaOptions<K extends keyof Validators<any>> =
+  | true
+  | {
+      options?: Parameters<Validators<any>[K]> | Parameters<Validators<any>[K]>[0];
+      errorMessage?: any;
+      negated?: boolean;
+    };
 
-export type ValidatorsSchema = {
-  [K in keyof Validators<any>]?: ValidatorSchemaOptions<K>;
-};
+export type ValidatorsSchema = { [K in keyof Validators<any>]?: ValidatorSchemaOptions<K> };
 
-type SanitizerSchemaOptions<K extends keyof Sanitizers<any>> = true | {
-  options?: (Parameters<Sanitizers<any>[K]>|Parameters<Sanitizers<any>[K]>[0]);
-};
+type SanitizerSchemaOptions<K extends keyof Sanitizers<any>> =
+  | true
+  | {
+      options?: Parameters<Sanitizers<any>[K]> | Parameters<Sanitizers<any>[K]>[0];
+    };
 
-export type SanitizersSchema = {
-  [K in keyof Sanitizers<any>]?: SanitizerSchemaOptions<K>;
-};
+export type SanitizersSchema = { [K in keyof Sanitizers<any>]?: SanitizerSchemaOptions<K> };
 
 type InternalParamSchema = ValidatorsSchema & SanitizersSchema;
 
@@ -52,32 +52,29 @@ export type ValidationSchema = Schema;
 const validLocations: Location[] = ['body', 'cookies', 'headers', 'params', 'query'];
 const protectedNames = ['errorMessage', 'in'];
 
-export function checkSchema(
-  schema: Schema,
-  defaultLocations: Location[] = validLocations,
-) {
+export function checkSchema(schema: Schema, defaultLocations: Location[] = validLocations) {
   return Object.keys(schema).map(field => {
     const config = schema[field];
-    const chain = check(
-      field,
-      ensureLocations(config, defaultLocations),
-      config.errorMessage,
-    );
+    const chain = check(field, ensureLocations(config, defaultLocations), config.errorMessage);
 
     Object.keys(config)
-      .filter((method: keyof ParamSchema): method is keyof InternalParamSchema => {
-        return config[method] && !protectedNames.includes(method);
-      })
+      .filter(
+        (method: keyof ParamSchema): method is keyof InternalParamSchema => {
+          return config[method] && !protectedNames.includes(method);
+        }
+      )
       .forEach(method => {
         if (typeof chain[method] !== 'function') {
-          console.warn(`express-validator: a validator/sanitizer with name ${method} does not exist`);
+          console.warn(
+            `express-validator: a validator/sanitizer with name ${method} does not exist`
+          );
           return;
         }
 
         // Using "!" because typescript doesn't know it isn't undefined.
         const methodCfg = config[method]!;
 
-        let options: any[] = methodCfg === true ? [] : (methodCfg.options || []);
+        let options: any[] = methodCfg === true ? [] : methodCfg.options || [];
         if (options != null && !Array.isArray(options)) {
           options = [options];
         }
@@ -97,14 +94,19 @@ export function checkSchema(
   });
 }
 
-function isValidatorOptions(method: string, methodCfg: any): methodCfg is Exclude<ValidatorSchemaOptions<any>, true> {
+function isValidatorOptions(
+  method: string,
+  methodCfg: any
+): methodCfg is Exclude<ValidatorSchemaOptions<any>, true> {
   return methodCfg !== true && method in ValidatorsImpl.prototype;
 }
 
 function ensureLocations(config: ParamSchema, defaults: Location[]) {
   // .filter(Boolean) is done because in can be undefined -- which is not going away from the type
   // See https://github.com/Microsoft/TypeScript/pull/29955 for details
-  const locations = Array.isArray(config.in) ? config.in : ([config.in].filter(Boolean) as Location[]);
+  const locations = Array.isArray(config.in)
+    ? config.in
+    : ([config.in].filter(Boolean) as Location[]);
   const actualLocations = locations.length ? locations : defaults;
 
   return actualLocations.filter(location => validLocations.includes(location));
