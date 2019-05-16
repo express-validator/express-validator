@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { Location, Request, contextsSymbol, InternalRequest, errorsSymbol } from './base';
+import { Location, Request, contextsSymbol, InternalRequest, errorsSymbol, failedOneOfContextsSymbol } from './base';
 import { SelectFields, RemoveOptionals, FieldInstance, EnsureInstance, ContextRunner } from './context-runners';
 import { Context } from './context';
 
@@ -47,6 +47,7 @@ function createFieldExtractor(req: Request, removeOptionals: boolean) {
 
 function createValidityFilter(req: InternalRequest, onlyValidData = true) {
   const errors = req[errorsSymbol] || [];
+  const failedOneOfContexts = req[failedOneOfContextsSymbol] || [];
 
   return !onlyValidData ? () => true : (field: FieldInstanceBag) => {
     const hasError = errors.some(error => (
@@ -54,7 +55,9 @@ function createValidityFilter(req: InternalRequest, onlyValidData = true) {
       && error.param === field.instance.path
     ));
 
-    return !hasError;
+    const failedWithinOneOf = failedOneOfContexts.includes(field.context);
+
+    return !(hasError || failedWithinOneOf);
   };
 }
 

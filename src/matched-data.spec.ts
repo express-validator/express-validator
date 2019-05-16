@@ -1,5 +1,6 @@
 import { check } from './middlewares/validation-chain-builders';
 import { matchedData } from './matched-data';
+import { oneOf } from './middlewares/one-of';
 
 it('works if no validation or sanitization chains ran', () => {
   expect(matchedData({})).toEqual({});
@@ -31,6 +32,23 @@ it('includes data that was validated with wildcards', done => {
       bar: { baz: { qux: 4 } }
     });
 
+    done();
+  });
+});
+
+it('does not include valid data from invalid oneOf() chain group', done => {
+  const req = {
+    query: { foo: 'foo', bar: 123, baz: 'baz' }
+  };
+
+  oneOf([
+    [check('foo').equals('foo'), check('bar').not().isInt()],
+    [check('baz').equals('baz'), check('bar').isInt()],
+  ])(req, {}, () => {
+    expect(matchedData(req)).toEqual({
+      bar: 123,
+      baz: 'baz'
+    });
     done();
   });
 });
