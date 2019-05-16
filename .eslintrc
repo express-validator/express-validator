@@ -1,54 +1,63 @@
 {
   "root": true,
   "env": {
-    "browser": true,
     "node": true
   },
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": 6
+    "ecmaVersion": 2016,
+    "sourceType": "module"
   },
+  "plugins": ["@typescript-eslint"],
   "globals": {},
   "rules": {
-    "dot-notation": "off",
+    // Possible errors
+    "no-empty": [ "error", {
+      "allowEmptyCatch": true
+    }],
+
+    // Best practices
     "curly": [ "error", "all" ],
     "eqeqeq": [ "error", "always", {
       "null": "ignore"
     }],
-    "indent": [ "error", 2, {
-      "SwitchCase": 1
-    }],
-    "no-use-before-define": [ "error", {
-      "functions": false
-    }],
-    "new-cap": "error",
-    "no-unused-vars": "error",
-    "no-bitwise": "error",
     "no-caller": "error",
-    "no-empty": [ "error", {
-      "allowEmptyCatch": true
-    }],
     "no-new": "error",
+    "no-with": "error",
+
+    // Stylistic issues
     "brace-style": [ "error", "1tbs", {
       "allowSingleLine": true
     }],
-    "no-with": "error",
+    "comma-dangle": [ "error", "always-multiline" ],
+    "comma-style": [ "error", "last" ],
+    "func-call-spacing": ["error", "never"],
+    "indent": [ "error", 2, {
+      "SwitchCase": 1
+    }],
+    "no-trailing-spaces": "error",
     "key-spacing": [ "error", {
       "beforeColon": false,
       "afterColon": true
     }],
-    "space-unary-ops": [ "error", {
-      "words": false,
-      "nonwords": false
-    }],
+    "keyword-spacing": "error",
+    "new-cap": "error",
+    "no-bitwise": "error",
     "space-before-function-paren": [ "error", {
       "anonymous": "ignore",
       "named": "never"
     }],
-    "no-spaced-func": "error",
-    "comma-dangle": [ "error", "never" ],
-    "no-trailing-spaces": "error",
-    "comma-style": [ "error", "last" ],
     "space-infix-ops": "error",
-    "keyword-spacing": "error"
+    "space-unary-ops": [ "error", {
+      "words": false,
+      "nonwords": false
+    }],
+
+    // Variables
+    "no-use-before-define": [ "error", {
+      "functions": false
+    }],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "error"
   }
 }
