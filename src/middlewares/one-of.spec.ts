@@ -1,16 +1,16 @@
-import { errorsSymbol, InternalRequest, failedOneOfContextsSymbol } from '../base';
+import { InternalRequest, errorsSymbol, failedOneOfContextsSymbol } from '../base';
 import { check } from './validation-chain-builders';
 import { oneOf } from './one-of';
 
 describe('with a list of chains', () => {
   it('sets a single error for the _error key', done => {
     const req: InternalRequest = {
-      cookies: { foo: true, bar: 'def' }
+      cookies: { foo: true, bar: 'def' },
     };
 
     oneOf([
       check('foo').isInt(),
-      check('bar').isInt()
+      check('bar').isInt(),
     ])(req, {}, () => {
       expect(req[errorsSymbol]).toHaveLength(1);
       expect(req[errorsSymbol]).toContainEqual(expect.objectContaining({
@@ -27,7 +27,7 @@ describe('with a list of chains', () => {
 
   it('does not set an error if any chain succeeded', done => {
     const req: InternalRequest = {
-      cookies: { foo: true, bar: 123 }
+      cookies: { foo: true, bar: 123 },
     };
 
     oneOf([
@@ -43,7 +43,7 @@ describe('with a list of chains', () => {
 describe('with a list of chain groups', () => {
   it('sets a single error for the _error key', done => {
     const req: InternalRequest = {
-      cookies: { foo: true, bar: 'def', baz: 123 }
+      cookies: { foo: true, bar: 'def', baz: 123 },
     };
 
     oneOf([
@@ -66,7 +66,7 @@ describe('with a list of chain groups', () => {
 
   it('does not set an error if any chain group succeeded', done => {
     const req: InternalRequest = {
-      cookies: { foo: true, bar: 'def', baz: 'qux' }
+      cookies: { foo: true, bar: 'def', baz: 'qux' },
     };
 
     oneOf([
@@ -81,7 +81,7 @@ describe('with a list of chain groups', () => {
 
 it('concats to validation errors thrown by previous middlewares', done => {
   const req: InternalRequest = {
-    params: { foo: 'bla' }
+    params: { foo: 'bla' },
   };
   check('foo').isInt()(req, {}, () => {
     oneOf([ check('bar').exists() ])(req, {}, () => {
@@ -93,7 +93,7 @@ it('concats to validation errors thrown by previous middlewares', done => {
 
 it('concats to failed validation contexts from previous oneOf()s', done => {
   const req: InternalRequest = {
-    params: { foo: 'bla' }
+    params: { foo: 'bla' },
   };
 
   const chain1 = check('foo').isInt();
@@ -115,7 +115,7 @@ it('concats to failed validation contexts from previous oneOf()s', done => {
 describe('error message', () => {
   it('is "Invalid value(s)" by default', done => {
     const req: InternalRequest = {
-      body: { foo: true }
+      body: { foo: true },
     };
 
     oneOf([check('foo').isInt()])(req, {}, () => {
@@ -126,7 +126,7 @@ describe('error message', () => {
 
   it('can be a custom one', done => {
     const req: InternalRequest = {
-      body: { foo: true }
+      body: { foo: true },
     };
 
     oneOf([check('foo').isInt()], 'not today')(req, {}, () => {
@@ -137,7 +137,7 @@ describe('error message', () => {
 
   it('can be the return of a function', done => {
     const req: InternalRequest = {
-      body: { foo: true }
+      body: { foo: true },
     };
 
     const message = jest.fn(() => 'keep trying');

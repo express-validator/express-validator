@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { ValidationChain } from '../chain';
-import { Request, middlewareModeSymbol, errorsSymbol, InternalRequest, ValidationError, failedOneOfContextsSymbol } from '../base';
+import { InternalRequest, Request, ValidationError, errorsSymbol, failedOneOfContextsSymbol, middlewareModeSymbol } from '../base';
 
 export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?: any) {
   return async (req: InternalRequest, _res: any, next: (err?: any) => void) => {

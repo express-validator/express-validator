@@ -17,7 +17,7 @@ it('returns same instances if context is compulsory', async () => {
     path: 'x-csrf-token',
     originalPath: 'x-csrf-token',
     value: 'bla',
-    originalValue: 'bla'
+    originalValue: 'bla',
   }];
   const newInstances = await runner.run(req, new Context([], []), oldInstances);
 
@@ -30,7 +30,7 @@ it('filters out instances whose value are undefined if context can be undefined'
     path: 'x-csrf-token',
     originalPath: 'x-csrf-token',
     value: 'bla',
-    originalValue: 'bla'
+    originalValue: 'bla',
   }, {
     location: 'headers',
     path: 'content-type',
@@ -53,7 +53,7 @@ it('filters out instances whose value are null if context can be nullable', asyn
     path: 'x-csrf-token',
     originalPath: 'x-csrf-token',
     value: 'bla',
-    originalValue: 'bla'
+    originalValue: 'bla',
   }, {
     location: 'headers',
     path: 'content-type',
@@ -76,7 +76,7 @@ it('filters out instances whose value are undefined if context can be falsy', as
     path: 'x-csrf-token',
     originalPath: 'x-csrf-token',
     value: 0,
-    originalValue: 0
+    originalValue: 0,
   }, {
     location: 'headers',
     path: 'content-type',

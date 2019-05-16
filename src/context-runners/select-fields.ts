@@ -1,10 +1,10 @@
 import * as _ from 'lodash';
-import { Request, Location } from '../base';
+import { Location, Request } from '../base';
 import { Context } from '../context';
 import { ContextRunner, FieldInstance } from './context-runner';
 
 export class SelectFields implements ContextRunner {
-  run(req: Request, context: Context, _instances: FieldInstance[]) {
+  run(req: Request, context: Context) {
     return _(context.fields)
       .flatMap(field => _.flatMap(context.locations, location => {
         return this.expandField(req, field, location);
@@ -27,7 +27,7 @@ export class SelectFields implements ContextRunner {
         path,
         originalPath,
         value,
-        originalValue: value
+        originalValue: value,
       };
     });
   }

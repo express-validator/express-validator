@@ -1,5 +1,5 @@
 import { Validate, toString } from './validate';
-import { Request, StandardValidator } from '../base';
+import { Request } from '../base';
 import { Context } from '../context';
 import { FieldInstance } from './context-runner';
 

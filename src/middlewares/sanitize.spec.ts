@@ -1,5 +1,5 @@
 import { defaultRunners, sanitize } from './sanitize';
-import { PersistBack, Sanitize, EnsureInstance, RemoveOptionals, SelectFields, ContextRunner, FieldInstance } from '../context-runners';
+import { ContextRunner, EnsureInstance, FieldInstance, PersistBack, RemoveOptionals, Sanitize, SelectFields } from '../context-runners';
 import { SanitizersImpl } from '../chain';
 import { InternalRequest, contextsSymbol } from '../base';
 
@@ -25,8 +25,8 @@ it('has a default list of runners', () => {
 it('has sanitizer methods', () => {
   const chain = sanitize('foo');
   Object.keys(SanitizersImpl.prototype).forEach(method => {
-    expect(chain).toHaveProperty(method);
-    expect(typeof (chain as any)[method]).toBe('function');
+    const fn = (chain as any)[method];
+    expect(typeof fn).toBe('function');
   });
 });
 

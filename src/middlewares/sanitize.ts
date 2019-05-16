@@ -1,10 +1,10 @@
 import {
-  SanitizersImpl,
   SanitizationChain,
+  SanitizersImpl,
 } from '../chain';
 import { Context } from '../context';
-import { Location, InternalRequest, contextsSymbol } from '../base';
-import { SelectFields, Sanitize, PersistBack, EnsureInstance, RemoveOptionals, ContextRunner } from '../context-runners';
+import { InternalRequest, Location, contextsSymbol } from '../base';
+import { ContextRunner, EnsureInstance, PersistBack, RemoveOptionals, Sanitize, SelectFields } from '../context-runners';
 import { bindAll } from '../utils';
 
 // This list of runners is here so it can be checked/extended by tests

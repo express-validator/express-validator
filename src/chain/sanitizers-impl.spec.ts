@@ -93,7 +93,7 @@ describe('#customSanitizer()', () => {
 
     expect(ret).toBe(chain);
     expect(context.addSanitization).toHaveBeenCalledWith(sanitizer, {
-      custom: true
+      custom: true,
     });
   });
 });

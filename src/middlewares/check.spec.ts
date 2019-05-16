@@ -1,7 +1,7 @@
 import { ContextHandlerImpl, SanitizersImpl, ValidatorsImpl } from '../chain';
-import { errorsSymbol, InternalRequest, contextsSymbol } from '../base';
-import { SelectFields, Sanitize, PersistBack, EnsureInstance, RemoveOptionals, Validate, ContextRunner, FieldInstance } from '../context-runners';
-import { defaultRunners, check } from './check';
+import { InternalRequest, contextsSymbol, errorsSymbol } from '../base';
+import { ContextRunner, EnsureInstance, FieldInstance, PersistBack, RemoveOptionals, Sanitize, SelectFields, Validate } from '../context-runners';
+import { check, defaultRunners } from './check';
 
 // Some tests might change the list of runners, so we keep the original list and reset it afterwards
 const originalRunners = defaultRunners.slice();
@@ -26,24 +26,24 @@ it('has a default list of runners', () => {
 it('has context handler methods', () => {
   const chain = check('foo');
   Object.keys(ContextHandlerImpl.prototype).forEach(method => {
-    expect(chain).toHaveProperty(method);
-    expect(typeof (chain as any)[method]).toBe('function');
+    const fn = (chain as any)[method];
+    expect(typeof fn).toBe('function');
   });
 });
 
 it('has sanitizer methods', () => {
   const chain = check('foo');
   Object.keys(SanitizersImpl.prototype).forEach(method => {
-    expect(chain).toHaveProperty(method);
-    expect(typeof (chain as any)[method]).toBe('function');
+    const fn = (chain as any)[method];
+    expect(typeof fn).toBe('function');
   });
 });
 
 it('has validator methods', () => {
   const chain = check('foo');
   Object.keys(ValidatorsImpl.prototype).forEach(method => {
-    expect(chain).toHaveProperty(method);
-    expect(typeof (chain as any)[method]).toBe('function');
+    const fn = (chain as any)[method];
+    expect(typeof fn).toBe('function');
   });
 });
 

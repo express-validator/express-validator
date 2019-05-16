@@ -9,5 +9,5 @@ export interface ValidationChain extends
   Sanitizers<ValidationChain>,
   ContextHandler<ValidationChain> {
     (req: Request, res: any, next: (error?: any) => void): void;
-    context: ReadonlyContext
+    context: ReadonlyContext;
   }

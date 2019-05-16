@@ -1,4 +1,3 @@
-import { Request } from "../base";
 import { Context } from "../context";
 import { PersistBack } from "./persist-back";
 import { FieldInstance } from "./context-runner";
@@ -14,7 +13,7 @@ it('persists current selected instances back on req', () => {
   const req = {
     body: {},
     query: {},
-    cookies: {}
+    cookies: {},
   };
 
   const instances: FieldInstance[] = [{

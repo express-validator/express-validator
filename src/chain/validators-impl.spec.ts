@@ -58,7 +58,7 @@ describe('#custom()', () => {
 
     expect(ret).toBe(chain);
     expect(context.addValidation).toHaveBeenCalledWith(validator, {
-      custom: true
+      custom: true,
     });
   });
 });
@@ -69,7 +69,7 @@ describe('#exists()', () => {
 
     expect(ret).toBe(chain);
     expect(context.addValidation).toHaveBeenCalledWith(expect.any(Function), {
-      custom: true
+      custom: true,
     });
   });
 
@@ -121,7 +121,7 @@ describe('#isString()', () => {
 
     expect(ret).toBe(chain);
     expect(context.addValidation).toHaveBeenCalledWith(expect.any(Function), {
-      custom: true
+      custom: true,
     });
   });
 
@@ -146,7 +146,7 @@ describe('#isArray()', () => {
 
     expect(ret).toBe(chain);
     expect(context.addValidation).toHaveBeenCalledWith(expect.any(Function), {
-      custom: true
+      custom: true,
     });
   });
 

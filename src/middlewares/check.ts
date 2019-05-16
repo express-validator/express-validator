@@ -1,12 +1,12 @@
 import {
   ContextHandlerImpl,
   SanitizersImpl,
+  ValidationChain,
   ValidatorsImpl,
-  ValidationChain
 } from '../chain';
 import { Context } from '../context';
-import { contextsSymbol, errorsSymbol, Location, InternalRequest, middlewareModeSymbol } from '../base';
-import { SelectFields, Sanitize, PersistBack, EnsureInstance, RemoveOptionals, Validate, ContextRunner } from '../context-runners';
+import { InternalRequest, Location, contextsSymbol, errorsSymbol, middlewareModeSymbol } from '../base';
+import { ContextRunner, EnsureInstance, PersistBack, RemoveOptionals, Sanitize, SelectFields, Validate } from '../context-runners';
 import { bindAll } from '../utils';
 
 // This list of runners is here so it can be checked/extended by tests
