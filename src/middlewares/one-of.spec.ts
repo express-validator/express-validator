@@ -17,7 +17,7 @@ describe('with a list of chains', () => {
             expect.objectContaining({ param: 'foo' }),
             expect.objectContaining({ param: 'bar' }),
           ]),
-        })
+        }),
       );
 
       done();
@@ -52,7 +52,7 @@ describe('with a list of chain groups', () => {
             expect.objectContaining({ param: 'bar' }),
             expect.objectContaining({ param: 'baz' }),
           ]),
-        })
+        }),
       );
 
       done();

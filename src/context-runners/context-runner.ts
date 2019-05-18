@@ -13,6 +13,6 @@ export interface ContextRunner {
   run(
     req: Request,
     context: Context,
-    instances: FieldInstance[]
+    instances: FieldInstance[],
   ): Promise<FieldInstance[]> | FieldInstance[];
 }

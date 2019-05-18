@@ -61,12 +61,12 @@ export function checkSchema(schema: Schema, defaultLocations: Location[] = valid
       .filter(
         (method: keyof ParamSchema): method is keyof InternalParamSchema => {
           return config[method] && !protectedNames.includes(method);
-        }
+        },
       )
       .forEach(method => {
         if (typeof chain[method] !== 'function') {
           console.warn(
-            `express-validator: a validator/sanitizer with name ${method} does not exist`
+            `express-validator: a validator/sanitizer with name ${method} does not exist`,
           );
           return;
         }
@@ -96,7 +96,7 @@ export function checkSchema(schema: Schema, defaultLocations: Location[] = valid
 
 function isValidatorOptions(
   method: string,
-  methodCfg: any
+  methodCfg: any,
 ): methodCfg is Exclude<ValidatorSchemaOptions<any>, true> {
   return methodCfg !== true && method in ValidatorsImpl.prototype;
 }

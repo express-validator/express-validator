@@ -31,7 +31,7 @@ export const defaultRunners: ({ new (): ContextRunner })[] = [
 export function check(
   fields: string | string[],
   locations: Location[] = [],
-  message?: any
+  message?: any,
 ): ValidationChain {
   const context = new Context(Array.isArray(fields) ? fields : [fields], locations, message);
 
@@ -41,7 +41,7 @@ export function check(
     try {
       await runners.reduce(
         async (instances, runner) => runner.run(req, context, await instances),
-        Promise.resolve([])
+        Promise.resolve([]),
       );
     } catch (err) {
       // We hope to throw only errors from the Validate runner.
@@ -63,6 +63,6 @@ export function check(
     bindAll(new SanitizersImpl(context, middleware as any)),
     bindAll(new ValidatorsImpl(context, middleware as any)),
     bindAll(new ContextHandlerImpl(context, middleware as any)),
-    { context }
+    { context },
   );
 }

@@ -21,7 +21,7 @@ export function matchedData(
     includeOptionals?: boolean;
     locations?: Location[];
     onlyValidData?: boolean;
-  } = {}
+  } = {},
 ) {
   const internalReq: InternalRequest = req;
 
@@ -63,7 +63,8 @@ function createValidityFilter(req: InternalRequest, onlyValidData = true) {
     ? () => true
     : (field: FieldInstanceBag) => {
         const hasError = errors.some(
-          error => error.location === field.instance.location && error.param === field.instance.path
+          error =>
+            error.location === field.instance.location && error.param === field.instance.path,
         );
 
         const failedWithinOneOf = failedOneOfContexts.includes(field.context);

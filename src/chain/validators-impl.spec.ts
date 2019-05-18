@@ -23,7 +23,7 @@ it('has methods for all standard validators', () => {
     .filter(
       (key): key is keyof Validators<any> => {
         return key.startsWith('is') && typeof validatorModule[key] === 'function';
-      }
+      },
     )
     .forEach(key => {
       expect(validators).toHaveProperty(key);

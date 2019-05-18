@@ -23,7 +23,7 @@ export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?:
       chains.map(async chain => {
         const group = Array.isArray(chain) ? chain : [chain];
         return Promise.all(group.map(run)).then(errors => _.flatten(errors));
-      })
+      }),
     );
 
     const failedContexts = _(allErrors)

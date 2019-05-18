@@ -9,7 +9,7 @@ export class SelectFields implements ContextRunner {
       .flatMap(field =>
         _.flatMap(context.locations, location => {
           return this.expandField(req, field, location);
-        })
+        }),
       )
       .uniqWith<FieldInstance>(_.isEqual)
       .value();
@@ -53,7 +53,7 @@ export class SelectFields implements ContextRunner {
             // The part that the * matched
             .concat(key)
             // After the *
-            .concat(segments.slice(wildcardPos + 1))
+            .concat(segments.slice(wildcardPos + 1)),
         )
         .forEach(subPath => {
           this.expandPath(object, subPath, accumulator);

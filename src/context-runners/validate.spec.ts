@@ -69,8 +69,8 @@ it('throws errors if validator returns falsy', async () => {
         location: instance.location,
         param: instance.path,
         value: instance.originalValue,
-      })
-    )
+      }),
+    ),
   );
 
   await expect(runner.run(req, context, fieldInstances)).rejects.toEqual(expectation);
@@ -87,8 +87,8 @@ it('throws errors if validator rejects', async () => {
         location: instance.location,
         param: instance.path,
         value: instance.originalValue,
-      })
-    )
+      }),
+    ),
   );
 
   await expect(runner.run(req, context, fieldInstances)).rejects.toEqual(expectation);
@@ -164,8 +164,8 @@ describe('error messages', () => {
       fieldInstances.map(() =>
         expect.objectContaining({
           msg: 'Invalid value',
-        })
-      )
+        }),
+      ),
     );
 
     await expect(runner.run(req, context, fieldInstances)).rejects.toEqual(expectation);
@@ -179,8 +179,8 @@ describe('error messages', () => {
       fieldInstances.map(() =>
         expect.objectContaining({
           msg: 'u fail',
-        })
-      )
+        }),
+      ),
     );
 
     await expect(runner.run(req, context, fieldInstances)).rejects.toEqual(expectation);
@@ -192,15 +192,15 @@ describe('error messages', () => {
       () => {
         throw 'nope :(';
       },
-      { custom: false }
+      { custom: false },
     );
 
     const expectation = expect.arrayContaining(
       fieldInstances.map(() =>
         expect.objectContaining({
           msg: 'nope :(',
-        })
-      )
+        }),
+      ),
     );
 
     await expect(runner.run(req, context, fieldInstances)).rejects.toEqual(expectation);
@@ -212,15 +212,15 @@ describe('error messages', () => {
       () => {
         throw new Error('nope :(');
       },
-      { custom: false }
+      { custom: false },
     );
 
     const expectation = expect.arrayContaining(
       fieldInstances.map(() =>
         expect.objectContaining({
           msg: 'nope :(',
-        })
-      )
+        }),
+      ),
     );
 
     await expect(runner.run(req, context, fieldInstances)).rejects.toEqual(expectation);
@@ -232,7 +232,7 @@ describe('error messages', () => {
       () => {
         throw new Error('nope :(');
       },
-      { custom: false }
+      { custom: false },
     );
     context.validations[0].message = 'dang';
 
@@ -240,8 +240,8 @@ describe('error messages', () => {
       fieldInstances.map(() =>
         expect.objectContaining({
           msg: 'dang',
-        })
-      )
+        }),
+      ),
     );
 
     await expect(runner.run(req, context, fieldInstances)).rejects.toEqual(expectation);
@@ -256,8 +256,8 @@ describe('error messages', () => {
       fieldInstances.map(() =>
         expect.objectContaining({
           msg: 'bla',
-        })
-      )
+        }),
+      ),
     );
 
     await expect(runner.run(req, context, fieldInstances)).rejects.toEqual(expectation);

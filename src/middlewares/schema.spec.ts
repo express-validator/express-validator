@@ -35,7 +35,7 @@ describe('locations', () => {
       {
         foo: {},
       },
-      ['headers', 'cookies']
+      ['headers', 'cookies'],
     )[0];
 
     expect(chain.context.locations).toEqual(['headers', 'cookies']);

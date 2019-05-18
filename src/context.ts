@@ -72,7 +72,7 @@ export class Context {
     meta: {
       custom: boolean;
       options?: any[];
-    }
+    },
   ) {
     if (meta.custom === true) {
       this._validations.push({
@@ -111,7 +111,7 @@ export class Context {
     meta: {
       custom: boolean;
       options?: any[];
-    }
+    },
   ) {
     if (meta.custom) {
       this._sanitizations.push({

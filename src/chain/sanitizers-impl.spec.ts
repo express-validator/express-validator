@@ -24,7 +24,7 @@ it('has methods for all standard validators', () => {
         return (
           key.startsWith('to') && typeof validatorModule[key] === 'function' && key !== 'toString'
         );
-      }
+      },
     )
     .forEach(key => {
       expect(sanitizers).toHaveProperty(key);

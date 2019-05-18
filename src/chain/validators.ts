@@ -52,7 +52,7 @@ export interface Validators<Return> {
   isMimeType(): Return;
   isMobilePhone(
     locale: validator.MobilePhoneLocale,
-    options?: validator.Options.IsMobilePhoneOptions
+    options?: validator.Options.IsMobilePhoneOptions,
   ): Return;
   isMongoId(): Return;
   isMultibyte(): Return;

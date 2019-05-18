@@ -29,7 +29,7 @@ export function sanitize(fields: string | string[], locations: Location[] = []):
     try {
       await runners.reduce(
         async (instances, runner) => runner.run(req, context, await instances),
-        Promise.resolve([])
+        Promise.resolve([]),
       );
     } catch (err) {
       return next(err);

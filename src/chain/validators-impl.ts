@@ -170,7 +170,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   }
   isMobilePhone(
     locale: validator.MobilePhoneLocale,
-    options?: validator.Options.IsMobilePhoneOptions
+    options?: validator.Options.IsMobilePhoneOptions,
   ) {
     return this.addStandardValidation(validator.isMobilePhone, locale, options);
   }

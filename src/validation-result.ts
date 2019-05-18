@@ -16,7 +16,7 @@ export const validationResult = Object.assign(withDefaults<ValidationError>(), w
 export class Result<T = any> {
   constructor(
     private formatter: ErrorFormatter<T>,
-    private readonly errors: ValidationError[] = []
+    private readonly errors: ValidationError[] = [],
   ) {}
 
   array(options?: { onlyFirstError?: boolean }): T[] {
@@ -34,7 +34,7 @@ export class Result<T = any> {
 
         return mapping;
       },
-      {} as Record<string, T>
+      {} as Record<string, T>,
     );
   }
 
@@ -54,7 +54,7 @@ export class Result<T = any> {
 }
 
 function withDefaults<T = any>(
-  options: Partial<ResultFactoryBuilderOptions<T>> = {}
+  options: Partial<ResultFactoryBuilderOptions<T>> = {},
 ): ResultFactory<T> {
   const defaults: ResultFactoryBuilderOptions<ValidationError> = {
     formatter: error => error,
