@@ -8,7 +8,7 @@ npm-debug.log*
 *.iml
 
 # Misc
-coverage
-.nyc_output
-build
+/lib
+/coverage
+/website/build
 .DS_Store
