@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-    "allowJs": true,
+    "allowJs": false,
     "module": "commonjs",
     "moduleResolution": "node",
     "target": "es6",
     "charset": "utf-8",
     "lib": [
+      "dom",
       "es6",
       "es2016.array.include",
       "es2017.object"
@@ -16,11 +17,7 @@
     "noImplicitThis": true,
     "noUnusedParameters": true,
     "strictNullChecks": true,
-    "outDir": "./build"
+    "outDir": "./lib"
   },
-  "include": [
-    "**/*.d.ts",
-    "**/*.spec.ts"
-  ],
-  "exclude": [ "node_modules", "coverage" ]
+  "exclude": ["node_modules", "coverage"]
 }
