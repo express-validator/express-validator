@@ -5,14 +5,13 @@
 # Misc
 .editorconfig
 .eslintrc
-.nyc_output
-.nycrc
+.prettierrc
 .travis.yml
+tsconfig.json
 
 # Build artifacts/tests
-build
+*.ts
+!*.d.ts
 coverage
 website
-test
-*.spec.js
-*.spec.ts
+jest.config.js
