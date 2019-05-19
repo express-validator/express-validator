@@ -16,6 +16,7 @@
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
   "scripts": {
+    "clean": "git clean -Xf src check filter",
     "docs:build": "npm --prefix ./website run build",
     "docs:publish": "USE_SSH=true CURRENT_BRANCH=master npm --prefix ./website run publish-gh-pages",
     "docs:start": "npm --prefix ./website start",
