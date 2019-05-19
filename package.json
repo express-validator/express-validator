@@ -21,6 +21,7 @@
     "docs:publish": "USE_SSH=true CURRENT_BRANCH=master npm --prefix ./website run publish-gh-pages",
     "docs:start": "npm --prefix ./website start",
     "docs:version": "npm --prefix ./website run version",
+    "prepublishOnly": "tsc",
     "test": "jest",
     "lint": "eslint 'src/**/*.ts'",
     "report-coverage": "cat coverage/lcov.info | coveralls",
