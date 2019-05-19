@@ -31,12 +31,9 @@ export {
 export {
   checkSchema,
   Schema,
+  ValidationSchema, // Deprecated
   ParamSchema,
-  SanitizersSchema,
-  ValidatorsSchema,
-  // Deprecated exports below
-  ValidationSchema,
-  ValidationParamSchema,
+  ValidationParamSchema, // Deprecated
 } from './middlewares/schema';
 
 export { matchedData } from './matched-data';

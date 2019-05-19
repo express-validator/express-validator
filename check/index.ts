@@ -16,10 +16,8 @@ export {
   // middleware/schema
   checkSchema,
   Schema,
-  ParamSchema,
-  SanitizersSchema,
-  ValidatorsSchema,
   ValidationSchema,
+  ParamSchema,
   ValidationParamSchema,
   // middleware/one-of
   oneOf,

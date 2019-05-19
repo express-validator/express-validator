@@ -8,7 +8,7 @@ type ValidatorSchemaOptions<K extends keyof Validators<any>> =
   | true
   | {
       options?: Parameters<Validators<any>[K]> | Parameters<Validators<any>[K]>[0];
-      errorMessage?: any;
+      errorMessage?: DynamicMessageCreator | any;
       negated?: boolean;
     };
 
