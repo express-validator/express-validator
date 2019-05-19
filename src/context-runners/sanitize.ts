@@ -10,17 +10,16 @@ export class Sanitize implements ContextRunner {
           return prevValue;
         }
 
-        if (sanitization.custom) {
-          return sanitization.sanitizer(prevValue, {
-            req,
-            location: instance.location,
-            path: instance.path,
-          });
-
-          // TypeScript can't do type inference without `if (custom === false)`
-        } else if (sanitization.custom === false) {
+        // TypeScript can't do type inference without `if (custom === false)`
+        if (sanitization.custom === false) {
           return sanitization.sanitizer(prevValue, ...sanitization.options);
         }
+
+        return sanitization.sanitizer(prevValue, {
+          req,
+          location: instance.location,
+          path: instance.path,
+        });
       }, instance.value);
 
       return { ...instance, value };

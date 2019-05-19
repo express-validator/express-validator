@@ -153,6 +153,15 @@ describe('standard validator string conversion', () => {
 
     expect(validator).toHaveBeenCalledWith('foo');
   });
+
+  it('works from object with toString', async () => {
+    fieldInstances[0].value = {
+      toString: () => 'bla',
+    };
+    await runner.run(req, context, fieldInstances);
+
+    expect(validator).toHaveBeenCalledWith('bla');
+  });
 });
 
 describe('error messages', () => {

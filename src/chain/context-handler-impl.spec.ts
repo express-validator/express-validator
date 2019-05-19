@@ -26,6 +26,15 @@ describe('#withMessage()', () => {
     expect(context.validations[0]).not.toHaveProperty('message');
     expect(context.validations[1]).toHaveProperty('message', 'foo');
   });
+
+  it('works with no validation', () => {
+    Object.defineProperty(context, 'validations', {
+      value: [],
+    });
+
+    const setMessage = () => contextHandler.withMessage('foo');
+    expect(setMessage).not.toThrow();
+  });
 });
 
 describe('#optional()', () => {
