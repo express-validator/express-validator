@@ -27,7 +27,7 @@
     "version": "npm run docs:version -- $npm_package_version && git add -A website"
   },
   "engines": {
-    "node": ">= 6.0.0"
+    "node": ">= 8.0.0"
   },
   "dependencies": {
     "lodash": "^4.17.11",
