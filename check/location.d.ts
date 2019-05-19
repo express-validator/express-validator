@@ -1,1 +1,0 @@
-export type Location = 'body' | 'params' | 'query' | 'headers' | 'cookies';
