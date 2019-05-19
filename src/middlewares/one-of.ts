@@ -2,12 +2,21 @@ import * as _ from 'lodash';
 import { ValidationChain } from '../chain';
 import {
   InternalRequest,
+  Middleware,
   Request,
   ValidationError,
   errorsSymbol,
   failedOneOfContextsSymbol,
   middlewareModeSymbol,
 } from '../base';
+
+export type OneOfCustomMessageBuilder = (options: { req: Request }) => any;
+
+export function oneOf(
+  chains: (ValidationChain | ValidationChain[])[],
+  message?: OneOfCustomMessageBuilder,
+): Middleware;
+export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?: any): Middleware;
 
 export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?: any) {
   return async (req: InternalRequest, _res: any, next: (err?: any) => void) => {

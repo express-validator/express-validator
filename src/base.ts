@@ -46,3 +46,5 @@ export interface InternalRequest extends Request {
   [contextsSymbol]?: ReadonlyContext[];
   [middlewareModeSymbol]?: true;
 }
+
+export type Middleware = (req: Request, res: any, next: (err?: any) => void) => void;

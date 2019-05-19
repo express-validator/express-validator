@@ -23,6 +23,7 @@ export {
   ValidationParamSchema,
   // middleware/one-of
   oneOf,
+  OneOfCustomMessageBuilder,
   // validation-result
   validationResult,
   ErrorFormatter,

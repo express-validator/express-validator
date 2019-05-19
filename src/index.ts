@@ -7,7 +7,7 @@ export {
   ValidationError,
 } from './base';
 
-export { oneOf } from './middlewares/one-of';
+export * from './middlewares/one-of';
 
 export {
   sanitize,
