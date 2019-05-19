@@ -13,8 +13,8 @@
     "type": "git",
     "url": "git://github.com/express-validator/express-validator.git"
   },
-  "main": "./index.js",
-  "types": "./index.d.ts",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
   "scripts": {
     "docs:build": "npm --prefix ./website run build",
     "docs:publish": "USE_SSH=true CURRENT_BRANCH=master npm --prefix ./website run publish-gh-pages",
