@@ -5,6 +5,8 @@ export {
   CustomValidator,
   DynamicMessageCreator,
   ValidationError,
+  // chain
+  ValidationChain,
   // middleware/validation-chain-builders
   check,
   body,

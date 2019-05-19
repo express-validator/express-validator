@@ -3,6 +3,8 @@ export {
   Location,
   Meta,
   CustomSanitizer,
+  // chain
+  SanitizationChain,
   // middleware/sanitization-chain-builders
   sanitize,
   sanitizeBody,
@@ -12,4 +14,5 @@ export {
   buildSanitizeFunction,
   // matched-data
   matchedData,
+  MatchedDataOptions,
 } from '../src';

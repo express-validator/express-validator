@@ -15,14 +15,16 @@ interface FieldInstanceBag {
   context: Context;
 }
 
+export type MatchedDataOptions = {
+  includeOptionals: boolean;
+  locations: Location[];
+  onlyValidData: boolean;
+};
+
 export function matchedData(
   req: Request,
-  options: {
-    includeOptionals?: boolean;
-    locations?: Location[];
-    onlyValidData?: boolean;
-  } = {},
-) {
+  options: Partial<MatchedDataOptions> = {},
+): Record<string, any> {
   const internalReq: InternalRequest = req;
 
   const fieldExtractor = createFieldExtractor(req, options.includeOptionals !== true);
