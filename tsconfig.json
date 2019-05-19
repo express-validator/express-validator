@@ -20,5 +20,9 @@
     "strictNullChecks": true,
     "outDir": "./"
   },
-  "exclude": ["node_modules", "coverage"]
+  "exclude": [
+    "node_modules",
+    "coverage",
+    "src/**/*.spec.ts"
+  ]
 }
