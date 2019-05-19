@@ -30,3 +30,8 @@ export {
   Result,
   ResultFactory,
 } from '../src';
+
+console.warn(
+  'express-validator: requires to express-validator/check are deprecated.' +
+    'You should just use require("express-validator") instead.',
+);
