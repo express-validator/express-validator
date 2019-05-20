@@ -1,4 +1,5 @@
-import { Validate, toString } from './validate';
+import { Validate } from './validate';
+import { toString } from '../utils';
 import { Request } from '../base';
 import { Context } from '../context';
 import { FieldInstance } from './context-runner';
