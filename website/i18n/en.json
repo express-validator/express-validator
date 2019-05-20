@@ -11,9 +11,6 @@
       "filter-api": {
         "title": "filter API"
       },
-      "legacy-api": {
-        "title": "Legacy API"
-      },
       "sanitization-chain-api": {
         "title": "Sanitization Chain API"
       },
@@ -44,61 +41,61 @@
       "index": {
         "title": "Getting Started"
       },
-      "version-5.2.0-check-api": {
+      "version-5.2.0/version-5.2.0-check-api": {
         "title": "check API"
       },
-      "version-5.2.0-filter-api": {
+      "version-5.2.0/version-5.2.0-filter-api": {
         "title": "filter API"
       },
-      "version-5.2.0-legacy-api": {
+      "version-5.2.0/version-5.2.0-legacy-api": {
         "title": "Legacy API"
       },
-      "version-5.2.0-sanitization-chain-api": {
+      "version-5.2.0/version-5.2.0-sanitization-chain-api": {
         "title": "Sanitization Chain API"
       },
-      "version-5.2.0-validation-chain-api": {
+      "version-5.2.0/version-5.2.0-validation-chain-api": {
         "title": "Validation Chain API"
       },
-      "version-5.2.0-validation-result-api": {
+      "version-5.2.0/version-5.2.0-validation-result-api": {
         "title": "Validation Result API"
       },
-      "version-5.2.0-custom-validators-sanitizers": {
+      "version-5.2.0/version-5.2.0-custom-validators-sanitizers": {
         "title": "Custom validators/sanitizers"
       },
-      "version-5.2.0-custom-error-messages": {
+      "version-5.2.0/version-5.2.0-custom-error-messages": {
         "title": "Custom Error Messages"
       },
-      "version-5.2.0-sanitization": {
+      "version-5.2.0/version-5.2.0-sanitization": {
         "title": "Sanitization"
       },
-      "version-5.2.0-schema-validation": {
+      "version-5.2.0/version-5.2.0-schema-validation": {
         "title": "Schema Validation"
       },
-      "version-5.2.0-whole-body-validation": {
+      "version-5.2.0/version-5.2.0-whole-body-validation": {
         "title": "Whole Body Validation"
       },
-      "version-5.2.0-wildcards": {
+      "version-5.2.0/version-5.2.0-wildcards": {
         "title": "Wildcards"
       },
-      "version-5.2.0-index": {
+      "version-5.2.0/version-5.2.0-index": {
         "title": "Getting Started"
       },
-      "version-5.3.0-filter-api": {
+      "version-5.3.0/version-5.3.0-filter-api": {
         "title": "filter API"
       },
-      "version-5.3.0-validation-chain-api": {
+      "version-5.3.0/version-5.3.0-validation-chain-api": {
         "title": "Validation Chain API"
       },
-      "version-5.3.0-custom-validators-sanitizers": {
+      "version-5.3.0/version-5.3.0-custom-validators-sanitizers": {
         "title": "Custom validators/sanitizers"
       },
-      "version-5.3.1-check-api": {
+      "version-5.3.1/version-5.3.1-check-api": {
         "title": "check API"
       },
-      "version-5.3.1-custom-validators-sanitizers": {
+      "version-5.3.1/version-5.3.1-custom-validators-sanitizers": {
         "title": "Custom validators/sanitizers"
       },
-      "version-5.3.1-custom-error-messages": {
+      "version-5.3.1/version-5.3.1-custom-error-messages": {
         "title": "Custom Error Messages"
       }
     },
