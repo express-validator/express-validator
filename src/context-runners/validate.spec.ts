@@ -150,9 +150,12 @@ describe('standard validator string conversion', () => {
 
   it('works from array', async () => {
     fieldInstances[0].value = ['foo'];
+    fieldInstances[1].value = ['foo', 'bar'];
     await runner.run(req, context, fieldInstances);
 
-    expect(validator).toHaveBeenCalledWith('foo');
+    expect(validator).toHaveBeenNthCalledWith(1, 'foo');
+    // TODO Should 2+ arrays be narrowed down to the first item of the array?
+    expect(validator).toHaveBeenNthCalledWith(2, 'foo');
   });
 
   it('works from object with toString', async () => {
