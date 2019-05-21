@@ -10,8 +10,8 @@
       "whole-body-validation"
     ],
     "API": [
-      "check-api",
-      "filter-api",
+      "validation-middlewares-api",
+      "sanitization-middlewares-api",
       "sanitization-chain-api",
       "validation-chain-api",
       "validation-result-api"

@@ -1,6 +1,6 @@
 ---
-id: filter-api
-title: filter API
+id: sanitization-middlewares-api
+title: Sanitization middlewares
 ---
 
 These methods are all available via `require('express-validator/filter')`.
