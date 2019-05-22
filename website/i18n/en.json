@@ -5,17 +5,17 @@
     "previous": "Previous",
     "tagline": "express-validator docs",
     "docs": {
-      "sanitization-chain-api": {
-        "title": "Sanitization Chain API"
+      "check-api": {
+        "title": "Validation middlewares"
       },
       "filter-api": {
         "title": "Sanitization middlewares"
       },
+      "sanitization-chain-api": {
+        "title": "Sanitization Chain API"
+      },
       "validation-chain-api": {
         "title": "Validation Chain API"
-      },
-      "check-api": {
-        "title": "Validation middlewares"
       },
       "validation-result-api": {
         "title": "Validation Result"
