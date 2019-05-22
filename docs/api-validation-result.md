@@ -1,11 +1,16 @@
 ---
 id: validation-result-api
-title: Validation Result API
+title: Validation Result
 ---
 
-This is an unified API for dealing with errors, both in legacy and check APIs.
+## `validationResult(req)`
+- `req`: the express request object
+> *Returns:* a [`Result`](#result) object
 
-Each error returned by `.array()` and `.mapped()` methods have the following format by default:
+Extracts the validation errors from a request and makes them available in a [`Result`](#result) object.
+
+Each error returned by [`.array()`](#array-options) and [`.mapped()`](#mapped) methods
+have the following format _by default_:
 
 ```js
 {
@@ -21,13 +26,52 @@ Each error returned by `.array()` and `.mapped()` methods have the following for
 }
 ```
 
-## `.isEmpty()`
+
+### `.withDefaults(options)`
+- `options` *(optional)*: an object of options. Defaults to `{ formatter: error => error }`
+> *Returns:* a new [`validationResult`](#validationresultreq) function, using the provided options
+
+Creates a new `validationResult()`-like function with default options passed to the generated
+[`Result`](#result) instance.
+
+Below is an example which sets a default error formatter:
+
+```js
+const { validationResult } = require('express-validator');
+
+const myValidationResult = validationResult.withDefaults({
+  formatter: (error) => {
+    return {
+      myLocation: error.location,
+    };
+  }
+});
+
+app.post('/create-user', yourValidationChains, (req, res) => {
+  // errors will be like [{ myLocation: 'body' }, { myLocation: 'query' }], etc
+  const errors = myValidationResult(req).array();
+});
+```
+
+## `Result`
+An object that holds the current state of validation errors in a request and allows access to it in
+a variety of ways.
+
+### `.isEmpty()`
 > *Returns:* a boolean indicating whether this result object contains no errors at all.
 
-## `.formatWith(formatter)`
+```js
+app.post('/create-user', yourValidationChains, (req, res) => {
+  const result = validationResult(req);
+  const hasErrors = !result.isEmpty();
+  // do something if hasErrors is true
+});
+```
+
+### `.formatWith(formatter)`
 - `formatter(error)`: the function to use to format when returning errors.  
   The `error` argument is an object in the format of `{ location, msg, param, value, nestedErrors }`, as described above.
-> *Returns:* this validation result instance
+> *Returns:* a new `Result` instance
 
 ```js
 app.post('/create-user', yourValidationChains, (req, res, next) => {
@@ -46,7 +90,7 @@ app.post('/create-user', yourValidationChains, (req, res, next) => {
 });
 ```
 
-## `.array([options])`
+### `.array([options])`
 - `options` *(optional)*: an object of options. Defaults to `{ onlyFirstError: false }`
 > *Returns:* an array of validation errors.
 
@@ -55,12 +99,12 @@ Gets all validation errors contained in this result object.
 If the option `onlyFirstError` is set to `true`, then only the first
 error for each field will be included.
 
-## `.mapped()`
+### `.mapped()`
 > *Returns:* an object where the keys are the field names, and the values are the validation errors
 
 Gets the first validation error of each failed field in the form of an object.
 
-## `.throw()`
+### `.throw()`
 If this result object has errors, then this method will throw an exception
 decorated with the same validation result API.
 
@@ -71,26 +115,4 @@ try {
 } catch (err) {
   console.log(err.mapped()); // Oh noes!
 }
-```
-
-## `.withDefaults(options)`
-- `options` *(optional)*: an object of options. Defaults to `{ formatter: error => error }`
-> *Returns:* a new [`validationResult`](api-check.md#validationresultreq) function is returned, using the provided options
-
-This is useful when you have a consistent set of options you would like to use for all validation results throughout your application.
-
-Below is an example which sets a default error formatter:
-
-```
-const { validationResult } = require('express-validator/check');
-
-const result = validationResult.withDefaults({
-    formatter: (error) => {
-        return {
-            myLocation: error.location,
-        };
-    }
-});
-
-module.exports = result;
 ```

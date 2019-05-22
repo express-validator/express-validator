@@ -9,7 +9,7 @@ That's why you can omit the field to validate and check `req.body` directly:
 ```js
 const bodyParser = require('body-parser');
 const express = require('express');
-const { body } = require('express-validator/check');
+const { body } = require('express-validator');
 
 const app = express();
 

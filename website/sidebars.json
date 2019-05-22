@@ -14,8 +14,7 @@
       "filter-api",
       "sanitization-chain-api",
       "validation-chain-api",
-      "validation-result-api",
-      "legacy-api"
+      "validation-result-api"
     ]
   }
 }

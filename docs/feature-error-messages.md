@@ -14,7 +14,7 @@ When you want fine grained control over the error message of each validator,
 you may specify them using the [`.withMessage()` method](api-validation-chain.md#withmessagemessage).
 
 ```js
-const { check } = require('express-validator/check');
+const { check } = require('express-validator');
 
 app.post('/user', [
   // ...some other validations...
@@ -36,7 +36,7 @@ If you're using a custom validator, then it may very well throw or reject promis
 In these cases, the error gets reported with a message that's equal to what was thrown by the validator:
 
 ```js
-const { check } = require('express-validator/check');
+const { check } = require('express-validator');
 
 app.post('/user', [
   check('email').custom(value => {
@@ -58,12 +58,12 @@ app.post('/user', [
 
 ### Field Level
 Messages can be specified at the field level by using the second parameter of the
-[validation chain creators](api-check.md#check-field-message).
+[validation middlewares](api-check.md#check-field-message).
 
 These messages are used as fall backs when a validator doesn't specify its own message:
 
 ```js
-const { check } = require('express-validator/check');
+const { check } = require('express-validator');
 
 app.post('/user', [
   // ...some other validations...

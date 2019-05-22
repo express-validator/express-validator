@@ -86,4 +86,4 @@ You can customize this behavior by passing an object with the following options:
 Sets the error message for the previous validator.  
 This will have precedence over errors thrown by a custom validator.
 
-To build dynamic messages, see also [Dynamic Messages](feature-dynamic-messages.md).
+To build dynamic messages, see also [Dynamic Messages](feature-error-messages.md#dynamic-messages).

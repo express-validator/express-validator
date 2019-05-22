@@ -1,9 +1,9 @@
 ---
 id: check-api
-title: check API
+title: Validation middlewares
 ---
 
-These methods are all available via `require('express-validator/check')`.
+These methods are all available via `require('express-validator')`.
 
 ## `check([field, message])`
 - `field` *(optional)*: a string or an array of strings of field names to validate against.
@@ -47,7 +47,7 @@ Same as `check([fields, message])`, but only checking `req.query`.
 ## `oneOf(validationChains[, message])`
 - `validationChains`: an array of [validation chains](api-validation-chain.md) created with `check()` or any of its variations,
   or an array of arrays containing validation chains.
-- `message` *(optional)*: an error message to use when all chains failed. Defaults to `Invalid value(s)`; see also [Dynamic Messages](feature-dynamic-messages.md).
+- `message` *(optional)*: an error message to use when all chains failed. Defaults to `Invalid value(s)`; see also [Dynamic Messages](feature-error-messages.md#dynamic-messages).
 > *Returns:* a middleware instance
 
 Creates a middleware instance that will ensure at least one of the given chains passes the validation.  
@@ -57,7 +57,7 @@ using the given `message`, and the errors of each chain will be made available u
 Example:
 
 ```js
-const { check, oneOf, validationResult } = require('express-validator/check');
+const { check, oneOf, validationResult } = require('express-validator');
 app.post('/start-freelancing', oneOf([
   check('programming_language').isIn(['javascript', 'java', 'php']),
   check('design_tools').isIn(['canva', 'photoshop', 'gimp'])
@@ -92,12 +92,6 @@ app.post('/protected/route', oneOf([
 The execution of those validation chains are made in parallel,
 while the execution within a chain still respects the rule defined in the [`check()` function](#check-field-message).
 
-## `validationResult(req)`
-- `req`: the express request object.
-> *Returns:* a [validation result](api-validation-result.md) object
-
-Extracts the validation errors from a request and makes it available in the form of a validation result object.
-
 ## `buildCheckFunction(locations)`
 - `locations`: an array of request locations to gather data from.  
    May include any of `body`, `cookies`, `headers`, `params` or `query`.
@@ -106,7 +100,7 @@ Extracts the validation errors from a request and makes it available in the form
 Creates a variant of [`check()`](#check-field-message) that checks the given request locations.
 
 ```js
-const { buildCheckFunction } = require('express-validator/check');
+const { buildCheckFunction } = require('express-validator');
 const checkBodyAndQuery = buildCheckFunction(['body', 'query']);
 
 app.put('/update-product', [

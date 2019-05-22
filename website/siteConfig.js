@@ -11,9 +11,9 @@ const siteConfig = {
 
   // Website customization
   headerLinks: [
-    {doc: 'index', label: 'Docs'},
-    {doc: 'check-api', label: 'API'},
-    {href: 'https://github.com/express-validator/express-validator', label: 'GitHub'},
+    { doc: 'index', label: 'Docs' },
+    { doc: 'check-api', label: 'API' },
+    { href: 'https://github.com/express-validator/express-validator', label: 'GitHub' },
   ],
   headerIcon: 'img/logo.svg',
   footerIcon: 'img/logo.svg',
@@ -27,14 +27,11 @@ const siteConfig = {
 
   // Features
   editUrl: 'https://github.com/express-validator/express-validator/edit/master/docs/',
-  copyright:
-    'Copyright © ' +
-    new Date().getFullYear() +
-    ' express-validator',
+  copyright: 'Copyright © ' + new Date().getFullYear() + ' express-validator',
   highlight: {
     // Highlight.js theme to use for syntax highlighting in code blocks
     theme: 'default',
-  }
+  },
 };
 
 module.exports = siteConfig;
