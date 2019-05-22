@@ -92,12 +92,6 @@ app.post('/protected/route', oneOf([
 The execution of those validation chains are made in parallel,
 while the execution within a chain still respects the rule defined in the [`check()` function](#check-field-message).
 
-## `validationResult(req)`
-- `req`: the express request object.
-> *Returns:* a [validation result](api-validation-result.md) object
-
-Extracts the validation errors from a request and makes it available in the form of a validation result object.
-
 ## `buildCheckFunction(locations)`
 - `locations`: an array of request locations to gather data from.  
    May include any of `body`, `cookies`, `headers`, `params` or `query`.
