@@ -36,7 +36,7 @@ Then, you'll want to make sure that you validate the input and report any errors
 
 ```js
 // ...rest of the initial code omitted for simplicity.
-const { check, validationResult } = require('express-validator/check');
+const { check, validationResult } = require('express-validator');
 
 app.post('/user', [
   // username must be an email

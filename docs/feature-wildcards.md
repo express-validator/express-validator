@@ -13,8 +13,7 @@ We can do this with the following code:
 
 ```js
 const express = require('express');
-const { check } = require('express-validator/check');
-const { sanitize } = require('express-validator/filter');
+const { check, sanitize } = require('express-validator');
 
 const app = express();
 app.use(express.json());

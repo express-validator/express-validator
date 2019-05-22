@@ -11,8 +11,8 @@ that can be used to take care of the data that comes in.
 
 ```js
 const express = require('express');
-const { body } = require('express-validator/check');
-const { sanitizeBody } = require('express-validator/filter');
+const { body } = require('express-validator');
+const { sanitizeBody } = require('express-validator');
 
 const app = express();
 app.use(express.json());

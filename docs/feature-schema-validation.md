@@ -10,7 +10,7 @@ the error messages, locations and validations/sanitizations.
 Its syntaxs looks like this:
 
 ```js
-const { checkSchema } = require('express-validator/check');
+const { checkSchema } = require('express-validator');
 app.put('/user/:id/password', checkSchema({
   id: {
     // The location of the field, can be one or more of body, cookies, headers, params or query.

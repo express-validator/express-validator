@@ -3,7 +3,7 @@ id: validation-middlewares-api
 title: Validation middlewares
 ---
 
-These methods are all available via `require('express-validator/check')`.
+These methods are all available via `require('express-validator')`.
 
 ## `check([field, message])`
 - `field` *(optional)*: a string or an array of strings of field names to validate against.
@@ -57,7 +57,7 @@ using the given `message`, and the errors of each chain will be made available u
 Example:
 
 ```js
-const { check, oneOf, validationResult } = require('express-validator/check');
+const { check, oneOf, validationResult } = require('express-validator');
 app.post('/start-freelancing', oneOf([
   check('programming_language').isIn(['javascript', 'java', 'php']),
   check('design_tools').isIn(['canva', 'photoshop', 'gimp'])
@@ -100,7 +100,7 @@ while the execution within a chain still respects the rule defined in the [`chec
 Creates a variant of [`check()`](#check-field-message) that checks the given request locations.
 
 ```js
-const { buildCheckFunction } = require('express-validator/check');
+const { buildCheckFunction } = require('express-validator');
 const checkBodyAndQuery = buildCheckFunction(['body', 'query']);
 
 app.put('/update-product', [

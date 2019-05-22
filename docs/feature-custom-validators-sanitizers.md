@@ -18,7 +18,7 @@ or `throw` any value/reject a promise to [use a custom error message](feature-er
 
 ### Example: checking if e-mail is in use
 ```js
-const { body } = require('express-validator/check');
+const { body } = require('express-validator');
 
 app.post('/user', body('email').custom(value => {
   return User.findUserByEmail(value).then(user => {
@@ -33,7 +33,7 @@ app.post('/user', body('email').custom(value => {
 
 ### Example: checking if password confirmation matches password
 ```js
-const { body } = require('express-validator/check');
+const { body } = require('express-validator');
 
 app.post('/user', body('passwordConfirmation').custom((value, { req }) => {
   if (value !== req.body.password) {
@@ -56,7 +56,7 @@ moment.
 
 ### Example: converting to MongoDB's ObjectID
 ```js
-const { sanitizeParam } = require('express-validator/filter');
+const { sanitizeParam } = require('express-validator');
 
 app.post('/object/:id', sanitizeParam('id').customSanitizer(value => {
   return ObjectId(value);

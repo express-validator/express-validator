@@ -3,7 +3,7 @@ id: sanitization-middlewares-api
 title: Sanitization middlewares
 ---
 
-These methods are all available via `require('express-validator/filter')`.
+These methods are all available via `require('express-validator')`.
 
 ## `matchedData(req[, options])`
 - `req`: the express request object.
@@ -67,7 +67,7 @@ Same as `sanitize(fields)`, but only sanitizing `req.query`.
 Creates a variant of [`sanitize()`](#sanitizefields) that sanitizes the given request locations.
 
 ```js
-const { buildSanitizeFunction } = require('express-validator/filter');
+const { buildSanitizeFunction } = require('express-validator');
 const sanitizeBodyAndQuery = buildSanitizeFunction(['body', 'query']);
 
 app.put('/update-product', [
