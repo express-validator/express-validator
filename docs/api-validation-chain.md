@@ -3,15 +3,31 @@ id: validation-chain-api
 title: Validation Chain API
 ---
 
-Any of the validation and sanitization methods listed by [validator.js](https://github.com/chriso/validator.js) are made available in all validation chains created by express-validator, as long as we're supporting the most up-to-date validator version.  
-If you use any of the sanitizers together with validators, the validated value is the sanitized one.
+The validation chain is a middleware, and it _should_ be passed to an Express route handler.
+It also is a subset of the [Sanitization Chain](api-sanitization-chain.md), meaning all standard
+sanitizers and additional methods are available.
 
-**Note:** Chains are mutable. Every time you call one of its methods, you're adding more behavior to the same chain.  
-Keep this in mind and note that you probably want to use a factory function when reusing some chain base.
+You can add as many validators and sanitizers to a chain as you need.   
+When the middleware runs, it will first apply sanitizers as they were specified, and then run the
+validators in order. The final sanitized value is the one that is passed to the validators.
 
-Additionally, the following methods are also available:
+> **Note:** Chains are mutable. Every time you call one of its methods, you're adding more behavior to the same chain.  
+> Keep this in mind and note that you probably want to use a factory function when reusing some base chain.
 
-## `.custom(validator)`
+## Standard validators
+All validators listed by validator.js are made available within a Validation Chain,
+and are called "standard validators" in express-validator.
+
+This means you can use any of those methods, e.g. `isInt`, `isEmail`, `contains`, etc.
+
+> **For a complete list of standard validators and their options**,
+> please check [validator.js' docs](https://github.com/chriso/validator.js#validators).
+
+## Additional methods
+In addition to the standard validators and the [Sanitization Chain API](api-sanitization-chain.md),
+the following methods are also available within a Validation Chain:
+
+### `.custom(validator)`
 - `validator(value, { req, location, path })`: the custom validator function.  
 Receives the value of the field being validated, as well as the express request, the location and the field path.
 > *Returns:* the current validation chain instance
@@ -32,10 +48,7 @@ app.post('/create-user', [
 ], loginHandler);
 ```
 
-## `.customSanitizer(sanitizer)`
-Same as [`.customSanitizer` from the Sanitization Chain](#customsanitizersanitizer).
-
-## `.exists(options)`
+### `.exists(options)`
 - `options` *(optional)*: an object of options to customize the behavior of exists.
 > *Returns:* the current validation chain instance
 
@@ -46,17 +59,17 @@ You can customize this behavior by passing an object with the following options:
 - `checkNull`: if `true`, fields with `null` values will not exist
 - `checkFalsy`: if `true`, fields with falsy values (eg `""`, `0`, `false`, `null`) will also not exist
 
-## `.isArray()`
+### `.isArray()`
 > *Returns:* the current validation chain instance
 
 Adds a validator to check if a value is an array.
 
-## `.isString()`
+### `.isString()`
 > *Returns:* the current validation chain instance
 
 Adds a validator to check if a value is a string.
 
-## `.not()`
+### `.not()`
 > *Returns:* the current validation chain instance
 
 Negates the result of the next validator.
@@ -65,7 +78,7 @@ Negates the result of the next validator.
 check('weekday').not().isIn(['sunday', 'saturday'])
 ```
 
-## `.optional(options)`
+### `.optional(options)`
 - `options` *(optional)*: an object of options to customize the behaviour of optional.
 > *Returns:* the current validation chain instance
 
@@ -78,7 +91,7 @@ You can customize this behavior by passing an object with the following options:
 - `nullable`: if `true`, fields with `null` values will be considered optional
 - `checkFalsy`: if `true`, fields with falsy values (eg `""`, `0`, `false`, `null`) will also be considered optional
 
-## `.withMessage(message)`
+### `.withMessage(message)`
 - `message`: the error message to use for the previous validator
 > *Returns:* the current validation chain instance
 
