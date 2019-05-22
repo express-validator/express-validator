@@ -1,5 +1,5 @@
 ---
-id: sanitization-middlewares-api
+id: filter-api
 title: Sanitization middlewares
 ---
 

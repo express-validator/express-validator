@@ -1,5 +1,5 @@
 ---
-id: validation-middlewares-api
+id: check-api
 title: Validation middlewares
 ---
 

@@ -8,13 +8,13 @@
       "sanitization-chain-api": {
         "title": "Sanitization Chain API"
       },
-      "sanitization-middlewares-api": {
+      "filter-api": {
         "title": "Sanitization middlewares"
       },
       "validation-chain-api": {
         "title": "Validation Chain API"
       },
-      "validation-middlewares-api": {
+      "check-api": {
         "title": "Validation middlewares"
       },
       "validation-result-api": {

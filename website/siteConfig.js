@@ -12,7 +12,7 @@ const siteConfig = {
   // Website customization
   headerLinks: [
     { doc: 'index', label: 'Docs' },
-    { doc: 'validation-middlewares-api', label: 'API' },
+    { doc: 'check-api', label: 'API' },
     { href: 'https://github.com/express-validator/express-validator', label: 'GitHub' },
   ],
   headerIcon: 'img/logo.svg',
