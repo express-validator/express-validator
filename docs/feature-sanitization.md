@@ -35,7 +35,7 @@ In the example above, we are validating `email` and `text` fields,
 so we may take advantage of the same chain to apply some sanitization,
 like e-mail normalization and trimming/HTML escaping.  
 And because the `notifyOnReply` field isn't validated, we may use `sanitizeBody` function
-from the [filter API](api-filter.md) to convert it to a JavaScript boolean.
+from the [sanitization middlewares](api-sanitization-middlewares.md) to convert it to a JavaScript boolean.
 
 > **Important:** please note that sanitization mutates the request.
 This means that if `req.body.text` was sent with the value `   Hello world :>)`, after the sanitization
