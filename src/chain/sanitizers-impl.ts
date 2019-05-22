@@ -43,6 +43,11 @@ export class SanitizersImpl<Chain> implements Sanitizers<Chain> {
   stripLow(keep_new_lines?: boolean) {
     return this.addStandardSanitization(validator.stripLow, keep_new_lines);
   }
+  toArray() {
+    return this.customSanitizer(
+      value => (value !== undefined && ((Array.isArray(value) && value) || [value])) || [],
+    );
+  }
   toBoolean(strict?: boolean) {
     return this.addStandardSanitization(validator.toBoolean, strict);
   }

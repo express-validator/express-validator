@@ -63,6 +63,7 @@ declare module 'validator' {
   export function normalizeEmail(str: string, options?: Options.NormalizeEmailOptions): string;
   export function rtrim(str: string, chars?: string): string;
   export function stripLow(str: string, keep_new_lines?: boolean): string;
+  export function toArray(str: string): Array<any>;
   export function toBoolean(str: string, strict?: boolean): boolean;
   export function toDate(str: string): Date;
   export function toFloat(str: string): number;

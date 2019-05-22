@@ -11,6 +11,7 @@ export interface Sanitizers<Return> {
   normalizeEmail(options?: validator.Options.NormalizeEmailOptions): Return;
   rtrim(chars?: string): Return;
   stripLow(keep_new_lines?: boolean): Return;
+  toArray(): Return;
   toBoolean(strict?: boolean): Return;
   toDate(): Return;
   toFloat(): Return;
