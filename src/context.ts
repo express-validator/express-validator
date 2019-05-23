@@ -6,7 +6,7 @@ function getDataMapKey(path: string, location: Location) {
   return `${location}:${path}`;
 }
 
-export type Optional = { nullable: boolean; checkFalsy: boolean } | false;
+export type Optional = { nullable: boolean; checkFalsy: boolean; defined?: boolean } | false;
 
 export class Context {
   private readonly _errors: ValidationError[] = [];
@@ -31,8 +31,12 @@ export class Context {
     const checks =
       options.requiredOnly && optional
         ? [
-            (value: any) => value !== undefined,
-            (value: any) => (optional.nullable ? value != null : true),
+            (value: any) =>
+              optional.nullable
+                ? optional.defined
+                  ? value !== null
+                  : value != null
+                : value !== undefined,
             (value: any) => (optional.checkFalsy ? value : true),
           ]
         : [];

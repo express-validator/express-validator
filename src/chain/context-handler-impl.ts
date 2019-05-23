@@ -27,11 +27,14 @@ export class ContextHandlerImpl<Chain> implements ContextHandler<Chain> {
 
   optional(options: Optional | true = true) {
     if (typeof options === 'boolean') {
-      this.builder.setOptional(options ? { checkFalsy: false, nullable: false } : false);
+      this.builder.setOptional(
+        options ? { checkFalsy: false, nullable: false, defined: false } : false,
+      );
     } else {
       this.builder.setOptional({
         checkFalsy: !!options.checkFalsy,
         nullable: !!options.nullable,
+        defined: !!options.defined,
       });
     }
 

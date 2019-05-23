@@ -137,6 +137,25 @@ describe('#getData()', () => {
     expect(context.getData({ requiredOnly: true })).toEqual([]);
   });
 
+  it('filters out only nulls when context optional with nullable = true and defined = true', () => {
+    data[0].value = null;
+    data[1].value = undefined;
+    data[2] = {
+      location: 'body',
+      originalPath: 'bar',
+      path: 'bar',
+      originalValue: 'baz',
+      value: 'baz',
+    };
+
+    context = new ContextBuilder()
+      .setOptional({ checkFalsy: false, nullable: true, defined: true })
+      .build();
+    context.addFieldInstances(data);
+
+    expect(context.getData({ requiredOnly: true })).toEqual([data[1], data[2]]);
+  });
+
   describe('when same path occurs multiple times', () => {
     it('keeps only fields with value', () => {
       data = [

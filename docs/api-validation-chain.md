@@ -163,6 +163,7 @@ By default, fields with `undefined` values will be ignored from the validation.
 You can customize this behavior by passing an object with the following options:
 - `nullable`: if `true`, fields with `null` values will be considered optional
 - `checkFalsy`: if `true`, fields with falsy values (eg `""`, `0`, `false`, `null`) will also be considered optional
+- `defined`: if `true`, field must be defined (cannot be `undefined`). Should be used in combination of `nullable` or `checkFalsy`
 
 ### `.run(req)`
 > *Returns:* a promise that resolves when the validation chain ran.

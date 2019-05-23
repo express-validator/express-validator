@@ -43,17 +43,19 @@ describe('#if()', () => {
 });
 
 describe('#optional()', () => {
-  it('sets optional flag to { checkFalsy: false, nullable: false } if arg is true', () => {
+  it('sets optional flag to { checkFalsy: false, nullable: false, defined: false } if arg is true', () => {
     contextHandler.optional();
     expect(builder.setOptional).toHaveBeenNthCalledWith(1, {
       checkFalsy: false,
       nullable: false,
+      defined: false,
     });
 
     contextHandler.optional(true);
     expect(builder.setOptional).toHaveBeenNthCalledWith(2, {
       checkFalsy: false,
       nullable: false,
+      defined: false,
     });
   });
 
@@ -62,15 +64,31 @@ describe('#optional()', () => {
     expect(builder.setOptional).toHaveBeenNthCalledWith(1, {
       checkFalsy: false,
       nullable: true,
+      defined: false,
     });
 
     contextHandler.optional({ checkFalsy: true });
     expect(builder.setOptional).toHaveBeenNthCalledWith(2, {
       checkFalsy: true,
       nullable: false,
+      defined: false,
+    });
+
+    contextHandler.optional({ defined: true });
+    expect(builder.setOptional).toHaveBeenNthCalledWith(3, {
+      checkFalsy: false,
+      nullable: false,
+      defined: true,
+    });
+
+    contextHandler.optional({ defined: true, nullable: true });
+    expect(builder.setOptional).toHaveBeenNthCalledWith(4, {
+      checkFalsy: false,
+      nullable: true,
+      defined: true,
     });
 
     contextHandler.optional(false);
-    expect(builder.setOptional).toHaveBeenNthCalledWith(3, false);
+    expect(builder.setOptional).toHaveBeenNthCalledWith(5, false);
   });
 });

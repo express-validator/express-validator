@@ -155,6 +155,7 @@ describe('on each field', () => {
           options: {
             checkFalsy: true,
             nullable: true,
+            defined: false,
           },
         },
       },
@@ -163,11 +164,13 @@ describe('on each field', () => {
     expect(chainToContext(schema[0]).optional).toEqual({
       checkFalsy: false,
       nullable: false,
+      defined: false,
     });
 
     expect(chainToContext(schema[1]).optional).toEqual({
       checkFalsy: true,
       nullable: true,
+      defined: false,
     });
   });
 

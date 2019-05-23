@@ -36,7 +36,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
     return this.addItem(new CustomValidation(validator, this.negateNext));
   }
 
-  exists(options: { checkFalsy?: boolean; checkNull?: boolean } = {}) {
+  exists(options: { checkFalsy?: boolean; checkNull?: boolean; defined?: boolean } = {}) {
     let validator: CustomValidator;
     if (options.checkFalsy) {
       validator = value => !!value;
