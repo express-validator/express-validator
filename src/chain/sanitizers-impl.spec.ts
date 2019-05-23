@@ -3,9 +3,10 @@ import * as validator from 'validator';
 import { SanitizersImpl } from './sanitizers-impl';
 import { Context } from '../context';
 import { Sanitizers } from './sanitizers';
+import { CustomSanitizer, Meta } from '../base';
 
 let chain: any;
-let context: Context;
+let context: jest.Mocked<Context>;
 let sanitizers: Sanitizers<any>;
 
 beforeEach(() => {
@@ -101,5 +102,30 @@ describe('#customSanitizer()', () => {
     expect(context.addSanitization).toHaveBeenCalledWith(sanitizer, {
       custom: true,
     });
+  });
+});
+
+describe('#toArray()', () => {
+  it('adds toArray() sanitizer to the context', () => {
+    const ret = sanitizers.toArray();
+
+    expect(ret).toBe(chain);
+    expect(context.addSanitization).toHaveBeenCalledWith(expect.any(Function), {
+      custom: true,
+    });
+  });
+
+  it('sanitizes to array', () => {
+    sanitizers.toArray();
+
+    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const toArray = context.addSanitization.mock.calls[0][0] as CustomSanitizer;
+
+    expect(toArray([], meta)).toEqual([]);
+    expect(toArray('foo', meta)).toEqual(['foo']);
+    expect(toArray(['foo'], meta)).toEqual(['foo']);
+    expect(toArray('', meta)).toEqual(['']);
+    expect(toArray(null, meta)).toEqual([null]);
+    expect(toArray(undefined, meta)).toEqual([]);
   });
 });
