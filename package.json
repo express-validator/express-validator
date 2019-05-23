@@ -40,7 +40,7 @@
     "@typescript-eslint/eslint-plugin": "^1.9.0",
     "@typescript-eslint/parser": "^1.9.0",
     "coveralls": "^3.0.0",
-    "docusaurus": "^1.9.0",
+    "docusaurus": "^1.10.0",
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^4.3.0",
     "eslint-plugin-prettier": "^3.1.0",
