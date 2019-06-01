@@ -1,43 +1,26 @@
+import * as _ from 'lodash';
 import {
   CustomSanitizer,
   CustomValidator,
-  DynamicMessageCreator,
   Location,
+  Meta,
   StandardSanitizer,
   StandardValidator,
+  ValidationError,
 } from './base';
+import { ContextItem, CustomValidation, StandardValidation } from './context-items';
+import { Sanitization } from './context-items/sanitization';
 
-// Validation types
-interface BaseValidation {
-  negated: boolean;
-  message?: DynamicMessageCreator | any;
+export interface FieldInstance {
+  path: string;
+  originalPath: string;
+  location: Location;
+  value: any;
+  originalValue: any;
 }
 
-interface CustomValidation extends BaseValidation {
-  custom: true;
-  validator: CustomValidator;
-}
-
-interface StandardValidation extends BaseValidation {
-  custom: false;
-  options: any[];
-  validator: StandardValidator;
-}
-
-// Sanitization types
-interface BaseSanitization {
-  custom: boolean;
-}
-
-interface CustomSanitization extends BaseSanitization {
-  custom: true;
-  sanitizer: CustomSanitizer;
-}
-
-interface StandardSanitization extends BaseSanitization {
-  custom: false;
-  options: any[];
-  sanitizer: StandardSanitizer;
+function getDataMapKey(path: string, location: Location) {
+  return `${location}:${path}`;
 }
 
 export class Context {
@@ -48,21 +31,87 @@ export class Context {
     return this._optional;
   }
 
-  private readonly _sanitizations: (CustomSanitization | StandardSanitization)[] = [];
-  get sanitizations(): ReadonlyArray<CustomSanitization | StandardSanitization> {
-    return this._sanitizations;
+  private readonly errors: ValidationError[] = [];
+  private readonly stack: ContextItem[] = [];
+  private readonly dataMap: Map<string, FieldInstance> = new Map();
+
+  constructor(readonly message?: any) {}
+
+  // Data part
+  getData(options: { requiredOnly: boolean }): Record<string, FieldInstance> {
+    // Have to store this.optional in a const otherwise TS thinks the value could have changed
+    // when the functions below run
+    const { optional } = this;
+    const checks =
+      options.requiredOnly && optional
+        ? [
+            (value: any) => value !== undefined,
+            (value: any) => (optional.nullable ? value != null : true),
+            (value: any) => (optional.checkFalsy ? value : true),
+          ]
+        : [];
+
+    return _([...this.dataMap.values()])
+      .groupBy('originalPath')
+      .flatMap((instances, group) => {
+        const locations = _.uniqBy(instances, 'location');
+
+        // #331 - When multiple locations are involved, all of them must pass the validation.
+        // If none of the locations contain the field, we at least include one for error reporting.
+        // #458, #531 - Wildcards are an exception though: they may yield 0..* instances with different
+        // paths, so we may want to skip this filtering.
+        if (instances.length > 1 && locations.length > 1 && !group.includes('*')) {
+          const withValue = instances.filter(instance => instance.value !== undefined);
+          return withValue.length ? withValue : [withValue[0]];
+        }
+
+        return instances;
+      })
+      .valueOf()
+      .reduce(
+        (memo, instance) => {
+          if (checks.every(check => check(instance.value))) {
+            memo[instance.path] = instance.value;
+          }
+
+          return memo;
+        },
+        {} as Record<string, FieldInstance>,
+      );
   }
 
-  private readonly _validations: (CustomValidation | StandardValidation)[] = [];
-  get validations(): ReadonlyArray<CustomValidation | StandardValidation> {
-    return this._validations;
+  addFieldInstances(instances: FieldInstance[]) {
+    instances.forEach(instance => {
+      this.dataMap.set(getDataMapKey(instance.path, instance.location), instance);
+    });
   }
 
-  constructor(readonly fields: string[], readonly locations: Location[], readonly message?: any) {}
+  setData(path: string, value: any, location: Location) {
+    const instance = this.dataMap.get(getDataMapKey(path, location));
+    if (!instance) {
+      throw new Error('Attempt to write data that did not pre-exist in context');
+    }
+
+    instance.value = value;
+  }
 
   // Validations part
   negate() {
     this.negated = true;
+  }
+
+  addError(message: any, value: any, meta: Meta) {
+    let msg = message || this.message || 'Invalid value';
+    if (typeof msg === 'function') {
+      msg = msg(value, meta);
+    }
+
+    this.errors.push({
+      value,
+      msg,
+      param: meta.path,
+      location: meta.location,
+    });
   }
 
   addValidation(validator: CustomValidator, meta: { custom: true }): void;
@@ -74,21 +123,13 @@ export class Context {
       options?: any[];
     },
   ) {
-    if (meta.custom === true) {
-      this._validations.push({
-        validator,
-        custom: true,
-        negated: this.negated,
-      });
-    } else {
-      this._validations.push({
-        validator,
-        options: meta.options || [],
-        custom: false,
-        negated: this.negated,
-      });
-    }
+    this.stack.push(
+      meta.custom
+        ? new CustomValidation(this, validator, this.negated)
+        : new StandardValidation(this, validator, meta.options, this.negated),
+    );
 
+    // Reset this.negated so that next validation isn't negated too
     this.negated = false;
   }
 
@@ -113,18 +154,7 @@ export class Context {
       options?: any[];
     },
   ) {
-    if (meta.custom) {
-      this._sanitizations.push({
-        sanitizer,
-        custom: true,
-      });
-    } else {
-      this._sanitizations.push({
-        sanitizer,
-        options: meta.options || [],
-        custom: false,
-      });
-    }
+    this.stack.push(new Sanitization(this, sanitizer, meta.custom, meta.options));
   }
 }
 
