@@ -1,44 +1,40 @@
 import * as _ from 'lodash';
-import {
-  CustomSanitizer,
-  CustomValidator,
-  Location,
-  Meta,
-  StandardSanitizer,
-  StandardValidator,
-  ValidationError,
-} from './base';
-import { ContextItem, CustomValidation, StandardValidation } from './context-items';
-import { Sanitization } from './context-items/sanitization';
-
-export interface FieldInstance {
-  path: string;
-  originalPath: string;
-  location: Location;
-  value: any;
-  originalValue: any;
-}
+import { FieldInstance, Location, Meta, ValidationError } from './base';
+import { ContextItem } from './context-items';
 
 function getDataMapKey(path: string, location: Location) {
   return `${location}:${path}`;
 }
 
 export class Context {
-  private negated = false;
+  private _negated = false;
+  get negated() {
+    return this._negated;
+  }
 
   private _optional: { nullable: boolean; checkFalsy: boolean } | false = false;
   get optional() {
     return this._optional;
   }
 
-  private readonly errors: ValidationError[] = [];
-  private readonly stack: ContextItem[] = [];
+  private readonly _errors: ValidationError[] = [];
+  get errors(): ReadonlyArray<ValidationError> {
+    return this._errors;
+  }
+
+  private readonly _stack: ContextItem[] = [];
+  get stack(): ReadonlyArray<ContextItem> {
+    return this._stack;
+  }
+
   private readonly dataMap: Map<string, FieldInstance> = new Map();
 
   constructor(readonly message?: any) {}
 
   // Data part
-  getData(options: { requiredOnly: boolean }): Record<string, FieldInstance> {
+  getData(
+    options: { requiredOnly: boolean } = { requiredOnly: false },
+  ): Record<string, FieldInstance> {
     // Have to store this.optional in a const otherwise TS thinks the value could have changed
     // when the functions below run
     const { optional } = this;
@@ -51,6 +47,7 @@ export class Context {
           ]
         : [];
 
+    const data: Record<string, FieldInstance> = {};
     return _([...this.dataMap.values()])
       .groupBy('originalPath')
       .flatMap((instances, group) => {
@@ -62,27 +59,24 @@ export class Context {
         // paths, so we may want to skip this filtering.
         if (instances.length > 1 && locations.length > 1 && !group.includes('*')) {
           const withValue = instances.filter(instance => instance.value !== undefined);
-          return withValue.length ? withValue : [withValue[0]];
+          return withValue.length ? withValue : [instances[0]];
         }
 
         return instances;
       })
       .valueOf()
-      .reduce(
-        (memo, instance) => {
-          if (checks.every(check => check(instance.value))) {
-            memo[instance.path] = instance.value;
-          }
+      .reduce((memo, instance) => {
+        if (checks.every(check => check(instance.value))) {
+          memo[instance.path] = instance;
+        }
 
-          return memo;
-        },
-        {} as Record<string, FieldInstance>,
-      );
+        return memo;
+      }, data);
   }
 
   addFieldInstances(instances: FieldInstance[]) {
     instances.forEach(instance => {
-      this.dataMap.set(getDataMapKey(instance.path, instance.location), instance);
+      this.dataMap.set(getDataMapKey(instance.path, instance.location), { ...instance });
     });
   }
 
@@ -97,7 +91,7 @@ export class Context {
 
   // Validations part
   negate() {
-    this.negated = true;
+    this._negated = true;
   }
 
   addError(message: any, value: any, meta: Meta) {
@@ -106,7 +100,7 @@ export class Context {
       msg = msg(value, meta);
     }
 
-    this.errors.push({
+    this._errors.push({
       value,
       msg,
       param: meta.path,
@@ -114,23 +108,11 @@ export class Context {
     });
   }
 
-  addValidation(validator: CustomValidator, meta: { custom: true }): void;
-  addValidation(validator: StandardValidator, meta: { custom: false; options?: any[] }): void;
-  addValidation(
-    validator: CustomValidator | StandardValidator,
-    meta: {
-      custom: boolean;
-      options?: any[];
-    },
-  ) {
-    this.stack.push(
-      meta.custom
-        ? new CustomValidation(this, validator, this.negated)
-        : new StandardValidation(this, validator, meta.options, this.negated),
-    );
+  addItem(item: ContextItem) {
+    this._stack.push(item);
 
     // Reset this.negated so that next validation isn't negated too
-    this.negated = false;
+    this._negated = false;
   }
 
   setOptional(options: boolean | { nullable?: boolean; checkFalsy?: boolean } = true) {
@@ -143,22 +125,6 @@ export class Context {
       };
     }
   }
-
-  // Sanitizations part
-  addSanitization(sanitizer: CustomSanitizer, meta: { custom: true }): void;
-  addSanitization(sanitizer: StandardSanitizer, meta: { custom: false; options?: any[] }): void;
-  addSanitization(
-    sanitizer: CustomSanitizer | StandardSanitizer,
-    meta: {
-      custom: boolean;
-      options?: any[];
-    },
-  ) {
-    this.stack.push(new Sanitization(this, sanitizer, meta.custom, meta.options));
-  }
 }
 
-export type ReadonlyContext = Pick<
-  Context,
-  Exclude<keyof Context, 'addSanitization' | 'addValidation' | 'setOptional' | 'negate'>
->;
+export type ReadonlyContext = Pick<Context, 'negated' | 'optional' | 'stack' | 'errors'>;
