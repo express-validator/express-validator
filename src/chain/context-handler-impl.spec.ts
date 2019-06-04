@@ -18,27 +18,30 @@ describe('#not()', () => {
 });
 
 describe('#withMessage()', () => {
-  it('sets the message on the last validation of the context', () => {
-    Object.defineProperty(context, 'validations', {
-      value: [{}, {}],
+  it('sets the message on the last item on context queue if it is a validation', () => {
+    Object.defineProperty(context, 'stack', {
+      value: [{ kind: 'unknown' }, { kind: 'validation' }],
     });
     contextHandler.withMessage('foo');
-    expect(context.validations[0]).not.toHaveProperty('message');
-    expect(context.validations[1]).toHaveProperty('message', 'foo');
+    expect(context.stack[0]).not.toHaveProperty('message');
+    expect(context.stack[1]).toHaveProperty('message', 'foo');
   });
 
-  it('works with no validation', () => {
-    Object.defineProperty(context, 'validations', {
-      value: [],
+  it('is noop if last item is not a validation', () => {
+    Object.defineProperty(context, 'stack', {
+      value: [{ kind: 'validation' }, { kind: 'unknown' }],
     });
-
-    const setMessage = () => contextHandler.withMessage('foo');
-    expect(setMessage).not.toThrow();
+    contextHandler.withMessage('foo');
+    expect(context.stack[0]).not.toHaveProperty('message');
+    expect(context.stack[1]).not.toHaveProperty('message');
   });
 });
 
 describe('#optional()', () => {
   it('toggles optional flags on the context', () => {
+    contextHandler.optional();
+    expect(context.setOptional).toHaveBeenCalledWith(true);
+
     contextHandler.optional(true);
     expect(context.setOptional).toHaveBeenCalledWith(true);
   });
