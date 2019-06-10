@@ -1,8 +1,14 @@
 import * as _ from 'lodash';
 import { FieldInstance, Location, Request } from './base';
 
-export function selectFields(req: Request, fields: string[], locations: Location[]) {
-  return _(fields)
+export type SelectFields = (
+  req: Request,
+  fields: string[],
+  locations: Location[],
+) => FieldInstance[];
+
+export const selectFields: SelectFields = (req, fields, locations) =>
+  _(fields)
     .flatMap(field =>
       _.flatMap(locations, location => {
         return expandField(req, field, location);
@@ -10,7 +16,6 @@ export function selectFields(req: Request, fields: string[], locations: Location
     )
     .uniqWith<FieldInstance>(_.isEqual)
     .value();
-}
 
 function expandField(req: Request, field: string, location: Location): FieldInstance[] {
   const originalPath = field;
