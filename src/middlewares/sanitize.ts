@@ -1,46 +1,31 @@
-import { SanitizationChain, SanitizersImpl } from '../chain';
+import { ContextRunnerImpl, SanitizationChain, SanitizersImpl } from '../chain';
 import { Context } from '../context';
 import { InternalRequest, Location, contextsSymbol } from '../base';
-import {
-  ContextRunner,
-  EnsureInstance,
-  PersistBack,
-  RemoveOptionals,
-  Sanitize,
-  SelectFields,
-} from '../context-runners';
 import { bindAll } from '../utils';
 
-// This list of runners is here so it can be checked/extended by tests
-export const defaultRunners: ({ new (): ContextRunner })[] = [
-  SelectFields,
-  Sanitize,
-  RemoveOptionals,
-  EnsureInstance,
-  PersistBack,
-];
-
 export function sanitize(fields: string | string[], locations: Location[] = []): SanitizationChain {
-  const context = new Context(Array.isArray(fields) ? fields : [fields], locations);
-
-  const runners = defaultRunners.map(Runner => new Runner());
+  const context = new Context();
+  const runner = new ContextRunnerImpl(
+    context,
+    Array.isArray(fields) ? fields : [fields],
+    locations,
+  );
 
   const middleware = async (req: InternalRequest, _res: any, next: (err?: any) => void) => {
-    try {
-      await runners.reduce(
-        async (instances, runner) => runner.run(req, context, await instances),
-        Promise.resolve([]),
-      );
-    } catch (err) {
-      return next(err);
-    } finally {
-      req[contextsSymbol] = (req[contextsSymbol] || []).concat(context);
-    }
+    req[contextsSymbol] = (req[contextsSymbol] || []).concat(context);
 
-    next();
+    try {
+      await runner.run(req);
+      next();
+    } catch (e) {
+      next(e);
+    }
   };
 
-  return Object.assign(middleware, bindAll(new SanitizersImpl(context, middleware as any)), {
-    context,
-  });
+  return Object.assign(
+    middleware,
+    bindAll(runner),
+    bindAll(new SanitizersImpl(context, middleware as any)),
+    { context },
+  );
 }
