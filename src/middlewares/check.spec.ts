@@ -1,8 +1,7 @@
 import { ContextHandlerImpl, ContextRunnerImpl, SanitizersImpl, ValidatorsImpl } from '../chain';
-import { InternalRequest, contextsSymbol, errorsSymbol } from '../base';
+import { InternalRequest, contextsSymbol } from '../base';
 import { check } from './check';
 
-// Some tests might change the list of runners, so we keep the original list and reset it afterwards
 it('has context handler methods', () => {
   const chain = check('foo');
   Object.keys(ContextHandlerImpl.prototype).forEach(method => {
