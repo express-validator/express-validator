@@ -85,18 +85,24 @@ export class Context {
     this._negated = true;
   }
 
-  addError(message: any, value: any, meta: Meta) {
-    let msg = message || this.message || 'Invalid value';
-    if (typeof msg === 'function') {
-      msg = msg(value, meta);
+  addError(message: any, value: any, meta: Meta): void;
+  addError(message: any, nestedErrors: ValidationError[]): void;
+  addError(message: any, valueOrNestedErrors: any, meta?: Meta) {
+    const msg = message || this.message || 'Invalid value';
+    if (meta) {
+      this._errors.push({
+        value: valueOrNestedErrors,
+        msg: typeof msg === 'function' ? msg(valueOrNestedErrors, meta) : msg,
+        param: meta.path,
+        location: meta.location,
+      });
+    } else {
+      this._errors.push({
+        msg,
+        param: '_error',
+        nestedErrors: valueOrNestedErrors,
+      });
     }
-
-    this._errors.push({
-      value,
-      msg,
-      param: meta.path,
-      location: meta.location,
-    });
   }
 
   addItem(item: ContextItem) {
@@ -118,4 +124,7 @@ export class Context {
   }
 }
 
-export type ReadonlyContext = Pick<Context, 'negated' | 'optional' | 'stack' | 'errors'>;
+export type ReadonlyContext = Pick<
+  Context,
+  'getData' | 'negated' | 'optional' | 'stack' | 'errors'
+>;
