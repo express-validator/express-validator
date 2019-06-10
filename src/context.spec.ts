@@ -127,20 +127,14 @@ describe('#addItem()', () => {
 describe('#addFieldInstance()', () => {
   it('adds data to the context', () => {
     context.addFieldInstances(data);
-    expect(context.getData()).toEqual({
-      [data[0].path]: data[0],
-      [data[1].path]: data[1],
-    });
+    expect(context.getData()).toEqual([data[0], data[1]]);
   });
 });
 
 describe('#getData()', () => {
   it('returns all data when context not optional', () => {
     context.addFieldInstances(data);
-    expect(context.getData()).toEqual({
-      [data[0].path]: data[0],
-      [data[1].path]: data[1],
-    });
+    expect(context.getData()).toEqual([data[0], data[1]]);
   });
 
   it('filters out undefineds when context optional', () => {
@@ -148,9 +142,7 @@ describe('#getData()', () => {
     context.setOptional();
     context.addFieldInstances(data);
 
-    expect(context.getData({ requiredOnly: true })).toEqual({
-      [data[1].path]: data[1],
-    });
+    expect(context.getData({ requiredOnly: true })).toEqual([data[1]]);
   });
 
   it('filters out undefineds and nulls when context optional with nullable = true', () => {
@@ -160,7 +152,7 @@ describe('#getData()', () => {
     context.setOptional({ nullable: true });
     context.addFieldInstances(data);
 
-    expect(context.getData({ requiredOnly: true })).toEqual({});
+    expect(context.getData({ requiredOnly: true })).toEqual([]);
   });
 
   it('filters out falsies when context optional with checkFalsy = true', () => {
@@ -171,7 +163,7 @@ describe('#getData()', () => {
     context.setOptional({ checkFalsy: true });
     context.addFieldInstances(data);
 
-    expect(context.getData({ requiredOnly: true })).toEqual({});
+    expect(context.getData({ requiredOnly: true })).toEqual([]);
   });
 
   describe('when same path occurs multiple times', () => {
@@ -183,9 +175,7 @@ describe('#getData()', () => {
 
       context.addFieldInstances(data);
 
-      expect(context.getData()).toEqual({
-        [data[1].path]: data[1],
-      });
+      expect(context.getData()).toEqual([data[1]]);
     });
 
     it('filters out from the second undefined onwards if all values are undefined', () => {
@@ -196,9 +186,7 @@ describe('#getData()', () => {
 
       context.addFieldInstances(data);
 
-      expect(context.getData()).toEqual({
-        [data[0].path]: data[0],
-      });
+      expect(context.getData()).toEqual([data[0]]);
     });
 
     it('does not filter out second undefined when it contains a wildcard', () => {
@@ -209,10 +197,7 @@ describe('#getData()', () => {
 
       context.addFieldInstances(data);
 
-      expect(context.getData()).toEqual({
-        [data[0].path]: data[0],
-        [data[1].path]: data[1],
-      });
+      expect(context.getData()).toEqual([data[0], data[1]]);
     });
   });
 });
@@ -222,7 +207,7 @@ describe('#setData()', () => {
     context.addFieldInstances(data);
     context.setData(data[0].path, 'bla', data[0].location);
 
-    expect(context.getData()).toHaveProperty(data[0].path, {
+    expect(context.getData()).toContainEqual({
       ...data[0],
       value: 'bla',
     });

@@ -32,9 +32,7 @@ export class Context {
   constructor(readonly message?: any) {}
 
   // Data part
-  getData(
-    options: { requiredOnly: boolean } = { requiredOnly: false },
-  ): Record<string, FieldInstance> {
+  getData(options: { requiredOnly: boolean } = { requiredOnly: false }) {
     // Have to store this.optional in a const otherwise TS thinks the value could have changed
     // when the functions below run
     const { optional } = this;
@@ -47,7 +45,6 @@ export class Context {
           ]
         : [];
 
-    const data: Record<string, FieldInstance> = {};
     return _([...this.dataMap.values()])
       .groupBy('originalPath')
       .flatMap((instances, group) => {
@@ -64,14 +61,8 @@ export class Context {
 
         return instances;
       })
-      .valueOf()
-      .reduce((memo, instance) => {
-        if (checks.every(check => check(instance.value))) {
-          memo[instance.path] = instance;
-        }
-
-        return memo;
-      }, data);
+      .filter(instance => checks.every(check => check(instance.value)))
+      .valueOf();
   }
 
   addFieldInstances(instances: FieldInstance[]) {
