@@ -1,6 +1,23 @@
-import { InternalRequest, errorsSymbol, failedOneOfContextsSymbol } from '../base';
+import { InternalRequest, contextsSymbol } from '../base';
 import { check } from './validation-chain-builders';
 import { oneOf } from './one-of';
+
+const getOneOfContext = (req: InternalRequest) => {
+  const contexts = req[contextsSymbol] || [];
+  return contexts[contexts.length - 1];
+};
+
+it('concats to contexts create by previous chains', done => {
+  const req: InternalRequest = {};
+
+  const chainA = check('foo');
+  chainA(req, {}, () => {
+    oneOf([check('bar'), check('baz')])(req, {}, () => {
+      expect(req[contextsSymbol]).toHaveLength(2);
+      done();
+    });
+  });
+});
 
 describe('with a list of chains', () => {
   it('sets a single error for the _error key', done => {
@@ -9,8 +26,9 @@ describe('with a list of chains', () => {
     };
 
     oneOf([check('foo').isInt(), check('bar').isInt()])(req, {}, () => {
-      expect(req[errorsSymbol]).toHaveLength(1);
-      expect(req[errorsSymbol]).toContainEqual(
+      const context = getOneOfContext(req);
+      expect(context.errors).toHaveLength(1);
+      expect(context.errors).toContainEqual(
         expect.objectContaining({
           param: '_error',
           nestedErrors: expect.arrayContaining([
@@ -30,7 +48,8 @@ describe('with a list of chains', () => {
     };
 
     oneOf([check('foo').isInt(), check('bar').isInt()])(req, {}, () => {
-      expect(req[errorsSymbol]).toBeUndefined();
+      const context = getOneOfContext(req);
+      expect(context.errors).toHaveLength(0);
       done();
     });
   });
@@ -43,8 +62,9 @@ describe('with a list of chain groups', () => {
     };
 
     oneOf([[check('foo').isInt(), check('bar').isInt()], check('baz').isAlpha()])(req, {}, () => {
-      expect(req[errorsSymbol]).toHaveLength(1);
-      expect(req[errorsSymbol]).toContainEqual(
+      const context = getOneOfContext(req);
+      expect(context.errors).toHaveLength(1);
+      expect(context.errors).toContainEqual(
         expect.objectContaining({
           param: '_error',
           nestedErrors: expect.arrayContaining([
@@ -65,40 +85,8 @@ describe('with a list of chain groups', () => {
     };
 
     oneOf([[check('foo').isInt(), check('bar').isInt()], check('baz').isAlpha()])(req, {}, () => {
-      expect(req[errorsSymbol]).toBeUndefined();
-      done();
-    });
-  });
-});
-
-it('concats to validation errors thrown by previous middlewares', done => {
-  const req: InternalRequest = {
-    params: { foo: 'bla' },
-  };
-  check('foo').isInt()(req, {}, () => {
-    oneOf([check('bar').exists()])(req, {}, () => {
-      expect(req[errorsSymbol]).toHaveLength(2);
-      done();
-    });
-  });
-});
-
-it('concats to failed validation contexts from previous oneOf()s', done => {
-  const req: InternalRequest = {
-    params: { foo: 'bla' },
-  };
-
-  const chain1 = check('foo').isInt();
-  const chain2 = check('foo').equals('bar');
-
-  oneOf([chain1, chain2])(req, {}, () => {
-    oneOf([chain2])(req, {}, () => {
-      expect(req[failedOneOfContextsSymbol]).toEqual([
-        chain1.context,
-        chain2.context,
-        chain2.context,
-      ]);
-
+      const context = getOneOfContext(req);
+      expect(context.errors).toHaveLength(0);
       done();
     });
   });
@@ -111,7 +99,8 @@ describe('error message', () => {
     };
 
     oneOf([check('foo').isInt()])(req, {}, () => {
-      expect(req[errorsSymbol]![0]).toHaveProperty('msg', 'Invalid value(s)');
+      const context = getOneOfContext(req);
+      expect(context.errors[0]).toHaveProperty('msg', 'Invalid value(s)');
       done();
     });
   });
@@ -122,7 +111,8 @@ describe('error message', () => {
     };
 
     oneOf([check('foo').isInt()], 'not today')(req, {}, () => {
-      expect(req[errorsSymbol]![0]).toHaveProperty('msg', 'not today');
+      const context = getOneOfContext(req);
+      expect(context.errors[0]).toHaveProperty('msg', 'not today');
       done();
     });
   });
@@ -134,7 +124,8 @@ describe('error message', () => {
 
     const message = jest.fn(() => 'keep trying');
     oneOf([check('foo').isInt()], message)(req, {}, () => {
-      expect(req[errorsSymbol]![0]).toHaveProperty('msg', 'keep trying');
+      const context = getOneOfContext(req);
+      expect(context.errors[0]).toHaveProperty('msg', 'keep trying');
       expect(message).toHaveBeenCalledWith({ req });
       done();
     });
