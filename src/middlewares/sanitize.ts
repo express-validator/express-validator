@@ -4,12 +4,8 @@ import { InternalRequest, Location, contextsSymbol } from '../base';
 import { bindAll } from '../utils';
 
 export function sanitize(fields: string | string[], locations: Location[] = []): SanitizationChain {
-  const context = new Context();
-  const runner = new ContextRunnerImpl(
-    context,
-    Array.isArray(fields) ? fields : [fields],
-    locations,
-  );
+  const context = new Context(Array.isArray(fields) ? fields : [fields], locations);
+  const runner = new ContextRunnerImpl(context);
 
   const middleware = async (req: InternalRequest, _res: any, next: (err?: any) => void) => {
     req[contextsSymbol] = (req[contextsSymbol] || []).concat(context);

@@ -29,7 +29,7 @@ export class Context {
 
   private readonly dataMap: Map<string, FieldInstance> = new Map();
 
-  constructor(readonly message?: any) {}
+  constructor(readonly fields: string[], readonly locations: Location[], readonly message?: any) {}
 
   // Data part
   getData(options: { requiredOnly: boolean } = { requiredOnly: false }) {
@@ -126,5 +126,8 @@ export class Context {
 
 export type ReadonlyContext = Pick<
   Context,
-  'getData' | 'negated' | 'optional' | 'stack' | 'errors'
+  Exclude<
+    keyof Context,
+    'setData' | 'addFieldInstances' | 'addError' | 'addItem' | 'negate' | 'setOptional'
+  >
 >;

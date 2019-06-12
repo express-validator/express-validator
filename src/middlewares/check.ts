@@ -14,12 +14,8 @@ export function check(
   locations: Location[] = [],
   message?: any,
 ): ValidationChain {
-  const context = new Context(message);
-  const runner = new ContextRunnerImpl(
-    context,
-    Array.isArray(fields) ? fields : [fields],
-    locations,
-  );
+  const context = new Context(Array.isArray(fields) ? fields : [fields], locations, message);
+  const runner = new ContextRunnerImpl(context);
 
   const middleware = async (req: InternalRequest, _res: any, next: (err?: any) => void) => {
     req[contextsSymbol] = (req[contextsSymbol] || []).concat(context);

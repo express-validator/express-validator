@@ -6,7 +6,7 @@ let context: Context;
 let data: FieldInstance[];
 
 beforeEach(() => {
-  context = new Context();
+  context = new Context([], []);
   data = [
     {
       location: 'body',
@@ -43,7 +43,7 @@ describe('#addError()', () => {
   });
 
   it('pushes an error with context message', () => {
-    context = new Context('context message');
+    context = new Context([], [], 'context message');
     context.addError(null, 'foo', {
       path: 'bar',
       location: 'headers',
