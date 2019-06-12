@@ -13,7 +13,7 @@ export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?:
 
 export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?: any) {
   return async (req: InternalRequest, _res: any, next: (err?: any) => void) => {
-    const surrogateContext = new Context();
+    const surrogateContext = new Context([], []);
 
     // Run each group of chains in parallel, and within each group, run each chain in parallel too.
     const promises = chains.map(async chain => {
