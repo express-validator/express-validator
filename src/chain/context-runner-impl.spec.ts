@@ -18,10 +18,14 @@ const instances: FieldInstance[] = [
 beforeEach(() => {
   context = createMockInstance(Context);
   stack = [];
-  Object.defineProperty(context, 'stack', { get: () => stack });
+  Object.defineProperties(context, {
+    stack: { value: stack },
+    fields: { value: ['foo', 'bar'] },
+    locations: { value: ['query'] },
+  });
   selectFields = jest.fn();
 
-  contextRunner = new ContextRunnerImpl(context, ['foo', 'bar'], ['query'], selectFields);
+  contextRunner = new ContextRunnerImpl(context, selectFields);
 });
 
 it('selects and adds fields to the context', async () => {
