@@ -4,13 +4,12 @@ import { ValidationContextItem } from './context-item';
 
 export class CustomValidation implements ValidationContextItem {
   readonly kind = 'validation';
+  private readonly negated: boolean;
   message: any;
 
-  constructor(
-    private readonly context: Context,
-    private readonly validator: CustomValidator,
-    private readonly negated = false,
-  ) {}
+  constructor(private readonly context: Context, private readonly validator: CustomValidator) {
+    this.negated = context.negated;
+  }
 
   async run(value: any, meta: Meta) {
     try {
