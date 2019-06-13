@@ -1,4 +1,4 @@
-import { InternalRequest, errorsSymbol } from '../base';
+import { InternalRequest } from '../base';
 import {
   body,
   buildCheckFunction,
@@ -23,21 +23,21 @@ beforeEach(() => {
 describe('buildCheckFunction()', () => {
   it('creates a validation chain builder that checks custom locations', done => {
     const custom = buildCheckFunction(['cookies', 'headers']);
-    custom('foo').isInt()(req, {}, () => {
-      expect(req[errorsSymbol]).toHaveLength(2);
-      expect(req[errorsSymbol]![0]).toEqual({
+    const chain = custom('foo').isInt();
+    chain(req, {}, () => {
+      expect(chain.context.errors).toHaveLength(2);
+      expect(chain.context.errors[0]).toEqual({
         location: 'cookies',
         msg: 'Invalid value',
         param: 'foo',
         value: 'asd',
       });
-      expect(req[errorsSymbol]![1]).toEqual({
+      expect(chain.context.errors![1]).toEqual({
         location: 'headers',
         msg: 'Invalid value',
         param: 'foo',
         value: 'asd',
       });
-
       done();
     });
   });
@@ -48,17 +48,19 @@ describe('check()', () => {
   ['body', 'cookies', 'headers', 'params', 'query'].forEach(location => {
     it(`checks ${location}`, done => {
       const req: InternalRequest = { [location]: { foo: 'asd' } };
-      check('foo').isInt()(req, {}, () => {
-        expect(req[errorsSymbol]).toHaveLength(1);
-        expect(req[errorsSymbol]![0].location).toBe(location);
+      const chain = check('foo').isInt();
+      chain(req, {}, () => {
+        expect(chain.context.errors).toHaveLength(1);
+        expect(chain.context.errors[0].location).toBe(location);
         done();
       });
     });
   });
 
   it('checks all locations at the same time', done => {
-    check('foo').isInt()(req, {}, () => {
-      expect(req[errorsSymbol]).toHaveLength(5);
+    const chain = check('foo').isInt();
+    chain(req, {}, () => {
+      expect(chain.context.errors).toHaveLength(5);
       done();
     });
   });
@@ -66,9 +68,10 @@ describe('check()', () => {
 
 describe('body()', () => {
   it('checks only the body location', done => {
-    body('foo').isInt()(req, {}, () => {
-      expect(req[errorsSymbol]).toHaveLength(1);
-      expect(req[errorsSymbol]![0].location).toBe('body');
+    const chain = body('foo').isInt();
+    chain(req, {}, () => {
+      expect(chain.context.errors).toHaveLength(1);
+      expect(chain.context.errors[0].location).toBe('body');
       done();
     });
   });
@@ -76,9 +79,10 @@ describe('body()', () => {
 
 describe('cookie()', () => {
   it('checks only the body location', done => {
-    cookie('foo').isInt()(req, {}, () => {
-      expect(req[errorsSymbol]).toHaveLength(1);
-      expect(req[errorsSymbol]![0].location).toBe('cookies');
+    const chain = cookie('foo').isInt();
+    chain(req, {}, () => {
+      expect(chain.context.errors).toHaveLength(1);
+      expect(chain.context.errors[0].location).toBe('cookies');
       done();
     });
   });
@@ -86,9 +90,10 @@ describe('cookie()', () => {
 
 describe('header()', () => {
   it('checks only the body location', done => {
-    header('foo').isInt()(req, {}, () => {
-      expect(req[errorsSymbol]).toHaveLength(1);
-      expect(req[errorsSymbol]![0].location).toBe('headers');
+    const chain = header('foo').isInt();
+    chain(req, {}, () => {
+      expect(chain.context.errors).toHaveLength(1);
+      expect(chain.context.errors[0].location).toBe('headers');
       done();
     });
   });
@@ -96,9 +101,10 @@ describe('header()', () => {
 
 describe('param()', () => {
   it('checks only the body location', done => {
-    param('foo').isInt()(req, {}, () => {
-      expect(req[errorsSymbol]).toHaveLength(1);
-      expect(req[errorsSymbol]![0].location).toBe('params');
+    const chain = param('foo').isInt();
+    chain(req, {}, () => {
+      expect(chain.context.errors).toHaveLength(1);
+      expect(chain.context.errors[0].location).toBe('params');
       done();
     });
   });
@@ -106,9 +112,10 @@ describe('param()', () => {
 
 describe('query()', () => {
   it('checks only the body location', done => {
-    query('foo').isInt()(req, {}, () => {
-      expect(req[errorsSymbol]).toHaveLength(1);
-      expect(req[errorsSymbol]![0].location).toBe('query');
+    const chain = query('foo').isInt();
+    chain(req, {}, () => {
+      expect(chain.context.errors).toHaveLength(1);
+      expect(chain.context.errors[0].location).toBe('query');
       done();
     });
   });
