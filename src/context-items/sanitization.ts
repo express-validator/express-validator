@@ -25,9 +25,9 @@ export class Sanitization implements UnknownContextItem {
 
     // Checks whether the value changed.
     // Avoids e.g. undefined values being set on the request if it didn't have the key initially.
-    const reqValue = path === '' ? _.get(req[location], path) : req[location];
+    const reqValue = path !== '' ? _.get(req[location], path) : req[location];
     if (reqValue !== newValue) {
-      path === '' ? _.set(req[location], path, newValue) : _.set(req, location, newValue);
+      path !== '' ? _.set(req[location], path, newValue) : _.set(req, location, newValue);
     }
   }
 }
