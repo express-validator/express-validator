@@ -1,13 +1,5 @@
 import * as _ from 'lodash';
-import {
-  FieldInstance,
-  InternalRequest,
-  Location,
-  Request,
-  contextsSymbol,
-  errorsSymbol,
-  failedOneOfContextsSymbol,
-} from './base';
+import { FieldInstance, InternalRequest, Location, Request, contextsSymbol } from './base';
 import { Context } from './context';
 
 interface FieldInstanceBag {
