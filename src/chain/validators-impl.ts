@@ -8,7 +8,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   constructor(private readonly context: Context, private readonly chain: Chain) {}
 
   custom(validator: CustomValidator) {
-    this.context.addItem(new CustomValidation(this.context, validator));
+    this.context.addItem(new CustomValidation(validator, this.context.negated));
     return this.chain;
   }
 
@@ -35,7 +35,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
 
   // Standard validators
   private addStandardValidation(validator: StandardValidator, ...options: any[]) {
-    const validation = new StandardValidation(this.context, validator, options);
+    const validation = new StandardValidation(validator, this.context.negated, options);
     this.context.addItem(validation);
 
     return this.chain;

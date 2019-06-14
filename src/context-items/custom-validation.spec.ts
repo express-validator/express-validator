@@ -16,7 +16,7 @@ beforeEach(() => {
   jest.spyOn(context, 'addError');
 
   validator = jest.fn();
-  validation = new CustomValidation(context, validator);
+  validation = new CustomValidation(validator, false);
   validation.message = 'nope';
 });
 
@@ -24,7 +24,7 @@ beforeEach(() => {
 // So it's made reusable here
 const createSyncTest = (options: { returnValue: any; addsError: boolean }) => async () => {
   validator.mockReturnValue(options.returnValue);
-  await validation.run('bar', meta);
+  await validation.run(context, 'bar', meta);
   if (options.addsError) {
     expect(context.addError).toHaveBeenCalledWith(validation.message, 'bar', meta);
   } else {
@@ -48,41 +48,39 @@ describe('when not negated', () => {
     validator.mockImplementation(() => {
       throw new Error('boom');
     });
-    await validation.run('bar', meta);
+    await validation.run(context, 'bar', meta);
     expect(context.addError).toHaveBeenCalledWith('boom', 'bar', meta);
 
     // Validation's message
     validator.mockImplementation(() => {
       throw new Error();
     });
-    await validation.run('bar', meta);
+    await validation.run(context, 'bar', meta);
     expect(context.addError).toHaveBeenCalledWith(validation.message, 'bar', meta);
   });
 
   it('adds error if validator returns a promise that rejects', async () => {
     // Rejection cause's message
     validator.mockRejectedValue('a bomb');
-    await validation.run('bar', meta);
+    await validation.run(context, 'bar', meta);
     expect(context.addError).toHaveBeenCalledWith('a bomb', 'bar', meta);
 
     // Validation's message
     validator.mockRejectedValue(undefined);
-    await validation.run('bar', meta);
+    await validation.run(context, 'bar', meta);
     expect(context.addError).toHaveBeenCalledWith(validation.message, 'bar', meta);
   });
 
   it('does not add error if validator returns a promise that resolves', async () => {
     validator.mockResolvedValue(true);
-    await validation.run('bar', meta);
+    await validation.run(context, 'bar', meta);
     expect(context.addError).not.toHaveBeenCalled();
   });
 });
 
 describe('when negated', () => {
   beforeEach(() => {
-    context.negate();
-
-    validation = new CustomValidation(context, validator);
+    validation = new CustomValidation(validator, true);
     validation.message = 'nope';
   });
 
@@ -100,19 +98,19 @@ describe('when negated', () => {
     validator.mockImplementation(() => {
       throw new Error('boom');
     });
-    await validation.run('bar', meta);
+    await validation.run(context, 'bar', meta);
     expect(context.addError).not.toHaveBeenCalled();
   });
 
   it('does not add error if validator returns a promise that rejects', async () => {
     validator.mockRejectedValue('a bomb');
-    await validation.run('bar', meta);
+    await validation.run(context, 'bar', meta);
     expect(context.addError).not.toHaveBeenCalled();
   });
 
   it('adds error if validator returns a promise that resolves', async () => {
     validator.mockResolvedValue(true);
-    await validation.run('bar', meta);
+    await validation.run(context, 'bar', meta);
     expect(context.addError).toHaveBeenCalledWith(validation.message, 'bar', meta);
   });
 });

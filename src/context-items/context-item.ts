@@ -1,14 +1,15 @@
 import { Meta } from '../base';
+import { Context } from '../context';
 
 export interface UnknownContextItem {
   kind: 'unknown';
-  run(value: any, meta: Meta): Promise<void>;
+  run(context: Context, value: any, meta: Meta): Promise<void>;
 }
 
 export interface ValidationContextItem {
   kind: 'validation';
   message: any;
-  run(value: any, meta: Meta): Promise<void>;
+  run(context: Context, value: any, meta: Meta): Promise<void>;
 }
 
 export type ContextItem = UnknownContextItem | ValidationContextItem;

@@ -49,7 +49,7 @@ it('runs validation items on the stack with required data', async () => {
   expect(stack[0].run).toHaveBeenCalledTimes(instances.length);
 
   instances.forEach((instance, i) => {
-    expect(stack[0].run).toHaveBeenNthCalledWith(i + 1, instance.value, {
+    expect(stack[0].run).toHaveBeenNthCalledWith(i + 1, context, instance.value, {
       req,
       location: instance.location,
       path: instance.path,
@@ -68,7 +68,7 @@ it('runs other items on the stack with all data', async () => {
   expect(stack[0].run).toHaveBeenCalledTimes(instances.length);
 
   instances.forEach((instance, i) => {
-    expect(stack[0].run).toHaveBeenNthCalledWith(i + 1, instance.value, {
+    expect(stack[0].run).toHaveBeenNthCalledWith(i + 1, context, instance.value, {
       req,
       location: instance.location,
       path: instance.path,

@@ -21,7 +21,7 @@ export class ContextRunnerImpl implements ContextRunner {
           requiredOnly: contextItem.kind === 'validation',
         })
         .map(instance =>
-          contextItem.run(instance.value, {
+          contextItem.run(context, instance.value, {
             req,
             location: instance.location,
             path: instance.path,

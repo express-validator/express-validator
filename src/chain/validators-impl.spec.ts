@@ -1,4 +1,3 @@
-import { createMockInstance } from 'jest-create-mock-instance';
 import * as validator from 'validator';
 import { ValidatorsImpl } from './validators-impl';
 import { Context } from '../context';
@@ -7,12 +6,15 @@ import { Meta } from '../base';
 import { CustomValidation, StandardValidation } from '../context-items';
 
 let chain: any;
-let context: jest.Mocked<Context>;
+let context: Context;
 let validators: Validators<any>;
 
 beforeEach(() => {
   chain = {};
-  context = createMockInstance(Context);
+  context = new Context(['foo'], ['params']);
+  jest.spyOn(context, 'addItem');
+  jest.spyOn(context, 'addError');
+
   validators = new ValidatorsImpl(context, chain);
 });
 
@@ -32,23 +34,23 @@ it('has methods for all standard validators', () => {
       const ret = validators[key].call(validators);
       expect(ret).toBe(chain);
       expect(context.addItem).toHaveBeenCalledWith(
-        new StandardValidation(context, validatorModule[key], expect.any(Array)),
+        new StandardValidation(validatorModule[key], false, expect.any(Array)),
       );
     });
 
   validators.contains('foo');
   expect(context.addItem).toHaveBeenCalledWith(
-    new StandardValidation(context, validator.contains, ['foo']),
+    new StandardValidation(validator.contains, false, ['foo']),
   );
 
   validators.equals('bar');
   expect(context.addItem).toHaveBeenCalledWith(
-    new StandardValidation(context, validator.equals, ['bar']),
+    new StandardValidation(validator.equals, false, ['bar']),
   );
 
   validators.matches('baz');
   expect(context.addItem).toHaveBeenCalledWith(
-    new StandardValidation(context, validator.matches, ['baz', undefined]),
+    new StandardValidation(validator.matches, false, ['baz', undefined]),
   );
 });
 
@@ -58,7 +60,7 @@ describe('#custom()', () => {
     const ret = validators.custom(validator);
 
     expect(ret).toBe(chain);
-    expect(context.addItem).toHaveBeenCalledWith(new CustomValidation(context, validator));
+    expect(context.addItem).toHaveBeenCalledWith(new CustomValidation(validator, false));
   });
 });
 
@@ -67,22 +69,20 @@ describe('#exists()', () => {
     const ret = validators.exists();
 
     expect(ret).toBe(chain);
-    expect(context.addItem).toHaveBeenCalledWith(
-      new CustomValidation(context, expect.any(Function)),
-    );
+    expect(context.addItem).toHaveBeenCalledWith(new CustomValidation(expect.any(Function), false));
   });
 
   it('checks if context is not undefined by default', async () => {
     validators.exists();
 
     const meta: Meta = { req: {}, location: 'body', path: 'foo' };
-    const exists = context.addItem.mock.calls[0][0];
+    const exists = context.stack[0];
 
-    await exists.run(undefined, meta);
-    await exists.run(null, meta);
-    await exists.run(0, meta);
-    await exists.run('', meta);
-    await exists.run(false, meta);
+    await exists.run(context, undefined, meta);
+    await exists.run(context, null, meta);
+    await exists.run(context, 0, meta);
+    await exists.run(context, '', meta);
+    await exists.run(context, false, meta);
 
     expect(context.addError).toHaveBeenCalledTimes(1);
   });
@@ -91,14 +91,14 @@ describe('#exists()', () => {
     validators.exists({ checkFalsy: true });
 
     const meta: Meta = { req: {}, location: 'body', path: 'foo' };
-    const exists = context.addItem.mock.calls[0][0];
+    const exists = context.stack[0];
 
-    await exists.run(undefined, meta);
-    await exists.run(null, meta);
-    await exists.run(0, meta);
-    await exists.run('', meta);
-    await exists.run(false, meta);
-    await exists.run(true, meta);
+    await exists.run(context, undefined, meta);
+    await exists.run(context, null, meta);
+    await exists.run(context, 0, meta);
+    await exists.run(context, '', meta);
+    await exists.run(context, false, meta);
+    await exists.run(context, true, meta);
 
     expect(context.addError).toHaveBeenCalledTimes(5);
   });
@@ -107,16 +107,16 @@ describe('#exists()', () => {
     validators.exists({ checkNull: true });
 
     const meta: Meta = { req: {}, location: 'body', path: 'foo' };
-    const exists = context.addItem.mock.calls[0][0];
+    const exists = context.stack[0];
 
-    await exists.run(undefined, meta);
-    await exists.run(null, meta);
+    await exists.run(context, undefined, meta);
+    await exists.run(context, null, meta);
     expect(context.addError).toHaveBeenCalledTimes(2);
 
-    await exists.run(0, meta);
-    await exists.run('', meta);
-    await exists.run(false, meta);
-    await exists.run(true, meta);
+    await exists.run(context, 0, meta);
+    await exists.run(context, '', meta);
+    await exists.run(context, false, meta);
+    await exists.run(context, true, meta);
     expect(context.addError).toHaveBeenCalledTimes(2);
   });
 });
@@ -126,25 +126,23 @@ describe('#isString()', () => {
     const ret = validators.isString();
 
     expect(ret).toBe(chain);
-    expect(context.addItem).toHaveBeenCalledWith(
-      new CustomValidation(context, expect.any(Function)),
-    );
+    expect(context.addItem).toHaveBeenCalledWith(new CustomValidation(expect.any(Function), false));
   });
 
   it('checks if context is string', async () => {
     validators.isString();
 
     const meta: Meta = { req: {}, location: 'body', path: 'foo' };
-    const isString = context.addItem.mock.calls[0][0];
+    const isString = context.stack[0];
 
-    await isString.run('foo', meta);
+    await isString.run(context, 'foo', meta);
     expect(context.addError).not.toHaveBeenCalled();
 
-    await isString.run(1, meta);
-    await isString.run(true, meta);
-    await isString.run(null, meta);
-    await isString.run(undefined, meta);
-    await isString.run([], meta);
+    await isString.run(context, 1, meta);
+    await isString.run(context, true, meta);
+    await isString.run(context, null, meta);
+    await isString.run(context, undefined, meta);
+    await isString.run(context, [], meta);
     expect(context.addError).toHaveBeenCalledTimes(5);
   });
 });
@@ -154,25 +152,23 @@ describe('#isArray()', () => {
     const ret = validators.isArray();
 
     expect(ret).toBe(chain);
-    expect(context.addItem).toHaveBeenCalledWith(
-      new CustomValidation(context, expect.any(Function)),
-    );
+    expect(context.addItem).toHaveBeenCalledWith(new CustomValidation(expect.any(Function), false));
   });
 
   it('checks if context is array', async () => {
     validators.isArray();
 
     const meta: Meta = { req: {}, location: 'body', path: 'foo' };
-    const isArray = context.addItem.mock.calls[0][0];
+    const isArray = context.stack[0];
 
-    await isArray.run([], meta);
+    await isArray.run(context, [], meta);
     expect(context.addError).not.toHaveBeenCalled();
 
-    await isArray.run(1, meta);
-    await isArray.run(true, meta);
-    await isArray.run(null, meta);
-    await isArray.run(undefined, meta);
-    await isArray.run('foo', meta);
+    await isArray.run(context, 1, meta);
+    await isArray.run(context, true, meta);
+    await isArray.run(context, null, meta);
+    await isArray.run(context, undefined, meta);
+    await isArray.run(context, 'foo', meta);
     expect(context.addError).toHaveBeenCalledTimes(5);
   });
 });

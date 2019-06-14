@@ -8,13 +8,13 @@ export class SanitizersImpl<Chain> implements Sanitizers<Chain> {
   constructor(private readonly context: Context, private readonly chain: Chain) {}
 
   customSanitizer(sanitizer: CustomSanitizer) {
-    this.context.addItem(new Sanitization(this.context, sanitizer, true));
+    this.context.addItem(new Sanitization(sanitizer, true));
     return this.chain;
   }
 
   // Standard sanitizers
   private addStandardSanitization(sanitizer: StandardSanitizer, ...options: any[]) {
-    this.context.addItem(new Sanitization(this.context, sanitizer, false, options));
+    this.context.addItem(new Sanitization(sanitizer, false, options));
     return this.chain;
   }
 

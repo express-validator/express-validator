@@ -25,12 +25,12 @@ beforeEach(() => {
   jest.spyOn(context, 'setData');
 
   sanitizer = jest.fn();
-  sanitization = new Sanitization(context, sanitizer, true);
+  sanitization = new Sanitization(sanitizer, true);
 });
 
 it('persists sanitized value back into the context', async () => {
   sanitizer.mockReturnValue(1);
-  await sanitization.run('foo', meta);
+  await sanitization.run(context, 'foo', meta);
 
   expect(context.setData).toHaveBeenCalledWith(meta.path, 1, meta.location);
 });
@@ -38,7 +38,7 @@ it('persists sanitized value back into the context', async () => {
 it('persists sanitized value back into the request', async () => {
   // With a non-empty path
   sanitizer.mockReturnValue(1);
-  await sanitization.run('foo', meta);
+  await sanitization.run(context, 'foo', meta);
   expect(meta.req.cookies).toHaveProperty(meta.path, 1);
 
   // With an empty path (e.g. whole body sanitization)
@@ -51,7 +51,7 @@ it('persists sanitized value back into the request', async () => {
       originalValue: {},
     },
   ]);
-  await sanitization.run('foo', {
+  await sanitization.run(context, 'foo', {
     ...meta,
     path: '',
   });
@@ -60,14 +60,14 @@ it('persists sanitized value back into the request', async () => {
 
 it('does not persist sanitized value back into the request if they are the same', async () => {
   sanitizer.mockReturnValue(undefined);
-  await sanitization.run(undefined, meta);
+  await sanitization.run(context, undefined, meta);
 
   expect(meta.req.cookies).not.toHaveProperty(meta.path);
 });
 
 describe('when sanitizer is a custom one', () => {
   it('calls it with the value and the meta', async () => {
-    await sanitization.run('foo', meta);
+    await sanitization.run(context, 'foo', meta);
 
     expect(sanitizer).toHaveBeenCalledWith('foo', meta);
   });
@@ -75,32 +75,32 @@ describe('when sanitizer is a custom one', () => {
 
 describe('when sanitizer is a standard one', () => {
   it('calls it with the value as a string', async () => {
-    sanitization = new Sanitization(context, sanitizer, false);
+    sanitization = new Sanitization(sanitizer, false);
 
-    await sanitization.run(false, meta);
+    await sanitization.run(context, false, meta);
     expect(sanitizer).toHaveBeenLastCalledWith('false');
 
-    await sanitization.run(42, meta);
+    await sanitization.run(context, 42, meta);
     expect(sanitizer).toHaveBeenLastCalledWith('42');
 
     // new Date(Date.UTC()) makes sure we'll not have to deal with timezones
-    await sanitization.run(new Date(Date.UTC(2019, 4, 1, 10, 30, 50, 0)), meta);
+    await sanitization.run(context, new Date(Date.UTC(2019, 4, 1, 10, 30, 50, 0)), meta);
     expect(sanitizer).toHaveBeenLastCalledWith('2019-05-01T10:30:50.000Z');
 
-    await sanitization.run(null, meta);
+    await sanitization.run(context, null, meta);
     expect(sanitizer).toHaveBeenLastCalledWith('');
 
-    await sanitization.run(undefined, meta);
+    await sanitization.run(context, undefined, meta);
     expect(sanitizer).toHaveBeenLastCalledWith('');
 
-    await sanitization.run([42, 1], meta);
+    await sanitization.run(context, [42, 1], meta);
     expect(sanitizer).toHaveBeenLastCalledWith('42');
   });
 
   it('calls it with the options', async () => {
-    sanitization = new Sanitization(context, sanitizer, false, ['bar', false]);
+    sanitization = new Sanitization(sanitizer, false, ['bar', false]);
 
-    await sanitization.run('foo', meta);
+    await sanitization.run(context, 'foo', meta);
     expect(sanitizer).toHaveBeenLastCalledWith('foo', 'bar', false);
   });
 });
