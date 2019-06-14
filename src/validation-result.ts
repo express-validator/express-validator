@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { InternalRequest, Request, ValidationError, errorsSymbol } from './base';
+import { InternalRequest, Request, ValidationError, contextsSymbol } from './base';
 import { bindAll } from './utils';
 
 export type ErrorFormatter<T = any> = (error: ValidationError) => T;
@@ -61,5 +61,9 @@ function withDefaults<T = any>(
   };
   const actualOptions = _.defaults(options, defaults);
 
-  return (req: InternalRequest) => new Result(actualOptions.formatter, req[errorsSymbol]);
+  return (req: InternalRequest) => {
+    const contexts = req[contextsSymbol] || [];
+    const errors = _.flatMap(contexts, 'errors');
+    return new Result(actualOptions.formatter, errors);
+  };
 }
