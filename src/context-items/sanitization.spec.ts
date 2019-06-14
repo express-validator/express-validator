@@ -95,6 +95,9 @@ describe('when sanitizer is a standard one', () => {
 
     await sanitization.run(context, [42, 1], meta);
     expect(sanitizer).toHaveBeenLastCalledWith('42');
+
+    await sanitization.run(context, { toString: () => 'wow' }, meta);
+    expect(sanitizer).toHaveBeenLastCalledWith('wow');
   });
 
   it('calls it with the options', async () => {

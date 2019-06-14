@@ -1,6 +1,7 @@
 import { InternalRequest, contextsSymbol } from '../base';
 import { check } from './validation-chain-builders';
 import { oneOf } from './one-of';
+import { ContextRunnerImpl } from '../chain/context-runner-impl';
 
 const getOneOfContext = (req: InternalRequest) => {
   const contexts = req[contextsSymbol] || [];
@@ -16,6 +17,21 @@ it('concats to contexts create by previous chains', done => {
       expect(req[contextsSymbol]).toHaveLength(2);
       done();
     });
+  });
+});
+
+it('passes unexpected errors down to other middlewares', done => {
+  const error = new Error();
+  const proto = ContextRunnerImpl.prototype;
+
+  const { run } = proto;
+  proto.run = jest.fn().mockRejectedValue(error);
+
+  oneOf([check('bar'), check('baz')])({}, {}, (err?: any) => {
+    expect(err).toBe(error);
+
+    proto.run = run;
+    done();
   });
 });
 

@@ -49,6 +49,9 @@ it('calls the validator with the value as a string', async () => {
 
   await validation.run(context, [42, 1], meta);
   expect(validator).toHaveBeenLastCalledWith('42');
+
+  await validation.run(context, { toString: () => 'wow' }, meta);
+  expect(validator).toHaveBeenLastCalledWith('wow');
 });
 
 it('calls the validator with the options', async () => {
