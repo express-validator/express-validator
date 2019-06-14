@@ -99,7 +99,10 @@ it('runs items on the stack in order', async () => {
   expect(stack[1].run).not.toHaveBeenCalled();
 
   item1Resolve();
-  await item1Promise;
+
+  // Make sure whatever promises are still pending are flushed by awaiting on one
+  // that will be completed on the next tick
+  await new Promise(resolve => setTimeout(resolve));
 
   // Item 1 hasn't run any more times. Item 2 has got the green signal to run.
   expect(stack[0].run).toHaveBeenCalledTimes(2);
