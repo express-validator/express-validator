@@ -1,9 +1,9 @@
-import { createMockInstance } from 'jest-create-mock-instance';
 import * as validator from 'validator';
 import { SanitizersImpl } from './sanitizers-impl';
 import { Context } from '../context';
 import { Sanitizers } from './sanitizers';
 import { Sanitization } from '../context-items/sanitization';
+import { Meta } from '../base';
 
 let chain: any;
 let context: Context;
@@ -11,7 +11,19 @@ let sanitizers: Sanitizers<any>;
 
 beforeEach(() => {
   chain = {};
-  context = createMockInstance(Context);
+  context = new Context(['foo'], ['body']);
+  jest.spyOn(context, 'addItem');
+
+  context.addFieldInstances([
+    {
+      location: 'body',
+      path: 'foo',
+      originalPath: 'foo',
+      value: '',
+      originalValue: '',
+    },
+  ]);
+
   sanitizers = new SanitizersImpl(context, chain);
 });
 
@@ -80,5 +92,39 @@ describe('#customSanitizer()', () => {
 
     expect(ret).toBe(chain);
     expect(context.addItem).toHaveBeenCalledWith(new Sanitization(sanitizer, true));
+  });
+});
+
+describe('#toArray()', () => {
+  it('adds toArray() sanitizer to the context', () => {
+    const ret = sanitizers.toArray();
+
+    expect(ret).toBe(chain);
+    expect(context.addItem).toHaveBeenCalledWith(new Sanitization(expect.any(Function), true));
+  });
+
+  it('sanitizes to array', async () => {
+    sanitizers.toArray();
+
+    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const toArray = context.stack[0];
+
+    await toArray.run(context, [], meta);
+    expect(context.getData()[0].value).toEqual([]);
+
+    await toArray.run(context, 'foo', meta);
+    expect(context.getData()[0].value).toEqual(['foo']);
+
+    await toArray.run(context, ['foo'], meta);
+    expect(context.getData()[0].value).toEqual(['foo']);
+
+    await toArray.run(context, '', meta);
+    expect(context.getData()[0].value).toEqual(['']);
+
+    await toArray.run(context, null, meta);
+    expect(context.getData()[0].value).toEqual([null]);
+
+    await toArray.run(context, undefined, meta);
+    expect(context.getData()[0].value).toEqual([]);
   });
 });
