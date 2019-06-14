@@ -2,6 +2,8 @@ export * from './sanitizers';
 export * from './sanitizers-impl';
 export * from './context-handler';
 export * from './context-handler-impl';
+export * from './context-runner';
+export * from './context-runner-impl';
 export * from './validators';
 export * from './validators-impl';
 export * from './sanitization-chain';

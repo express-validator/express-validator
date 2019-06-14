@@ -73,42 +73,35 @@ describe('on each field', () => {
       } as any, // as any because of JS consumers doing the wrong thing
     })[0];
 
-    expect(chain.context.validations).toHaveLength(1);
-    expect(chain.context.sanitizations).toHaveLength(1);
+    expect(chain.context.stack).toHaveLength(2);
   });
 
-  it('adds with options', () => {
-    const chain = checkSchema({
+  it('adds with options', async () => {
+    const schema = checkSchema({
       foo: {
         custom: {
           options: value => value > 0,
         },
+      },
+      bar: {
         whitelist: {
           options: ['a'],
         },
       },
-    })[0];
-
-    const customValidation = chain.context.validations[0];
-    if (!customValidation.custom) {
-      // Should have been added as a custom validation
-      throw new Error();
-    }
-
-    const customValidationResult = customValidation.validator(1, {
-      req: {},
-      path: 'foo',
-      location: 'body',
     });
-    expect(customValidationResult).toBe(true);
 
-    const sanitizer = chain.context.sanitizations[0];
-    if (sanitizer.custom) {
-      // Shouldn't have been added as a custom sanitization
-      throw new Error();
-    }
+    await Promise.all(
+      schema.map(chain =>
+        chain.run({
+          query: { foo: 0, bar: 'baz' },
+        }),
+      ),
+    );
 
-    expect(sanitizer.options).toEqual(['a']);
+    expect(schema[0].context.errors).toHaveLength(1);
+    expect(schema[1].context.getData()).toContainEqual(
+      expect.objectContaining({ path: 'bar', value: 'a', originalValue: 'baz' }),
+    );
   });
 
   it('sets error message', () => {
@@ -120,9 +113,10 @@ describe('on each field', () => {
       },
     })[0];
 
-    expect(chain.context.validations[0].message).toBe('bla');
+    expect(chain.context.stack[0]).toHaveProperty('message', 'bla');
   });
 
+  // #548
   it('does not set error message from non-validators', () => {
     const chain = checkSchema({
       foo: {
@@ -138,8 +132,8 @@ describe('on each field', () => {
       } as any, // as any because of JS consumers doing the wrong thing
     })[0];
 
-    const isInt = chain.context.validations[0];
-    expect(isInt.message).toBe('from toInt');
+    const isInt = chain.context.stack[0];
+    expect(isInt).toHaveProperty('message', 'from toInt');
   });
 
   it('can be marked as optional', () => {
@@ -155,7 +149,7 @@ describe('on each field', () => {
     });
   });
 
-  it('can negate validators', () => {
+  it('can negate validators', async () => {
     const chain = checkSchema({
       foo: {
         isEmpty: {
@@ -164,6 +158,7 @@ describe('on each field', () => {
       },
     })[0];
 
-    expect(chain.context.validations[0].negated).toBe(true);
+    await chain.run({ params: { foo: '' } });
+    expect(chain.context.errors).toHaveLength(1);
   });
 });

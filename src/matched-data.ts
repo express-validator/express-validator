@@ -1,13 +1,5 @@
 import * as _ from 'lodash';
-import {
-  InternalRequest,
-  Location,
-  Request,
-  contextsSymbol,
-  errorsSymbol,
-  failedOneOfContextsSymbol,
-} from './base';
-import { EnsureInstance, FieldInstance, RemoveOptionals, SelectFields } from './context-runners';
+import { FieldInstance, InternalRequest, Location, Request, contextsSymbol } from './base';
 import { Context } from './context';
 
 interface FieldInstanceBag {
@@ -27,8 +19,8 @@ export function matchedData(
 ): Record<string, any> {
   const internalReq: InternalRequest = req;
 
-  const fieldExtractor = createFieldExtractor(req, options.includeOptionals !== true);
-  const validityFilter = createValidityFilter(req, options.onlyValidData);
+  const fieldExtractor = createFieldExtractor(options.includeOptionals !== true);
+  const validityFilter = createValidityFilter(options.onlyValidData);
   const locationFilter = createLocationFilter(options.locations);
 
   return _(internalReq[contextsSymbol])
@@ -40,38 +32,23 @@ export function matchedData(
     .valueOf();
 }
 
-function createFieldExtractor(req: Request, removeOptionals: boolean) {
-  const fieldSelector = new SelectFields();
-  const optionalsRemover = new RemoveOptionals();
-  const ensureInstance = new EnsureInstance();
-
+function createFieldExtractor(removeOptionals: boolean) {
   return (context: Context) => {
-    let instances = fieldSelector.run(req, context);
-
-    if (removeOptionals) {
-      instances = optionalsRemover.run(req, context, instances);
-    }
-
-    instances = ensureInstance.run(req, context, instances);
+    const instances = context.getData({ requiredOnly: removeOptionals });
     return instances.map((instance): FieldInstanceBag => ({ instance, context }));
   };
 }
 
-function createValidityFilter(req: InternalRequest, onlyValidData = true) {
-  const errors = req[errorsSymbol] || [];
-  const failedOneOfContexts = req[failedOneOfContextsSymbol] || [];
-
+function createValidityFilter(onlyValidData = true) {
   return !onlyValidData
     ? () => true
     : (field: FieldInstanceBag) => {
-        const hasError = errors.some(
+        const hasError = field.context.errors.some(
           error =>
             error.location === field.instance.location && error.param === field.instance.path,
         );
 
-        const failedWithinOneOf = failedOneOfContexts.includes(field.context);
-
-        return !(hasError || failedWithinOneOf);
+        return !hasError;
       };
 }
 

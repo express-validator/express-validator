@@ -11,6 +11,14 @@ export type StandardSanitizer = (input: string, ...options: any[]) => any;
 
 export type DynamicMessageCreator = (value: any, meta: Meta) => any;
 
+export interface FieldInstance {
+  path: string;
+  originalPath: string;
+  location: Location;
+  value: any;
+  originalValue: any;
+}
+
 export type ValidationError =
   | {
       // It's optional and undefined so places don't need to define it, but can reference it
@@ -35,16 +43,10 @@ export interface Request {
   query?: Record<string, any>;
 }
 
-export const errorsSymbol = Symbol('express-validator#validationErrors');
-export const failedOneOfContextsSymbol = Symbol('express-validator#validationErrorsOneOf');
 export const contextsSymbol = Symbol('express-validator#contexts');
-export const middlewareModeSymbol = Symbol('express-validator#middlewareMode');
 
 export interface InternalRequest extends Request {
-  [errorsSymbol]?: ValidationError[];
-  [failedOneOfContextsSymbol]?: ReadonlyContext[];
   [contextsSymbol]?: ReadonlyContext[];
-  [middlewareModeSymbol]?: true;
 }
 
 export type Middleware = (req: Request, res: any, next: (err?: any) => void) => void;

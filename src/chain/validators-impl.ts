@@ -2,12 +2,13 @@ import * as validator from 'validator';
 import { CustomValidator, StandardValidator } from '../base';
 import { Context } from '../context';
 import { Validators } from './validators';
+import { CustomValidation, StandardValidation } from '../context-items';
 
 export class ValidatorsImpl<Chain> implements Validators<Chain> {
   constructor(private readonly context: Context, private readonly chain: Chain) {}
 
   custom(validator: CustomValidator) {
-    this.context.addValidation(validator, { custom: true });
+    this.context.addItem(new CustomValidation(validator, this.context.negated));
     return this.chain;
   }
 
@@ -34,10 +35,8 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
 
   // Standard validators
   private addStandardValidation(validator: StandardValidator, ...options: any[]) {
-    this.context.addValidation(validator, {
-      options,
-      custom: false,
-    });
+    const validation = new StandardValidation(validator, this.context.negated, options);
+    this.context.addItem(validation);
 
     return this.chain;
   }

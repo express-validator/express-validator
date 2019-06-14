@@ -10,9 +10,10 @@ export class ContextHandlerImpl<Chain> implements ContextHandler<Chain> {
   }
 
   withMessage(message: any) {
-    const { validations } = this.context;
-    if (validations.length) {
-      validations[validations.length - 1].message = message;
+    const { stack } = this.context;
+    const lastItem = stack[stack.length - 1];
+    if (lastItem && lastItem.kind === 'validation') {
+      lastItem.message = message;
     }
 
     return this.chain;

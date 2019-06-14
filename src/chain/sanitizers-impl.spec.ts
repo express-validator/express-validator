@@ -1,17 +1,29 @@
-import { createMockInstance } from 'jest-create-mock-instance';
 import * as validator from 'validator';
 import { SanitizersImpl } from './sanitizers-impl';
 import { Context } from '../context';
 import { Sanitizers } from './sanitizers';
-import { CustomSanitizer, Meta } from '../base';
+import { Sanitization } from '../context-items/sanitization';
+import { Meta } from '../base';
 
 let chain: any;
-let context: jest.Mocked<Context>;
+let context: Context;
 let sanitizers: Sanitizers<any>;
 
 beforeEach(() => {
   chain = {};
-  context = createMockInstance(Context);
+  context = new Context(['foo'], ['body']);
+  jest.spyOn(context, 'addItem');
+
+  context.addFieldInstances([
+    {
+      location: 'body',
+      path: 'foo',
+      originalPath: 'foo',
+      value: '',
+      originalValue: '',
+    },
+  ]);
+
   sanitizers = new SanitizersImpl(context, chain);
 });
 
@@ -32,65 +44,45 @@ it('has methods for all standard validators', () => {
 
       const ret = sanitizers[key].call(sanitizers);
       expect(ret).toBe(chain);
-      expect(context.addSanitization).toHaveBeenLastCalledWith(validatorModule[key], {
-        custom: false,
-        options: expect.any(Array),
-      });
+      expect(context.addItem).toHaveBeenLastCalledWith(
+        new Sanitization(validatorModule[key], false, expect.any(Array)),
+      );
     });
 
   sanitizers.blacklist('foo');
-  expect(context.addSanitization).toHaveBeenLastCalledWith(validator.blacklist, {
-    custom: false,
-    options: ['foo'],
-  });
+  expect(context.addItem).toHaveBeenLastCalledWith(
+    new Sanitization(validator.blacklist, false, ['foo']),
+  );
 
   sanitizers.whitelist('bar');
-  expect(context.addSanitization).toHaveBeenLastCalledWith(validator.whitelist, {
-    custom: false,
-    options: ['bar'],
-  });
+  expect(context.addItem).toHaveBeenLastCalledWith(
+    new Sanitization(validator.whitelist, false, ['bar']),
+  );
 
   sanitizers.stripLow(true);
-  expect(context.addSanitization).toHaveBeenLastCalledWith(validator.stripLow, {
-    custom: false,
-    options: [true],
-  });
+  expect(context.addItem).toHaveBeenLastCalledWith(
+    new Sanitization(validator.stripLow, false, [true]),
+  );
 
   sanitizers.ltrim('a');
-  expect(context.addSanitization).toHaveBeenLastCalledWith(validator.ltrim, {
-    custom: false,
-    options: ['a'],
-  });
+  expect(context.addItem).toHaveBeenLastCalledWith(new Sanitization(validator.ltrim, false, ['a']));
 
   sanitizers.rtrim('z');
-  expect(context.addSanitization).toHaveBeenLastCalledWith(validator.rtrim, {
-    custom: false,
-    options: ['z'],
-  });
+  expect(context.addItem).toHaveBeenLastCalledWith(new Sanitization(validator.rtrim, false, ['z']));
 
   sanitizers.trim('az');
-  expect(context.addSanitization).toHaveBeenLastCalledWith(validator.trim, {
-    custom: false,
-    options: ['az'],
-  });
+  expect(context.addItem).toHaveBeenLastCalledWith(new Sanitization(validator.trim, false, ['az']));
 
   sanitizers.escape();
-  expect(context.addSanitization).toHaveBeenLastCalledWith(validator.escape, {
-    custom: false,
-    options: [],
-  });
+  expect(context.addItem).toHaveBeenLastCalledWith(new Sanitization(validator.escape, false, []));
 
   sanitizers.unescape();
-  expect(context.addSanitization).toHaveBeenLastCalledWith(validator.unescape, {
-    custom: false,
-    options: [],
-  });
+  expect(context.addItem).toHaveBeenLastCalledWith(new Sanitization(validator.unescape, false, []));
 
   sanitizers.normalizeEmail();
-  expect(context.addSanitization).toHaveBeenLastCalledWith(validator.normalizeEmail, {
-    custom: false,
-    options: [undefined],
-  });
+  expect(context.addItem).toHaveBeenLastCalledWith(
+    new Sanitization(validator.normalizeEmail, false, [undefined]),
+  );
 });
 
 describe('#customSanitizer()', () => {
@@ -99,9 +91,7 @@ describe('#customSanitizer()', () => {
     const ret = sanitizers.customSanitizer(sanitizer);
 
     expect(ret).toBe(chain);
-    expect(context.addSanitization).toHaveBeenCalledWith(sanitizer, {
-      custom: true,
-    });
+    expect(context.addItem).toHaveBeenCalledWith(new Sanitization(sanitizer, true));
   });
 });
 
@@ -110,22 +100,31 @@ describe('#toArray()', () => {
     const ret = sanitizers.toArray();
 
     expect(ret).toBe(chain);
-    expect(context.addSanitization).toHaveBeenCalledWith(expect.any(Function), {
-      custom: true,
-    });
+    expect(context.addItem).toHaveBeenCalledWith(new Sanitization(expect.any(Function), true));
   });
 
-  it('sanitizes to array', () => {
+  it('sanitizes to array', async () => {
     sanitizers.toArray();
 
     const meta: Meta = { req: {}, location: 'body', path: 'foo' };
-    const toArray = context.addSanitization.mock.calls[0][0] as CustomSanitizer;
+    const toArray = context.stack[0];
 
-    expect(toArray([], meta)).toEqual([]);
-    expect(toArray('foo', meta)).toEqual(['foo']);
-    expect(toArray(['foo'], meta)).toEqual(['foo']);
-    expect(toArray('', meta)).toEqual(['']);
-    expect(toArray(null, meta)).toEqual([null]);
-    expect(toArray(undefined, meta)).toEqual([]);
+    await toArray.run(context, [], meta);
+    expect(context.getData()[0].value).toEqual([]);
+
+    await toArray.run(context, 'foo', meta);
+    expect(context.getData()[0].value).toEqual(['foo']);
+
+    await toArray.run(context, ['foo'], meta);
+    expect(context.getData()[0].value).toEqual(['foo']);
+
+    await toArray.run(context, '', meta);
+    expect(context.getData()[0].value).toEqual(['']);
+
+    await toArray.run(context, null, meta);
+    expect(context.getData()[0].value).toEqual([null]);
+
+    await toArray.run(context, undefined, meta);
+    expect(context.getData()[0].value).toEqual([]);
   });
 });

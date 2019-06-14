@@ -1,14 +1,7 @@
 import * as _ from 'lodash';
 import { ValidationChain } from '../chain';
-import {
-  InternalRequest,
-  Middleware,
-  Request,
-  ValidationError,
-  errorsSymbol,
-  failedOneOfContextsSymbol,
-  middlewareModeSymbol,
-} from '../base';
+import { InternalRequest, Middleware, Request, ValidationError, contextsSymbol } from '../base';
+import { Context } from '../context';
 
 export type OneOfCustomMessageBuilder = (options: { req: Request }) => any;
 
@@ -20,45 +13,47 @@ export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?:
 
 export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?: any) {
   return async (req: InternalRequest, _res: any, next: (err?: any) => void) => {
-    const run = (chain: ValidationChain) =>
-      new Promise<ValidationError[]>(resolve => {
-        chain(Object.assign(req, { [middlewareModeSymbol]: true }), _res, errors => {
-          resolve(errors || []);
+    const surrogateContext = new Context([], []);
+
+    // Run each group of chains in parallel, and within each group, run each chain in parallel too.
+    const promises = chains.map(async chain => {
+      const group = Array.isArray(chain) ? chain : [chain];
+      let groupErrors: ValidationError[] = [];
+
+      const groupPromises = group.map(async chain => {
+        await chain.run(req);
+        groupErrors = groupErrors.concat(chain.context.errors);
+      });
+      await Promise.all(groupPromises);
+
+      // #536: The data from a chain within oneOf() can only be made available to e.g. matchedData()
+      // if its entire group is valid.
+      if (!groupErrors.length) {
+        group.forEach(chain => {
+          surrogateContext.addFieldInstances(chain.context.getData());
         });
-      });
+      }
 
-    // The shape should be [[group 1's errors], [group 2's errors], [...etc]]
-    const allErrors = await Promise.all(
-      chains.map(async chain => {
-        const group = Array.isArray(chain) ? chain : [chain];
-        return Promise.all(group.map(run)).then(errors => _.flatten(errors));
-      }),
-    );
+      return groupErrors;
+    });
 
-    const failedContexts = _(allErrors)
-      // If a group is free of errors, the empty array plays the trick of filtering such group.
-      .flatMap((errors, index) => (errors.length > 0 ? chains[index] : []))
-      .map(chain => chain.context)
-      .valueOf();
+    req[contextsSymbol] = (req[contextsSymbol] || []).concat(surrogateContext);
 
-    // #536: If a field within oneOf() is valid, but its group of chains isn't,
-    // then it shouldn't be picked up by matchedData().
-    req[failedOneOfContextsSymbol] = (req[failedOneOfContextsSymbol] || []).concat(failedContexts);
+    try {
+      const allErrors = await Promise.all(promises);
+      const success = allErrors.some(groupErrors => groupErrors.length === 0);
 
-    // Did any of the groups of chains succeed?
-    const allInvalids = allErrors.every(results => results.length > 0);
-    if (allInvalids) {
-      req[errorsSymbol] = (req[errorsSymbol] || []).concat({
-        param: '_error',
-        msg: getDynamicMessage(message || 'Invalid value(s)', req),
-        nestedErrors: _.flattenDeep(allErrors) as ValidationError[],
-      });
+      if (!success) {
+        // Only add an error to the context if no group of chains had success.
+        surrogateContext.addError(
+          typeof message === 'function' ? message({ req }) : message || 'Invalid value(s)',
+          _.flatMap(allErrors),
+        );
+      }
+
+      next();
+    } catch (e) {
+      next(e);
     }
-
-    next();
   };
-}
-
-function getDynamicMessage(message: any, req: Request) {
-  return typeof message === 'function' ? message({ req }) : message;
 }
