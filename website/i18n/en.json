@@ -11,6 +11,9 @@
       "filter-api": {
         "title": "Sanitization middlewares"
       },
+      "matched-data-api": {
+        "title": "matchedData()"
+      },
       "sanitization-chain-api": {
         "title": "Sanitization Chain API"
       },
@@ -18,7 +21,7 @@
         "title": "Validation Chain API"
       },
       "validation-result-api": {
-        "title": "Validation Result"
+        "title": "validationResult()"
       },
       "custom-validators-sanitizers": {
         "title": "Custom validators/sanitizers"

@@ -4,12 +4,11 @@ title: Validation Chain API
 ---
 
 The validation chain is a middleware, and it _should_ be passed to an Express route handler.
-It also is a subset of the [Sanitization Chain](api-sanitization-chain.md), meaning all standard
-sanitizers and additional methods are available.
 
 You can add as many validators and sanitizers to a chain as you need.   
-When the middleware runs, it will first apply sanitizers as they were specified, and then run the
-validators in order. The final sanitized value is the one that is passed to the validators.
+When the middleware runs, it will run each validator or sanitizer in the order they were specified;
+this means if a sanitizer is specified before a validator, the validator will run with the sanitized
+value.
 
 > **Note:** Chains are mutable. Every time you call one of its methods, you're adding more behavior to the same chain.  
 > Keep this in mind and note that you probably want to use a factory function when reusing some base chain.
@@ -22,6 +21,18 @@ This means you can use any of those methods, e.g. `isInt`, `isEmail`, `contains`
 
 > **For a complete list of standard validators and their options**,
 > please check [validator.js' docs](https://github.com/chriso/validator.js#validators).
+
+## Sanitization Chain API
+A validation chain also is a subset of the [Sanitization Chain](api-sanitization-chain.md), meaning
+all standard sanitizers and its additional methods are available:
+
+```js
+app.post('/create-user', [
+  // normalizeEmail() and toDate() are sanitizers, also available in the Sanitization Chain
+  check('email').normalizeEmail().isEmail(),
+  check('date-of-birth').isISO8601().toDate()
+]);
+```
 
 ## Additional methods
 In addition to the standard validators and the [Sanitization Chain API](api-sanitization-chain.md),

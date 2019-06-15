@@ -1,7 +1,9 @@
 ---
 id: validation-result-api
-title: Validation Result
+title: validationResult()
 ---
+
+These methods are all available via `require('express-validator')`.
 
 ## `validationResult(req)`
 - `req`: the express request object
