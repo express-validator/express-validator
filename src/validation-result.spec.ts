@@ -1,4 +1,3 @@
-import { createMockInstance } from 'jest-create-mock-instance';
 import { ValidationError, contextsSymbol } from './base';
 import { ErrorFormatter, validationResult } from './validation-result';
 import { Context } from './context';
@@ -10,12 +9,12 @@ const allErrors: ValidationError[] = [
 ];
 
 const makeContextsList = (errors: ValidationError[]) => {
-  const context1 = createMockInstance(Context);
+  const context1 = new Context([], []);
   Object.defineProperty(context1, 'errors', {
     value: errors.slice(0, 1),
   });
 
-  const context2 = createMockInstance(Context);
+  const context2 = new Context([], []);
   Object.defineProperty(context2, 'errors', {
     value: errors.slice(1),
   });

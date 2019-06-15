@@ -1,12 +1,14 @@
-import { createMockInstance } from 'jest-create-mock-instance';
 import { Context } from '../context';
 import { ContextHandler, ContextHandlerImpl } from './';
 
-let context: jest.Mocked<Context>;
+let context: Context;
 let contextHandler: ContextHandler<any>;
 
 beforeEach(() => {
-  context = createMockInstance(Context);
+  context = new Context([], []);
+  jest.spyOn(context, 'negate');
+  jest.spyOn(context, 'setOptional');
+
   contextHandler = new ContextHandlerImpl(context, {});
 });
 
@@ -19,20 +21,20 @@ describe('#not()', () => {
 
 describe('#withMessage()', () => {
   it('sets the message on the last item on context queue if it is a validation', () => {
-    Object.defineProperty(context, 'stack', {
-      value: [{ kind: 'unknown' }, { kind: 'validation' }],
-    });
+    context.addItem({ kind: 'unknown', run: jest.fn() });
+    context.addItem({ kind: 'validation', message: 1, run: jest.fn() });
+
     contextHandler.withMessage('foo');
     expect(context.stack[0]).not.toHaveProperty('message');
     expect(context.stack[1]).toHaveProperty('message', 'foo');
   });
 
   it('is noop if last item is not a validation', () => {
-    Object.defineProperty(context, 'stack', {
-      value: [{ kind: 'validation' }, { kind: 'unknown' }],
-    });
+    context.addItem({ kind: 'validation', message: 1, run: jest.fn() });
+    context.addItem({ kind: 'unknown', run: jest.fn() });
+
     contextHandler.withMessage('foo');
-    expect(context.stack[0]).not.toHaveProperty('message');
+    expect(context.stack[0]).toHaveProperty('message', 1);
     expect(context.stack[1]).not.toHaveProperty('message');
   });
 });
