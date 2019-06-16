@@ -5,6 +5,7 @@ declare module 'validator' {
   export function isAlpha(str: string, locale?: AlphaLocale): boolean;
   export function isAlphanumeric(str: string, locale?: AlphanumericLocale): boolean;
   export function isAscii(str: string): boolean;
+  export function isBase32(str: string): boolean;
   export function isBase64(str: string): boolean;
   export function isBefore(str: string, date?: string): boolean;
   export function isBoolean(str: string): boolean;
@@ -23,25 +24,32 @@ declare module 'validator' {
   export function isHash(str: string, algorithm: HashAlgorithm): boolean;
   export function isHexColor(str: string): boolean;
   export function isHexadecimal(str: string): boolean;
+  export function isIdentityCard(str: string, locale?: ['ES'] | 'any'): boolean;
   export function isIP(str: string, version?: IPVersion): boolean;
   export function isIPRange(str: string): boolean;
   export function isISBN(str: string, version?: number): boolean;
   export function isISSN(str: string, options?: Options.IsISSNOptions): boolean;
   export function isISIN(str: string): boolean;
-  export function isISO8601(str: string): boolean;
+  export function isISO8601(str: string, options?: Options.IsISO8601Options): boolean;
   export function isISO31661Alpha2(str: string): boolean;
   export function isISO31661Alpha3(str: string): boolean;
   export function isISRC(str: string): boolean;
   export function isIn(str: string, values: any[]): boolean;
   export function isInt(str: string, options?: Options.IsIntOptions): boolean;
   export function isJSON(str: string): boolean;
+  export function isJWT(str: string): boolean;
   export function isLatLong(str: string): boolean;
   export function isLength(str: string, options: Options.MinMaxOptions): boolean;
   export function isLowercase(str: string): boolean;
-  export function isMACAddress(str: string): boolean;
+  export function isMagnetURI(str: string): boolean;
+  export function isMACAddress(str: string, options: Options.IsMACAddressOptions): boolean;
   export function isMD5(str: string): boolean;
   export function isMimeType(str: string): boolean;
-  export function isMobilePhone(str: string,  locale: MobilePhoneLocale, options?: Options.IsMobilePhoneOptions): boolean;
+  export function isMobilePhone(
+    str: string,
+    locale: MobilePhoneLocale,
+    options?: Options.IsMobilePhoneOptions,
+  ): boolean;
   export function isMongoId(str: string): boolean;
   export function isMultibyte(str: string): boolean;
   export function isNumeric(str: string, options?: Options.IsNumericOptions): boolean;
@@ -76,39 +84,247 @@ declare module 'validator' {
   export type IPVersion = 4 | 6;
 
   export type AlphaLocale =
-    'ar' | 'ar-AE' | 'ar-BH' | 'ar-DZ' | 'ar-EG' | 'ar-IQ' | 'ar-JO' | 'ar-KW' | 'ar-LB' | 'ar-LY'
-    | 'ar-MA' | 'ar-QA' | 'ar-QM' | 'ar-SA' | 'ar-SD' | 'ar-SY' | 'ar-TN' | 'ar-YE' | 'bg-BG'
-    | 'cs-CZ' | 'da-DK' | 'de-DE' | 'el-GR' | 'en-AU' | 'en-GB' | 'en-HK' | 'en-IN' | 'en-NZ'
-    | 'en-US' | 'en-ZA' | 'en-ZM' | 'es-ES' | 'fr-FR' | 'hu-HU' | 'it-IT' | 'nb-NO' | 'nl-NL'
-    | 'nn-NO' | 'pl-PL' | 'pt-BR' | 'pt-PT' | 'ru-RU' | 'sk-SK' | 'sr-RS' | 'sr-RS@latin'
-    | 'sv-SE' | 'tr-TR' | 'uk-UA';
+    | 'ar'
+    | 'ar-AE'
+    | 'ar-BH'
+    | 'ar-DZ'
+    | 'ar-EG'
+    | 'ar-IQ'
+    | 'ar-JO'
+    | 'ar-KW'
+    | 'ar-LB'
+    | 'ar-LY'
+    | 'ar-MA'
+    | 'ar-QA'
+    | 'ar-QM'
+    | 'ar-SA'
+    | 'ar-SD'
+    | 'ar-SY'
+    | 'ar-TN'
+    | 'ar-YE'
+    | 'bg-BG'
+    | 'cs-CZ'
+    | 'da-DK'
+    | 'de-DE'
+    | 'el-GR'
+    | 'en-AU'
+    | 'en-GB'
+    | 'en-HK'
+    | 'en-IN'
+    | 'en-NZ'
+    | 'en-US'
+    | 'en-ZA'
+    | 'en-ZM'
+    | 'es-ES'
+    | 'fr-FR'
+    | 'hu-HU'
+    | 'it-IT'
+    | 'ku-IQ'
+    | 'nb-NO'
+    | 'nl-NL'
+    | 'nn-NO'
+    | 'pl-PL'
+    | 'pt-BR'
+    | 'pt-PT'
+    | 'ru-RU'
+    | 'sk-SK'
+    | 'sl-SI'
+    | 'sr-RS'
+    | 'sr-RS@latin'
+    | 'sv-SE'
+    | 'tr-TR'
+    | 'uk-UA';
 
   export type AlphanumericLocale =
-    'ar' | 'ar-AE' | 'ar-BH' | 'ar-DZ' | 'ar-EG' | 'ar-IQ' | 'ar-JO' | 'ar-KW' | 'ar-LB' | 'ar-LY'
-    | 'ar-MA' | 'ar-QA' | 'ar-QM' | 'ar-SA' | 'ar-SD' | 'ar-SY' | 'ar-TN' | 'ar-YE' | 'bg-BG'
-    | 'cs-CZ' | 'da-DK' | 'de-DE' | 'el-GR' | 'en-AU' | 'en-GB' | 'en-HK' | 'en-IN' | 'en-NZ'
-    | 'en-US' | 'en-ZA' | 'en-ZM' | 'es-ES' | 'fr-FR' | 'fr-BE' | 'hu-HU' | 'it-IT' | 'nb-NO'
-    | 'nl-BE' | 'nl-NL' | 'nn-NO' | 'pl-PL' | 'pt-BR' | 'pt-PT' | 'ru-RU' | 'sk-SK' | 'sr-RS'
-    | 'sr-RS@latin' | 'sv-SE' | 'tr-TR' | 'uk-UA';
+    | 'ar'
+    | 'ar-AE'
+    | 'ar-BH'
+    | 'ar-DZ'
+    | 'ar-EG'
+    | 'ar-IQ'
+    | 'ar-JO'
+    | 'ar-KW'
+    | 'ar-LB'
+    | 'ar-LY'
+    | 'ar-MA'
+    | 'ar-QA'
+    | 'ar-QM'
+    | 'ar-SA'
+    | 'ar-SD'
+    | 'ar-SY'
+    | 'ar-TN'
+    | 'ar-YE'
+    | 'bg-BG'
+    | 'cs-CZ'
+    | 'da-DK'
+    | 'de-DE'
+    | 'el-GR'
+    | 'en-AU'
+    | 'en-GB'
+    | 'en-HK'
+    | 'en-IN'
+    | 'en-NZ'
+    | 'en-US'
+    | 'en-ZA'
+    | 'en-ZM'
+    | 'es-ES'
+    | 'fr-FR'
+    | 'fr-BE'
+    | 'hu-HU'
+    | 'it-IT'
+    | 'ku-IQ'
+    | 'nb-NO'
+    | 'nl-BE'
+    | 'nl-NL'
+    | 'nn-NO'
+    | 'pl-PL'
+    | 'pt-BR'
+    | 'pt-PT'
+    | 'ru-RU'
+    | 'sk-SK'
+    | 'sl-SI'
+    | 'sr-RS'
+    | 'sr-RS@latin'
+    | 'sv-SE'
+    | 'tr-TR'
+    | 'uk-UA';
 
   export type MobilePhoneLocale =
-    'any' | 'ar-AE' | 'ar-DZ' | 'ar-EG' | 'ar-JO' | 'ar-KW' | 'ar-SA' | 'ar-SY' | 'ar-TN'
-    | 'be-BY' | 'bg-BG' | 'cs-CZ' | 'de-DE' | 'da-DK' | 'el-GR' | 'en-AU' | 'en-GB' | 'en-HK'
-    | 'en-IN' | 'en-KE' | 'en-NG' | 'en-NZ' | 'en-PK' | 'en-RW' | 'en-SG' | 'en-TZ' | 'en-UG'
-    | 'en-US' | 'en-CA' | 'en-ZA' | 'en-ZM' | 'es-ES' | 'et-EE' | 'fa-IR' | 'fi-FI' | 'fo-FO'
-    | 'fr-FR' | 'he-IL' | 'hu-HU' | 'id-ID' | 'it-IT' | 'ja-JP' | 'kk-KZ' | 'kl-GL' | 'lt-LT'
-    | 'ms-MY' | 'nb-NO' | 'nn-NO' | 'pl-PL' | 'pt-PT' | 'ro-RO' | 'ru-RU' | 'sk-SK' | 'sr-RS'
-    | 'sv-SE' | 'th-TH' | 'tr-TR' | 'uk-UA' | 'vi-VN' | 'zh-CN' | 'zh-HK' | 'zh-TW';
+    | 'any'
+    | 'ar-AE'
+    | 'ar-DZ'
+    | 'ar-EG'
+    | 'ar-JO'
+    | 'ar-IQ'
+    | 'ar-KW'
+    | 'ar-SA'
+    | 'ar-SY'
+    | 'ar-TN'
+    | 'be-BY'
+    | 'bg-BG'
+    | 'bn-BD'
+    | 'cs-CZ'
+    | 'de-DE'
+    | 'da-DK'
+    | 'el-GR'
+    | 'en-AU'
+    | 'en-GB'
+    | 'en-GH'
+    | 'en-HK'
+    | 'en-IE'
+    | 'en-IN'
+    | 'en-KE'
+    | 'en-MU'
+    | 'en-NG'
+    | 'en-NZ'
+    | 'en-PK'
+    | 'en-RW'
+    | 'en-SG'
+    | 'en-TZ'
+    | 'en-UG'
+    | 'en-US'
+    | 'en-CA'
+    | 'en-ZA'
+    | 'en-ZM'
+    | 'es-ES'
+    | 'es-MX'
+    | 'es-PY'
+    | 'es-UY'
+    | 'et-EE'
+    | 'fa-IR'
+    | 'fi-FI'
+    | 'fo-FO'
+    | 'fr-FR'
+    | 'he-IL'
+    | 'hu-HU'
+    | 'id-ID'
+    | 'it-IT'
+    | 'ja-JP'
+    | 'kk-KZ'
+    | 'kl-GL'
+    | 'lt-LT'
+    | 'ms-MY'
+    | 'nb-NO'
+    | 'nn-NO'
+    | 'pl-PL'
+    | 'pt-PT'
+    | 'ro-RO'
+    | 'ru-RU'
+    | 'sk-SK'
+    | 'sl-SI'
+    | 'sr-RS'
+    | 'sv-SE'
+    | 'th-TH'
+    | 'tr-TR'
+    | 'uk-UA'
+    | 'vi-VN'
+    | 'zh-CN'
+    | 'zh-HK'
+    | 'zh-TW';
 
   export type PostalCodeLocale =
-    'any' | 'AT' | 'AU' | 'BE' | 'BG' | 'CA' | 'CH' | 'CZ' | 'DE' | 'DK' | 'DZ' | 'EE' | 'ES'
-    | 'FI' | 'FR' | 'GB' | 'GR' | 'HR' | 'HU' | 'IL' | 'IN' | 'IS' | 'IT' | 'JP' | 'KE' | 'LI'
-    | 'LT' | 'LU' | 'LV' | 'MX' | 'NL' | 'NO' | 'PL' | 'PT' | 'RO' | 'RU' | 'SA' | 'SE' | 'SI'
-    | 'TN' | 'TW' | 'US' | 'ZA' | 'ZM';
+    | 'any'
+    | 'AD'
+    | 'AT'
+    | 'AU'
+    | 'BE'
+    | 'BG'
+    | 'CA'
+    | 'CH'
+    | 'CZ'
+    | 'DE'
+    | 'DK'
+    | 'DZ'
+    | 'EE'
+    | 'ES'
+    | 'FI'
+    | 'FR'
+    | 'GB'
+    | 'GR'
+    | 'HR'
+    | 'HU'
+    | 'ID'
+    | 'IL'
+    | 'IN'
+    | 'IS'
+    | 'IT'
+    | 'JP'
+    | 'KE'
+    | 'LI'
+    | 'LT'
+    | 'LU'
+    | 'LV'
+    | 'MX'
+    | 'NL'
+    | 'NO'
+    | 'PL'
+    | 'PT'
+    | 'RO'
+    | 'RU'
+    | 'SA'
+    | 'SE'
+    | 'SI'
+    | 'TN'
+    | 'TW'
+    | 'UA'
+    | 'US'
+    | 'ZA'
+    | 'ZM';
 
   export type HashAlgorithm =
-    'md4' | 'md5' | 'sha1' | 'sha256' | 'sha384' | 'sha512' | 'ripemd128' | 'ripemd160'
-    | 'tiger128' | 'tiger160' | 'tiger192' | 'crc32' | 'crc32b';
+    | 'md4'
+    | 'md5'
+    | 'sha1'
+    | 'sha256'
+    | 'sha384'
+    | 'sha512'
+    | 'ripemd128'
+    | 'ripemd160'
+    | 'tiger128'
+    | 'tiger160'
+    | 'tiger192'
+    | 'crc32'
+    | 'crc32b';
 
   export namespace Options {
     interface MinMaxOptions {
@@ -200,6 +416,10 @@ declare module 'validator' {
       allow_leading_zeroes?: boolean;
     }
 
+    interface IsISO8601Options {
+      strict: boolean;
+    }
+
     /**
      * defaults to
      * {
@@ -208,8 +428,18 @@ declare module 'validator' {
      * }
      */
     interface IsISSNOptions {
-      case_sensitive?: boolean
-      require_hyphen?: boolean
+      case_sensitive?: boolean;
+      require_hyphen?: boolean;
+    }
+
+    /**
+     * defaults to
+     * {
+     *    no_colons: false
+     * }
+     */
+    interface IsMACAddressOptions {
+      no_colons?: boolean;
     }
 
     interface IsMobilePhoneOptions {
@@ -252,6 +482,7 @@ declare module 'validator' {
       host_blacklist?: (string | RegExp)[];
       allow_trailing_dot?: boolean;
       allow_protocol_relative_urls?: boolean;
+      disallow_auth?: boolean;
     }
 
     interface NormalizeEmailOptions {

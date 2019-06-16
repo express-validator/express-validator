@@ -14,6 +14,7 @@ export interface Validators<Return> {
   isAlpha(locale?: validator.AlphaLocale): Return;
   isAlphanumeric(locale?: validator.AlphanumericLocale): Return;
   isAscii(): Return;
+  isBase32(): Return;
   isBase64(): Return;
   isBefore(date?: string): Return;
   isBoolean(): Return;
@@ -32,22 +33,25 @@ export interface Validators<Return> {
   isHash(algorithm: validator.HashAlgorithm): Return;
   isHexColor(): Return;
   isHexadecimal(): Return;
+  isIdentityCard(locale?: ['ES'] | 'any'): Return;
   isIP(version?: validator.IPVersion): Return;
   isIPRange(): Return;
   isISBN(version?: number): Return;
   isISSN(options?: validator.Options.IsISSNOptions): Return;
   isISIN(): Return;
-  isISO8601(): Return;
+  isISO8601(options?: validator.Options.IsISO8601Options): Return;
   isISO31661Alpha2(): Return;
   isISO31661Alpha3(): Return;
   isISRC(): Return;
   isIn(values: any[]): Return;
   isInt(options?: validator.Options.IsIntOptions): Return;
   isJSON(): Return;
+  isJWT(): Return;
   isLatLong(): Return;
   isLength(options: validator.Options.MinMaxOptions): Return;
   isLowercase(): Return;
-  isMACAddress(): Return;
+  isMagnetURI(): Return;
+  isMACAddress(options?: validator.Options.IsMACAddressOptions): Return;
   isMD5(): Return;
   isMimeType(): Return;
   isMobilePhone(

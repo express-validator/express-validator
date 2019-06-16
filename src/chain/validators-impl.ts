@@ -59,6 +59,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isAscii() {
     return this.addStandardValidation(validator.isAscii);
   }
+  isBase32() {
+    return this.addStandardValidation(validator.isBase32);
+  }
   isBase64() {
     return this.addStandardValidation(validator.isBase64);
   }
@@ -113,6 +116,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isHexadecimal() {
     return this.addStandardValidation(validator.isHexadecimal);
   }
+  isIdentityCard(locale: ['ES'] | 'any') {
+    return this.addStandardValidation(validator.isIdentityCard, locale);
+  }
   isIP(version?: validator.IPVersion) {
     return this.addStandardValidation(validator.isIP, version);
   }
@@ -128,8 +134,8 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isISIN() {
     return this.addStandardValidation(validator.isISIN);
   }
-  isISO8601() {
-    return this.addStandardValidation(validator.isISO8601);
+  isISO8601(options?: validator.Options.IsISO8601Options) {
+    return this.addStandardValidation(validator.isISO8601, options);
   }
   isISO31661Alpha2() {
     return this.addStandardValidation(validator.isISO31661Alpha2);
@@ -149,6 +155,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isJSON() {
     return this.addStandardValidation(validator.isJSON);
   }
+  isJWT() {
+    return this.addStandardValidation(validator.isJWT);
+  }
   isLatLong() {
     return this.addStandardValidation(validator.isLatLong);
   }
@@ -158,8 +167,11 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isLowercase() {
     return this.addStandardValidation(validator.isLowercase);
   }
-  isMACAddress() {
-    return this.addStandardValidation(validator.isMACAddress);
+  isMagnetURI() {
+    return this.addStandardValidation(validator.isMagnetURI);
+  }
+  isMACAddress(options?: validator.Options.IsMACAddressOptions) {
+    return this.addStandardValidation(validator.isMACAddress, options);
   }
   isMD5() {
     return this.addStandardValidation(validator.isMD5);
