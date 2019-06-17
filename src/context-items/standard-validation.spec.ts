@@ -1,6 +1,7 @@
-import { Context } from '../context';
+import { ContextBuilder } from '../context-builder';
 import { StandardValidation } from './standard-validation';
 import { Meta } from '../base';
+import { Context } from '../context';
 
 let context: Context;
 let validator: jest.Mock;
@@ -12,7 +13,7 @@ const meta: Meta = {
 };
 
 beforeEach(() => {
-  context = new Context(['foo'], ['cookies']);
+  context = new ContextBuilder().build();
   jest.spyOn(context, 'addError');
 
   validator = jest.fn();

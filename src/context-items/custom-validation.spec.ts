@@ -1,4 +1,5 @@
 import { Context } from '../context';
+import { ContextBuilder } from '../context-builder';
 import { CustomValidation } from './custom-validation';
 import { Meta } from '../base';
 
@@ -12,7 +13,10 @@ const meta: Meta = {
 };
 
 beforeEach(() => {
-  context = new Context(['foo'], ['cookies']);
+  context = new ContextBuilder()
+    .setFields(['foo'])
+    .setLocations(['cookies'])
+    .build();
   jest.spyOn(context, 'addError');
 
   validator = jest.fn();

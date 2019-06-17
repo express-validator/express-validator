@@ -1,6 +1,6 @@
 import { ValidationError, contextsSymbol } from './base';
 import { ErrorFormatter, validationResult } from './validation-result';
-import { Context } from './context';
+import { ContextBuilder } from './context-builder';
 
 const allErrors: ValidationError[] = [
   { param: 'foo', msg: 'blabla', location: 'body', value: 123 },
@@ -9,12 +9,12 @@ const allErrors: ValidationError[] = [
 ];
 
 const makeContextsList = (errors: ValidationError[]) => {
-  const context1 = new Context([], []);
+  const context1 = new ContextBuilder().build();
   Object.defineProperty(context1, 'errors', {
     value: errors.slice(0, 1),
   });
 
-  const context2 = new Context([], []);
+  const context2 = new ContextBuilder().build();
   Object.defineProperty(context2, 'errors', {
     value: errors.slice(1),
   });
