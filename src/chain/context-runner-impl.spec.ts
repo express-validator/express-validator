@@ -1,5 +1,4 @@
 import { Context } from '../context';
-import { SelectFields } from '../select-fields';
 import { ContextRunnerImpl } from './context-runner-impl';
 import { FieldInstance } from '../base';
 import { ContextBuilder } from '../context-builder';

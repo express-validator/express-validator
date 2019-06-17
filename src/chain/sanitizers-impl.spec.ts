@@ -1,6 +1,5 @@
 import * as validator from 'validator';
 import { SanitizersImpl } from './sanitizers-impl';
-import { Context } from '../context';
 import { Sanitizers } from './sanitizers';
 import { Sanitization } from '../context-items/sanitization';
 import { Meta } from '../base';

@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { ValidationChain } from '../chain';
-import { InternalRequest, Middleware, Request, ValidationError, contextsSymbol } from '../base';
+import { InternalRequest, Middleware, Request, contextsSymbol } from '../base';
 import { ContextBuilder } from '../context-builder';
 
 export type OneOfCustomMessageBuilder = (options: { req: Request }) => any;
