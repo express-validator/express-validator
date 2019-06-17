@@ -22,15 +22,12 @@ it('concats to contexts create by previous chains', done => {
 
 it('passes unexpected errors down to other middlewares', done => {
   const error = new Error();
-  const proto = ContextRunnerImpl.prototype;
-
-  const { run } = proto;
-  proto.run = jest.fn().mockRejectedValue(error);
+  const spy = jest.spyOn(ContextRunnerImpl.prototype, 'run').mockRejectedValue(error);
 
   oneOf([check('bar'), check('baz')])({}, {}, (err?: any) => {
     expect(err).toBe(error);
 
-    proto.run = run;
+    spy.mockRestore();
     done();
   });
 });

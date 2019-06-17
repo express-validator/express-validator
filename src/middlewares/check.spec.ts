@@ -37,11 +37,11 @@ it('has context runner methods', () => {
 it('concats to contexts created by previous chains', done => {
   const req: InternalRequest = {};
 
-  const chainA = check('foo');
-  chainA(req, {}, () => {
-    const chainB = check('bar');
-    chainB(req, {}, () => {
-      expect(req[contextsSymbol]).toEqual([chainA.context, chainB.context]);
+  check('foo')(req, {}, () => {
+    expect(req[contextsSymbol]).toHaveLength(1);
+
+    check('bar')(req, {}, () => {
+      expect(req[contextsSymbol]).toHaveLength(2);
       done();
     });
   });

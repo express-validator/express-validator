@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { ValidationChain } from '../chain';
 import { InternalRequest, Middleware, Request, ValidationError, contextsSymbol } from '../base';
-import { Context } from '../context';
+import { ContextBuilder } from '../context-builder';
 
 export type OneOfCustomMessageBuilder = (options: { req: Request }) => any;
 
@@ -13,24 +13,19 @@ export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?:
 
 export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?: any) {
   return async (req: InternalRequest, _res: any, next: (err?: any) => void) => {
-    const surrogateContext = new Context([], []);
+    const surrogateContext = new ContextBuilder().build();
 
     // Run each group of chains in parallel, and within each group, run each chain in parallel too.
     const promises = chains.map(async chain => {
       const group = Array.isArray(chain) ? chain : [chain];
-      let groupErrors: ValidationError[] = [];
-
-      const groupPromises = group.map(async chain => {
-        await chain.run(req);
-        groupErrors = groupErrors.concat(chain.context.errors);
-      });
-      await Promise.all(groupPromises);
+      const contexts = await Promise.all(group.map(chain => chain.run(req)));
+      const groupErrors = _.flatMap(contexts, 'errors');
 
       // #536: The data from a chain within oneOf() can only be made available to e.g. matchedData()
       // if its entire group is valid.
       if (!groupErrors.length) {
-        group.forEach(chain => {
-          surrogateContext.addFieldInstances(chain.context.getData());
+        contexts.forEach(context => {
+          surrogateContext.addFieldInstances(context.getData());
         });
       }
 
