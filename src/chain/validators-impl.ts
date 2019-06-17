@@ -1,15 +1,38 @@
 import * as validator from 'validator';
 import { CustomValidator, StandardValidator } from '../base';
-import { Context } from '../context';
 import { Validators } from './validators';
-import { CustomValidation, StandardValidation } from '../context-items';
+import { CustomValidation, StandardValidation, ValidationContextItem } from '../context-items';
+import { ContextBuilder } from '../context-builder';
 
 export class ValidatorsImpl<Chain> implements Validators<Chain> {
-  constructor(private readonly context: Context, private readonly chain: Chain) {}
+  private lastValidator: ValidationContextItem;
+  private negateNext = false;
 
-  custom(validator: CustomValidator) {
-    this.context.addItem(new CustomValidation(validator, this.context.negated));
+  constructor(private readonly builder: ContextBuilder, private readonly chain: Chain) {}
+
+  private addItem(item: ValidationContextItem) {
+    this.builder.addItem(item);
+    this.lastValidator = item;
+    // Reset this.negateNext so that next validation isn't negated too
+    this.negateNext = false;
+
     return this.chain;
+  }
+
+  // validation manipulation
+  not() {
+    this.negateNext = true;
+    return this.chain;
+  }
+
+  withMessage(message: any) {
+    this.lastValidator.message = message;
+    return this.chain;
+  }
+
+  // custom validators
+  custom(validator: CustomValidator) {
+    return this.addItem(new CustomValidation(validator, this.negateNext));
   }
 
   exists(options: { checkFalsy?: boolean; checkNull?: boolean } = {}) {
@@ -35,10 +58,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
 
   // Standard validators
   private addStandardValidation(validator: StandardValidator, ...options: any[]) {
-    const validation = new StandardValidation(validator, this.context.negated, options);
-    this.context.addItem(validation);
-
-    return this.chain;
+    return this.addItem(new StandardValidation(validator, this.negateNext, options));
   }
 
   contains(elem: any) {

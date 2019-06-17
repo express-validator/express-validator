@@ -1,20 +1,20 @@
 import * as validator from 'validator';
 import { CustomSanitizer, StandardSanitizer } from '../base';
-import { Context } from '../context';
 import { Sanitizers } from './sanitizers';
 import { Sanitization } from '../context-items/sanitization';
+import { ContextBuilder } from '../context-builder';
 
 export class SanitizersImpl<Chain> implements Sanitizers<Chain> {
-  constructor(private readonly context: Context, private readonly chain: Chain) {}
+  constructor(private readonly builder: ContextBuilder, private readonly chain: Chain) {}
 
   customSanitizer(sanitizer: CustomSanitizer) {
-    this.context.addItem(new Sanitization(sanitizer, true));
+    this.builder.addItem(new Sanitization(sanitizer, true));
     return this.chain;
   }
 
   // Standard sanitizers
   private addStandardSanitization(sanitizer: StandardSanitizer, ...options: any[]) {
-    this.context.addItem(new Sanitization(sanitizer, false, options));
+    this.builder.addItem(new Sanitization(sanitizer, false, options));
     return this.chain;
   }
 
