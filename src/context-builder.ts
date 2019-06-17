@@ -24,8 +24,8 @@ export class ContextBuilder {
     return this;
   }
 
-  addItem(item: ContextItem) {
-    this.stack.push(item);
+  addItem(...items: ContextItem[]) {
+    this.stack.push(...items);
     return this;
   }
 
