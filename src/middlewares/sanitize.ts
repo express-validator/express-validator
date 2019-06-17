@@ -23,5 +23,6 @@ export function sanitize(fields: string | string[], locations: Location[] = []):
     middleware,
     bindAll(runner),
     bindAll(new SanitizersImpl(builder, middleware as any)),
+    { builder },
   );
 }

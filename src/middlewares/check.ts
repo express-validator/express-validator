@@ -36,5 +36,6 @@ export function check(
     bindAll(new SanitizersImpl(builder, middleware as any)),
     bindAll(new ValidatorsImpl(builder, middleware as any)),
     bindAll(new ContextHandlerImpl(builder, middleware as any)),
+    { builder },
   );
 }
