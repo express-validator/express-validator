@@ -34,6 +34,22 @@ it('has context runner methods', () => {
   });
 });
 
+it('does not share contexts between chain runs', done => {
+  const chain = check('foo', ['body']).isEmail();
+  const req1: InternalRequest = { body: { foo: 'bla' } };
+  chain(req1, {}, () => {
+    const context1 = req1[contextsSymbol]![0];
+
+    const req2: InternalRequest = {};
+    chain(req2, {}, () => {
+      expect(req2[contextsSymbol]).toHaveLength(1);
+      expect(req2[contextsSymbol]![0]).not.toBe(context1);
+      expect(req2[contextsSymbol]![0].errors).toHaveLength(1);
+      done();
+    });
+  });
+});
+
 it('concats to contexts created by previous chains', done => {
   const req: InternalRequest = {};
 
