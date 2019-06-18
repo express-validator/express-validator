@@ -2,7 +2,8 @@ import { Sanitizers } from '../chain/sanitizers';
 import { Validators } from '../chain/validators';
 import { DynamicMessageCreator, Location } from '../base';
 import { check } from './check';
-import { OptionalOptions, ValidatorsImpl } from '../chain';
+import { ValidatorsImpl } from '../chain';
+import { Optional } from '../context';
 
 type ValidatorSchemaOptions<K extends keyof Validators<any>> =
   | true
@@ -31,7 +32,7 @@ type InternalParamSchema = ValidatorsSchema & SanitizersSchema;
 export type ParamSchema = InternalParamSchema & {
   in?: Location | Location[];
   errorMessage?: DynamicMessageCreator | any;
-  optional?: OptionalOptions;
+  optional?: Partial<Optional> | true;
 };
 
 /**

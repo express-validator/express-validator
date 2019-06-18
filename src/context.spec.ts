@@ -1,12 +1,12 @@
 import { Context } from './context';
+import { ContextBuilder } from './context-builder';
 import { FieldInstance, Meta } from './base';
-import { ContextItem } from './context-items';
 
 let context: Context;
 let data: FieldInstance[];
 
 beforeEach(() => {
-  context = new Context([], []);
+  context = new ContextBuilder().build();
   data = [
     {
       location: 'body',
@@ -43,7 +43,7 @@ describe('#addError()', () => {
   });
 
   it('pushes an error with context message', () => {
-    context = new Context([], [], 'context message');
+    context = new ContextBuilder().setMessage('context message').build();
     context.addError(null, 'foo', {
       path: 'bar',
       location: 'headers',
@@ -95,35 +95,6 @@ describe('#addError()', () => {
   });
 });
 
-describe('#addItem()', () => {
-  it('pushes item to the stack', () => {
-    const item1: ContextItem = {
-      kind: 'validation',
-      message: 'bla',
-      run: () => Promise.resolve(),
-    };
-    const item2: ContextItem = {
-      kind: 'unknown',
-      run: () => Promise.resolve(),
-    };
-    context.addItem(item1);
-    context.addItem(item2);
-
-    expect(context.stack).toHaveLength(2);
-    expect(context.stack).toEqual([item1, item2]);
-  });
-
-  it('resets #negated', () => {
-    context.negate();
-    context.addItem({
-      kind: 'unknown',
-      run: () => Promise.resolve(),
-    });
-
-    expect(context.negated).toBe(false);
-  });
-});
-
 describe('#addFieldInstance()', () => {
   it('adds data to the context', () => {
     context.addFieldInstances(data);
@@ -139,7 +110,7 @@ describe('#getData()', () => {
 
   it('filters out undefineds when context optional', () => {
     data[0].value = undefined;
-    context.setOptional();
+    context = new ContextBuilder().setOptional({ checkFalsy: false, nullable: false }).build();
     context.addFieldInstances(data);
 
     expect(context.getData({ requiredOnly: true })).toEqual([data[1]]);
@@ -149,7 +120,7 @@ describe('#getData()', () => {
     data[0].value = null;
     data[1].value = undefined;
 
-    context.setOptional({ nullable: true });
+    context = new ContextBuilder().setOptional({ checkFalsy: false, nullable: true }).build();
     context.addFieldInstances(data);
 
     expect(context.getData({ requiredOnly: true })).toEqual([]);
@@ -160,7 +131,7 @@ describe('#getData()', () => {
     data[1].value = undefined;
     data.push({ ...data[0], value: 0 }, { ...data[0], value: false }, { ...data[0], value: '' });
 
-    context.setOptional({ checkFalsy: true });
+    context = new ContextBuilder().setOptional({ checkFalsy: true, nullable: false }).build();
     context.addFieldInstances(data);
 
     expect(context.getData({ requiredOnly: true })).toEqual([]);
@@ -219,41 +190,5 @@ describe('#setData()', () => {
     };
 
     expect(bomb).toThrowError();
-  });
-});
-
-describe('#negate()', () => {
-  it('sets #negated to true', () => {
-    context.negate();
-    expect(context).toHaveProperty('negated', true);
-  });
-});
-
-describe('#setOptional()', () => {
-  it('sets #optional to { checkFalsy: false, nullable: false } if arg is true', () => {
-    context.setOptional(true);
-    expect(context).toHaveProperty('optional', {
-      checkFalsy: false,
-      nullable: false,
-    });
-  });
-
-  it('sets #optional to arg value', () => {
-    context.setOptional({ nullable: true });
-    expect(context).toHaveProperty('optional', {
-      checkFalsy: false,
-      nullable: true,
-    });
-
-    context.setOptional({ checkFalsy: true });
-    expect(context).toHaveProperty('optional', {
-      checkFalsy: true,
-      nullable: false,
-    });
-  });
-
-  it('sets #optional to false if arg is false', () => {
-    context.setOptional(false);
-    expect(context).toHaveProperty('optional', false);
   });
 });

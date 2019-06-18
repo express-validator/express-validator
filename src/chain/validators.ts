@@ -1,7 +1,13 @@
 import * as validator from 'validator';
-import { CustomValidator } from '../base';
+import { CustomValidator, DynamicMessageCreator } from '../base';
 
 export interface Validators<Return> {
+  // validation manipulation
+  not(): Return;
+  withMessage(message: DynamicMessageCreator): Return;
+  withMessage(message: any): Return;
+
+  // custom validators
   custom(validator: CustomValidator): Return;
   exists(options?: { checkFalsy?: boolean; checkNull?: boolean }): Return;
   isArray(): Return;

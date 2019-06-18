@@ -5,23 +5,25 @@ import {
   ValidationChain,
   ValidatorsImpl,
 } from '../chain';
-import { Context } from '../context';
 import { InternalRequest, Location, contextsSymbol } from '../base';
 import { bindAll } from '../utils';
+import { ContextBuilder } from '../context-builder';
 
 export function check(
   fields: string | string[],
   locations: Location[] = [],
   message?: any,
 ): ValidationChain {
-  const context = new Context(Array.isArray(fields) ? fields : [fields], locations, message);
-  const runner = new ContextRunnerImpl(context);
+  const builder = new ContextBuilder()
+    .setFields(Array.isArray(fields) ? fields : [fields])
+    .setLocations(locations)
+    .setMessage(message);
+  const runner = new ContextRunnerImpl(builder);
 
   const middleware = async (req: InternalRequest, _res: any, next: (err?: any) => void) => {
-    req[contextsSymbol] = (req[contextsSymbol] || []).concat(context);
-
     try {
-      await runner.run(req);
+      const context = await runner.run(req);
+      req[contextsSymbol] = (req[contextsSymbol] || []).concat(context);
       next();
     } catch (e) {
       next(e);
@@ -31,9 +33,9 @@ export function check(
   return Object.assign(
     middleware,
     bindAll(runner),
-    bindAll(new SanitizersImpl(context, middleware as any)),
-    bindAll(new ValidatorsImpl(context, middleware as any)),
-    bindAll(new ContextHandlerImpl(context, middleware as any)),
-    { context },
+    bindAll(new SanitizersImpl(builder, middleware as any)),
+    bindAll(new ValidatorsImpl(builder, middleware as any)),
+    bindAll(new ContextHandlerImpl(builder, middleware as any)),
+    { builder },
   );
 }

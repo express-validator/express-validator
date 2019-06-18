@@ -1,4 +1,7 @@
 import { checkSchema } from './schema';
+import { ValidationChain } from '../chain';
+
+const chainToContext = (chain: ValidationChain) => chain.builder.build();
 
 it('creates a validation chain for each field in the schema', () => {
   const chains = checkSchema({
@@ -7,8 +10,8 @@ it('creates a validation chain for each field in the schema', () => {
   });
 
   expect(chains).toHaveLength(2);
-  expect(chains[0].context.fields).toEqual(['foo']);
-  expect(chains[1].context.fields).toEqual(['bar']);
+  expect(chainToContext(chains[0]).fields).toEqual(['foo']);
+  expect(chainToContext(chains[1]).fields).toEqual(['bar']);
 });
 
 it('creates chain with an error message', () => {
@@ -18,7 +21,7 @@ it('creates chain with an error message', () => {
     },
   })[0];
 
-  expect(chain.context.message).toBe('bar');
+  expect(chainToContext(chain).message).toBe('bar');
 });
 
 describe('locations', () => {
@@ -27,7 +30,13 @@ describe('locations', () => {
       foo: {},
     })[0];
 
-    expect(chain.context.locations).toEqual(['body', 'cookies', 'headers', 'params', 'query']);
+    expect(chainToContext(chain).locations).toEqual([
+      'body',
+      'cookies',
+      'headers',
+      'params',
+      'query',
+    ]);
   });
 
   it('includes all of the specified ones', () => {
@@ -38,7 +47,7 @@ describe('locations', () => {
       ['headers', 'cookies'],
     )[0];
 
-    expect(chain.context.locations).toEqual(['headers', 'cookies']);
+    expect(chainToContext(chain).locations).toEqual(['headers', 'cookies']);
   });
 
   it('includes location in "in" when string', () => {
@@ -48,7 +57,7 @@ describe('locations', () => {
       },
     })[0];
 
-    expect(chain.context.locations).toEqual(['body']);
+    expect(chainToContext(chain).locations).toEqual(['body']);
   });
 
   it('includes locations in "in" when array', () => {
@@ -58,7 +67,7 @@ describe('locations', () => {
       },
     })[0];
 
-    expect(chain.context.locations).toEqual(['params', 'body']);
+    expect(chainToContext(chain).locations).toEqual(['params', 'body']);
   });
 });
 
@@ -73,7 +82,7 @@ describe('on each field', () => {
       } as any, // as any because of JS consumers doing the wrong thing
     })[0];
 
-    expect(chain.context.stack).toHaveLength(2);
+    expect(chainToContext(chain).stack).toHaveLength(2);
   });
 
   it('adds with options', async () => {
@@ -90,7 +99,7 @@ describe('on each field', () => {
       },
     });
 
-    await Promise.all(
+    const contexts = await Promise.all(
       schema.map(chain =>
         chain.run({
           query: { foo: 0, bar: 'baz' },
@@ -98,8 +107,8 @@ describe('on each field', () => {
       ),
     );
 
-    expect(schema[0].context.errors).toHaveLength(1);
-    expect(schema[1].context.getData()).toContainEqual(
+    expect(contexts[0].errors).toHaveLength(1);
+    expect(contexts[1].getData()).toContainEqual(
       expect.objectContaining({ path: 'bar', value: 'a', originalValue: 'baz' }),
     );
   });
@@ -113,7 +122,7 @@ describe('on each field', () => {
       },
     })[0];
 
-    expect(chain.context.stack[0]).toHaveProperty('message', 'bla');
+    expect(chainToContext(chain).stack[0]).toHaveProperty('message', 'bla');
   });
 
   // #548
@@ -132,7 +141,7 @@ describe('on each field', () => {
       } as any, // as any because of JS consumers doing the wrong thing
     })[0];
 
-    const isInt = chain.context.stack[0];
+    const isInt = chainToContext(chain).stack[0];
     expect(isInt).toHaveProperty('message', 'from toInt');
   });
 
@@ -143,7 +152,7 @@ describe('on each field', () => {
       },
     })[0];
 
-    expect(chain.context.optional).toEqual({
+    expect(chainToContext(chain).optional).toEqual({
       checkFalsy: false,
       nullable: false,
     });
@@ -158,7 +167,7 @@ describe('on each field', () => {
       },
     })[0];
 
-    await chain.run({ params: { foo: '' } });
-    expect(chain.context.errors).toHaveLength(1);
+    const context = await chain.run({ params: { foo: '' } });
+    expect(context.errors).toHaveLength(1);
   });
 });

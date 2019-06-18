@@ -1,11 +1,13 @@
 import { Context } from '../context';
-import { SelectFields } from '../select-fields';
 import { ContextRunnerImpl } from './context-runner-impl';
 import { FieldInstance } from '../base';
+import { ContextBuilder } from '../context-builder';
+import { ContextItem } from '../context-items';
 
-let context: Context;
-let getDataMock: jest.Mock;
-let selectFields: jest.Mock<ReturnType<SelectFields>, Parameters<SelectFields>>;
+let builder: ContextBuilder;
+let getDataSpy: jest.SpyInstance;
+let addFieldInstancesSpy: jest.SpyInstance;
+let selectFields: jest.Mock;
 let contextRunner: ContextRunnerImpl;
 
 const instances: FieldInstance[] = [
@@ -14,13 +16,17 @@ const instances: FieldInstance[] = [
 ];
 
 beforeEach(() => {
-  context = new Context(['foo', 'bar'], ['query']);
-  getDataMock = jest.fn();
-  context.getData = getDataMock;
-  jest.spyOn(context, 'addFieldInstances');
+  builder = new ContextBuilder().setFields(['foo', 'bar']).setLocations(['query']);
+  getDataSpy = jest.spyOn(Context.prototype, 'getData');
+  addFieldInstancesSpy = jest.spyOn(Context.prototype, 'addFieldInstances');
 
   selectFields = jest.fn().mockReturnValue(instances);
-  contextRunner = new ContextRunnerImpl(context, selectFields);
+  contextRunner = new ContextRunnerImpl(builder, selectFields);
+});
+
+afterEach(() => {
+  getDataSpy.mockRestore();
+  addFieldInstancesSpy.mockRestore();
 });
 
 it('selects and adds fields to the context', async () => {
@@ -28,17 +34,17 @@ it('selects and adds fields to the context', async () => {
   await contextRunner.run(req);
 
   expect(selectFields).toHaveBeenCalledWith(req, ['foo', 'bar'], ['query']);
-  expect(context.addFieldInstances).toHaveBeenCalledWith(instances);
+  expect(addFieldInstancesSpy).toHaveBeenCalledWith(instances);
 });
 
 it('runs validation items on the stack with required data', async () => {
-  context.addItem({ kind: 'validation', message: 1, run: jest.fn() });
-  getDataMock.mockReturnValue(instances);
+  builder.addItem({ kind: 'validation', message: 1, run: jest.fn() });
+  getDataSpy.mockReturnValue(instances);
 
   const req = { body: { foo: 'bar' } };
-  await contextRunner.run(req);
+  const context = await contextRunner.run(req);
 
-  expect(getDataMock).toHaveBeenCalledWith({ requiredOnly: true });
+  expect(getDataSpy).toHaveBeenCalledWith({ requiredOnly: true });
   expect(context.stack[0].run).toHaveBeenCalledTimes(instances.length);
 
   instances.forEach((instance, i) => {
@@ -51,13 +57,13 @@ it('runs validation items on the stack with required data', async () => {
 });
 
 it('runs other items on the stack with all data', async () => {
-  context.addItem({ kind: 'unknown', run: jest.fn() });
-  getDataMock.mockReturnValue(instances);
+  builder.addItem({ kind: 'unknown', run: jest.fn() });
+  getDataSpy.mockReturnValue(instances);
 
   const req = { body: { foo: 'bar' } };
-  await contextRunner.run(req);
+  const context = await contextRunner.run(req);
 
-  expect(getDataMock).toHaveBeenCalledWith({ requiredOnly: false });
+  expect(getDataSpy).toHaveBeenCalledWith({ requiredOnly: false });
   expect(context.stack[0].run).toHaveBeenCalledTimes(instances.length);
 
   instances.forEach((instance, i) => {
@@ -71,27 +77,28 @@ it('runs other items on the stack with all data', async () => {
 
 it('runs items on the stack in order', async () => {
   let item1Resolve = () => {};
-  let item2Resolve = () => {};
   const item1Promise = new Promise(resolve => {
     item1Resolve = resolve;
   });
-  const item2Promise = new Promise(resolve => {
-    item2Resolve = resolve;
-  });
-
-  context.addItem({
+  const item1: ContextItem = {
     kind: 'validation',
     message: 1,
     run: jest.fn().mockReturnValueOnce(item1Promise),
-  });
-  context.addItem({ kind: 'unknown', run: jest.fn().mockReturnValueOnce(item2Promise) });
+  };
 
-  getDataMock.mockReturnValue(instances);
+  let item2Resolve = () => {};
+  const item2Promise = new Promise(resolve => {
+    item2Resolve = resolve;
+  });
+  const item2: ContextItem = { kind: 'unknown', run: jest.fn().mockReturnValueOnce(item2Promise) };
+
+  builder.addItem(item1, item2);
+  getDataSpy.mockReturnValue(instances);
   const resultPromise = contextRunner.run({});
 
   // Item 2 hasn't run yet -- the item 1's promise hasn't resolved
-  expect(context.stack[0].run).toHaveBeenCalledTimes(2);
-  expect(context.stack[1].run).not.toHaveBeenCalled();
+  expect(item1.run).toHaveBeenCalledTimes(2);
+  expect(item2.run).not.toHaveBeenCalled();
 
   item1Resolve();
 
@@ -100,8 +107,8 @@ it('runs items on the stack in order', async () => {
   await new Promise(resolve => setTimeout(resolve));
 
   // Item 1 hasn't run any more times. Item 2 has got the green signal to run.
-  expect(context.stack[0].run).toHaveBeenCalledTimes(2);
-  expect(context.stack[1].run).toHaveBeenCalledTimes(2);
+  expect(item1.run).toHaveBeenCalledTimes(2);
+  expect(item2.run).toHaveBeenCalledTimes(2);
 
   // Item 2 is resolved, then so should the context runner
   item2Resolve();

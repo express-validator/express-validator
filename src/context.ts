@@ -6,32 +6,24 @@ function getDataMapKey(path: string, location: Location) {
   return `${location}:${path}`;
 }
 
+export type Optional = { nullable: boolean; checkFalsy: boolean } | false;
+
 export class Context {
-  private _negated = false;
-  get negated() {
-    return this._negated;
-  }
-
-  private _optional: { nullable: boolean; checkFalsy: boolean } | false = false;
-  get optional() {
-    return this._optional;
-  }
-
   private readonly _errors: ValidationError[] = [];
   get errors(): ReadonlyArray<ValidationError> {
     return this._errors;
   }
 
-  private readonly _stack: ContextItem[] = [];
-  get stack(): ReadonlyArray<ContextItem> {
-    return this._stack;
-  }
-
   private readonly dataMap: Map<string, FieldInstance> = new Map();
 
-  constructor(readonly fields: string[], readonly locations: Location[], readonly message?: any) {}
+  constructor(
+    readonly fields: string[],
+    readonly locations: Location[],
+    readonly stack: ReadonlyArray<ContextItem>,
+    readonly optional: Optional,
+    readonly message?: any,
+  ) {}
 
-  // Data part
   getData(options: { requiredOnly: boolean } = { requiredOnly: false }) {
     // Have to store this.optional in a const otherwise TS thinks the value could have changed
     // when the functions below run
@@ -80,11 +72,6 @@ export class Context {
     instance.value = value;
   }
 
-  // Validations part
-  negate() {
-    this._negated = true;
-  }
-
   addError(message: any, value: any, meta: Meta): void;
   addError(message: any, nestedErrors: ValidationError[]): void;
   addError(message: any, valueOrNestedErrors: any, meta?: Meta) {
@@ -104,30 +91,9 @@ export class Context {
       });
     }
   }
-
-  addItem(item: ContextItem) {
-    this._stack.push(item);
-
-    // Reset this.negated so that next validation isn't negated too
-    this._negated = false;
-  }
-
-  setOptional(options: boolean | { nullable?: boolean; checkFalsy?: boolean } = true) {
-    if (typeof options === 'boolean') {
-      this._optional = options ? { checkFalsy: false, nullable: false } : false;
-    } else {
-      this._optional = {
-        checkFalsy: !!options.checkFalsy,
-        nullable: !!options.nullable,
-      };
-    }
-  }
 }
 
 export type ReadonlyContext = Pick<
   Context,
-  Exclude<
-    keyof Context,
-    'setData' | 'addFieldInstances' | 'addError' | 'addItem' | 'negate' | 'setOptional'
-  >
+  Exclude<keyof Context, 'setData' | 'addFieldInstances' | 'addError'>
 >;

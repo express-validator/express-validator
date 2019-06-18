@@ -1,4 +1,4 @@
-import { InternalRequest } from '../base';
+import { Request, ValidationError } from '../base';
 import {
   body,
   buildCheckFunction,
@@ -8,8 +8,17 @@ import {
   param,
   query,
 } from './validation-chain-builders';
+import { validationResult } from '../validation-result';
+import { ValidationChain } from '../chain';
 
-let req: InternalRequest;
+let req: Request;
+const runAndGetErrors = (chain: ValidationChain, req: Request) =>
+  new Promise<ValidationError[]>(resolve => {
+    chain(req, {}, () => {
+      resolve(validationResult(req).array());
+    });
+  });
+
 beforeEach(() => {
   req = {
     body: { foo: 'asd' },
@@ -21,24 +30,22 @@ beforeEach(() => {
 });
 
 describe('buildCheckFunction()', () => {
-  it('creates a validation chain builder that checks custom locations', done => {
+  it('creates a validation chain builder that checks custom locations', async () => {
     const custom = buildCheckFunction(['cookies', 'headers']);
     const chain = custom('foo').isInt();
-    chain(req, {}, () => {
-      expect(chain.context.errors).toHaveLength(2);
-      expect(chain.context.errors[0]).toEqual({
-        location: 'cookies',
-        msg: 'Invalid value',
-        param: 'foo',
-        value: 'asd',
-      });
-      expect(chain.context.errors![1]).toEqual({
-        location: 'headers',
-        msg: 'Invalid value',
-        param: 'foo',
-        value: 'asd',
-      });
-      done();
+    const errors = await runAndGetErrors(chain, req);
+    expect(errors).toHaveLength(2);
+    expect(errors[0]).toEqual({
+      location: 'cookies',
+      msg: 'Invalid value',
+      param: 'foo',
+      value: 'asd',
+    });
+    expect(errors![1]).toEqual({
+      location: 'headers',
+      msg: 'Invalid value',
+      param: 'foo',
+      value: 'asd',
     });
   });
 });
@@ -46,77 +53,63 @@ describe('buildCheckFunction()', () => {
 describe('check()', () => {
   // TODO: Can't use it.each because it doesn't support done() in TypeScript
   ['body', 'cookies', 'headers', 'params', 'query'].forEach(location => {
-    it(`checks ${location}`, done => {
-      const req: InternalRequest = { [location]: { foo: 'asd' } };
+    it(`checks ${location}`, async () => {
+      const req: Request = { [location]: { foo: 'asd' } };
       const chain = check('foo').isInt();
-      chain(req, {}, () => {
-        expect(chain.context.errors).toHaveLength(1);
-        expect(chain.context.errors[0].location).toBe(location);
-        done();
-      });
+      const errors = await runAndGetErrors(chain, req);
+      expect(errors).toHaveLength(1);
+      expect(errors[0].location).toBe(location);
     });
   });
 
-  it('checks all locations at the same time', done => {
+  it('checks all locations at the same time', async () => {
     const chain = check('foo').isInt();
-    chain(req, {}, () => {
-      expect(chain.context.errors).toHaveLength(5);
-      done();
-    });
+    const errors = await runAndGetErrors(chain, req);
+    expect(errors).toHaveLength(5);
   });
 });
 
 describe('body()', () => {
-  it('checks only the body location', done => {
+  it('checks only the body location', async () => {
     const chain = body('foo').isInt();
-    chain(req, {}, () => {
-      expect(chain.context.errors).toHaveLength(1);
-      expect(chain.context.errors[0].location).toBe('body');
-      done();
-    });
+    const errors = await runAndGetErrors(chain, req);
+    expect(errors).toHaveLength(1);
+    expect(errors[0].location).toBe('body');
   });
 });
 
 describe('cookie()', () => {
-  it('checks only the body location', done => {
+  it('checks only the body location', async () => {
     const chain = cookie('foo').isInt();
-    chain(req, {}, () => {
-      expect(chain.context.errors).toHaveLength(1);
-      expect(chain.context.errors[0].location).toBe('cookies');
-      done();
-    });
+    const errors = await runAndGetErrors(chain, req);
+    expect(errors).toHaveLength(1);
+    expect(errors[0].location).toBe('cookies');
   });
 });
 
 describe('header()', () => {
-  it('checks only the body location', done => {
+  it('checks only the body location', async () => {
     const chain = header('foo').isInt();
-    chain(req, {}, () => {
-      expect(chain.context.errors).toHaveLength(1);
-      expect(chain.context.errors[0].location).toBe('headers');
-      done();
-    });
+    const errors = await runAndGetErrors(chain, req);
+    expect(errors).toHaveLength(1);
+    expect(errors[0].location).toBe('headers');
   });
 });
 
 describe('param()', () => {
-  it('checks only the body location', done => {
+  it('checks only the body location', async () => {
     const chain = param('foo').isInt();
-    chain(req, {}, () => {
-      expect(chain.context.errors).toHaveLength(1);
-      expect(chain.context.errors[0].location).toBe('params');
-      done();
-    });
+    const errors = await runAndGetErrors(chain, req);
+    expect(errors).toHaveLength(1);
+    expect(errors[0].location).toBe('params');
   });
 });
 
 describe('query()', () => {
-  it('checks only the body location', done => {
+  it('checks only the body location', async () => {
     const chain = query('foo').isInt();
-    chain(req, {}, () => {
-      expect(chain.context.errors).toHaveLength(1);
-      expect(chain.context.errors[0].location).toBe('query');
-      done();
-    });
+    const errors = await runAndGetErrors(chain, req);
+    expect(errors).toHaveLength(1);
+    expect(errors[0].location).toBe('query');
   });
 });

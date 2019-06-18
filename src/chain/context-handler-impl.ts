@@ -1,26 +1,20 @@
-import { Context } from '../context';
-import { ContextHandler, OptionalOptions } from './context-handler';
+import { ContextHandler } from './context-handler';
+import { ContextBuilder } from '../context-builder';
+import { Optional } from '../context';
 
 export class ContextHandlerImpl<Chain> implements ContextHandler<Chain> {
-  constructor(private readonly context: Context, private readonly chain: Chain) {}
+  constructor(private readonly builder: ContextBuilder, private readonly chain: Chain) {}
 
-  not() {
-    this.context.negate();
-    return this.chain;
-  }
-
-  withMessage(message: any) {
-    const { stack } = this.context;
-    const lastItem = stack[stack.length - 1];
-    if (lastItem && lastItem.kind === 'validation') {
-      lastItem.message = message;
+  optional(options: Optional | true = true) {
+    if (typeof options === 'boolean') {
+      this.builder.setOptional(options ? { checkFalsy: false, nullable: false } : false);
+    } else {
+      this.builder.setOptional({
+        checkFalsy: !!options.checkFalsy,
+        nullable: !!options.nullable,
+      });
     }
 
-    return this.chain;
-  }
-
-  optional(options: OptionalOptions = true) {
-    this.context.setOptional(options);
     return this.chain;
   }
 }

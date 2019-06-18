@@ -1,6 +1,7 @@
 import { Context } from '../context';
 import { Meta } from '../base';
 import { Sanitization } from './sanitization';
+import { ContextBuilder } from '../context-builder';
 
 let context: Context;
 let sanitizer: jest.Mock;
@@ -12,7 +13,7 @@ const meta: Meta = {
 };
 
 beforeEach(() => {
-  context = new Context(['foo'], ['cookies']);
+  context = new ContextBuilder().build();
   context.addFieldInstances([
     {
       location: 'cookies',

@@ -1,17 +1,18 @@
 import { ContextRunnerImpl, SanitizationChain, SanitizersImpl } from '../chain';
-import { Context } from '../context';
 import { InternalRequest, Location, contextsSymbol } from '../base';
 import { bindAll } from '../utils';
+import { ContextBuilder } from '../context-builder';
 
 export function sanitize(fields: string | string[], locations: Location[] = []): SanitizationChain {
-  const context = new Context(Array.isArray(fields) ? fields : [fields], locations);
-  const runner = new ContextRunnerImpl(context);
+  const builder = new ContextBuilder()
+    .setFields(Array.isArray(fields) ? fields : [fields])
+    .setLocations(locations);
+  const runner = new ContextRunnerImpl(builder);
 
   const middleware = async (req: InternalRequest, _res: any, next: (err?: any) => void) => {
-    req[contextsSymbol] = (req[contextsSymbol] || []).concat(context);
-
     try {
-      await runner.run(req);
+      const context = await runner.run(req);
+      req[contextsSymbol] = (req[contextsSymbol] || []).concat(context);
       next();
     } catch (e) {
       next(e);
@@ -21,7 +22,7 @@ export function sanitize(fields: string | string[], locations: Location[] = []):
   return Object.assign(
     middleware,
     bindAll(runner),
-    bindAll(new SanitizersImpl(context, middleware as any)),
-    { context },
+    bindAll(new SanitizersImpl(builder, middleware as any)),
+    { builder },
   );
 }

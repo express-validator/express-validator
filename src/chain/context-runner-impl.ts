@@ -1,16 +1,16 @@
 import { ContextRunner } from './context-runner';
-import { Context } from '../context';
 import { SelectFields, selectFields as baseSelectFields } from '../select-fields';
 import { Request } from '../base';
+import { ContextBuilder } from '../context-builder';
 
 export class ContextRunnerImpl implements ContextRunner {
   constructor(
-    private readonly context: Context,
+    private readonly builder: ContextBuilder,
     private readonly selectFields: SelectFields = baseSelectFields,
   ) {}
 
   async run(req: Request) {
-    const { context } = this;
+    const context = this.builder.build();
     const instances = this.selectFields(req, context.fields, context.locations);
     context.addFieldInstances(instances);
 
@@ -30,5 +30,7 @@ export class ContextRunnerImpl implements ContextRunner {
 
       await Promise.all(promises);
     }
+
+    return context;
   }
 }
