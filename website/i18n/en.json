@@ -29,6 +29,9 @@
       "custom-error-messages": {
         "title": "Custom Error Messages"
       },
+      "running-imperatively": {
+        "title": "Running validations imperatively"
+      },
       "sanitization": {
         "title": "Sanitization"
       },

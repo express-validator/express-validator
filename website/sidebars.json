@@ -7,7 +7,8 @@
       "custom-error-messages",
       "wildcards",
       "schema-validation",
-      "whole-body-validation"
+      "whole-body-validation",
+      "running-imperatively"
     ],
     "API": [
       "check-api",

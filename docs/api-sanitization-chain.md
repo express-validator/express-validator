@@ -43,6 +43,22 @@ app.get('/object/:id', sanitizeParam('id').customSanitizer((value, { req }) => {
 }), objectHandler)
 ```
 
+### `.run(req)`
+> *Returns:* a promise that resolves when the sanitization chain ran.
+
+Runs the current sanitization chain in an imperative way.
+
+```js
+app.post('/create-post', async (req, res, next) => {
+  // BEFORE:
+  // req.body.content = ' hey your forum is amazing! <script>runEvilFunction();</script>    ';
+  await sanitize('content').escape().trim().run(req);
+
+  // AFTER:
+  // req.body.content = 'hey your forum is amazing! &lt;script&gt;runEvilFunction();&lt;/script&gt;';
+});
+```
+
 ### `.toArray()`
 > *Returns:* the current sanitization chain instance
 

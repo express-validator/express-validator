@@ -102,6 +102,25 @@ You can customize this behavior by passing an object with the following options:
 - `nullable`: if `true`, fields with `null` values will be considered optional
 - `checkFalsy`: if `true`, fields with falsy values (eg `""`, `0`, `false`, `null`) will also be considered optional
 
+### `.run(req)`
+> *Returns:* a promise that resolves when the validation chain ran.
+
+Runs the current validation chain in an imperative way.
+
+```js
+app.post('/create-user', async (req, res, next) => {
+  await check('email').isEmail().run(req);
+  await check('password').isLength({ min: 6 }).run(req);
+
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    return res.status(422).json({ errors: result.array() });
+  }
+
+  // user can be created now!
+});
+```
+
 ### `.withMessage(message)`
 - `message`: the error message to use for the previous validator
 > *Returns:* the current validation chain instance
