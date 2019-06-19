@@ -1,8 +1,8 @@
 import * as validator from 'validator';
 import { CustomSanitizer, StandardSanitizer } from '../base';
-import { Sanitizers } from './sanitizers';
 import { Sanitization } from '../context-items/sanitization';
 import { ContextBuilder } from '../context-builder';
+import { Sanitizers } from './sanitizers';
 
 export class SanitizersImpl<Chain> implements Sanitizers<Chain> {
   constructor(private readonly builder: ContextBuilder, private readonly chain: Chain) {}

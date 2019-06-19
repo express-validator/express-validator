@@ -1,7 +1,7 @@
-import { ContextRunner } from './context-runner';
 import { SelectFields, selectFields as baseSelectFields } from '../select-fields';
 import { Request } from '../base';
 import { ContextBuilder } from '../context-builder';
+import { ContextRunner } from './context-runner';
 
 export class ContextRunnerImpl implements ContextRunner {
   constructor(

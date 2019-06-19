@@ -1,7 +1,7 @@
 import { ContextBuilder } from '../context-builder';
-import { StandardValidation } from './standard-validation';
 import { Meta } from '../base';
 import { Context } from '../context';
+import { StandardValidation } from './standard-validation';
 
 let context: Context;
 let validator: jest.Mock;

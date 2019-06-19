@@ -1,9 +1,9 @@
+import { Request } from '../base';
+import { ContextBuilder } from '../context-builder';
 import { Sanitizers } from './sanitizers';
 import { Validators } from './validators';
 import { ContextHandler } from './context-handler';
 import { ContextRunner } from './context-runner';
-import { Request } from '../base';
-import { ContextBuilder } from '../context-builder';
 
 export interface ValidationChain
   extends Validators<ValidationChain>,

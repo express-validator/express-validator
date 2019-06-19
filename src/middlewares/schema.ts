@@ -1,9 +1,9 @@
 import { Sanitizers } from '../chain/sanitizers';
 import { Validators } from '../chain/validators';
 import { DynamicMessageCreator, Location } from '../base';
-import { check } from './check';
 import { ValidatorsImpl } from '../chain';
 import { Optional } from '../context';
+import { check } from './check';
 
 type ValidatorSchemaOptions<K extends keyof Validators<any>> =
   | true

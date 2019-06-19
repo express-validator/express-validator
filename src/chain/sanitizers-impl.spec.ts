@@ -1,9 +1,9 @@
 import * as validator from 'validator';
-import { SanitizersImpl } from './sanitizers-impl';
-import { Sanitizers } from './sanitizers';
 import { Sanitization } from '../context-items/sanitization';
 import { Meta } from '../base';
 import { ContextBuilder } from '../context-builder';
+import { Sanitizers } from './sanitizers';
+import { SanitizersImpl } from './sanitizers-impl';
 
 let chain: any;
 let builder: ContextBuilder;

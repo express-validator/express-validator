@@ -1,9 +1,9 @@
 import * as validator from 'validator';
-import { ValidatorsImpl } from './validators-impl';
-import { Validators } from './validators';
 import { Meta } from '../base';
 import { CustomValidation, StandardValidation } from '../context-items';
 import { ContextBuilder } from '../context-builder';
+import { Validators } from './validators';
+import { ValidatorsImpl } from './validators-impl';
 
 let chain: any;
 let builder: ContextBuilder;

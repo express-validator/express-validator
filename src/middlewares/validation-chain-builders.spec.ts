@@ -1,4 +1,6 @@
 import { Request, ValidationError } from '../base';
+import { validationResult } from '../validation-result';
+import { ValidationChain } from '../chain';
 import {
   body,
   buildCheckFunction,
@@ -8,8 +10,6 @@ import {
   param,
   query,
 } from './validation-chain-builders';
-import { validationResult } from '../validation-result';
-import { ValidationChain } from '../chain';
 
 let req: Request;
 const runAndGetErrors = (chain: ValidationChain, req: Request) =>

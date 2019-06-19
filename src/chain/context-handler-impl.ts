@@ -1,6 +1,6 @@
-import { ContextHandler } from './context-handler';
 import { ContextBuilder } from '../context-builder';
 import { Optional } from '../context';
+import { ContextHandler } from './context-handler';
 
 export class ContextHandlerImpl<Chain> implements ContextHandler<Chain> {
   constructor(private readonly builder: ContextBuilder, private readonly chain: Chain) {}

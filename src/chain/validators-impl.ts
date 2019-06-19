@@ -1,8 +1,8 @@
 import * as validator from 'validator';
 import { CustomValidator, StandardValidator } from '../base';
-import { Validators } from './validators';
 import { CustomValidation, StandardValidation, ValidationContextItem } from '../context-items';
 import { ContextBuilder } from '../context-builder';
+import { Validators } from './validators';
 
 export class ValidatorsImpl<Chain> implements Validators<Chain> {
   private lastValidator: ValidationContextItem;

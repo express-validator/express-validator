@@ -1,7 +1,7 @@
 import { InternalRequest, contextsSymbol } from '../base';
+import { ContextRunnerImpl } from '../chain/context-runner-impl';
 import { check } from './validation-chain-builders';
 import { oneOf } from './one-of';
-import { ContextRunnerImpl } from '../chain/context-runner-impl';
 
 const getOneOfContext = (req: InternalRequest) => {
   const contexts = req[contextsSymbol] || [];

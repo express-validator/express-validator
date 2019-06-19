@@ -1,6 +1,6 @@
-import { sanitize } from './sanitize';
 import { ContextRunnerImpl, SanitizersImpl } from '../chain';
 import { InternalRequest, contextsSymbol } from '../base';
+import { sanitize } from './sanitize';
 
 it('has sanitizer methods', () => {
   const chain = sanitize('foo');

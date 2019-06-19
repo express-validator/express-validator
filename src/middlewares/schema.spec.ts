@@ -1,5 +1,5 @@
-import { checkSchema } from './schema';
 import { ValidationChain } from '../chain';
+import { checkSchema } from './schema';
 
 const chainToContext = (chain: ValidationChain) => chain.builder.build();
 

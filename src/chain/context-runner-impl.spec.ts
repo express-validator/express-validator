@@ -1,8 +1,8 @@
 import { Context } from '../context';
-import { ContextRunnerImpl } from './context-runner-impl';
 import { FieldInstance } from '../base';
 import { ContextBuilder } from '../context-builder';
 import { ContextItem } from '../context-items';
+import { ContextRunnerImpl } from './context-runner-impl';
 
 let builder: ContextBuilder;
 let getDataSpy: jest.SpyInstance;

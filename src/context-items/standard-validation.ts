@@ -1,7 +1,7 @@
-import { ValidationContextItem } from './context-item';
 import { Meta, StandardValidator } from '../base';
 import { toString } from '../utils';
 import { Context } from '../context';
+import { ValidationContextItem } from './context-item';
 
 export class StandardValidation implements ValidationContextItem {
   readonly kind = 'validation';

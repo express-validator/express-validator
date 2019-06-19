@@ -1,8 +1,8 @@
 import * as _ from 'lodash';
-import { UnknownContextItem } from './context-item';
 import { Context } from '../context';
 import { CustomSanitizer, Meta, StandardSanitizer } from '../base';
 import { toString } from '../utils';
+import { UnknownContextItem } from './context-item';
 
 export class Sanitization implements UnknownContextItem {
   readonly kind = 'unknown';

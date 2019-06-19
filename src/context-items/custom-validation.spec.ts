@@ -1,7 +1,7 @@
 import { Context } from '../context';
 import { ContextBuilder } from '../context-builder';
-import { CustomValidation } from './custom-validation';
 import { Meta } from '../base';
+import { CustomValidation } from './custom-validation';
 
 let context: Context;
 let validator: jest.Mock;

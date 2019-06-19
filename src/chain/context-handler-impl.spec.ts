@@ -1,5 +1,5 @@
-import { ContextHandler, ContextHandlerImpl } from './';
 import { ContextBuilder } from '../context-builder';
+import { ContextHandler, ContextHandlerImpl } from './';
 
 let builder: ContextBuilder;
 let contextHandler: ContextHandler<any>;
