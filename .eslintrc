@@ -10,6 +10,7 @@
   },
   "plugins": [
     "@typescript-eslint",
+    "import",
     "prettier"
   ],
   "extends": [
@@ -74,6 +75,11 @@
       "ignoreCase": false,
       "ignoreDeclarationSort": true,
       "ignoreMemberSort": false
+    }],
+    "import/newline-after-import": ["error"],
+    "import/order": ["error", {
+      "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
+      "newlines-between": "never"
     }],
 
     // TS-specific
