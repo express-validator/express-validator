@@ -14,7 +14,7 @@ export const selectFields: SelectFields = (req, fields, locations) =>
         return expandField(req, field, location);
       }),
     )
-    .uniqWith<FieldInstance>(_.isEqual)
+    .uniqWith(_.isEqual)
     .value();
 
 function expandField(req: Request, field: string, location: Location): FieldInstance[] {
