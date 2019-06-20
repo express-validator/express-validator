@@ -10,7 +10,7 @@ import { bindAll } from '../utils';
 import { ContextBuilder } from '../context-builder';
 
 export function check(
-  fields: string | string[],
+  fields: string | string[] = '',
   locations: Location[] = [],
   message?: any,
 ): ValidationChain {

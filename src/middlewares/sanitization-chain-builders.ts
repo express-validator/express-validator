@@ -2,7 +2,7 @@ import { Location } from '../base';
 import { sanitize as baseSanitize } from './sanitize';
 
 export function buildSanitizeFunction(locations: Location[]) {
-  return (fields: string | string[]) => baseSanitize(fields, locations);
+  return (fields?: string | string[]) => baseSanitize(fields, locations);
 }
 
 export const sanitize = buildSanitizeFunction(['body', 'cookies', 'params', 'query']);
