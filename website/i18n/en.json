@@ -103,6 +103,48 @@
       },
       "version-5.3.1/version-5.3.1-custom-error-messages": {
         "title": "Custom Error Messages"
+      },
+      "version-6.0.0/version-6.0.0-check-api": {
+        "title": "Validation middlewares"
+      },
+      "version-6.0.0/version-6.0.0-filter-api": {
+        "title": "Sanitization middlewares"
+      },
+      "version-6.0.0/version-6.0.0-matched-data-api": {
+        "title": "matchedData()"
+      },
+      "version-6.0.0/version-6.0.0-sanitization-chain-api": {
+        "title": "Sanitization Chain API"
+      },
+      "version-6.0.0/version-6.0.0-validation-chain-api": {
+        "title": "Validation Chain API"
+      },
+      "version-6.0.0/version-6.0.0-validation-result-api": {
+        "title": "validationResult()"
+      },
+      "version-6.0.0/version-6.0.0-custom-validators-sanitizers": {
+        "title": "Custom validators/sanitizers"
+      },
+      "version-6.0.0/version-6.0.0-custom-error-messages": {
+        "title": "Custom Error Messages"
+      },
+      "version-6.0.0/version-6.0.0-running-imperatively": {
+        "title": "Running validations imperatively"
+      },
+      "version-6.0.0/version-6.0.0-sanitization": {
+        "title": "Sanitization"
+      },
+      "version-6.0.0/version-6.0.0-schema-validation": {
+        "title": "Schema Validation"
+      },
+      "version-6.0.0/version-6.0.0-whole-body-validation": {
+        "title": "Whole Body Validation"
+      },
+      "version-6.0.0/version-6.0.0-wildcards": {
+        "title": "Wildcards"
+      },
+      "version-6.0.0/version-6.0.0-index": {
+        "title": "Getting Started"
       }
     },
     "links": {
