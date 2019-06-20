@@ -24,7 +24,7 @@ If you're arriving here as a express-validator v3 user after upgrading to v4+, p
 npm install express-validator
 ```
 
-Also make sure that you have Node.js 6 or newer in order to use it.
+Also make sure that you have Node.js 8 or newer in order to use it.
 
 ## Documentation
 Please refer to the documentation website on https://express-validator.github.io.
