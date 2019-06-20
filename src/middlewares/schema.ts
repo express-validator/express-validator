@@ -59,11 +59,9 @@ export function checkSchema(schema: Schema, defaultLocations: Location[] = valid
     const chain = check(field, ensureLocations(config, defaultLocations), config.errorMessage);
 
     Object.keys(config)
-      .filter(
-        (method: keyof ParamSchema): method is keyof InternalParamSchema => {
-          return config[method] && !protectedNames.includes(method);
-        },
-      )
+      .filter((method: keyof ParamSchema): method is keyof InternalParamSchema => {
+        return config[method] && !protectedNames.includes(method);
+      })
       .forEach(method => {
         if (typeof chain[method] !== 'function') {
           console.warn(
