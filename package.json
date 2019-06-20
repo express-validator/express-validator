@@ -35,20 +35,20 @@
     "validator": "^11.0.0"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.11",
-    "@types/lodash": "^4.14.120",
-    "@typescript-eslint/eslint-plugin": "^1.9.0",
-    "@typescript-eslint/parser": "^1.9.0",
-    "coveralls": "^3.0.0",
+    "@types/jest": "^24.0.15",
+    "@types/lodash": "^4.14.134",
+    "@typescript-eslint/eslint-plugin": "^1.10.2",
+    "@typescript-eslint/parser": "^1.10.2",
+    "coveralls": "^3.0.4",
     "docusaurus": "^1.11.1",
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^4.3.0",
     "eslint-plugin-import": "^2.17.3",
     "eslint-plugin-prettier": "^3.1.0",
     "jest": "^24.8.0",
-    "prettier": "^1.17.1",
+    "prettier": "^1.18.2",
     "ts-jest": "^24.0.2",
-    "typescript": "^3.4.4"
+    "typescript": "^3.5.2"
   },
   "keywords": [
     "express",
