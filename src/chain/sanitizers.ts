@@ -1,5 +1,5 @@
-import * as validator from 'validator';
 import { CustomSanitizer } from '../base';
+import * as Options from '../options';
 
 export interface Sanitizers<Return> {
   customSanitizer(sanitizer: CustomSanitizer): Return;
@@ -8,7 +8,7 @@ export interface Sanitizers<Return> {
   escape(): Return;
   unescape(): Return;
   ltrim(chars?: string): Return;
-  normalizeEmail(options?: validator.Options.NormalizeEmailOptions): Return;
+  normalizeEmail(options?: Options.NormalizeEmailOptions): Return;
   rtrim(chars?: string): Return;
   stripLow(keep_new_lines?: boolean): Return;
   toArray(): Return;

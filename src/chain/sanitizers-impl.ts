@@ -2,6 +2,7 @@ import * as validator from 'validator';
 import { CustomSanitizer, StandardSanitizer } from '../base';
 import { Sanitization } from '../context-items/sanitization';
 import { ContextBuilder } from '../context-builder';
+import * as Options from '../options';
 import { Sanitizers } from './sanitizers';
 
 export class SanitizersImpl<Chain> implements Sanitizers<Chain> {
@@ -30,7 +31,7 @@ export class SanitizersImpl<Chain> implements Sanitizers<Chain> {
   ltrim(chars?: string) {
     return this.addStandardSanitization(validator.ltrim, chars);
   }
-  normalizeEmail(options?: validator.Options.NormalizeEmailOptions) {
+  normalizeEmail(options?: Options.NormalizeEmailOptions) {
     return this.addStandardSanitization(validator.normalizeEmail, options);
   }
   rtrim(chars?: string) {

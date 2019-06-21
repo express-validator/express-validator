@@ -2,6 +2,7 @@ import * as validator from 'validator';
 import { CustomValidator, StandardValidator } from '../base';
 import { CustomValidation, StandardValidation, ValidationContextItem } from '../context-items';
 import { ContextBuilder } from '../context-builder';
+import * as Options from '../options';
 import { Validators } from './validators';
 
 export class ValidatorsImpl<Chain> implements Validators<Chain> {
@@ -70,10 +71,10 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isAfter(date?: string) {
     return this.addStandardValidation(validator.isAfter, date);
   }
-  isAlpha(locale?: validator.AlphaLocale) {
+  isAlpha(locale?: Options.AlphaLocale) {
     return this.addStandardValidation(validator.isAlpha, locale);
   }
-  isAlphanumeric(locale?: validator.AlphanumericLocale) {
+  isAlphanumeric(locale?: Options.AlphanumericLocale) {
     return this.addStandardValidation(validator.isAlphanumeric, locale);
   }
   isAscii() {
@@ -91,34 +92,34 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isBoolean() {
     return this.addStandardValidation(validator.isBoolean);
   }
-  isByteLength(options: validator.Options.MinMaxOptions) {
+  isByteLength(options: Options.MinMaxOptions) {
     return this.addStandardValidation(validator.isByteLength, options);
   }
   isCreditCard() {
     return this.addStandardValidation(validator.isCreditCard);
   }
-  isCurrency(options?: validator.Options.IsCurrencyOptions) {
+  isCurrency(options?: Options.IsCurrencyOptions) {
     return this.addStandardValidation(validator.isCurrency, options);
   }
   isDataURI() {
     return this.addStandardValidation(validator.isDataURI);
   }
-  isDecimal(options?: validator.Options.IsDecimalOptions) {
+  isDecimal(options?: Options.IsDecimalOptions) {
     return this.addStandardValidation(validator.isDecimal, options);
   }
   isDivisibleBy(number: number) {
     return this.addStandardValidation(validator.isDivisibleBy, number);
   }
-  isEmail(options?: validator.Options.IsEmailOptions) {
+  isEmail(options?: Options.IsEmailOptions) {
     return this.addStandardValidation(validator.isEmail, options);
   }
-  isEmpty(options?: validator.Options.IsEmptyOptions) {
+  isEmpty(options?: Options.IsEmptyOptions) {
     return this.addStandardValidation(validator.isEmpty, options);
   }
-  isFQDN(options?: validator.Options.IsFQDNOptions) {
+  isFQDN(options?: Options.IsFQDNOptions) {
     return this.addStandardValidation(validator.isFQDN, options);
   }
-  isFloat(options?: validator.Options.IsFloatOptions) {
+  isFloat(options?: Options.IsFloatOptions) {
     return this.addStandardValidation(validator.isFloat, options);
   }
   isFullWidth() {
@@ -127,7 +128,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isHalfWidth() {
     return this.addStandardValidation(validator.isHalfWidth);
   }
-  isHash(algorithm: validator.HashAlgorithm) {
+  isHash(algorithm: Options.HashAlgorithm) {
     return this.addStandardValidation(validator.isHash, algorithm);
   }
   isHexColor() {
@@ -139,7 +140,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isIdentityCard(locale: ['ES'] | 'any') {
     return this.addStandardValidation(validator.isIdentityCard, locale);
   }
-  isIP(version?: validator.IPVersion) {
+  isIP(version?: Options.IPVersion) {
     return this.addStandardValidation(validator.isIP, version);
   }
   isIPRange() {
@@ -148,13 +149,13 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isISBN(version?: number) {
     return this.addStandardValidation(validator.isISBN, version);
   }
-  isISSN(options?: validator.Options.IsISSNOptions) {
+  isISSN(options?: Options.IsISSNOptions) {
     return this.addStandardValidation(validator.isISSN, options);
   }
   isISIN() {
     return this.addStandardValidation(validator.isISIN);
   }
-  isISO8601(options?: validator.Options.IsISO8601Options) {
+  isISO8601(options?: Options.IsISO8601Options) {
     return this.addStandardValidation(validator.isISO8601, options);
   }
   isISO31661Alpha2() {
@@ -169,7 +170,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isIn(values: any[]) {
     return this.addStandardValidation(validator.isIn, values);
   }
-  isInt(options?: validator.Options.IsIntOptions) {
+  isInt(options?: Options.IsIntOptions) {
     return this.addStandardValidation(validator.isInt, options);
   }
   isJSON() {
@@ -181,7 +182,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isLatLong() {
     return this.addStandardValidation(validator.isLatLong);
   }
-  isLength(options: validator.Options.MinMaxOptions) {
+  isLength(options: Options.MinMaxOptions) {
     return this.addStandardValidation(validator.isLength, options);
   }
   isLowercase() {
@@ -190,7 +191,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isMagnetURI() {
     return this.addStandardValidation(validator.isMagnetURI);
   }
-  isMACAddress(options?: validator.Options.IsMACAddressOptions) {
+  isMACAddress(options?: Options.IsMACAddressOptions) {
     return this.addStandardValidation(validator.isMACAddress, options);
   }
   isMD5() {
@@ -199,10 +200,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isMimeType() {
     return this.addStandardValidation(validator.isMimeType);
   }
-  isMobilePhone(
-    locale: validator.MobilePhoneLocale,
-    options?: validator.Options.IsMobilePhoneOptions,
-  ) {
+  isMobilePhone(locale: Options.MobilePhoneLocale, options?: Options.IsMobilePhoneOptions) {
     return this.addStandardValidation(validator.isMobilePhone, locale, options);
   }
   isMongoId() {
@@ -211,13 +209,13 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isMultibyte() {
     return this.addStandardValidation(validator.isMultibyte);
   }
-  isNumeric(options?: validator.Options.IsNumericOptions) {
+  isNumeric(options?: Options.IsNumericOptions) {
     return this.addStandardValidation(validator.isNumeric, options);
   }
   isPort() {
     return this.addStandardValidation(validator.isPort);
   }
-  isPostalCode(locale: validator.PostalCodeLocale) {
+  isPostalCode(locale: Options.PostalCodeLocale) {
     return this.addStandardValidation(validator.isPostalCode, locale);
   }
   isRFC3339() {
@@ -226,10 +224,10 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isSurrogatePair() {
     return this.addStandardValidation(validator.isSurrogatePair);
   }
-  isURL(options?: validator.Options.IsURLOptions) {
+  isURL(options?: Options.IsURLOptions) {
     return this.addStandardValidation(validator.isURL, options);
   }
-  isUUID(version?: validator.UUIDVersion) {
+  isUUID(version?: Options.UUIDVersion) {
     return this.addStandardValidation(validator.isUUID, version);
   }
   isUppercase() {
