@@ -139,6 +139,28 @@ it('selects whole location when path is empty', () => {
   });
 });
 
+it('deduplicates field instances', () => {
+  const req = {
+    body: {
+      foo: [{ a: 123, b: 456 }],
+    },
+  };
+
+  const instances = selectFields(req, ['*[0].*', 'foo.*.b'], ['body']);
+
+  expect(instances).toHaveLength(2);
+  expect(instances[0]).toMatchObject({
+    location: 'body',
+    path: 'foo[0].a',
+    value: 123,
+  });
+  expect(instances[1]).toMatchObject({
+    location: 'body',
+    path: 'foo[0].b',
+    value: 456,
+  });
+});
+
 describe('wildcard', () => {
   it('selects all shallow instances of a key', () => {
     const req = {

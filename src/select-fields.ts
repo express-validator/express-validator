@@ -14,8 +14,15 @@ export const selectFields: SelectFields = (req, fields, locations) =>
         return expandField(req, field, location);
       }),
     )
-    .uniqWith(_.isEqual)
+    // Avoid duplicates if multiple field selections would return the same field twice.
+    // E.g. with fields = ['*.foo', 'bar.foo'] and req.body = { bar: { foo: 1 }, baz: { foo: 2 } },
+    // the instance bla.foo would appear twice, and baz.foo once.
+    .uniqWith(isSameFieldInstance)
     .value();
+
+function isSameFieldInstance(a: FieldInstance, b: FieldInstance) {
+  return a.path === b.path && a.location === b.location;
+}
 
 function expandField(req: Request, field: string, location: Location): FieldInstance[] {
   const originalPath = field;
