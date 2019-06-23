@@ -1,4 +1,5 @@
 import { ContextBuilder } from '../context-builder';
+import { Condition } from '../context-items/condition';
 import { ContextHandler, ContextHandlerImpl } from './';
 
 let builder: ContextBuilder;
@@ -7,8 +8,17 @@ let contextHandler: ContextHandler<any>;
 beforeEach(() => {
   builder = new ContextBuilder();
   jest.spyOn(builder, 'setOptional');
+  jest.spyOn(builder, 'addItem');
 
   contextHandler = new ContextHandlerImpl(builder, {});
+});
+
+describe('#if()', () => {
+  it('adds a Condition item', () => {
+    const condition = () => true;
+    contextHandler.if(condition);
+    expect(builder.addItem).toHaveBeenCalledWith(new Condition(condition));
+  });
 });
 
 describe('#optional()', () => {
