@@ -1,5 +1,5 @@
 import { SelectFields, selectFields as baseSelectFields } from '../select-fields';
-import { Request } from '../base';
+import { InternalRequest, Request, contextsSymbol } from '../base';
 import { ContextBuilder } from '../context-builder';
 import { ContextRunner } from './context-runner';
 
@@ -9,7 +9,7 @@ export class ContextRunnerImpl implements ContextRunner {
     private readonly selectFields: SelectFields = baseSelectFields,
   ) {}
 
-  async run(req: Request) {
+  async run(req: Request, options: { saveContext?: boolean } = {}) {
     const context = this.builder.build();
     const instances = this.selectFields(req, context.fields, context.locations);
     context.addFieldInstances(instances);
@@ -29,6 +29,11 @@ export class ContextRunnerImpl implements ContextRunner {
         );
 
       await Promise.all(promises);
+    }
+
+    if (options.saveContext === undefined || options.saveContext) {
+      const internalReq = req as InternalRequest;
+      internalReq[contextsSymbol] = (internalReq[contextsSymbol] || []).concat(context);
     }
 
     return context;

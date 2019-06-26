@@ -1,5 +1,5 @@
 import { Context } from '../context';
-import { FieldInstance } from '../base';
+import { FieldInstance, InternalRequest, contextsSymbol } from '../base';
 import { ContextBuilder } from '../context-builder';
 import { ContextItem } from '../context-items';
 import { ContextRunnerImpl } from './context-runner-impl';
@@ -113,4 +113,22 @@ it('runs items on the stack in order', async () => {
   // Item 2 is resolved, then so should the context runner
   item2Resolve();
   return resultPromise;
+});
+
+it('concats to req[contextsSymbol]', async () => {
+  const req: InternalRequest = {};
+  const context1 = await contextRunner.run(req);
+  const context2 = await contextRunner.run(req);
+
+  expect(req[contextsSymbol]).toHaveLength(2);
+  expect(req[contextsSymbol]).toEqual([context1, context2]);
+});
+
+it('does not concat to req[contextsSymbol] with saveContext: false option', async () => {
+  const req: InternalRequest = {};
+  const context1 = await contextRunner.run(req);
+  await contextRunner.run(req, { saveContext: false });
+
+  expect(req[contextsSymbol]).toHaveLength(1);
+  expect(req[contextsSymbol]).toEqual([context1]);
 });
