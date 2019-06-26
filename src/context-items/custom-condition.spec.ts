@@ -1,6 +1,6 @@
 import { ContextBuilder } from '../context-builder';
 import { ValidationHalt } from '../base';
-import { Condition } from './condition';
+import { CustomCondition } from './custom-condition';
 
 let condition: jest.Mock;
 let runItem: () => Promise<void>;
@@ -8,7 +8,7 @@ let runItem: () => Promise<void>;
 beforeEach(() => {
   condition = jest.fn();
 
-  const item = new Condition(condition);
+  const item = new CustomCondition(condition);
   runItem = () =>
     item.run(new ContextBuilder().build(), 'foo', {
       req: {},

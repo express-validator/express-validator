@@ -1,6 +1,6 @@
 import { ContextBuilder } from '../context-builder';
 import { Optional } from '../context';
-import { Condition } from '../context-items/condition';
+import { CustomCondition } from '../context-items';
 import { CustomValidator } from '../base';
 import { ContextHandler } from './context-handler';
 
@@ -8,7 +8,7 @@ export class ContextHandlerImpl<Chain> implements ContextHandler<Chain> {
   constructor(private readonly builder: ContextBuilder, private readonly chain: Chain) {}
 
   if(condition: CustomValidator) {
-    this.builder.addItem(new Condition(condition));
+    this.builder.addItem(new CustomCondition(condition));
     return this.chain;
   }
 

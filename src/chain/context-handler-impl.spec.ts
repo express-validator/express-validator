@@ -1,5 +1,5 @@
 import { ContextBuilder } from '../context-builder';
-import { Condition } from '../context-items/condition';
+import { CustomCondition } from '../context-items';
 import { ContextHandler, ContextHandlerImpl } from './';
 
 let builder: ContextBuilder;
@@ -14,10 +14,10 @@ beforeEach(() => {
 });
 
 describe('#if()', () => {
-  it('adds a Condition item', () => {
+  it('adds a CustomCondition item', () => {
     const condition = () => true;
     contextHandler.if(condition);
-    expect(builder.addItem).toHaveBeenCalledWith(new Condition(condition));
+    expect(builder.addItem).toHaveBeenCalledWith(new CustomCondition(condition));
   });
 });
 

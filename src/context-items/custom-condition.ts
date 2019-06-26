@@ -2,7 +2,7 @@ import { CustomValidator, Meta, ValidationHalt } from '../base';
 import { Context } from '../context';
 import { UnknownContextItem } from './context-item';
 
-export class Condition implements UnknownContextItem {
+export class CustomCondition implements UnknownContextItem {
   readonly kind = 'unknown';
 
   constructor(private readonly condition: CustomValidator) {}
