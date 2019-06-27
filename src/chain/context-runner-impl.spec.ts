@@ -1,5 +1,5 @@
 import { Context } from '../context';
-import { FieldInstance, ValidationHalt } from '../base';
+import { FieldInstance, InternalRequest, ValidationHalt, contextsSymbol } from '../base';
 import { ContextBuilder } from '../context-builder';
 import { ContextItem } from '../context-items';
 import { ContextRunnerImpl } from './context-runner-impl';
@@ -150,4 +150,22 @@ it('rethrows unexpected errors', async () => {
 
   await expect(contextRunner.run({ body: {} })).rejects.toThrowError();
   expect(item1).toHaveBeenCalled();
+});
+
+it('concats to req[contextsSymbol]', async () => {
+  const req: InternalRequest = {};
+  const context1 = await contextRunner.run(req);
+  const context2 = await contextRunner.run(req);
+
+  expect(req[contextsSymbol]).toHaveLength(2);
+  expect(req[contextsSymbol]).toEqual([context1, context2]);
+});
+
+it('does not concat to req[contextsSymbol] with saveContext: false option', async () => {
+  const req: InternalRequest = {};
+  const context1 = await contextRunner.run(req);
+  await contextRunner.run(req, { saveContext: false });
+
+  expect(req[contextsSymbol]).toHaveLength(1);
+  expect(req[contextsSymbol]).toEqual([context1]);
 });

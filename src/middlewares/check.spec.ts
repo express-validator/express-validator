@@ -50,19 +50,6 @@ it('does not share contexts between chain runs', done => {
   });
 });
 
-it('concats to contexts created by previous chains', done => {
-  const req: InternalRequest = {};
-
-  check('foo')(req, {}, () => {
-    expect(req[contextsSymbol]).toHaveLength(1);
-
-    check('bar')(req, {}, () => {
-      expect(req[contextsSymbol]).toHaveLength(2);
-      done();
-    });
-  });
-});
-
 it('passes unexpected errors down to other middlewares', done => {
   const error = new Error();
   const proto = ContextRunnerImpl.prototype;
