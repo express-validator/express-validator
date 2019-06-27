@@ -1,14 +1,21 @@
 import { ContextBuilder } from '../context-builder';
 import { Optional } from '../context';
-import { CustomCondition } from '../context-items';
+import { ChainCondition, CustomCondition } from '../context-items';
 import { CustomValidator } from '../base';
 import { ContextHandler } from './context-handler';
+import { ValidationChain } from './validation-chain';
 
 export class ContextHandlerImpl<Chain> implements ContextHandler<Chain> {
   constructor(private readonly builder: ContextBuilder, private readonly chain: Chain) {}
 
-  if(condition: CustomValidator) {
-    this.builder.addItem(new CustomCondition(condition));
+  if(condition: CustomValidator | ValidationChain) {
+    if ('run' in condition) {
+      this.builder.addItem(new ChainCondition(condition));
+    } else if (typeof condition === 'function') {
+      this.builder.addItem(new CustomCondition(condition));
+    } else {
+      throw new Error('express-validator: condition is not a validation chain nor a function');
+    }
     return this.chain;
   }
 

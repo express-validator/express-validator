@@ -1,5 +1,6 @@
 import { ContextBuilder } from '../context-builder';
-import { CustomCondition } from '../context-items';
+import { ChainCondition, CustomCondition } from '../context-items';
+import { check } from '../middlewares/check';
 import { ContextHandler, ContextHandlerImpl } from './';
 
 let builder: ContextBuilder;
@@ -18,6 +19,18 @@ describe('#if()', () => {
     const condition = () => true;
     contextHandler.if(condition);
     expect(builder.addItem).toHaveBeenCalledWith(new CustomCondition(condition));
+  });
+
+  it('adds a ChainCondition item', () => {
+    const condition = check();
+    contextHandler.if(condition);
+    expect(builder.addItem).toHaveBeenCalledWith(new ChainCondition(condition));
+  });
+
+  it('throws if condition is not of a known type', () => {
+    const bomb = () => contextHandler.if({} as any);
+    expect(bomb).toThrowError();
+    expect(builder.addItem).not.toHaveBeenCalled();
   });
 });
 
