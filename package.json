@@ -15,6 +15,15 @@
   },
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
+  "files": [
+    "docs",
+    "src",
+    "check",
+    "filter",
+    "!*.spec.ts",
+    "!*.ts",
+    "*.d.ts"
+  ],
   "scripts": {
     "clean": "git clean -Xf src check filter",
     "docs:build": "npm --prefix ./website run build",
