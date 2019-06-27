@@ -16,8 +16,8 @@ Check the examples below to understand how this method can help you:
 ## Example: standardized validation error response
 ```js
 // can be reused by many routes
-const validate = async validations => {
-  return (req, res, next) => {
+const validate = validations => {
+  return async (req, res, next) => {
     await Promise.all(validations.map(validation => validation.run(req)));
 
     const errors = validationResult(req);
