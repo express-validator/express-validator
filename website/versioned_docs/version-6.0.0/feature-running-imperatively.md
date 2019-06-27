@@ -43,7 +43,7 @@ app.post('/api/create-user', validate([
 app.post('/update-settings', [
   body('email').isEmail(),
   body('password').optional().isLength({ min: 6 })
-], (req, res, next) => {
+], async (req, res, next) => {
   // if a password has been provided, then a confirmation must also be provided.
   if (req.body.password) {
     await body('passwordConfirmation')
