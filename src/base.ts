@@ -50,3 +50,5 @@ export interface InternalRequest extends Request {
 }
 
 export type Middleware = (req: Request, res: any, next: (err?: any) => void) => void;
+
+export class ValidationHalt extends Error {}

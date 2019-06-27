@@ -1,5 +1,5 @@
 import { Context } from '../context';
-import { FieldInstance, InternalRequest, contextsSymbol } from '../base';
+import { FieldInstance, InternalRequest, ValidationHalt, contextsSymbol } from '../base';
 import { ContextBuilder } from '../context-builder';
 import { ContextItem } from '../context-items';
 import { ContextRunnerImpl } from './context-runner-impl';
@@ -113,6 +113,43 @@ it('runs items on the stack in order', async () => {
   // Item 2 is resolved, then so should the context runner
   item2Resolve();
   return resultPromise;
+});
+
+it('stops running items on paths that got a validation halt', async () => {
+  builder.addItem(
+    {
+      kind: 'unknown',
+      run: jest.fn().mockImplementationOnce(() => {
+        throw new ValidationHalt();
+      }),
+    },
+    { kind: 'unknown', run: jest.fn() },
+  );
+  getDataSpy.mockReturnValue(instances);
+
+  const req = { body: { foo: 'bar' } };
+  const context = await contextRunner.run(req);
+
+  expect(context.stack[1].run).toHaveBeenCalledTimes(1);
+  expect(context.stack[1].run).toHaveBeenCalledWith(context, instances[1].value, {
+    req,
+    location: instances[1].location,
+    path: instances[1].path,
+  });
+});
+
+it('rethrows unexpected errors', async () => {
+  const item1 = jest.fn().mockImplementationOnce(() => {
+    throw new Error();
+  });
+  builder.addItem({
+    kind: 'unknown',
+    run: item1,
+  });
+  getDataSpy.mockReturnValue(instances);
+
+  await expect(contextRunner.run({ body: {} })).rejects.toThrowError();
+  expect(item1).toHaveBeenCalled();
 });
 
 it('concats to req[contextsSymbol]', async () => {

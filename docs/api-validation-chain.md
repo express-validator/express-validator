@@ -70,6 +70,34 @@ You can customize this behavior by passing an object with the following options:
 - `checkNull`: if `true`, fields with `null` values will not exist
 - `checkFalsy`: if `true`, fields with falsy values (eg `""`, `0`, `false`, `null`) will also not exist
 
+### `.if(condition)`
+- `condition`: the condition for this Validation Chain to continue validating.
+> *Returns:* the current validation chain instance
+
+Adds a condition for deciding if validation should continue on a field or not.
+
+The condition can be either:
+- A custom validator-like function: `condition(value, { req, path, location })`.
+  Receives the value of the field being validated, as well as the express request, the location and the field path.
+  
+  If it returns truthy or a promise that resolves, the validation chain will continue
+running. If it returns falsy, a promise that rejects or if it throws, the validation chain will stop.  
+- A validation chain [created through `check()` or similar functions](api-check.md#check-field-message).
+  
+  If running that chain would produce errors, then the validation chain will stop.
+
+```js
+body('oldPassword')
+  // if the new password is provided...
+  .if((value, { req }) => req.body.newPassword)
+  // OR
+  .if(body('newPassword').exists())
+  // ...then the old password must be too...
+  .not().empty()
+  // ...and they must not be equal.
+  .custom((value, { req }) => value !== req.body.newPassword)
+```
+
 ### `.isArray()`
 > *Returns:* the current validation chain instance
 
