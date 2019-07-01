@@ -37,40 +37,26 @@ it('selects and adds fields to the context', async () => {
   expect(addFieldInstancesSpy).toHaveBeenCalledWith(instances);
 });
 
-it('runs validation items on the stack with required data', async () => {
-  builder.addItem({ kind: 'validation', message: 1, run: jest.fn() });
+it('runs items on the stack with required data', async () => {
+  builder.addItem(
+    { kind: 'validation', message: 1, run: jest.fn() },
+    { kind: 'unknown', run: jest.fn() },
+  );
   getDataSpy.mockReturnValue(instances);
 
   const req = { body: { foo: 'bar' } };
   const context = await contextRunner.run(req);
 
-  expect(getDataSpy).toHaveBeenCalledWith({ requiredOnly: true });
-  expect(context.stack[0].run).toHaveBeenCalledTimes(instances.length);
+  context.stack.forEach((item, i) => {
+    expect(getDataSpy).toHaveBeenNthCalledWith(i + 1, { requiredOnly: true });
+    expect(item.run).toHaveBeenCalledTimes(instances.length);
 
-  instances.forEach((instance, i) => {
-    expect(context.stack[0].run).toHaveBeenNthCalledWith(i + 1, context, instance.value, {
-      req,
-      location: instance.location,
-      path: instance.path,
-    });
-  });
-});
-
-it('runs other items on the stack with all data', async () => {
-  builder.addItem({ kind: 'unknown', run: jest.fn() });
-  getDataSpy.mockReturnValue(instances);
-
-  const req = { body: { foo: 'bar' } };
-  const context = await contextRunner.run(req);
-
-  expect(getDataSpy).toHaveBeenCalledWith({ requiredOnly: false });
-  expect(context.stack[0].run).toHaveBeenCalledTimes(instances.length);
-
-  instances.forEach((instance, i) => {
-    expect(context.stack[0].run).toHaveBeenNthCalledWith(i + 1, context, instance.value, {
-      req,
-      location: instance.location,
-      path: instance.path,
+    instances.forEach((instance, j) => {
+      expect(item.run).toHaveBeenNthCalledWith(j + 1, context, instance.value, {
+        req,
+        location: instance.location,
+        path: instance.path,
+      });
     });
   });
 });
