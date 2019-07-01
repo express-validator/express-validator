@@ -40,12 +40,9 @@ describe('#setOptional()', () => {
 describe('#addItem()', () => {
   it('builds a Context with all the item pushed to the stack', () => {
     const item1: ContextItem = {
-      kind: 'validation',
-      message: 'bla',
       run: () => Promise.resolve(),
     };
     const item2: ContextItem = {
-      kind: 'unknown',
       run: () => Promise.resolve(),
     };
     builder

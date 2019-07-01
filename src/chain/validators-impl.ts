@@ -1,17 +1,17 @@
 import * as validator from 'validator';
 import { CustomValidator, StandardValidator } from '../base';
-import { CustomValidation, StandardValidation, ValidationContextItem } from '../context-items';
+import { CustomValidation, StandardValidation } from '../context-items';
 import { ContextBuilder } from '../context-builder';
 import * as Options from '../options';
 import { Validators } from './validators';
 
 export class ValidatorsImpl<Chain> implements Validators<Chain> {
-  private lastValidator: ValidationContextItem;
+  private lastValidator: CustomValidation | StandardValidation;
   private negateNext = false;
 
   constructor(private readonly builder: ContextBuilder, private readonly chain: Chain) {}
 
-  private addItem(item: ValidationContextItem) {
+  private addItem(item: CustomValidation | StandardValidation) {
     this.builder.addItem(item);
     this.lastValidator = item;
     // Reset this.negateNext so that next validation isn't negated too

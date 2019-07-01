@@ -1,11 +1,9 @@
 import { ValidationChain } from '../chain';
 import { Meta, ValidationHalt } from '../base';
 import { Context } from '../context';
-import { UnknownContextItem } from './context-item';
+import { ContextItem } from './context-item';
 
-export class ChainCondition implements UnknownContextItem {
-  readonly kind = 'unknown';
-
+export class ChainCondition implements ContextItem {
   constructor(private readonly chain: ValidationChain) {}
 
   async run(_context: Context, _value: any, meta: Meta) {

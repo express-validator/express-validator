@@ -38,10 +38,7 @@ it('selects and adds fields to the context', async () => {
 });
 
 it('runs items on the stack with required data', async () => {
-  builder.addItem(
-    { kind: 'validation', message: 1, run: jest.fn() },
-    { kind: 'unknown', run: jest.fn() },
-  );
+  builder.addItem({ run: jest.fn() }, { run: jest.fn() });
   getDataSpy.mockReturnValue(instances);
 
   const req = { body: { foo: 'bar' } };
@@ -66,17 +63,13 @@ it('runs items on the stack in order', async () => {
   const item1Promise = new Promise(resolve => {
     item1Resolve = resolve;
   });
-  const item1: ContextItem = {
-    kind: 'validation',
-    message: 1,
-    run: jest.fn().mockReturnValueOnce(item1Promise),
-  };
+  const item1: ContextItem = { run: jest.fn().mockReturnValueOnce(item1Promise) };
 
   let item2Resolve = () => {};
   const item2Promise = new Promise(resolve => {
     item2Resolve = resolve;
   });
-  const item2: ContextItem = { kind: 'unknown', run: jest.fn().mockReturnValueOnce(item2Promise) };
+  const item2: ContextItem = { run: jest.fn().mockReturnValueOnce(item2Promise) };
 
   builder.addItem(item1, item2);
   getDataSpy.mockReturnValue(instances);
@@ -104,12 +97,11 @@ it('runs items on the stack in order', async () => {
 it('stops running items on paths that got a validation halt', async () => {
   builder.addItem(
     {
-      kind: 'unknown',
       run: jest.fn().mockImplementationOnce(() => {
         throw new ValidationHalt();
       }),
     },
-    { kind: 'unknown', run: jest.fn() },
+    { run: jest.fn() },
   );
   getDataSpy.mockReturnValue(instances);
 
@@ -128,10 +120,7 @@ it('rethrows unexpected errors', async () => {
   const item1 = jest.fn().mockImplementationOnce(() => {
     throw new Error();
   });
-  builder.addItem({
-    kind: 'unknown',
-    run: item1,
-  });
+  builder.addItem({ run: item1 });
   getDataSpy.mockReturnValue(instances);
 
   await expect(contextRunner.run({ body: {} })).rejects.toThrowError();

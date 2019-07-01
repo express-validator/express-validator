@@ -1,9 +1,8 @@
 import { CustomValidator, Meta } from '../base';
 import { Context } from '../context';
-import { ValidationContextItem } from './context-item';
+import { ContextItem } from './context-item';
 
-export class CustomValidation implements ValidationContextItem {
-  readonly kind = 'validation';
+export class CustomValidation implements ContextItem {
   message: any;
 
   constructor(private readonly validator: CustomValidator, private readonly negated: boolean) {}

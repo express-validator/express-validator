@@ -1,10 +1,9 @@
 import { Meta, StandardValidator } from '../base';
 import { toString } from '../utils';
 import { Context } from '../context';
-import { ValidationContextItem } from './context-item';
+import { ContextItem } from './context-item';
 
-export class StandardValidation implements ValidationContextItem {
-  readonly kind = 'validation';
+export class StandardValidation implements ContextItem {
   message: any;
 
   constructor(
