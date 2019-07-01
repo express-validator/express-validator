@@ -145,6 +145,9 @@
       },
       "version-6.0.0/version-6.0.0-index": {
         "title": "Getting Started"
+      },
+      "version-6.1.0/version-6.1.0-validation-chain-api": {
+        "title": "Validation Chain API"
       }
     },
     "links": {
