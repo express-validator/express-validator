@@ -2,11 +2,17 @@ import { ContextBuilder } from '../context-builder';
 import { Optional } from '../context';
 import { ChainCondition, CustomCondition } from '../context-items';
 import { CustomValidator } from '../base';
+import { Bail } from '../context-items/bail';
 import { ContextHandler } from './context-handler';
 import { ValidationChain } from './validation-chain';
 
 export class ContextHandlerImpl<Chain> implements ContextHandler<Chain> {
   constructor(private readonly builder: ContextBuilder, private readonly chain: Chain) {}
+
+  bail() {
+    this.builder.addItem(new Bail());
+    return this.chain;
+  }
 
   if(condition: CustomValidator | ValidationChain) {
     if ('run' in condition) {
