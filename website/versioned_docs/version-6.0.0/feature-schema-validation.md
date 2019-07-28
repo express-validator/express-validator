@@ -52,7 +52,7 @@ app.put('/user/:id/password', checkSchema({
     }
   },
   firstName: {
-    isUpperCase: {
+    isUppercase: {
       // To negate a validator
       negated: true,
     },
