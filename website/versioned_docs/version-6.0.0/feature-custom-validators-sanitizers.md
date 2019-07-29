@@ -36,7 +36,7 @@ app.post('/user', body('email').custom(value => {
 ```js
 const { body } = require('express-validator');
 
-app.post('/user', body('passwordConfirmation').custom((value, { req }) => {
+app.post('/user', body('passwordConfirmation').not().custom((value, { req }) => {
   if (value !== req.body.password) {
     throw new Error('Password confirmation does not match password');
   }
