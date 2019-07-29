@@ -36,7 +36,10 @@ declare module 'validator' {
   export function isHash(str: string, algorithm: import('../src/options').HashAlgorithm): boolean;
   export function isHexColor(str: string): boolean;
   export function isHexadecimal(str: string): boolean;
-  export function isIdentityCard(str: string, locale?: ['ES'] | 'any'): boolean;
+  export function isIdentityCard(
+    str: string,
+    locale?: import('../src/options').IdentityCard,
+  ): boolean;
   export function isIP(str: string, version?: import('../src/options').IPVersion): boolean;
   export function isIPRange(str: string): boolean;
   export function isISBN(str: string, version?: number): boolean;
