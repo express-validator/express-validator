@@ -40,24 +40,24 @@
     "node": ">= 8.0.0"
   },
   "dependencies": {
-    "lodash": "^4.17.11",
-    "validator": "^11.0.0"
+    "lodash": "^4.17.15",
+    "validator": "^11.1.0"
   },
   "devDependencies": {
     "@types/jest": "^24.0.15",
-    "@types/lodash": "^4.14.134",
-    "@typescript-eslint/eslint-plugin": "^1.10.2",
-    "@typescript-eslint/parser": "^1.10.2",
-    "coveralls": "^3.0.4",
-    "docusaurus": "^1.11.1",
+    "@types/lodash": "^4.14.136",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
+    "coveralls": "^3.0.5",
+    "docusaurus": "^1.12.0",
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^4.3.0",
-    "eslint-plugin-import": "^2.17.3",
+    "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-prettier": "^3.1.0",
     "jest": "^24.8.0",
     "prettier": "^1.18.2",
     "ts-jest": "^24.0.2",
-    "typescript": "^3.5.2"
+    "typescript": "^3.5.3"
   },
   "keywords": [
     "express",
