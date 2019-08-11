@@ -173,4 +173,22 @@ describe('#isArray()', () => {
     await isArray.run(context, 'foo', meta);
     expect(context.errors).toHaveLength(5);
   });
+
+  it('checks if context is array of right length', async () => {
+    validators.isArray({ min: 2, max: 5 });
+    const context = builder.build();
+
+    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const isArray = context.stack[0];
+
+    await isArray.run(context, [1,"2"], meta);
+    await isArray.run(context, ["1",undefined,"3"], meta);
+    await isArray.run(context, ["1",null,"3","4","5"], meta);
+    expect(context.errors).toHaveLength(0);
+
+    await isArray.run(context, [], meta);
+    await isArray.run(context, ["1"], meta);
+    await isArray.run(context, ["1","2","3","4","5","6"], meta);
+    expect(context.errors).toHaveLength(3);
+  });
 });
