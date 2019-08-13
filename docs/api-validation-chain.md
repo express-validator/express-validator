@@ -79,11 +79,11 @@ Adds a condition for deciding if validation should continue on a field or not.
 The condition can be either:
 - A custom validator-like function: `condition(value, { req, path, location })`.
   Receives the value of the field being validated, as well as the express request, the location and the field path.
-  
+
   If it returns truthy or a promise that resolves, the validation chain will continue
 running. If it returns falsy, a promise that rejects or if it throws, the validation chain will stop.  
 - A validation chain [created through `check()` or similar functions](api-check.md#check-field-message).
-  
+
   If running that chain would produce errors, then the validation chain will stop.
 
 ```js
@@ -98,7 +98,10 @@ body('oldPassword')
   .custom((value, { req }) => value !== req.body.newPassword)
 ```
 
-### `.isArray()`
+### `.isArray(options)`
+- `options` *(optional)*: an object which accepts the following options:
+  - `min`: minimum array length.
+  - `max`: maximum array length.
 > *Returns:* the current validation chain instance
 
 Adds a validator to check if a value is an array.

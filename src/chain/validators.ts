@@ -10,7 +10,7 @@ export interface Validators<Return> {
   // custom validators
   custom(validator: CustomValidator): Return;
   exists(options?: { checkFalsy?: boolean; checkNull?: boolean }): Return;
-  isArray(): Return;
+  isArray(options?: { min?: number; max?: number }): Return;
   isString(): Return;
 
   // validator's validators

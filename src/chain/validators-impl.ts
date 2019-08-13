@@ -49,8 +49,13 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
     return this.custom(validator);
   }
 
-  isArray() {
-    return this.custom(value => Array.isArray(value));
+  isArray(options: { min?: number; max?: number } = {}) {
+    return this.custom(
+      value =>
+        Array.isArray(value) &&
+        (typeof options.min === 'undefined' || value.length >= options.min) &&
+        (typeof options.max === 'undefined' || value.length <= options.max),
+    );
   }
 
   isString() {
