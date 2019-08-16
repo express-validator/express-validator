@@ -1,6 +1,7 @@
 import { ContextBuilder } from '../context-builder';
 import { ChainCondition, CustomCondition } from '../context-items';
 import { check } from '../middlewares/check';
+import { Bail } from '../context-items/bail';
 import { ContextHandler, ContextHandlerImpl } from './';
 
 let builder: ContextBuilder;
@@ -12,6 +13,13 @@ beforeEach(() => {
   jest.spyOn(builder, 'addItem');
 
   contextHandler = new ContextHandlerImpl(builder, {});
+});
+
+describe('#bail()', () => {
+  it('adds a Bail item', () => {
+    contextHandler.bail();
+    expect(builder.addItem).toHaveBeenCalledWith(new Bail());
+  });
 });
 
 describe('#if()', () => {

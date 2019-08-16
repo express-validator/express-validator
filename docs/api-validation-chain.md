@@ -38,6 +38,27 @@ app.post('/create-user', [
 In addition to the standard validators and the [Sanitization Chain API](api-sanitization-chain.md),
 the following methods are also available within a Validation Chain:
 
+### `.bail()`
+> *Returns:* the current validation chain instance
+
+Stops running validations if any of the previous ones have failed.  
+Useful to prevent a custom validator that touches a database or external API from running when you
+know it will fail.
+
+`.bail()` can be used multiple times in the same validation chain if needed:
+
+```js
+app.post('/', [
+  check('username')
+    .isEmail()
+    .bail()
+    // If username is not an email, checkBlacklistedDomain will never run
+    .custom(checkBlacklistedDomain)
+    // If username is not an email or has a blacklisted domain, checkEmailExists will never run
+    .custom(checkEmailExists);
+]);
+```
+
 ### `.custom(validator)`
 - `validator(value, { req, location, path })`: the custom validator function.  
 Receives the value of the field being validated, as well as the express request, the location and the field path.
