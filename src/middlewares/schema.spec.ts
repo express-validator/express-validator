@@ -150,6 +150,14 @@ describe('on each field', () => {
       foo: {
         optional: true,
       },
+      bar: {
+        optional: {
+          options: {
+            checkFalsy: true,
+            nullable: true,
+          },
+        },
+      },
     })[0];
 
     expect(chainToContext(chain).optional).toEqual({
