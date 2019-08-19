@@ -32,7 +32,14 @@ type InternalParamSchema = ValidatorsSchema & SanitizersSchema;
 export type ParamSchema = InternalParamSchema & {
   in?: Location | Location[];
   errorMessage?: DynamicMessageCreator | any;
-  optional?: Partial<Optional> | true;
+  optional?: 
+    | true
+    | {
+        options?: {
+          checkFalsy?: boolean;
+          nullable?: boolean;
+        }
+      };
 };
 
 /**
