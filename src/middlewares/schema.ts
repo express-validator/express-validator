@@ -35,10 +35,7 @@ export type ParamSchema = InternalParamSchema & {
   optional?: 
     | true
     | {
-        options?: {
-          checkFalsy?: boolean;
-          nullable?: boolean;
-        }
+        options?: Partial<Optional>
       };
 };
 
