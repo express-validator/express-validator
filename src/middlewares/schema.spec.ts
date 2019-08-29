@@ -146,7 +146,7 @@ describe('on each field', () => {
   });
 
   it('can be marked as optional', () => {
-    const chain = checkSchema({
+    const schema = checkSchema({
       foo: {
         optional: true,
       },
@@ -158,11 +158,16 @@ describe('on each field', () => {
           },
         },
       },
-    })[0];
+    });
 
-    expect(chainToContext(chain).optional).toEqual({
+    expect(chainToContext(schema[0]).optional).toEqual({
       checkFalsy: false,
       nullable: false,
+    });
+    
+    expect(chainToContext(schema[1]).optional).toEqual({
+      checkFalsy: true,
+      nullable: true,
     });
   });
 
