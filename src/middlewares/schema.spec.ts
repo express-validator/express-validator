@@ -164,7 +164,7 @@ describe('on each field', () => {
       checkFalsy: false,
       nullable: false,
     });
-    
+
     expect(chainToContext(schema[1]).optional).toEqual({
       checkFalsy: true,
       nullable: true,
