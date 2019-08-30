@@ -54,6 +54,7 @@ app.post('/', [
     .bail()
     // If username is not an email, checkBlacklistedDomain will never run
     .custom(checkBlacklistedDomain)
+    .bail()
     // If username is not an email or has a blacklisted domain, checkEmailExists will never run
     .custom(checkEmailExists);
 ]);

@@ -148,6 +148,9 @@
       },
       "version-6.1.0/version-6.1.0-validation-chain-api": {
         "title": "Validation Chain API"
+      },
+      "version-6.2.0/version-6.2.0-validation-chain-api": {
+        "title": "Validation Chain API"
       }
     },
     "links": {
