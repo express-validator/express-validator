@@ -60,7 +60,7 @@ Example:
 const { check, oneOf, validationResult } = require('express-validator');
 app.post('/start-freelancing', oneOf([
   check('programming_language').isIn(['javascript', 'java', 'php']),
-  check('design_tools').isIn(['canva', 'photoshop', 'gimp'])
+  check('design_tools').isIn(['canvas', 'photoshop', 'gimp'])
 ]), (req, res, next) => {
   try {
     validationResult(req).throw();
