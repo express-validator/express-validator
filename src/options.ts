@@ -171,6 +171,7 @@ export type MobilePhoneLocale =
   | 'nl-NL'
   | 'nn-NO'
   | 'pl-PL'
+  | 'pt-BR'
   | 'pt-PT'
   | 'ro-RO'
   | 'ru-RU'
