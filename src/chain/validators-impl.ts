@@ -62,6 +62,11 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
     return this.custom(value => typeof value === 'string');
   }
 
+  notEmpty(options?: Options.IsEmptyOptions) {
+    this.not();
+    return this.isEmpty(options);
+  }
+
   // Standard validators
   private addStandardValidation(validator: StandardValidator, ...options: any[]) {
     return this.addItem(new StandardValidation(validator, this.negateNext, options));

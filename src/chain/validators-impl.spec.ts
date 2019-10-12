@@ -192,3 +192,14 @@ describe('#isArray()', () => {
     expect(context.errors).toHaveLength(3);
   });
 });
+
+describe('#notEmpty()', () => {
+  it('adds negated isEmpty() validator to the context', () => {
+    const ret = validators.notEmpty();
+
+    expect(ret).toBe(chain);
+    expect(builder.addItem).toHaveBeenCalledWith(
+      new StandardValidation(validator.isEmpty, true, expect.any(Array)),
+    );
+  });
+});
