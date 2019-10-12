@@ -142,6 +142,15 @@ Negates the result of the next validator.
 check('weekday').not().isIn(['sunday', 'saturday'])
 ```
 
+### `.notEmpty()`
+> *Returns:* the current validation chain instance
+
+Adds a validator to check if a value is not empty; that is, a string with a length of 1 or bigger.
+
+```js
+check('username').notEmpty()
+```
+
 ### `.optional(options)`
 - `options` *(optional)*: an object of options to customize the behaviour of optional.
 > *Returns:* the current validation chain instance
