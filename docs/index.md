@@ -31,6 +31,22 @@ app.post('/user', (req, res) => {
   }).then(user => res.json(user));
 });
 ```
+It can also be written in TypeScript: 
+```typescript
+import * as express from 'express';
+const app: express.Application = express();
+
+app.use(express.json());
+app.post(
+  '/user',
+  (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    User.create({
+      username: req.body.username,
+      password: req.body.password,
+    }).then(user => res.json(user));
+  }
+);
+```
 
 Then, you'll want to make sure that you validate the input and report any errors before creating the user:
 
@@ -54,6 +70,31 @@ app.post('/user', [
     username: req.body.username,
     password: req.body.password
   }).then(user => res.json(user));
+});
+```
+
+The validations can also be written in TypeScript in a similar way: 
+
+```typescript
+// ...rest of the initial code omitted for simplicity.
+import { check, validationResult } from 'express-validator/check';
+
+app.post('/user', [
+    // username must be an email
+    check('username').isEmail(),
+    // password must be at least 5 chars long
+    check('password').isLength({ min: 5 })
+], (req: express.Request, res: express.Response) => {
+    // Finds the validation errors in this request and wraps them in an object with handy functions
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+
+    User.create({
+        username: req.body.username,
+        password: req.body.password
+    }).then(user => res.json(user));
 });
 ```
 
