@@ -26,12 +26,14 @@ export type ValidationError =
       param: '_error';
       msg: any;
       nestedErrors: ValidationError[];
+      value?: any;
     }
   | {
       location: Location;
       param: string;
       value: any;
       msg: any;
+      nestedErrors?: ValidationError[];
     };
 
 export interface Request {
