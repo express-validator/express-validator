@@ -21,19 +21,20 @@ export interface FieldInstance {
 
 export type ValidationError =
   | {
-      // It's optional and undefined so places don't need to define it, but can reference it
-      location?: undefined;
       param: '_error';
       msg: any;
       nestedErrors: ValidationError[];
-      value?: any;
+      // These are optional so places don't need to define them, but can reference them
+      location?: undefined;
+      value?: undefined;
     }
   | {
       location: Location;
       param: string;
       value: any;
       msg: any;
-      nestedErrors?: ValidationError[];
+      // This is optional so places don't need to define it, but can reference it
+      nestedErrors?: unknown[];
     };
 
 export interface Request {
