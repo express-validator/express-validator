@@ -148,25 +148,6 @@ describe('#isString()', () => {
   });
 });
 
-describe('#isMobilePhone()', () => {
-  it('checks if context is a valid mobile phone for pt-BR locale', async () => {
-    validators.isMobilePhone('pt-BR');
-    const context = builder.build();
-
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
-    const isMobilePhone = context.stack[0];
-
-    await isMobilePhone.run(context, '011990000000', meta);
-    expect(context.errors).toHaveLength(0);
-
-    await isMobilePhone.run(context, null, meta);
-    await isMobilePhone.run(context, undefined, meta);
-    await isMobilePhone.run(context, '', meta);
-    await isMobilePhone.run(context, '123456789', meta);
-    expect(context.errors).toHaveLength(4);
-  });
-});
-
 describe('#isArray()', () => {
   it('adds custom validator to the context', () => {
     const ret = validators.isArray();
