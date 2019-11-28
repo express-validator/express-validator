@@ -16,6 +16,8 @@ It takes a validator function.
 Custom validators may return Promises to indicate an async validation (which will be awaited upon),
 or `throw` any value/reject a promise to [use a custom error message](feature-error-messages.md#custom-validator-level).
 
+> **Note:** if your custom validator returns a promise, it must reject to indicate that the field is invalid.
+
 ### Example: checking if e-mail is in use
 ```js
 const { body } = require('express-validator');

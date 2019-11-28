@@ -66,7 +66,9 @@ Receives the value of the field being validated, as well as the express request,
 > *Returns:* the current validation chain instance
 
 Adds a custom validator to the current validation chain.  
-The custom validator may return a promise to indicate an async validation task. In case it's rejected, the field is considered invalid.
+The custom validator may return a promise to indicate an async validation task.
+- If it's rejected, the field is considered invalid;
+- If it's resolved, the field is considered valid **regardless of the returned value**.
 
 The custom validator may also throw JavaScript exceptions (eg `throw new Error()`) and return falsy values to indicate the field is invalid.
 
