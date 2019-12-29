@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { ValidationChain } from '../chain';
-import { InternalRequest, Middleware, Request, contextsSymbol } from '../base';
+import { InternalRequest, Middleware, Request, contextsKey } from '../base';
 import { ContextBuilder } from '../context-builder';
 
 export type OneOfCustomMessageBuilder = (options: { req: Request }) => any;
@@ -34,7 +34,7 @@ export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?:
       return groupErrors;
     });
 
-    req[contextsSymbol] = (req[contextsSymbol] || []).concat(surrogateContext);
+    req[contextsKey] = (req[contextsKey] || []).concat(surrogateContext);
 
     try {
       const allErrors = await Promise.all(promises);

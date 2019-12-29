@@ -46,10 +46,10 @@ export interface Request {
   query?: Record<string, any>;
 }
 
-export const contextsSymbol = Symbol('express-validator#contexts');
+export const contextsKey = 'express-validator#contexts';
 
 export interface InternalRequest extends Request {
-  [contextsSymbol]?: ReadonlyContext[];
+  [contextsKey]?: ReadonlyContext[];
 }
 
 export type Middleware = (req: Request, res: any, next: (err?: any) => void) => void;

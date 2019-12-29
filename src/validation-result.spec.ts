@@ -1,4 +1,4 @@
-import { ValidationError, contextsSymbol } from './base';
+import { ValidationError, contextsKey } from './base';
 import { ErrorFormatter, validationResult } from './validation-result';
 import { ContextBuilder } from './context-builder';
 
@@ -32,29 +32,29 @@ it('works when there are no errors', () => {
 
 describe('#isEmpty()', () => {
   it('returns whether there are errors', () => {
-    let result = validationResult({ [contextsSymbol]: makeContextsList([]) });
+    let result = validationResult({ [contextsKey]: makeContextsList([]) });
     expect(result.isEmpty()).toBe(true);
 
-    result = validationResult({ [contextsSymbol]: makeContextsList(allErrors) });
+    result = validationResult({ [contextsKey]: makeContextsList(allErrors) });
     expect(result.isEmpty()).toBe(false);
   });
 });
 
 describe('#array()', () => {
   it('returns all errors', () => {
-    const result = validationResult({ [contextsSymbol]: makeContextsList(allErrors) });
+    const result = validationResult({ [contextsKey]: makeContextsList(allErrors) });
     expect(result.array()).toEqual(allErrors);
   });
 
   it('returns only the first error for each field when onlyFirstError = true', () => {
-    const result = validationResult({ [contextsSymbol]: makeContextsList(allErrors) });
+    const result = validationResult({ [contextsKey]: makeContextsList(allErrors) });
     expect(result.array({ onlyFirstError: true })).toEqual([allErrors[0], allErrors[2]]);
   });
 });
 
 describe('#mapped()', () => {
   it('returns an object with the first error of each field', () => {
-    const result = validationResult({ [contextsSymbol]: makeContextsList(allErrors) });
+    const result = validationResult({ [contextsKey]: makeContextsList(allErrors) });
     expect(result.mapped()).toEqual({
       foo: allErrors[0],
       bar: allErrors[2],
@@ -64,17 +64,17 @@ describe('#mapped()', () => {
 
 describe('#throw()', () => {
   it('does not throw when there are no errors', () => {
-    const result = validationResult({ [contextsSymbol]: makeContextsList([]) });
+    const result = validationResult({ [contextsKey]: makeContextsList([]) });
     expect(() => result.throw()).not.toThrow();
   });
 
   it('throws when there are errors', () => {
-    const result = validationResult({ [contextsSymbol]: makeContextsList(allErrors) });
+    const result = validationResult({ [contextsKey]: makeContextsList(allErrors) });
     expect(() => result.throw()).toThrowError();
   });
 
   it('throws error decorated as Result', done => {
-    const result = validationResult({ [contextsSymbol]: makeContextsList(allErrors) });
+    const result = validationResult({ [contextsKey]: makeContextsList(allErrors) });
     try {
       result.throw();
       done(new Error('no errors thrown'));
@@ -88,13 +88,13 @@ describe('#throw()', () => {
 
 describe('#formatWith()', () => {
   it('returns a new instance of Result', () => {
-    const result = validationResult({ [contextsSymbol]: makeContextsList([]) });
+    const result = validationResult({ [contextsKey]: makeContextsList([]) });
     expect(result.formatWith(err => err.msg)).not.toBe(result);
   });
 
   it('sets a new formatter that is used with #array()', () => {
     const formatter: ErrorFormatter = err => err.msg;
-    const result = validationResult({ [contextsSymbol]: makeContextsList(allErrors) }).formatWith(
+    const result = validationResult({ [contextsKey]: makeContextsList(allErrors) }).formatWith(
       formatter,
     );
 
@@ -103,7 +103,7 @@ describe('#formatWith()', () => {
 
   it('sets a new formatter that is used with #mapped()', () => {
     const formatter: ErrorFormatter = err => err.msg;
-    const result = validationResult({ [contextsSymbol]: makeContextsList(allErrors) }).formatWith(
+    const result = validationResult({ [contextsKey]: makeContextsList(allErrors) }).formatWith(
       formatter,
     );
 
@@ -119,7 +119,7 @@ describe('.withDefaults()', () => {
     let formatter: ErrorFormatter = err => `${err.param} is broken, fix it`;
     const customFactory = validationResult.withDefaults({ formatter });
 
-    let result = customFactory({ [contextsSymbol]: makeContextsList(allErrors) });
+    let result = customFactory({ [contextsKey]: makeContextsList(allErrors) });
     expect(result.array()).toEqual(allErrors.map(formatter));
 
     formatter = err => err.msg;

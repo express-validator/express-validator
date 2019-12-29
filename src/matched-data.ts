@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { FieldInstance, InternalRequest, Location, Request, contextsSymbol } from './base';
+import { FieldInstance, InternalRequest, Location, Request, contextsKey } from './base';
 import { Context } from './context';
 
 interface FieldInstanceBag {
@@ -23,7 +23,7 @@ export function matchedData(
   const validityFilter = createValidityFilter(options.onlyValidData);
   const locationFilter = createLocationFilter(options.locations);
 
-  return _(internalReq[contextsSymbol])
+  return _(internalReq[contextsKey])
     .flatMap(fieldExtractor)
     .filter(validityFilter)
     .map(field => field.instance)

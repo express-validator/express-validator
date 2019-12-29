@@ -1,5 +1,5 @@
 import { SelectFields, selectFields as baseSelectFields } from '../select-fields';
-import { InternalRequest, Request, ValidationHalt, contextsSymbol } from '../base';
+import { InternalRequest, Request, ValidationHalt, contextsKey } from '../base';
 import { ContextBuilder } from '../context-builder';
 import { ContextRunner } from './context-runner';
 
@@ -44,7 +44,7 @@ export class ContextRunnerImpl implements ContextRunner {
 
     if (options.saveContext === undefined || options.saveContext) {
       const internalReq = req as InternalRequest;
-      internalReq[contextsSymbol] = (internalReq[contextsSymbol] || []).concat(context);
+      internalReq[contextsKey] = (internalReq[contextsKey] || []).concat(context);
     }
 
     return context;

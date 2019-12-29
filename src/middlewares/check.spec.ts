@@ -1,5 +1,5 @@
 import { ContextHandlerImpl, ContextRunnerImpl, SanitizersImpl, ValidatorsImpl } from '../chain';
-import { InternalRequest, contextsSymbol } from '../base';
+import { InternalRequest, contextsKey } from '../base';
 import { check } from './check';
 
 it('has context handler methods', () => {
@@ -38,13 +38,13 @@ it('does not share contexts between chain runs', done => {
   const chain = check('foo', ['body']).isEmail();
   const req1: InternalRequest = { body: { foo: 'bla' } };
   chain(req1, {}, () => {
-    const context1 = req1[contextsSymbol]![0];
+    const context1 = req1[contextsKey]![0];
 
     const req2: InternalRequest = {};
     chain(req2, {}, () => {
-      expect(req2[contextsSymbol]).toHaveLength(1);
-      expect(req2[contextsSymbol]![0]).not.toBe(context1);
-      expect(req2[contextsSymbol]![0].errors).toHaveLength(1);
+      expect(req2[contextsKey]).toHaveLength(1);
+      expect(req2[contextsKey]![0]).not.toBe(context1);
+      expect(req2[contextsKey]![0].errors).toHaveLength(1);
       done();
     });
   });

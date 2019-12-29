@@ -1,10 +1,10 @@
-import { InternalRequest, contextsSymbol } from '../base';
+import { InternalRequest, contextsKey } from '../base';
 import { ContextRunnerImpl } from '../chain/context-runner-impl';
 import { check } from './validation-chain-builders';
 import { oneOf } from './one-of';
 
 const getOneOfContext = (req: InternalRequest) => {
-  const contexts = req[contextsSymbol] || [];
+  const contexts = req[contextsKey] || [];
   return contexts[contexts.length - 1];
 };
 
@@ -14,7 +14,7 @@ it('concats to contexts create by previous chains', done => {
   const chainA = check('foo');
   chainA(req, {}, () => {
     oneOf([check('bar'), check('baz')])(req, {}, () => {
-      expect(req[contextsSymbol]).toHaveLength(2);
+      expect(req[contextsKey]).toHaveLength(2);
       done();
     });
   });
