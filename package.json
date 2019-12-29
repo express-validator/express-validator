@@ -32,7 +32,7 @@
     "docs:version": "npm --prefix ./website run version",
     "prepublishOnly": "tsc",
     "test": "jest",
-    "lint": "eslint 'src/**/*.ts'",
+    "lint": "eslint --ignore-path .gitignore 'src/**/*.ts'",
     "report-coverage": "cat coverage/lcov.info | coveralls",
     "version": "npm run docs:version -- $npm_package_version && git add -A website"
   },
