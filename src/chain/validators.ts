@@ -24,6 +24,7 @@ export interface Validators<Return> {
   isBase32(): Return;
   isBase64(): Return;
   isBefore(date?: string): Return;
+  isBIC(): Return;
   isBoolean(): Return;
   isByteLength(options: Options.MinMaxExtendedOptions): Return;
   isCreditCard(): Return;
@@ -61,13 +62,18 @@ export interface Validators<Return> {
   isMACAddress(options?: Options.IsMACAddressOptions): Return;
   isMD5(): Return;
   isMimeType(): Return;
-  isMobilePhone(locale: Options.MobilePhoneLocale, options?: Options.IsMobilePhoneOptions): Return;
+  isMobilePhone(
+    locale: Options.MobilePhoneLocale | Options.MobilePhoneLocale[],
+    options?: Options.IsMobilePhoneOptions,
+  ): Return;
   isMongoId(): Return;
   isMultibyte(): Return;
   isNumeric(options?: Options.IsNumericOptions): Return;
+  isOctal(): Return;
   isPort(): Return;
   isPostalCode(locale: Options.PostalCodeLocale): Return;
   isRFC3339(): Return;
+  isSlug(): Return;
   isSurrogatePair(): Return;
   isURL(options?: Options.IsURLOptions): Return;
   isUUID(version?: Options.UUIDVersion): Return;

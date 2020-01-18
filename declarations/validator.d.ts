@@ -11,6 +11,7 @@ declare module 'validator' {
   export function isBase32(str: string): boolean;
   export function isBase64(str: string): boolean;
   export function isBefore(str: string, date?: string): boolean;
+  export function isBIC(str: string): boolean;
   export function isBoolean(str: string): boolean;
   export function isByteLength(
     str: string,
@@ -68,7 +69,9 @@ declare module 'validator' {
   export function isMimeType(str: string): boolean;
   export function isMobilePhone(
     str: string,
-    locale: import('../src/options').MobilePhoneLocale,
+    locale:
+      | import('../src/options').MobilePhoneLocale
+      | import('../src/options').MobilePhoneLocale[],
     options?: import('../src/options').IsMobilePhoneOptions,
   ): boolean;
   export function isMongoId(str: string): boolean;
@@ -77,12 +80,14 @@ declare module 'validator' {
     str: string,
     options?: import('../src/options').IsNumericOptions,
   ): boolean;
+  export function isOctal(str: string): boolean;
   export function isPort(str: string): boolean;
   export function isPostalCode(
     str: string,
     locale: import('../src/options').PostalCodeLocale,
   ): boolean;
   export function isRFC3339(str: string): boolean;
+  export function isSlug(str: string): boolean;
   export function isSurrogatePair(str: string): boolean;
   export function isURL(str: string, options?: import('../src/options').IsURLOptions): boolean;
   export function isUUID(str: string, version?: import('../src/options').UUIDVersion): boolean;

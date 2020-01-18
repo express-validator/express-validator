@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "lodash": "^4.17.15",
-    "validator": "^11.1.0"
+    "validator": "^12.1.0"
   },
   "devDependencies": {
     "@types/jest": "^24.0.15",

@@ -99,6 +99,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isBefore(date?: string) {
     return this.addStandardValidation(validator.isBefore, date);
   }
+  isBIC() {
+    return this.addStandardValidation(validator.isBIC);
+  }
   isBoolean() {
     return this.addStandardValidation(validator.isBoolean);
   }
@@ -210,7 +213,10 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isMimeType() {
     return this.addStandardValidation(validator.isMimeType);
   }
-  isMobilePhone(locale: Options.MobilePhoneLocale, options?: Options.IsMobilePhoneOptions) {
+  isMobilePhone(
+    locale: Options.MobilePhoneLocale | Options.MobilePhoneLocale[],
+    options?: Options.IsMobilePhoneOptions,
+  ) {
     return this.addStandardValidation(validator.isMobilePhone, locale, options);
   }
   isMongoId() {
@@ -222,6 +228,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isNumeric(options?: Options.IsNumericOptions) {
     return this.addStandardValidation(validator.isNumeric, options);
   }
+  isOctal() {
+    return this.addStandardValidation(validator.isOctal);
+  }
   isPort() {
     return this.addStandardValidation(validator.isPort);
   }
@@ -230,6 +239,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   }
   isRFC3339() {
     return this.addStandardValidation(validator.isRFC3339);
+  }
+  isSlug() {
+    return this.addStandardValidation(validator.isSlug);
   }
   isSurrogatePair() {
     return this.addStandardValidation(validator.isSurrogatePair);
