@@ -32,10 +32,14 @@ export function matchedData(
     .valueOf();
 }
 
-function createFieldExtractor(removeOptionals: boolean) {
+function createFieldExtractor(requiredOnly: boolean) {
   return (context: Context) => {
-    const instances = context.getData({ requiredOnly: removeOptionals });
-    return instances.map((instance): FieldInstanceBag => ({ instance, context }));
+    const instances = context.getData({ requiredOnly });
+    return instances
+      .filter(
+        instance => !requiredOnly || context.getUseCount(instance.path, instance.location) > 0,
+      )
+      .map((instance): FieldInstanceBag => ({ instance, context }));
   };
 }
 

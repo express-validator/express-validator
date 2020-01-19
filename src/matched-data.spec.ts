@@ -62,6 +62,41 @@ it('does not include valid data from invalid oneOf() chain group', done => {
   });
 });
 
+describe('with chains that contain .if()', () => {
+  it('does not include data of chain with early failed condition', done => {
+    const req = {
+      query: { foo: 'foo' },
+    };
+
+    const middleware = check('foo')
+      .if((value: any) => /\d/.test(value))
+      .equals('foo');
+
+    middleware(req, {}, () => {
+      expect(matchedData(req)).toEqual({});
+      done();
+    });
+  });
+
+  it('includes data of chain with late failed condition', done => {
+    const req = {
+      query: { foo: 'foo' },
+    };
+
+    const middleware = check('foo')
+      .equals('foo')
+      .if((value: any) => /\d/.test(value))
+      .isInt();
+
+    middleware(req, {}, () => {
+      expect(matchedData(req)).toEqual({
+        foo: 'foo',
+      });
+      done();
+    });
+  });
+});
+
 describe('when option includeOptionals is true', () => {
   it('returns object with optional data', done => {
     const req = {
@@ -108,7 +143,7 @@ describe('when option locations is defined', () => {
       query: { baz: true },
     };
 
-    check(['foo', 'bar', 'baz'])(req, {}, () => {
+    check(['foo', 'bar', 'baz']).exists()(req, {}, () => {
       const data = matchedData(req, {
         locations: ['params', 'query'],
       });
