@@ -15,6 +15,7 @@ export class Context {
   }
 
   private readonly dataMap: Map<string, FieldInstance> = new Map();
+  private readonly dataUseCount: Map<string, number> = new Map();
 
   constructor(
     readonly fields: string[],
@@ -72,6 +73,16 @@ export class Context {
     instance.value = value;
   }
 
+  markAsUsed(path: string, location: Location) {
+    const key = getDataMapKey(path, location);
+    this.dataUseCount.set(key, (this.dataUseCount.get(key) || 0) + 1);
+  }
+
+  getUseCount(path: string, location: Location) {
+    const key = getDataMapKey(path, location);
+    return this.dataUseCount.get(key) || 0;
+  }
+
   addError(message: any, value: any, meta: Meta): void;
   addError(message: any, nestedErrors: ValidationError[]): void;
   addError(message: any, valueOrNestedErrors: any, meta?: Meta) {
@@ -95,5 +106,5 @@ export class Context {
 
 export type ReadonlyContext = Pick<
   Context,
-  Exclude<keyof Context, 'setData' | 'addFieldInstances' | 'addError'>
+  Exclude<keyof Context, 'setData' | 'addFieldInstances' | 'addError' | 'markAsUsed'>
 >;
