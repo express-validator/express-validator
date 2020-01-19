@@ -13,6 +13,8 @@ export class StandardValidation implements ContextItem {
   ) {}
 
   async run(context: Context, value: any, meta: Meta) {
+    context.markAsUsed(meta.path, meta.location);
+
     const result = this.validator(toString(value), ...this.options);
     if (this.negated ? result : !result) {
       context.addError(this.message, value, meta);

@@ -8,6 +8,7 @@ export class CustomValidation implements ContextItem {
   constructor(private readonly validator: CustomValidator, private readonly negated: boolean) {}
 
   async run(context: Context, value: any, meta: Meta) {
+    context.markAsUsed(meta.path, meta.location);
     try {
       const result = this.validator(value, meta);
       const actualResult = await result;

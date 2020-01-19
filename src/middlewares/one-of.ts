@@ -27,7 +27,11 @@ export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?:
       // if its entire group is valid.
       if (!groupErrors.length) {
         contexts.forEach(context => {
-          surrogateContext.addFieldInstances(context.getData());
+          const instances = context.getData();
+          surrogateContext.addFieldInstances(instances);
+          instances.forEach(instance => {
+            surrogateContext.markAsUsed(instance.path, instance.location);
+          });
         });
       }
 

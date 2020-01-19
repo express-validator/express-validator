@@ -13,6 +13,7 @@ export class Sanitization implements ContextItem {
 
   async run(context: Context, value: any, meta: Meta) {
     const { req, path, location } = meta;
+    context.markAsUsed(path, location);
 
     const newValue = this.custom
       ? (this.sanitizer as CustomSanitizer)(value, meta)
