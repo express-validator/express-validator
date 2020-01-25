@@ -5,6 +5,10 @@ title: Sanitization middlewares
 
 These methods are all available via `require('express-validator')`.
 
+> These sanitization-only middlewares have been deprecated, as the [validation ones](api-check.md)
+offer the same functionality, and much more.
+> They will be removed eventually.
+
 ## `sanitize(fields)`
 - `field`: a string or an array of strings of field names to validate against.
 > *Returns:* a [Sanitization Chain](api-sanitization-chain.md)
