@@ -23,16 +23,13 @@ export class Result<T = any> {
   }
 
   mapped(): Record<string, T> {
-    return this.errors.reduce(
-      (mapping, error) => {
-        if (!mapping[error.param]) {
-          mapping[error.param] = this.formatter(error);
-        }
+    return this.errors.reduce((mapping, error) => {
+      if (!mapping[error.param]) {
+        mapping[error.param] = this.formatter(error);
+      }
 
-        return mapping;
-      },
-      {} as Record<string, T>,
-    );
+      return mapping;
+    }, {} as Record<string, T>);
   }
 
   formatWith<T2>(formatter: ErrorFormatter<T2>): Result<T2> {
