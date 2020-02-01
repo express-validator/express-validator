@@ -151,6 +151,18 @@
       },
       "version-6.2.0/version-6.2.0-validation-chain-api": {
         "title": "Validation Chain API"
+      },
+      "version-6.3.0/version-6.3.0-validation-chain-api": {
+        "title": "Validation Chain API"
+      },
+      "version-6.3.1/version-6.3.1-validation-chain-api": {
+        "title": "Validation Chain API"
+      },
+      "version-6.3.1/version-6.3.1-custom-validators-sanitizers": {
+        "title": "Custom validators/sanitizers"
+      },
+      "version-6.4.0/version-6.4.0-filter-api": {
+        "title": "Sanitization middlewares"
       }
     },
     "links": {
