@@ -5,11 +5,11 @@ import { Validators } from './validators';
 import { ContextHandler } from './context-handler';
 import { ContextRunner } from './context-runner';
 
-export interface ValidationChain
+export interface ValidationChain<Req = Request, Res = any, NextFn = (error?:any) => void>
   extends Validators<ValidationChain>,
     Sanitizers<ValidationChain>,
     ContextHandler<ValidationChain>,
     ContextRunner {
-  (req: Request, res: any, next: (error?: any) => void): void;
+  (req: Req, res: Res, next: NextFn): void;
   builder: ContextBuilder;
 }
