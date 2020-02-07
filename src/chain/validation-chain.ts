@@ -5,7 +5,7 @@ import { Validators } from './validators';
 import { ContextHandler } from './context-handler';
 import { ContextRunner } from './context-runner';
 
-export interface ValidationChain<Req = Request, Res = any, NextFn = (error?:any) => void>
+export interface ValidationChain<Req = Request, Res = any, NextFn = (error?: any) => void>
   extends Validators<ValidationChain>,
     Sanitizers<ValidationChain>,
     ContextHandler<ValidationChain>,
