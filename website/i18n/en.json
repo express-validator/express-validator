@@ -163,6 +163,9 @@
       },
       "version-6.4.0/version-6.4.0-filter-api": {
         "title": "Sanitization middlewares"
+      },
+      "version-6.4.0/version-6.4.0-sanitization-chain-api": {
+        "title": "Sanitization Chain API"
       }
     },
     "links": {
