@@ -43,7 +43,7 @@ app.post('/room-availability', check(['from', 'to']).isISO8601(), (req, res, nex
 ### Including optional data
 You may want to have [optional values](api-validation-chain.md#optionaloptions) among the required ones.
 
-If they are not included, some databases might understand that you don't to update that value,
+If they are not included, some databases might understand that you don't want to update those values,
 so it's useful to set them to `null` or an empty string.
 
 ```js
