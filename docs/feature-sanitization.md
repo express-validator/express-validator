@@ -33,7 +33,7 @@ app.post('/comment', [
 In the example above, we are validating `email` and `text` fields,
 so we may take advantage of the same chain to apply some sanitization,
 like e-mail normalization (`normalizeEmail`) and trimming (`trim`)/HTML escaping (`escape`).  
-The `notifyOnReply` field isn't validated, but it can still make use of the same `check` function
+The `notifyOnReply` field isn't validated, but it can still make use of the `toBoolean` function
 to convert it to a JavaScript boolean.
 
 > **Important:** please note that sanitization mutates the request.
