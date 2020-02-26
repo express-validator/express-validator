@@ -4,10 +4,10 @@ title: Schema Validation
 ---
 
 Schemas are a special, object-based way of defining validations or sanitizations on requests.  
-At the root-level, you specify the field paths as the keys, and an object as values -- which define
+At the root-level, you specify field paths as keys, and objects as values -- which define
 the error messages, locations and validations/sanitizations.
 
-Its syntaxs looks like this:
+Its syntax looks like this:
 
 ```js
 const { checkSchema } = require('express-validator');
