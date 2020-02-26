@@ -60,7 +60,7 @@ app.post('/user', [
 Messages can be specified at the field level by using the second parameter of the
 [validation middlewares](api-check.md#check-field-message).
 
-These messages are used as fall backs when a validator doesn't specify its own message:
+These messages are used as fallbacks when a validator doesn't specify its own message:
 
 ```js
 const { check } = require('express-validator');
