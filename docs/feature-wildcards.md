@@ -4,10 +4,10 @@ title: Wildcards
 ---
 
 Sometimes you will want to apply the same rules to all items of an array or all keys of some object.  
-That's what the `*` character - also known as a wildcard -- is for.
+That's what the `*` character -- also known as a wildcard -- is for.
 
 For example, imagine you want to validate that all addresses have a valid postal code,
-and that the number of each address is sanitized as an integer number.
+and that the number of each address is sanitized as an integer.
 
 We can do this with the following code:
 
