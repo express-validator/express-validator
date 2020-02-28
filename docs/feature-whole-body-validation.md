@@ -3,8 +3,8 @@ id: whole-body-validation
 title: Whole Body Validation
 ---
 
-Sometimes you need to validate requests whose body is a string, an array, or even a number!
-That's why you can omit the field to validate and check `req.body` directly:
+Sometimes you need to validate a request whose body is a string, an array, or even a number!
+That's why you can omit the field to validate, and check `req.body` directly:
 
 ```js
 const bodyParser = require('body-parser');
