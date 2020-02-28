@@ -12,7 +12,7 @@ These methods are all available via `require('express-validator')`.
 Extracts the validation errors from a request and makes them available in a [`Result`](#result) object.
 
 Each error returned by [`.array()`](#array-options) and [`.mapped()`](#mapped) methods
-have the following format _by default_:
+has the following format _by default_:
 
 ```js
 {
