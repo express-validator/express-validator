@@ -11,6 +11,7 @@ type ValidatorSchemaOptions<K extends keyof Validators<any>> =
       options?: Parameters<Validators<any>[K]> | Parameters<Validators<any>[K]>[0];
       errorMessage?: DynamicMessageCreator | any;
       negated?: boolean;
+      bail?: boolean;
     };
 
 export type ValidatorsSchema = { [K in keyof Validators<any>]?: ValidatorSchemaOptions<K> };
@@ -58,20 +59,26 @@ const validLocations: Location[] = ['body', 'cookies', 'headers', 'params', 'que
 const protectedNames = ['errorMessage', 'in'];
 
 export function checkSchema(schema: Schema, defaultLocations: Location[] = validLocations) {
+  let isBailed: boolean = false;
   return Object.keys(schema).map(field => {
     const config = schema[field];
     const chain = check(field, ensureLocations(config, defaultLocations), config.errorMessage);
-
+    if (isBailed) {
+      return chain;
+    }
     Object.keys(config)
       .filter((method: keyof ParamSchema): method is keyof InternalParamSchema => {
         return config[method] && !protectedNames.includes(method);
       })
-      .forEach(method => {
+      .some(method => {
+        if (isBailed) {
+          return true;
+        }
         if (typeof chain[method] !== 'function') {
           console.warn(
             `express-validator: a validator/sanitizer with name ${method} does not exist`,
           );
-          return;
+          return false;
         }
 
         // Using "!" because typescript doesn't know it isn't undefined.
@@ -85,12 +92,17 @@ export function checkSchema(schema: Schema, defaultLocations: Location[] = valid
         if (isValidatorOptions(method, methodCfg) && methodCfg.negated) {
           chain.not();
         }
+        if (isValidatorOptions(method, methodCfg) && methodCfg.bail) {
+          isBailed = true;
+        }
 
         (chain[method] as any)(...options);
 
         if (isValidatorOptions(method, methodCfg) && methodCfg.errorMessage) {
           chain.withMessage(methodCfg.errorMessage);
         }
+
+        return false;
       });
 
     return chain;

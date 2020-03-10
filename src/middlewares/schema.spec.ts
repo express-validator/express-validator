@@ -184,3 +184,51 @@ describe('on each field', () => {
     expect(context.errors).toHaveLength(1);
   });
 });
+
+describe('on schema that contains fields with bail methods', () => {
+  it('should stop validation chain with only one error', async () => {
+    const schema = checkSchema({
+      foo: {
+        exists: {
+          bail: true,
+        },
+        isLength: {
+          options: {
+            min: 5,
+          },
+        },
+      },
+    });
+
+    const context = await schema[0].run({ params: {} });
+    expect(context.errors).toHaveLength(1);
+  });
+  it('should stop validation chain at bailed field', async () => {
+    const schema = checkSchema({
+      foo: {
+        isLength: {
+          options: {
+            min: 5,
+          },
+          bail: true,
+        },
+      },
+      bar: {
+        isLength: {
+          options: {
+            min: 5,
+          },
+        },
+      },
+    });
+    const contexts = await Promise.all(
+      schema.map(chain =>
+        chain.run({
+          params: { foo: 'a', bar: 'aaa' },
+        }),
+      ),
+    );
+    expect(contexts[0].errors).toHaveLength(1);
+    expect(contexts[1].errors).toHaveLength(0);
+  });
+});
