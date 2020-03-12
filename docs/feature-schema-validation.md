@@ -60,7 +60,7 @@ app.put('/user/:id/password', checkSchema({
       options: [[" ", "-"]],
     },
   },
-  // Bail from fruther validations in the chain
+  // Support bail functionality in schemas
   email: {
     isEmail: {
       bail: true,
