@@ -11,6 +11,7 @@ type ValidatorSchemaOptions<K extends keyof Validators<any>> =
       options?: Parameters<Validators<any>[K]> | Parameters<Validators<any>[K]>[0];
       errorMessage?: DynamicMessageCreator | any;
       negated?: boolean;
+      bail?: boolean;
     };
 
 export type ValidatorsSchema = { [K in keyof Validators<any>]?: ValidatorSchemaOptions<K> };
@@ -90,6 +91,10 @@ export function checkSchema(schema: Schema, defaultLocations: Location[] = valid
 
         if (isValidatorOptions(method, methodCfg) && methodCfg.errorMessage) {
           chain.withMessage(methodCfg.errorMessage);
+        }
+
+        if (isValidatorOptions(method, methodCfg) && methodCfg.bail) {
+          chain.bail();
         }
       });
 

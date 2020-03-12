@@ -60,6 +60,12 @@ app.put('/user/:id/password', checkSchema({
       options: [[" ", "-"]],
     },
   },
+  // Bail from fruther validations in the chain
+  email: {
+    isEmail: {
+      bail: true,
+    }
+  },
   // Wildcards/dots for nested fields work as well
   'addresses.*.postalCode': {
     // Make this field optional when undefined or null
