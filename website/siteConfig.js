@@ -1,5 +1,9 @@
 // See https://docusaurus.io/docs/site-config.html for all the possible site configuration options.
 const siteConfig = {
+  algolia: {
+    apiKey: 'd6d85148b3b81778cf952442d4292bea',
+    indexName: 'express-validator'
+  },
   // Metadata
   title: 'express-validator',
   tagline: 'express-validator docs',
