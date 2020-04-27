@@ -45,7 +45,6 @@ function expandField(req: Request, field: string, location: Location): FieldInst
 
 function expandPath(object: any, path: string | string[], accumulator: string[]) {
   const segments = _.toPath(path);
-  console.log(segments);
   const wildcardPos = segments.indexOf('*');
 
   if (wildcardPos > -1) {
