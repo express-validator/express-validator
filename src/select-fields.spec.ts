@@ -95,6 +95,20 @@ it('selects nested key with dot-notation', () => {
   });
 });
 
+it('selects fields with special chars', () => {
+  const req = {
+    body: { 'http://foo.com': true },
+  };
+  const instances = selectFields(req, ['["http://foo.com"]'], ['body']);
+
+  expect(instances).toHaveLength(1);
+  expect(instances[0]).toMatchObject({
+    location: 'body',
+    path: '["http://foo.com"]',
+    value: true,
+  });
+});
+
 it('selects array index with square brackets notation', () => {
   const req = {
     query: { foo: ['bar', 'baz'] },

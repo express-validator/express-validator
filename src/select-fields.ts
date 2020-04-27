@@ -45,6 +45,7 @@ function expandField(req: Request, field: string, location: Location): FieldInst
 
 function expandPath(object: any, path: string | string[], accumulator: string[]) {
   const segments = _.toPath(path);
+  console.log(segments);
   const wildcardPos = segments.indexOf('*');
 
   if (wildcardPos > -1) {
@@ -70,7 +71,10 @@ function expandPath(object: any, path: string | string[], accumulator: string[])
   } else {
     const reconstructedPath = segments.reduce((prev, segment) => {
       let part = '';
-      if (/^\d+$/.test(segment)) {
+      if (/[^a-z0-9]/i.test(segment)) {
+        // Special char key access
+        part = `["${segment}"]`;
+      } else if (/^\d+$/.test(segment)) {
         // Index access
         part = `[${segment}]`;
       } else if (prev) {
