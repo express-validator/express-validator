@@ -70,7 +70,8 @@ function expandPath(object: any, path: string | string[], accumulator: string[])
   } else {
     const reconstructedPath = segments.reduce((prev, segment) => {
       let part = '';
-      if (/[^a-z0-9]/i.test(segment)) {
+      // TODO: Handle brackets?
+      if (segment.includes('.')) {
         // Special char key access
         part = `["${segment}"]`;
       } else if (/^\d+$/.test(segment)) {
