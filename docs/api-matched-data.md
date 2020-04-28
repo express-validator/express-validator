@@ -5,7 +5,7 @@ title: matchedData()
 
 These methods are all available via `require('express-validator')`.
 
-## `matchedData(req[, options])`
+## `matchedData(req, { options })`
 - `req`: the express request object.
 - `options` *(optional)*: an object which accepts the following options:
   - `includeOptionals`: if set to `true`, the returned value includes optional data. Defaults to `false`.
