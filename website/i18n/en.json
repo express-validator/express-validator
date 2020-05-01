@@ -166,6 +166,33 @@
       },
       "version-6.4.0/version-6.4.0-sanitization-chain-api": {
         "title": "Sanitization Chain API"
+      },
+      "version-6.4.0/version-6.4.0-custom-validators-sanitizers": {
+        "title": "Custom validators/sanitizers"
+      },
+      "version-6.4.0/version-6.4.0-sanitization": {
+        "title": "Sanitization"
+      },
+      "version-6.4.1/version-6.4.1-matched-data-api": {
+        "title": "matchedData()"
+      },
+      "version-6.4.1/version-6.4.1-validation-result-api": {
+        "title": "validationResult()"
+      },
+      "version-6.4.1/version-6.4.1-custom-validators-sanitizers": {
+        "title": "Custom validators/sanitizers"
+      },
+      "version-6.4.1/version-6.4.1-custom-error-messages": {
+        "title": "Custom Error Messages"
+      },
+      "version-6.4.1/version-6.4.1-schema-validation": {
+        "title": "Schema Validation"
+      },
+      "version-6.4.1/version-6.4.1-whole-body-validation": {
+        "title": "Whole Body Validation"
+      },
+      "version-6.4.1/version-6.4.1-wildcards": {
+        "title": "Wildcards"
       }
     },
     "links": {
