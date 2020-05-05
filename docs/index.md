@@ -81,3 +81,4 @@ You might want to continue reading about some of the more advanced features avai
 - [Custom error messages](feature-error-messages.md)
 - [Wildcards](feature-wildcards.md)
 - [Schema validation](feature-schema-validation.md)
+- [Migration guide 5 to 6](migration-guide.md)
