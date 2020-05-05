@@ -74,12 +74,12 @@ app.use(require('./server/index'));
 .
 module.exports = app;
 ```
-Now in your route handler we should have
+Now in your route handler we should import `express-validator` module (line 3).
 *server/index.js*
 ```js
 const express = require('express');
 const router = express.Router();
-const { check, validationResult } = require('express-validator'); //import that
+const { check, validationResult } = require('express-validator'); //<--import that
 
 app.post('/user', validationRules, checkRules, (req, res) => {
   User.create({
