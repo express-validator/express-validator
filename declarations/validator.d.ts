@@ -13,6 +13,7 @@ declare module 'validator' {
   export function isBefore(str: string, date?: string): boolean;
   export function isBIC(str: string): boolean;
   export function isBoolean(str: string): boolean;
+  export function isBtcAddress(str: string): boolean;
   export function isByteLength(
     str: string,
     options: import('../src/options').MinMaxOptions,
@@ -23,13 +24,16 @@ declare module 'validator' {
     options?: import('../src/options').IsCurrencyOptions,
   ): boolean;
   export function isDataURI(str: string): boolean;
+  export function isDate(str: string): boolean;
   export function isDecimal(
     str: string,
     options?: import('../src/options').IsDecimalOptions,
   ): boolean;
   export function isDivisibleBy(str: string, number: number): boolean;
+  export function isEAN(str: string): boolean;
   export function isEmail(str: string, options?: import('../src/options').IsEmailOptions): boolean;
   export function isEmpty(str: string, options?: import('../src/options').IsEmptyOptions): boolean;
+  export function isEthereumAddress(str: string): boolean;
   export function isFQDN(str: string, options?: import('../src/options').IsFQDNOptions): boolean;
   export function isFloat(str: string, options?: import('../src/options').IsFloatOptions): boolean;
   export function isFullWidth(str: string): boolean;
@@ -37,6 +41,8 @@ declare module 'validator' {
   export function isHash(str: string, algorithm: import('../src/options').HashAlgorithm): boolean;
   export function isHexColor(str: string): boolean;
   export function isHexadecimal(str: string): boolean;
+  export function isHSL(str: string): boolean;
+  export function isIBAN(str: string): boolean;
   export function isIdentityCard(
     str: string,
     locale?: import('../src/options').IdentityCard,
@@ -59,6 +65,7 @@ declare module 'validator' {
   export function isJWT(str: string): boolean;
   export function isLatLong(str: string): boolean;
   export function isLength(str: string, options: import('../src/options').MinMaxOptions): boolean;
+  export function isLocale(str: string): boolean;
   export function isLowercase(str: string): boolean;
   export function isMagnetURI(str: string): boolean;
   export function isMACAddress(
@@ -81,12 +88,15 @@ declare module 'validator' {
     options?: import('../src/options').IsNumericOptions,
   ): boolean;
   export function isOctal(str: string): boolean;
+  export function isPassportNumber(str: string, countryCode?: string): boolean;
   export function isPort(str: string): boolean;
   export function isPostalCode(
     str: string,
     locale: import('../src/options').PostalCodeLocale,
   ): boolean;
   export function isRFC3339(str: string): boolean;
+  export function isRgbColor(str: string, includePercentValues?: boolean): boolean;
+  export function isSemVer(str: string): boolean;
   export function isSlug(str: string): boolean;
   export function isSurrogatePair(str: string): boolean;
   export function isURL(str: string, options?: import('../src/options').IsURLOptions): boolean;

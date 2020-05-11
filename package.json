@@ -6,7 +6,7 @@
     "Rusty Bailey <rustylbailey@gmail.com>",
     "Gustavo Henke <guhenke@gmail.com>"
   ],
-  "version": "6.4.1",
+  "version": "6.5.0",
   "homepage": "https://express-validator.github.io",
   "license": "MIT",
   "repository": {
@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "lodash": "^4.17.15",
-    "validator": "^12.1.0"
+    "validator": "^13.0.0"
   },
   "devDependencies": {
     "@types/jest": "^24.9.1",
