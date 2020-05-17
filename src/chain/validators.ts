@@ -26,14 +26,18 @@ export interface Validators<Return> {
   isBefore(date?: string): Return;
   isBIC(): Return;
   isBoolean(): Return;
+  isBtcAddress(): Return;
   isByteLength(options: Options.MinMaxExtendedOptions): Return;
   isCreditCard(): Return;
   isCurrency(options?: Options.IsCurrencyOptions): Return;
   isDataURI(): Return;
+  isDate(): Return;
   isDecimal(options?: Options.IsDecimalOptions): Return;
   isDivisibleBy(number: number): Return;
+  isEAN(): Return;
   isEmail(options?: Options.IsEmailOptions): Return;
   isEmpty(options?: Options.IsEmptyOptions): Return;
+  isEthereumAddress(): Return;
   isFQDN(options?: Options.IsFQDNOptions): Return;
   isFloat(options?: Options.IsFloatOptions): Return;
   isFullWidth(): Return;
@@ -41,6 +45,8 @@ export interface Validators<Return> {
   isHash(algorithm: Options.HashAlgorithm): Return;
   isHexColor(): Return;
   isHexadecimal(): Return;
+  isHSL(): Return;
+  isIBAN(): Return;
   isIdentityCard(locale?: ['ES'] | 'any'): Return;
   isIP(version?: Options.IPVersion): Return;
   isIPRange(): Return;
@@ -57,6 +63,7 @@ export interface Validators<Return> {
   isJWT(): Return;
   isLatLong(): Return;
   isLength(options: Options.MinMaxOptions): Return;
+  isLocale(): Return;
   isLowercase(): Return;
   isMagnetURI(): Return;
   isMACAddress(options?: Options.IsMACAddressOptions): Return;
@@ -70,9 +77,12 @@ export interface Validators<Return> {
   isMultibyte(): Return;
   isNumeric(options?: Options.IsNumericOptions): Return;
   isOctal(): Return;
+  isPassportNumber(countryCode?: string): Return;
   isPort(): Return;
   isPostalCode(locale: Options.PostalCodeLocale): Return;
+  isRgbColor(includePercentValues?: boolean): Return;
   isRFC3339(): Return;
+  isSemVer(): Return;
   isSlug(): Return;
   isSurrogatePair(): Return;
   isURL(options?: Options.IsURLOptions): Return;
