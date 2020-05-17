@@ -9,7 +9,7 @@ export class ContextRunnerImpl implements ContextRunner {
     private readonly selectFields: SelectFields = baseSelectFields,
   ) {}
 
-  async run(req: Request, options: { saveContext?: boolean } = {}) {
+  async run(req: Request, options: { dryRun?: boolean } = {}) {
     const context = this.builder.build();
     const instances = this.selectFields(req, context.fields, context.locations);
     context.addFieldInstances(instances);
@@ -42,7 +42,7 @@ export class ContextRunnerImpl implements ContextRunner {
       await Promise.all(promises);
     }
 
-    if (options.saveContext === undefined || options.saveContext) {
+    if (!options.dryRun) {
       const internalReq = req as InternalRequest;
       internalReq[contextsKey] = (internalReq[contextsKey] || []).concat(context);
     }

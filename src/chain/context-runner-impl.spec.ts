@@ -136,11 +136,13 @@ it('concats to req[contextsKey]', async () => {
   expect(req[contextsKey]).toEqual([context1, context2]);
 });
 
-it('does not concat to req[contextsKey] with saveContext: false option', async () => {
-  const req: InternalRequest = {};
-  const context1 = await contextRunner.run(req);
-  await contextRunner.run(req, { saveContext: false });
+describe('with dryRun: true option', () => {
+  it('does not concat to req[contextsKey]', async () => {
+    const req: InternalRequest = {};
+    const context1 = await contextRunner.run(req);
+    await contextRunner.run(req, { dryRun: true });
 
-  expect(req[contextsKey]).toHaveLength(1);
-  expect(req[contextsKey]).toEqual([context1]);
+    expect(req[contextsKey]).toHaveLength(1);
+    expect(req[contextsKey]).toEqual([context1]);
+  });
 });
