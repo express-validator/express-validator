@@ -31,7 +31,8 @@ export interface Validators<Return> {
   isCreditCard(): Return;
   isCurrency(options?: Options.IsCurrencyOptions): Return;
   isDataURI(): Return;
-  isDate(): Return;
+  // isDate is not available: https://github.com/validatorjs/validator.js/issues/1304
+  // isDate(): Return;
   isDecimal(options?: Options.IsDecimalOptions): Return;
   isDivisibleBy(number: number): Return;
   isEAN(): Return;

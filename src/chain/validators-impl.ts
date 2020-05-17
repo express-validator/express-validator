@@ -120,9 +120,10 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isDataURI() {
     return this.addStandardValidation(validator.isDataURI);
   }
-  isDate() {
-    return this.addStandardValidation(validator.isDate);
-  }
+  // isDate is not available: https://github.com/validatorjs/validator.js/issues/1304
+  // isDate() {
+  //   return this.addStandardValidation(validator.isDate);
+  // }
   isDecimal(options?: Options.IsDecimalOptions) {
     return this.addStandardValidation(validator.isDecimal, options);
   }
