@@ -8,15 +8,30 @@ const getOneOfContext = (req: InternalRequest) => {
   return contexts[contexts.length - 1];
 };
 
-it('concats to contexts create by previous chains', done => {
-  const req: InternalRequest = {};
+it('runs chains passed to it as a dry-run', done => {
+  const req = {};
+  const spy = jest.spyOn(ContextRunnerImpl.prototype, 'run');
+  oneOf([check('bar'), check('baz')])(req, {}, () => {
+    expect(spy).toHaveBeenCalledTimes(3);
+    // Call 3 asserted by next test
+    expect(spy).toHaveBeenNthCalledWith(1, req, { dryRun: true });
+    expect(spy).toHaveBeenNthCalledWith(2, req, { dryRun: true });
 
-  const chainA = check('foo');
-  chainA(req, {}, () => {
-    oneOf([check('bar'), check('baz')])(req, {}, () => {
-      expect(req[contextsKey]).toHaveLength(2);
-      done();
-    });
+    spy.mockRestore();
+    done();
+  });
+});
+
+it('runs surrogate context created internally', done => {
+  const req = {};
+  const spy = jest.spyOn(ContextRunnerImpl.prototype, 'run');
+  oneOf([check('bar'), check('baz')])(req, {}, () => {
+    expect(spy).toHaveBeenCalledTimes(3);
+    // Calls 1 and 2 asserted by previous test
+    expect(spy).toHaveBeenNthCalledWith(3, req);
+
+    spy.mockRestore();
+    done();
   });
 });
 

@@ -25,7 +25,7 @@ it('runs the condition chain on the request', () => {
   const req = {};
   runItem(req);
 
-  expect(condition.run).toHaveBeenCalledWith(req, { saveContext: false });
+  expect(condition.run).toHaveBeenCalledWith(req, { dryRun: true });
 });
 
 it('does not throw if the chain has no errors', () => {
