@@ -2,16 +2,20 @@ import * as _ from 'lodash';
 import { SelectFields, selectFields as baseSelectFields } from '../select-fields';
 import { InternalRequest, Request, ValidationHalt, contextsKey } from '../base';
 import { ContextBuilder } from '../context-builder';
+import { Context } from '../context';
 import { ContextRunner } from './context-runner';
 
 export class ContextRunnerImpl implements ContextRunner {
   constructor(
-    private readonly builder: ContextBuilder,
+    private readonly builderOrContext: ContextBuilder | Context,
     private readonly selectFields: SelectFields = baseSelectFields,
   ) {}
 
   async run(req: Request, options: { dryRun?: boolean } = {}) {
-    const context = this.builder.build();
+    const context =
+      this.builderOrContext instanceof Context
+        ? this.builderOrContext
+        : this.builderOrContext.build();
     const instances = this.selectFields(req, context.fields, context.locations);
     context.addFieldInstances(instances);
 

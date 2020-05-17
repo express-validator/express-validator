@@ -1,7 +1,11 @@
 import * as _ from 'lodash';
-import { ValidationChain } from '../chain';
-import { InternalRequest, Middleware, Request, contextsKey } from '../base';
+import { ContextRunnerImpl, ValidationChain } from '../chain';
+import { InternalRequest, Middleware, Request } from '../base';
 import { ContextBuilder } from '../context-builder';
+import { ContextItem } from '../context-items';
+
+// A dummy context item that gets added to surrogate contexts just to make them run
+const dummyItem: ContextItem = { async run() {} };
 
 export type OneOfCustomMessageBuilder = (options: { req: Request }) => any;
 
@@ -13,7 +17,7 @@ export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?:
 
 export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?: any) {
   return async (req: InternalRequest, _res: any, next: (err?: any) => void) => {
-    const surrogateContext = new ContextBuilder().build();
+    const surrogateContext = new ContextBuilder().addItem(dummyItem).build();
 
     // Run each group of chains in parallel, and within each group, run each chain in parallel too.
     const promises = chains.map(async chain => {
@@ -32,8 +36,6 @@ export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?:
       return groupErrors;
     });
 
-    req[contextsKey] = (req[contextsKey] || []).concat(surrogateContext);
-
     try {
       const allErrors = await Promise.all(promises);
       const success = allErrors.some(groupErrors => groupErrors.length === 0);
@@ -46,6 +48,8 @@ export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?:
         );
       }
 
+      // Final context running pass to ensure contexts are added and values are modified properly
+      await new ContextRunnerImpl(surrogateContext).run(req);
       next();
     } catch (e) {
       next(e);
