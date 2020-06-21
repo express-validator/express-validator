@@ -22,7 +22,8 @@ export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?:
     // Run each group of chains in parallel, and within each group, run each chain in parallel too.
     const promises = chains.map(async chain => {
       const group = Array.isArray(chain) ? chain : [chain];
-      const contexts = await Promise.all(group.map(chain => chain.run(req, { dryRun: true })));
+      const results = await Promise.all(group.map(chain => chain.run(req, { dryRun: true })));
+      const contexts = results.map(result => result.context);
       const groupErrors = _.flatMap(contexts, 'errors');
 
       // #536: The data from a chain within oneOf() can only be made available to e.g. matchedData()

@@ -2,6 +2,7 @@ import { Context } from '../context';
 import { FieldInstance, InternalRequest, ValidationHalt, contextsKey } from '../base';
 import { ContextBuilder } from '../context-builder';
 import { ContextItem } from '../context-items';
+import { Result } from '../validation-result';
 import { ContextRunnerImpl } from './context-runner-impl';
 
 let builder: ContextBuilder;
@@ -36,6 +37,17 @@ afterEach(() => {
   addFieldInstancesSpy.mockRestore();
 });
 
+it('returns Result for current context', async () => {
+  builder.addItem({
+    async run(context, value, meta) {
+      context.addError('some error', value, meta);
+    },
+  });
+  const result = await contextRunner.run({});
+  expect(result).toBeInstanceOf(Result);
+  expect(result.array()).toHaveLength(2);
+});
+
 it('selects and adds fields to the context', async () => {
   const req = { query: { foo: 123 } };
   await contextRunner.run(req);
@@ -49,7 +61,7 @@ it('runs items on the stack with required data', async () => {
   getDataSpy.mockReturnValue(instances);
 
   const req = { body: { foo: 'bar' } };
-  const context = await contextRunner.run(req);
+  const { context } = await contextRunner.run(req);
 
   context.stack.forEach((item, i) => {
     expect(getDataSpy).toHaveBeenNthCalledWith(i + 1, { requiredOnly: true });
@@ -113,7 +125,7 @@ it('stops running items on paths that got a validation halt', async () => {
   getDataSpy.mockReturnValue(instances);
 
   const req = { body: { foo: 'bar' } };
-  const context = await contextRunner.run(req);
+  const { context } = await contextRunner.run(req);
 
   expect(context.stack[1].run).toHaveBeenCalledTimes(1);
   expect(context.stack[1].run).toHaveBeenCalledWith(context, instances[1].value, {
@@ -136,8 +148,8 @@ it('rethrows unexpected errors', async () => {
 
 it('concats to req[contextsKey]', async () => {
   const req: InternalRequest = {};
-  const context1 = await contextRunner.run(req);
-  const context2 = await contextRunner.run(req);
+  const { context: context1 } = await contextRunner.run(req);
+  const { context: context2 } = await contextRunner.run(req);
 
   expect(req[contextsKey]).toHaveLength(2);
   expect(req[contextsKey]).toEqual([context1, context2]);
@@ -178,11 +190,11 @@ describe('instance value persistence onto request', () => {
 describe('with dryRun: true option', () => {
   it('does not concat to req[contextsKey]', async () => {
     const req: InternalRequest = {};
-    const context1 = await contextRunner.run(req);
+    const { context } = await contextRunner.run(req);
     await contextRunner.run(req, { dryRun: true });
 
     expect(req[contextsKey]).toHaveLength(1);
-    expect(req[contextsKey]).toEqual([context1]);
+    expect(req[contextsKey]).toEqual([context]);
   });
 
   it('does not persist instance value back into the request', async () => {

@@ -99,7 +99,7 @@ describe('on each field', () => {
       },
     });
 
-    const contexts = await Promise.all(
+    const results = await Promise.all(
       schema.map(chain =>
         chain.run({
           query: { foo: 0, bar: 'baz' },
@@ -107,8 +107,8 @@ describe('on each field', () => {
       ),
     );
 
-    expect(contexts[0].errors).toHaveLength(1);
-    expect(contexts[1].getData()).toContainEqual(
+    expect(results[0].context.errors).toHaveLength(1);
+    expect(results[1].context.getData()).toContainEqual(
       expect.objectContaining({ path: 'bar', value: 'a', originalValue: 'baz' }),
     );
   });
@@ -180,7 +180,7 @@ describe('on each field', () => {
       },
     })[0];
 
-    const context = await chain.run({ params: { foo: '' } });
+    const { context } = await chain.run({ params: { foo: '' } });
     expect(context.errors).toHaveLength(1);
   });
 });

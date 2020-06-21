@@ -8,7 +8,7 @@ This means most of the APIs _look and work better_ when simply passed into an ex
 
 You can, however, give control of running these validations to your own middleware/route handler.  
 This is possible with the use of the declarative method `run(req)`, available on both
-[validation chain](api-validation-chain.md#runreq) and [sanitization chains](api-sanitization-chain.md#runreq).
+[validation chain](api-validation-chain.md#runreq-options) and [sanitization chains](api-sanitization-chain.md#runreq).
 
 Check the examples below to understand how this method can help you:
 

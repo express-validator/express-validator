@@ -1,9 +1,16 @@
 import * as _ from 'lodash';
-import { SelectFields, selectFields as baseSelectFields } from '../select-fields';
 import { InternalRequest, Request, ValidationHalt, contextsKey } from '../base';
+import { Context, ReadonlyContext } from '../context';
 import { ContextBuilder } from '../context-builder';
-import { Context } from '../context';
+import { SelectFields, selectFields as baseSelectFields } from '../select-fields';
+import { Result } from '../validation-result';
 import { ContextRunner } from './context-runner';
+
+class ResultWithContext extends Result {
+  constructor(readonly context: ReadonlyContext) {
+    super(error => error, context.errors);
+  }
+}
 
 export class ContextRunnerImpl implements ContextRunner {
   constructor(
@@ -63,6 +70,6 @@ export class ContextRunnerImpl implements ContextRunner {
       internalReq[contextsKey] = (internalReq[contextsKey] || []).concat(context);
     }
 
-    return context;
+    return new ResultWithContext(context);
   }
 }
