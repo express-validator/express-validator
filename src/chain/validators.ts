@@ -15,14 +15,14 @@ export interface Validators<Return> {
   notEmpty(options?: Options.IsEmptyOptions): Return;
 
   // validator's validators
-  contains(elem: any): Return;
+  contains(elem: any, options?: Options.ContainsOptions): Return;
   equals(comparison: string): Return;
   isAfter(date?: string): Return;
   isAlpha(locale?: Options.AlphaLocale): Return;
   isAlphanumeric(locale?: Options.AlphanumericLocale): Return;
   isAscii(): Return;
   isBase32(): Return;
-  isBase64(): Return;
+  isBase64(options?: Options.IsBase64Options): Return;
   isBefore(date?: string): Return;
   isBIC(): Return;
   isBoolean(): Return;
@@ -31,8 +31,7 @@ export interface Validators<Return> {
   isCreditCard(): Return;
   isCurrency(options?: Options.IsCurrencyOptions): Return;
   isDataURI(): Return;
-  // isDate is not available: https://github.com/validatorjs/validator.js/issues/1304
-  // isDate(): Return;
+  isDate(): Return;
   isDecimal(options?: Options.IsDecimalOptions): Return;
   isDivisibleBy(number: number): Return;
   isEAN(): Return;
@@ -48,7 +47,8 @@ export interface Validators<Return> {
   isHexadecimal(): Return;
   isHSL(): Return;
   isIBAN(): Return;
-  isIdentityCard(locale?: ['ES'] | 'any'): Return;
+  isIdentityCard(locale?: Options.IdentityCard): Return;
+  isIMEI(options?: Options.IsIMEIOptions): Return;
   isIP(version?: Options.IPVersion): Return;
   isIPRange(): Return;
   isISBN(version?: number): Return;
@@ -60,9 +60,9 @@ export interface Validators<Return> {
   isISRC(): Return;
   isIn(values: any[]): Return;
   isInt(options?: Options.IsIntOptions): Return;
-  isJSON(): Return;
+  isJSON(options?: Options.IsJSONOptions): Return;
   isJWT(): Return;
-  isLatLong(): Return;
+  isLatLong(options?: Options.IsLatLongOptions): Return;
   isLength(options: Options.MinMaxOptions): Return;
   isLocale(): Return;
   isLowercase(): Return;
@@ -86,6 +86,7 @@ export interface Validators<Return> {
   isSemVer(): Return;
   isSlug(): Return;
   isSurrogatePair(): Return;
+  isTaxID(locale: Options.TaxIDLocale): Return;
   isURL(options?: Options.IsURLOptions): Return;
   isUUID(version?: Options.UUIDVersion): Return;
   isUppercase(): Return;

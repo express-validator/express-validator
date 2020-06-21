@@ -1,5 +1,9 @@
 declare module 'validator' {
-  export function contains(str: string, elem: any): boolean;
+  export function contains(
+    str: string,
+    elem: any,
+    options?: import('../src/options').ContainsOptions,
+  ): boolean;
   export function equals(str: string, comparison: string): boolean;
   export function isAfter(str: string, date?: string): boolean;
   export function isAlpha(str: string, locale?: import('../src/options').AlphaLocale): boolean;
@@ -9,7 +13,10 @@ declare module 'validator' {
   ): boolean;
   export function isAscii(str: string): boolean;
   export function isBase32(str: string): boolean;
-  export function isBase64(str: string): boolean;
+  export function isBase64(
+    str: string,
+    options?: import('../src/options').IsBase64Options,
+  ): boolean;
   export function isBefore(str: string, date?: string): boolean;
   export function isBIC(str: string): boolean;
   export function isBoolean(str: string): boolean;
@@ -47,6 +54,7 @@ declare module 'validator' {
     str: string,
     locale?: import('../src/options').IdentityCard,
   ): boolean;
+  export function isIMEI(str: string, options?: import('../src/options').IsIMEIOptions): boolean;
   export function isIP(str: string, version?: import('../src/options').IPVersion): boolean;
   export function isIPRange(str: string): boolean;
   export function isISBN(str: string, version?: number): boolean;
@@ -61,9 +69,12 @@ declare module 'validator' {
   export function isISRC(str: string): boolean;
   export function isIn(str: string, values: any[]): boolean;
   export function isInt(str: string, options?: import('../src/options').IsIntOptions): boolean;
-  export function isJSON(str: string): boolean;
+  export function isJSON(str: string, options?: import('../src/options').IsJSONOptions): boolean;
   export function isJWT(str: string): boolean;
-  export function isLatLong(str: string): boolean;
+  export function isLatLong(
+    str: string,
+    options?: import('../src/options').IsLatLongOptions,
+  ): boolean;
   export function isLength(str: string, options: import('../src/options').MinMaxOptions): boolean;
   export function isLocale(str: string): boolean;
   export function isLowercase(str: string): boolean;
@@ -99,6 +110,7 @@ declare module 'validator' {
   export function isSemVer(str: string): boolean;
   export function isSlug(str: string): boolean;
   export function isSurrogatePair(str: string): boolean;
+  export function isTaxID(str: string, locale: import('../src/options').TaxIDLocale): boolean;
   export function isURL(str: string, options?: import('../src/options').IsURLOptions): boolean;
   export function isUUID(str: string, version?: import('../src/options').UUIDVersion): boolean;
   export function isUppercase(str: string): boolean;

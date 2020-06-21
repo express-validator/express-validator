@@ -37,7 +37,7 @@ it('has methods for all standard validators', () => {
 
   validators.contains('foo');
   expect(builder.addItem).toHaveBeenCalledWith(
-    new StandardValidation(validator.contains, false, ['foo']),
+    new StandardValidation(validator.contains, false, ['foo', undefined]),
   );
 
   validators.equals('bar');
