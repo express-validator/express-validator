@@ -193,6 +193,15 @@
       },
       "version-6.4.1/version-6.4.1-wildcards": {
         "title": "Wildcards"
+      },
+      "version-6.6.0/version-6.6.0-validation-chain-api": {
+        "title": "Validation Chain API"
+      },
+      "version-6.6.0/version-6.6.0-running-imperatively": {
+        "title": "Running validations imperatively"
+      },
+      "version-6.6.0/version-6.6.0-index": {
+        "title": "Getting Started"
       }
     },
     "links": {
