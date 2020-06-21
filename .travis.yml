@@ -1,7 +1,6 @@
 language: node_js
 node_js:
   # LTS
-  - "8"
   - "10"
   - "12"
   - "14"
