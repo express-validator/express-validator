@@ -1,10 +1,10 @@
-sudo: false
 language: node_js
 node_js:
   # LTS
   - "8"
   - "10"
-  - "node"
+  - "12"
+  - "14"
 before_install:
   - npm install -g npm
 install:
