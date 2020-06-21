@@ -503,6 +503,7 @@ export interface IsMobilePhoneOptions {
  */
 export interface IsNumericOptions {
   no_symbols: boolean;
+  locale?: AlphanumericLocale;
 }
 
 /**
