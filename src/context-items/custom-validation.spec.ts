@@ -13,10 +13,7 @@ const meta: Meta = {
 };
 
 beforeEach(() => {
-  context = new ContextBuilder()
-    .setFields(['foo'])
-    .setLocations(['cookies'])
-    .build();
+  context = new ContextBuilder().setFields(['foo']).setLocations(['cookies']).build();
   jest.spyOn(context, 'addError');
 
   validator = jest.fn();
