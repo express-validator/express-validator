@@ -99,7 +99,10 @@ declare module 'validator' {
     options?: import('../src/options').IsNumericOptions,
   ): boolean;
   export function isOctal(str: string): boolean;
-  export function isPassportNumber(str: string, countryCode?: string): boolean;
+  export function isPassportNumber(
+    str: string,
+    countryCode?: import('../src/options').PassportCountryCode,
+  ): boolean;
   export function isPort(str: string): boolean;
   export function isPostalCode(
     str: string,

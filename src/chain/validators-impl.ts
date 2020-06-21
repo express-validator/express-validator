@@ -255,7 +255,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isOctal() {
     return this.addStandardValidation(validator.isOctal);
   }
-  isPassportNumber(countryCode?: string) {
+  isPassportNumber(countryCode?: Options.PassportCountryCode) {
     return this.addStandardValidation(validator.isPassportNumber, countryCode);
   }
   isPort() {

@@ -78,7 +78,7 @@ export interface Validators<Return> {
   isMultibyte(): Return;
   isNumeric(options?: Options.IsNumericOptions): Return;
   isOctal(): Return;
-  isPassportNumber(countryCode?: string): Return;
+  isPassportNumber(countryCode?: Options.PassportCountryCode): Return;
   isPort(): Return;
   isPostalCode(locale: Options.PostalCodeLocale): Return;
   isRgbColor(includePercentValues?: boolean): Return;
