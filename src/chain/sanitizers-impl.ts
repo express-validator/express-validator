@@ -63,4 +63,10 @@ export class SanitizersImpl<Chain> implements Sanitizers<Chain> {
   whitelist(chars: string) {
     return this.addStandardSanitization(validator.whitelist, chars);
   }
+  toLowerCase() {
+    return this.customSanitizer(value => (typeof value === 'string' ? value.toLowerCase() : value));
+  }
+  toUpperCase() {
+    return this.customSanitizer(value => (typeof value === 'string' ? value.toUpperCase() : value));
+  }
 }

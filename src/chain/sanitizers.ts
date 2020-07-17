@@ -18,4 +18,6 @@ export interface Sanitizers<Return> {
   toInt(radix?: number): Return;
   trim(chars?: string): Return;
   whitelist(chars: string): Return;
+  toLowerCase(): Return;
+  toUpperCase(): Return;
 }
