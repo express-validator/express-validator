@@ -181,7 +181,7 @@ app.post('/create-user', async (req, res, next) => {
 
   const result = validationResult(req);
   if (!result.isEmpty()) {
-    return res.status(422).json({ errors: result.array() });
+    return res.status(400).json({ errors: result.array() });
   }
 
   // user can be created now!

@@ -69,7 +69,7 @@ app.post('/start-freelancing', oneOf([
     res.json(...);
   } catch (err) {
     // Oh noes. This user doesn't have enough skills for this...
-    res.status(422).json(...);
+    res.status(400).json(...);
   }
 });
 ```
