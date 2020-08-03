@@ -57,16 +57,16 @@ export class SanitizersImpl<Chain> implements Sanitizers<Chain> {
   toInt(radix?: number) {
     return this.addStandardSanitization(validator.toInt, radix);
   }
-  trim(chars?: string) {
-    return this.addStandardSanitization(validator.trim, chars);
-  }
-  whitelist(chars: string) {
-    return this.addStandardSanitization(validator.whitelist, chars);
-  }
   toLowerCase() {
     return this.customSanitizer(value => (typeof value === 'string' ? value.toLowerCase() : value));
   }
   toUpperCase() {
     return this.customSanitizer(value => (typeof value === 'string' ? value.toUpperCase() : value));
+  }
+  trim(chars?: string) {
+    return this.addStandardSanitization(validator.trim, chars);
+  }
+  whitelist(chars: string) {
+    return this.addStandardSanitization(validator.whitelist, chars);
   }
 }
