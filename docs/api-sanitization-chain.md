@@ -75,3 +75,31 @@ app.post('/', [body('checkboxes').toArray()], (req, res, next) => {
   console.log(req.body.checkboxes);
 });
 ```
+
+### `.toLowerCase()`
+> *Returns:* the current sanitization chain instance
+
+Converts the value to lower case. Non string value will return itself.
+
+```js
+app.post('/', [body('username').toLowerCase()], (req, res, next) => {
+  // 'Foo'      => 'foo'
+  // undefined  => undefined
+  // null       => null
+  console.log(req.body.username);
+});
+```
+
+### `.toUpperCase()`
+> *Returns:* the current sanitization chain instance
+
+Converts the value to upper case. Non string value will return itself.
+
+```js
+app.post('/', [body('username').toUpperCase()], (req, res, next) => {
+  // 'Foo'      => 'FOO'
+  // undefined  => undefined
+  // null       => null
+  console.log(req.body.username);
+});
+```
