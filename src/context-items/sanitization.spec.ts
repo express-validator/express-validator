@@ -42,6 +42,15 @@ describe('when sanitizer is a custom one', () => {
 
     expect(sanitizer).toHaveBeenCalledWith('foo', meta);
   });
+
+  it('calls it with the value of an async function and the meta', async () => {
+    sanitizer = jest.fn(async value => 'foo ' + value);
+    sanitization = new Sanitization(sanitizer, true);
+    await sanitization.run(context, 'bar', meta);
+
+    expect(sanitizer).toHaveBeenCalledWith('bar', meta);
+    expect(context.getData()[0].value).toBe('foo bar');
+  });
 });
 
 describe('when sanitizer is a standard one', () => {
