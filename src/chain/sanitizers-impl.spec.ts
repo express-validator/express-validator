@@ -275,3 +275,85 @@ describe('#default()', () => {
     expect(context.getData()[0].value).toEqual(5);
   });
 });
+
+describe('#replace()', () => {
+  it('adds replace() sanitizer to the context', () => {
+    const ret = sanitizers.replace('defaultValue');
+
+    expect(ret).toBe(chain);
+    expect(builder.addItem).toHaveBeenCalledWith(new Sanitization(expect.any(Function), true));
+  });
+
+  it('sanitizes to replace', async () => {
+    sanitizers.replace('defaultValue');
+    const context = builder.build();
+    context.addFieldInstances([
+      {
+        location: 'body',
+        path: 'foo',
+        originalPath: 'foo',
+        value: '',
+        originalValue: '',
+      },
+    ]);
+
+    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const replace = context.stack[0];
+
+    await replace.run(context, '', meta);
+    expect(context.getData()[0].value).toEqual('defaultValue');
+
+    await replace.run(context, undefined, meta);
+    expect(context.getData()[0].value).toEqual('defaultValue');
+
+    await replace.run(context, null, meta);
+    expect(context.getData()[0].value).toEqual('defaultValue');
+
+    await replace.run(context, NaN, meta);
+    expect(context.getData()[0].value).toEqual('defaultValue');
+
+    await replace.run(context, 'foo_', meta);
+    expect(context.getData()[0].value).toEqual('foo_');
+
+    await replace.run(context, 100, meta);
+    expect(context.getData()[0].value).toEqual(100);
+  });
+
+  it('sanitizes to replace with custom set', async () => {
+    sanitizers.replace('defaultValue', ['foo', 'bar']);
+    const context = builder.build();
+    context.addFieldInstances([
+      {
+        location: 'body',
+        path: 'foo',
+        originalPath: 'foo',
+        value: '',
+        originalValue: '',
+      },
+    ]);
+
+    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const replace = context.stack[0];
+
+    await replace.run(context, 'foo', meta);
+    expect(context.getData()[0].value).toEqual('defaultValue');
+
+    await replace.run(context, 'bar', meta);
+    expect(context.getData()[0].value).toEqual('defaultValue');
+
+    await replace.run(context, undefined, meta);
+    expect(context.getData()[0].value).toEqual(undefined);
+
+    await replace.run(context, null, meta);
+    expect(context.getData()[0].value).toEqual(null);
+
+    await replace.run(context, NaN, meta);
+    expect(context.getData()[0].value).toEqual(NaN);
+
+    await replace.run(context, '_foo', meta);
+    expect(context.getData()[0].value).toEqual('_foo');
+
+    await replace.run(context, 100, meta);
+    expect(context.getData()[0].value).toEqual(100);
+  });
+});
