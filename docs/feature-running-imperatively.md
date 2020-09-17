@@ -15,6 +15,8 @@ Check the examples below to understand how this method can help you:
 ## Example: standardized validation error response
 ```js
 // can be reused by many routes
+
+// parallel processing
 const validate = validations => {
   return async (req, res, next) => {
     await Promise.all(validations.map(validation => validation.run(req)));
@@ -28,6 +30,25 @@ const validate = validations => {
   };
 };
 
+// sequential processing, stops running validations chain if the previous one have failed.
+const validate = validations => {
+  return async (req, res, next) => {
+    for (let validation of validations) {
+      const result = await validation.run(req);
+      if (result.errors.length) break;
+    }
+
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+      return next();
+    }
+
+    res.status(400).json({ errors: errors.array() });
+  }
+};
+
+```
+```js
 app.post('/api/create-user', validate([
   body('email').isEmail(),
   body('password').isLength({ min: 6 })
@@ -36,6 +57,7 @@ app.post('/api/create-user', validate([
   const user = await User.create({ ... });
 });
 ```
+
 
 ## Example: validating with a condition
 ```js
