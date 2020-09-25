@@ -278,14 +278,14 @@ describe('#default()', () => {
 
 describe('#replace()', () => {
   it('adds replace() sanitizer to the context', () => {
-    const ret = sanitizers.replace('defaultValue');
+    const ret = sanitizers.replace([], 'defaultValue');
 
     expect(ret).toBe(chain);
     expect(builder.addItem).toHaveBeenCalledWith(new Sanitization(expect.any(Function), true));
   });
 
-  it('sanitizes to replace', async () => {
-    sanitizers.replace('defaultValue');
+  it('sanitizes to replace with empty set', async () => {
+    sanitizers.replace([], 'defaultValue');
     const context = builder.build();
     context.addFieldInstances([
       {
@@ -301,16 +301,16 @@ describe('#replace()', () => {
     const replace = context.stack[0];
 
     await replace.run(context, '', meta);
-    expect(context.getData()[0].value).toEqual('defaultValue');
+    expect(context.getData()[0].value).toEqual('');
 
     await replace.run(context, undefined, meta);
-    expect(context.getData()[0].value).toEqual('defaultValue');
+    expect(context.getData()[0].value).toEqual(undefined);
 
     await replace.run(context, null, meta);
-    expect(context.getData()[0].value).toEqual('defaultValue');
+    expect(context.getData()[0].value).toEqual(null);
 
     await replace.run(context, NaN, meta);
-    expect(context.getData()[0].value).toEqual('defaultValue');
+    expect(context.getData()[0].value).toEqual(NaN);
 
     await replace.run(context, 'foo_', meta);
     expect(context.getData()[0].value).toEqual('foo_');
@@ -320,7 +320,7 @@ describe('#replace()', () => {
   });
 
   it('sanitizes to replace with custom set', async () => {
-    sanitizers.replace('defaultValue', ['foo', 'bar']);
+    sanitizers.replace(['foo', 'bar'], 'defaultValue');
     const context = builder.build();
     context.addFieldInstances([
       {

@@ -11,7 +11,7 @@ export interface Sanitizers<Return> {
   ltrim(chars?: string): Return;
   normalizeEmail(options?: Options.NormalizeEmailOptions): Return;
   rtrim(chars?: string): Return;
-  replace(new_value: any, values_to_replace?: any[]): Return;
+  replace(values_to_replace: any[], new_value: any): Return;
   stripLow(keep_new_lines?: boolean): Return;
   toArray(): Return;
   toBoolean(strict?: boolean): Return;
