@@ -15,10 +15,7 @@ export class Sanitization implements ContextItem {
 
     const runCustomSanitizer = async () => {
       const sanitizerValue = this.sanitizer(value, meta);
-      if (sanitizerValue instanceof Promise) {
-        return await sanitizerValue;
-      }
-      return sanitizerValue;
+      return Promise.resolve(sanitizerValue);
     };
 
     const newValue = this.custom
