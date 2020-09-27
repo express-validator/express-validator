@@ -81,6 +81,24 @@ describe('#customSanitizer()', () => {
     expect(ret).toBe(chain);
     expect(builder.addItem).toHaveBeenCalledWith(new Sanitization(sanitizer, true));
   });
+
+  it('adds a custom async sanitizer that resolves to the context', () => {
+    const sanitizer = jest.fn(async () => 1);
+    const ret = sanitizers.customSanitizer(sanitizer);
+
+    expect(ret).toBe(chain);
+    expect(builder.addItem).toHaveBeenCalledWith(new Sanitization(sanitizer, true));
+  });
+
+  it('adds a custom async sanitizer that rejects to the context', () => {
+    const sanitizer = jest.fn(async () => {
+      throw new Error('Dummy Error');
+    });
+    const ret = sanitizers.customSanitizer(sanitizer);
+
+    expect(ret).toBe(chain);
+    expect(builder.addItem).toHaveBeenCalledWith(new Sanitization(sanitizer, true));
+  });
 });
 
 describe('#toArray()', () => {
