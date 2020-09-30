@@ -41,7 +41,7 @@
     "node": ">= 8.0.0"
   },
   "dependencies": {
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.20",
     "validator": "^13.1.1"
   },
   "devDependencies": {
@@ -50,14 +50,14 @@
     "@typescript-eslint/eslint-plugin": "^3.3.0",
     "@typescript-eslint/parser": "^3.3.0",
     "coveralls": "^3.1.0",
-    "docusaurus": "^1.14.4",
+    "docusaurus": "^1.14.6",
     "eslint": "^7.3.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.21.2",
     "eslint-plugin-prettier": "^3.1.4",
-    "jest": "^26.0.1",
-    "prettier": "^2.0.5",
-    "ts-jest": "^26.1.0",
+    "jest": "^26.4.2",
+    "prettier": "^2.1.2",
+    "ts-jest": "^26.4.1",
     "typescript": "^3.9.5"
   },
   "keywords": [
