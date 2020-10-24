@@ -39,7 +39,10 @@ export class SanitizersImpl<Chain> implements Sanitizers<Chain> {
   normalizeEmail(options?: Options.NormalizeEmailOptions) {
     return this.addStandardSanitization(validator.normalizeEmail, options);
   }
-  replace(values_to_replace: any[], new_value: any) {
+  replace(values_to_replace: any, new_value: any) {
+    if (!Array.isArray(values_to_replace)) {
+      values_to_replace = [values_to_replace];
+    }
     return this.customSanitizer(value => (values_to_replace.includes(value) ? new_value : value));
   }
   rtrim(chars?: string) {

@@ -356,4 +356,30 @@ describe('#replace()', () => {
     await replace.run(context, 100, meta);
     expect(context.getData()[0].value).toEqual(100);
   });
+
+  it('sanitizes to replace with single value', async () => {
+    sanitizers.replace('foo', 'defaultValue');
+    const context = builder.build();
+    context.addFieldInstances([
+      {
+        location: 'body',
+        path: 'foo',
+        originalPath: 'foo',
+        value: '',
+        originalValue: '',
+      },
+    ]);
+
+    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const replace = context.stack[0];
+
+    await replace.run(context, 'foo', meta);
+    expect(context.getData()[0].value).toEqual('defaultValue');
+
+    await replace.run(context, '_foo', meta);
+    expect(context.getData()[0].value).toEqual('_foo');
+
+    await replace.run(context, 100, meta);
+    expect(context.getData()[0].value).toEqual(100);
+  });
 });
