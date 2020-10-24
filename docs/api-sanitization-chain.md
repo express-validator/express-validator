@@ -45,6 +45,22 @@ app.get('/object/:id', param('id').customSanitizer((value, { req }) => {
 }), objectHandler)
 ```
 
+### `.default(default_value)`
+> *Returns:* the current sanitization chain instance
+
+Replaces the current value with a default one if the current value is included in `['', null, undefined, NaN]`.
+
+```js
+app.post('/', [body('username').default('foo')], (req, res, next) => {
+  // 'bar'     => 'bar'
+  // ''        => 'foo'
+  // undefined => 'foo'
+  // null      => 'foo'
+  // NaN       => 'foo'
+  console.log(req.body.username);
+});
+```
+
 ### `.run(req)`
 > *Returns:* a promise that resolves when the sanitization chain ran.
 

@@ -5,6 +5,7 @@ export interface Sanitizers<Return> {
   customSanitizer(sanitizer: CustomSanitizer): Return;
 
   blacklist(chars: string): Return;
+  default(default_value: any): Return;
   escape(): Return;
   unescape(): Return;
   ltrim(chars?: string): Return;
