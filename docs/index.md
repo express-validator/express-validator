@@ -7,7 +7,7 @@ express-validator is a set of [express.js](http://expressjs.com/) middlewares th
 [validator.js](https://github.com/chriso/validator.js) validator and sanitizer functions.
 
 ## Installation
-Install it using npm (make sure that you have Node.js 6 or newer):
+Install it using npm (make sure that you have Node.js 8 or newer):
 
 ```
 npm install --save express-validator
