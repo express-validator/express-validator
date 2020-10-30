@@ -2,7 +2,7 @@
 id: migration
 title: Migration guide
 ---
-This tutorial guide your throught to one way to migrate your earlier version of express-validator to version 6.
+This tutorial guide your through to one way to migrate your earlier version of express-validator to version 6.
 
 ## Migration guide version <=5 to 6
 
@@ -74,7 +74,7 @@ app.use(require('./server/index'));
 .
 module.exports = app;
 ```
-Now in your route handler we should import `express-validator` module (line 3).
+Now in our root handler we should import `express-validator` module (line 3).
 *server/index.js*
 ```js
 const express = require('express');
