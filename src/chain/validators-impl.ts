@@ -72,8 +72,8 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
     return this.addItem(new StandardValidation(validator, this.negateNext, options));
   }
 
-  contains(elem: any) {
-    return this.addStandardValidation(validator.contains, elem);
+  contains(elem: any, options?: Options.ContainsOptions) {
+    return this.addStandardValidation(validator.contains, elem, options);
   }
   equals(comparison: string) {
     return this.addStandardValidation(validator.equals, comparison);
@@ -93,8 +93,8 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isBase32() {
     return this.addStandardValidation(validator.isBase32);
   }
-  isBase64() {
-    return this.addStandardValidation(validator.isBase64);
+  isBase64(options?: Options.IsBase64Options) {
+    return this.addStandardValidation(validator.isBase64, options);
   }
   isBefore(date?: string) {
     return this.addStandardValidation(validator.isBefore, date);
@@ -104,6 +104,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   }
   isBoolean() {
     return this.addStandardValidation(validator.isBoolean);
+  }
+  isBtcAddress() {
+    return this.addStandardValidation(validator.isBtcAddress);
   }
   isByteLength(options: Options.MinMaxOptions) {
     return this.addStandardValidation(validator.isByteLength, options);
@@ -117,17 +120,26 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isDataURI() {
     return this.addStandardValidation(validator.isDataURI);
   }
+  isDate() {
+    return this.addStandardValidation(validator.isDate);
+  }
   isDecimal(options?: Options.IsDecimalOptions) {
     return this.addStandardValidation(validator.isDecimal, options);
   }
   isDivisibleBy(number: number) {
     return this.addStandardValidation(validator.isDivisibleBy, number);
   }
+  isEAN() {
+    return this.addStandardValidation(validator.isEAN);
+  }
   isEmail(options?: Options.IsEmailOptions) {
     return this.addStandardValidation(validator.isEmail, options);
   }
   isEmpty(options?: Options.IsEmptyOptions) {
     return this.addStandardValidation(validator.isEmpty, options);
+  }
+  isEthereumAddress() {
+    return this.addStandardValidation(validator.isEthereumAddress);
   }
   isFQDN(options?: Options.IsFQDNOptions) {
     return this.addStandardValidation(validator.isFQDN, options);
@@ -150,8 +162,17 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isHexadecimal() {
     return this.addStandardValidation(validator.isHexadecimal);
   }
-  isIdentityCard(locale: ['ES'] | 'any') {
+  isHSL() {
+    return this.addStandardValidation(validator.isHSL);
+  }
+  isIBAN() {
+    return this.addStandardValidation(validator.isIBAN);
+  }
+  isIdentityCard(locale: Options.IdentityCard) {
     return this.addStandardValidation(validator.isIdentityCard, locale);
+  }
+  isIMEI(options?: Options.IsIMEIOptions) {
+    return this.addStandardValidation(validator.isIMEI, options);
   }
   isIP(version?: Options.IPVersion) {
     return this.addStandardValidation(validator.isIP, version);
@@ -186,17 +207,20 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isInt(options?: Options.IsIntOptions) {
     return this.addStandardValidation(validator.isInt, options);
   }
-  isJSON() {
-    return this.addStandardValidation(validator.isJSON);
+  isJSON(options?: Options.IsJSONOptions) {
+    return this.addStandardValidation(validator.isJSON, options);
   }
   isJWT() {
     return this.addStandardValidation(validator.isJWT);
   }
-  isLatLong() {
-    return this.addStandardValidation(validator.isLatLong);
+  isLatLong(options?: Options.IsLatLongOptions) {
+    return this.addStandardValidation(validator.isLatLong, options);
   }
   isLength(options: Options.MinMaxOptions) {
     return this.addStandardValidation(validator.isLength, options);
+  }
+  isLocale() {
+    return this.addStandardValidation(validator.isLocale);
   }
   isLowercase() {
     return this.addStandardValidation(validator.isLowercase);
@@ -231,6 +255,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isOctal() {
     return this.addStandardValidation(validator.isOctal);
   }
+  isPassportNumber(countryCode?: Options.PassportCountryCode) {
+    return this.addStandardValidation(validator.isPassportNumber, countryCode);
+  }
   isPort() {
     return this.addStandardValidation(validator.isPort);
   }
@@ -240,11 +267,20 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isRFC3339() {
     return this.addStandardValidation(validator.isRFC3339);
   }
+  isRgbColor(includePercentValues?: boolean) {
+    return this.addStandardValidation(validator.isRgbColor, includePercentValues);
+  }
+  isSemVer() {
+    return this.addStandardValidation(validator.isSemVer);
+  }
   isSlug() {
     return this.addStandardValidation(validator.isSlug);
   }
   isSurrogatePair() {
     return this.addStandardValidation(validator.isSurrogatePair);
+  }
+  isTaxID(locale: Options.TaxIDLocale) {
+    return this.addStandardValidation(validator.isTaxID, locale);
   }
   isURL(options?: Options.IsURLOptions) {
     return this.addStandardValidation(validator.isURL, options);

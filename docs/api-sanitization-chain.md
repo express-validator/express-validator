@@ -45,6 +45,22 @@ app.get('/object/:id', param('id').customSanitizer((value, { req }) => {
 }), objectHandler)
 ```
 
+### `.default(default_value)`
+> *Returns:* the current sanitization chain instance
+
+Replaces the current value with a default one if the current value is included in `['', null, undefined, NaN]`.
+
+```js
+app.post('/', [body('username').default('foo')], (req, res, next) => {
+  // 'bar'     => 'bar'
+  // ''        => 'foo'
+  // undefined => 'foo'
+  // null      => 'foo'
+  // NaN       => 'foo'
+  console.log(req.body.username);
+});
+```
+
 ### `.run(req)`
 > *Returns:* a promise that resolves when the sanitization chain ran.
 
@@ -73,5 +89,33 @@ app.post('/', [body('checkboxes').toArray()], (req, res, next) => {
   // 'foo'          => ['foo']
   // undefined      => []
   console.log(req.body.checkboxes);
+});
+```
+
+### `.toLowerCase()`
+> *Returns:* the current sanitization chain instance
+
+Converts the value to lower case. Non string value will return itself.
+
+```js
+app.post('/', [body('username').toLowerCase()], (req, res, next) => {
+  // 'Foo'      => 'foo'
+  // undefined  => undefined
+  // null       => null
+  console.log(req.body.username);
+});
+```
+
+### `.toUpperCase()`
+> *Returns:* the current sanitization chain instance
+
+Converts the value to upper case. Non string value will return itself.
+
+```js
+app.post('/', [body('username').toUpperCase()], (req, res, next) => {
+  // 'Foo'      => 'FOO'
+  // undefined  => undefined
+  // null       => null
+  console.log(req.body.username);
 });
 ```

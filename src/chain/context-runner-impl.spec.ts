@@ -2,6 +2,7 @@ import { Context } from '../context';
 import { FieldInstance, InternalRequest, ValidationHalt, contextsKey } from '../base';
 import { ContextBuilder } from '../context-builder';
 import { ContextItem } from '../context-items';
+import { Result } from '../validation-result';
 import { ContextRunnerImpl } from './context-runner-impl';
 
 let builder: ContextBuilder;
@@ -14,6 +15,13 @@ const instances: FieldInstance[] = [
   { location: 'query', path: 'foo', originalPath: 'foo', value: 123, originalValue: 123 },
   { location: 'query', path: 'bar', originalPath: 'bar', value: 456, originalValue: 456 },
 ];
+
+// Used in value persistence tests
+const nullify: ContextItem = {
+  async run(context, _value, { location, path }) {
+    context.setData(path, undefined, location);
+  },
+};
 
 beforeEach(() => {
   builder = new ContextBuilder().setFields(['foo', 'bar']).setLocations(['query']);
@@ -29,6 +37,17 @@ afterEach(() => {
   addFieldInstancesSpy.mockRestore();
 });
 
+it('returns Result for current context', async () => {
+  builder.addItem({
+    async run(context, value, meta) {
+      context.addError('some error', value, meta);
+    },
+  });
+  const result = await contextRunner.run({});
+  expect(result).toBeInstanceOf(Result);
+  expect(result.array()).toHaveLength(2);
+});
+
 it('selects and adds fields to the context', async () => {
   const req = { query: { foo: 123 } };
   await contextRunner.run(req);
@@ -42,7 +61,7 @@ it('runs items on the stack with required data', async () => {
   getDataSpy.mockReturnValue(instances);
 
   const req = { body: { foo: 'bar' } };
-  const context = await contextRunner.run(req);
+  const { context } = await contextRunner.run(req);
 
   context.stack.forEach((item, i) => {
     expect(getDataSpy).toHaveBeenNthCalledWith(i + 1, { requiredOnly: true });
@@ -106,7 +125,7 @@ it('stops running items on paths that got a validation halt', async () => {
   getDataSpy.mockReturnValue(instances);
 
   const req = { body: { foo: 'bar' } };
-  const context = await contextRunner.run(req);
+  const { context } = await contextRunner.run(req);
 
   expect(context.stack[1].run).toHaveBeenCalledTimes(1);
   expect(context.stack[1].run).toHaveBeenCalledWith(context, instances[1].value, {
@@ -129,18 +148,61 @@ it('rethrows unexpected errors', async () => {
 
 it('concats to req[contextsKey]', async () => {
   const req: InternalRequest = {};
-  const context1 = await contextRunner.run(req);
-  const context2 = await contextRunner.run(req);
+  const { context: context1 } = await contextRunner.run(req);
+  const { context: context2 } = await contextRunner.run(req);
 
   expect(req[contextsKey]).toHaveLength(2);
   expect(req[contextsKey]).toEqual([context1, context2]);
 });
 
-it('does not concat to req[contextsKey] with saveContext: false option', async () => {
-  const req: InternalRequest = {};
-  const context1 = await contextRunner.run(req);
-  await contextRunner.run(req, { saveContext: false });
+describe('instance value persistence onto request', () => {
+  beforeEach(() => {
+    builder.addItem(nullify);
+  });
 
-  expect(req[contextsKey]).toHaveLength(1);
-  expect(req[contextsKey]).toEqual([context1]);
+  it('happens on instance path, if defined', async () => {
+    const req = { query: {} };
+    await contextRunner.run(req);
+    expect(req.query).toHaveProperty('foo', undefined);
+    expect(req.query).toHaveProperty('bar', undefined);
+  });
+
+  it('happens on request location, if path empty', async () => {
+    selectFields.mockReturnValue([
+      { location: 'query', path: '', originalPath: '', value: 123, originalValue: 123 },
+    ]);
+
+    const req = { query: {} };
+    await contextRunner.run(req);
+    expect(req.query).toBe(undefined);
+  });
+
+  it('does not happen if value did not change', async () => {
+    selectFields.mockReturnValue([
+      { location: 'query', path: 'foo', originalPath: 'foo', value: '123', originalValue: 123 },
+    ]);
+    const req = { query: {} };
+    await contextRunner.run(req);
+    expect(req.query).not.toHaveProperty('foo');
+  });
+});
+
+describe('with dryRun: true option', () => {
+  it('does not concat to req[contextsKey]', async () => {
+    const req: InternalRequest = {};
+    const { context } = await contextRunner.run(req);
+    await contextRunner.run(req, { dryRun: true });
+
+    expect(req[contextsKey]).toHaveLength(1);
+    expect(req[contextsKey]).toEqual([context]);
+  });
+
+  it('does not persist instance value back into the request', async () => {
+    builder.addItem(nullify);
+
+    const req = { query: { foo: 123, bar: 456 } };
+    await contextRunner.run(req, { dryRun: true });
+    expect(req.query).toHaveProperty('foo', 123);
+    expect(req.query).toHaveProperty('bar', 456);
+  });
 });

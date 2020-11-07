@@ -166,8 +166,11 @@ You can customize this behavior by passing an object with the following options:
 - `nullable`: if `true`, fields with `null` values will be considered optional
 - `checkFalsy`: if `true`, fields with falsy values (eg `""`, `0`, `false`, `null`) will also be considered optional
 
-### `.run(req)`
-> *Returns:* a promise that resolves when the validation chain ran.
+### `.run(req[, options])`
+- `req`: the current express request to validate.
+- `options` *(optional)*: an object of options to customize how the chain will be run:
+  - `dryRun`: defines whether errors and sanitizations won't be persisted to `req`. Defaults to `false`.
+> *Returns:* a promise for a [`Result`](api-validation-result.md#result) that resolves when the validation chain ran.
 
 Runs the current validation chain in an imperative way.
 
@@ -178,10 +181,36 @@ app.post('/create-user', async (req, res, next) => {
 
   const result = validationResult(req);
   if (!result.isEmpty()) {
-    return res.status(422).json({ errors: result.array() });
+    return res.status(400).json({ errors: result.array() });
   }
 
   // user can be created now!
+});
+```
+
+You may also pass `dryRun` option so that you can know if the request has any problems, without them
+being accounted among other request errors.
+
+```js
+app.post('/api/*', async (req, res, next) => {
+  const tokenResult = await check('token').notEmpty().custom(checkMyTokenFormat).run(req, { dryRun: true });
+  if (tokenResult.isEmpty()) {
+    // The token looks good, so try to authenticate it
+    await req.authenticate();
+  } else {
+    // The token is not good, so proceed as an unauthenticated request.
+  }
+});
+
+app.post('/api/create-todo', async (req, res, next) => {
+  await check('text').notEmpty().run(req);
+  await check('done').isBoolean().run(req);
+  
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    // text and/or done have errors.
+    // Errors in the token as validated in the previous route are not accounted here.
+  }
 });
 ```
 

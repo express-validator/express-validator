@@ -36,41 +36,20 @@ it('persists sanitized value back into the context', async () => {
   expect(context.setData).toHaveBeenCalledWith(meta.path, 1, meta.location);
 });
 
-it('persists sanitized value back into the request', async () => {
-  // With a non-empty path
-  sanitizer.mockReturnValue(1);
-  await sanitization.run(context, 'foo', meta);
-  expect(meta.req.cookies).toHaveProperty(meta.path, 1);
-
-  // With an empty path (e.g. whole body sanitization)
-  context.addFieldInstances([
-    {
-      location: 'cookies',
-      path: '',
-      originalPath: '',
-      value: {},
-      originalValue: {},
-    },
-  ]);
-  await sanitization.run(context, 'foo', {
-    ...meta,
-    path: '',
-  });
-  expect(meta.req.cookies).toBe(1);
-});
-
-it('does not persist sanitized value back into the request if they are the same', async () => {
-  sanitizer.mockReturnValue(undefined);
-  await sanitization.run(context, undefined, meta);
-
-  expect(meta.req.cookies).not.toHaveProperty(meta.path);
-});
-
 describe('when sanitizer is a custom one', () => {
   it('calls it with the value and the meta', async () => {
     await sanitization.run(context, 'foo', meta);
 
     expect(sanitizer).toHaveBeenCalledWith('foo', meta);
+  });
+
+  it('calls it with the value of an async function and the meta', async () => {
+    sanitizer = jest.fn(async value => 'foo ' + value);
+    sanitization = new Sanitization(sanitizer, true);
+    await sanitization.run(context, 'bar', meta);
+
+    expect(sanitizer).toHaveBeenCalledWith('bar', meta);
+    expect(context.getData()[0].value).toBe('foo bar');
   });
 });
 

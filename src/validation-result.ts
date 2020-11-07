@@ -14,7 +14,10 @@ const withWithDefaults = { withDefaults };
 export const validationResult = Object.assign(withDefaults<ValidationError>(), withWithDefaults);
 
 export class Result<T = any> {
-  constructor(private formatter: ErrorFormatter<T>, private readonly errors: ValidationError[]) {}
+  constructor(
+    private formatter: ErrorFormatter<T>,
+    private readonly errors: readonly ValidationError[],
+  ) {}
 
   array(options?: { onlyFirstError?: boolean }): T[] {
     return options && options.onlyFirstError

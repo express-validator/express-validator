@@ -1,5 +1,5 @@
 ---
-id: version-6.2.0-validation-chain-api
+id: version-6.6.0-validation-chain-api
 title: Validation Chain API
 original_id: validation-chain-api
 ---
@@ -67,7 +67,9 @@ Receives the value of the field being validated, as well as the express request,
 > *Returns:* the current validation chain instance
 
 Adds a custom validator to the current validation chain.  
-The custom validator may return a promise to indicate an async validation task. In case it's rejected, the field is considered invalid.
+The custom validator may return a promise to indicate an async validation task.
+- If it's rejected, the field is considered invalid;
+- If it's resolved, the field is considered valid **regardless of the returned value**.
 
 The custom validator may also throw JavaScript exceptions (eg `throw new Error()`) and return falsy values to indicate the field is invalid.
 
@@ -143,6 +145,15 @@ Negates the result of the next validator.
 check('weekday').not().isIn(['sunday', 'saturday'])
 ```
 
+### `.notEmpty()`
+> *Returns:* the current validation chain instance
+
+Adds a validator to check if a value is not empty; that is, a string with a length of 1 or bigger.
+
+```js
+check('username').notEmpty()
+```
+
 ### `.optional(options)`
 - `options` *(optional)*: an object of options to customize the behaviour of optional.
 > *Returns:* the current validation chain instance
@@ -156,8 +167,11 @@ You can customize this behavior by passing an object with the following options:
 - `nullable`: if `true`, fields with `null` values will be considered optional
 - `checkFalsy`: if `true`, fields with falsy values (eg `""`, `0`, `false`, `null`) will also be considered optional
 
-### `.run(req)`
-> *Returns:* a promise that resolves when the validation chain ran.
+### `.run(req[, options])`
+- `req`: the current express request to validate.
+- `options` *(optional)*: an object of options to customize how the chain will be run:
+  - `dryRun`: defines whether errors and sanitizations won't be persisted to `req`. Defaults to `false`.
+> *Returns:* a promise for a [`Result`](api-validation-result.md#result) that resolves when the validation chain ran.
 
 Runs the current validation chain in an imperative way.
 
@@ -172,6 +186,32 @@ app.post('/create-user', async (req, res, next) => {
   }
 
   // user can be created now!
+});
+```
+
+You may also pass `dryRun` option so that you can know if the request has any problems, without them
+being accounted among other request errors.
+
+```js
+app.post('/api/*', async (req, res, next) => {
+  const tokenResult = await check('token').notEmpty().custom(checkMyTokenFormat).run(req, { dryRun: true });
+  if (tokenResult.isEmpty()) {
+    // The token looks good, so try to authenticate it
+    await req.authenticate();
+  } else {
+    // The token is not good, so proceed as an unauthenticated request.
+  }
+});
+
+app.post('/api/create-todo', async (req, res, next) => {
+  await check('text').notEmpty().run(req);
+  await check('done').isBoolean().run(req);
+  
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    // text and/or done have errors.
+    // Errors in the token as validated in the previous route are not accounted here.
+  }
 });
 ```
 

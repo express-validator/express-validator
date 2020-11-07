@@ -81,6 +81,24 @@ describe('#customSanitizer()', () => {
     expect(ret).toBe(chain);
     expect(builder.addItem).toHaveBeenCalledWith(new Sanitization(sanitizer, true));
   });
+
+  it('adds a custom async sanitizer that resolves to the context', () => {
+    const sanitizer = jest.fn(async () => 1);
+    const ret = sanitizers.customSanitizer(sanitizer);
+
+    expect(ret).toBe(chain);
+    expect(builder.addItem).toHaveBeenCalledWith(new Sanitization(sanitizer, true));
+  });
+
+  it('adds a custom async sanitizer that rejects to the context', () => {
+    const sanitizer = jest.fn(async () => {
+      throw new Error('Dummy Error');
+    });
+    const ret = sanitizers.customSanitizer(sanitizer);
+
+    expect(ret).toBe(chain);
+    expect(builder.addItem).toHaveBeenCalledWith(new Sanitization(sanitizer, true));
+  });
 });
 
 describe('#toArray()', () => {
@@ -124,5 +142,136 @@ describe('#toArray()', () => {
 
     await toArray.run(context, undefined, meta);
     expect(context.getData()[0].value).toEqual([]);
+  });
+});
+
+describe('#toLowerCase()', () => {
+  it('adds toLowerCase() sanitizer to the context', () => {
+    const ret = sanitizers.toLowerCase();
+
+    expect(ret).toBe(chain);
+    expect(builder.addItem).toHaveBeenCalledWith(new Sanitization(expect.any(Function), true));
+  });
+  it('sanitizes to lowerCase', async () => {
+    sanitizers.toLowerCase();
+    const context = builder.build();
+    context.addFieldInstances([
+      {
+        location: 'body',
+        path: 'foo',
+        originalPath: 'foo',
+        value: '',
+        originalValue: '',
+      },
+    ]);
+
+    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const toLowerCase = context.stack[0];
+
+    await toLowerCase.run(context, '', meta);
+    expect(context.getData()[0].value).toEqual('');
+
+    await toLowerCase.run(context, 'foo', meta);
+    expect(context.getData()[0].value).toEqual('foo');
+
+    await toLowerCase.run(context, 'FOO', meta);
+    expect(context.getData()[0].value).toEqual('foo');
+
+    await toLowerCase.run(context, '_FoO123', meta);
+    expect(context.getData()[0].value).toEqual('_foo123');
+
+    await toLowerCase.run(context, null, meta);
+    expect(context.getData()[0].value).toEqual(null);
+
+    await toLowerCase.run(context, undefined, meta);
+    expect(context.getData()[0].value).toEqual(undefined);
+  });
+});
+
+describe('#toUpperCase()', () => {
+  it('adds toUpperCase() sanitizer to the context', () => {
+    const ret = sanitizers.toUpperCase();
+
+    expect(ret).toBe(chain);
+    expect(builder.addItem).toHaveBeenCalledWith(new Sanitization(expect.any(Function), true));
+  });
+
+  it('sanitizes to UpperCase', async () => {
+    sanitizers.toUpperCase();
+    const context = builder.build();
+    context.addFieldInstances([
+      {
+        location: 'body',
+        path: 'foo',
+        originalPath: 'foo',
+        value: '',
+        originalValue: '',
+      },
+    ]);
+
+    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const toUpperCase = context.stack[0];
+
+    await toUpperCase.run(context, '', meta);
+    expect(context.getData()[0].value).toEqual('');
+
+    await toUpperCase.run(context, 'foo', meta);
+    expect(context.getData()[0].value).toEqual('FOO');
+
+    await toUpperCase.run(context, 'FOO', meta);
+    expect(context.getData()[0].value).toEqual('FOO');
+
+    await toUpperCase.run(context, '_FoO123', meta);
+    expect(context.getData()[0].value).toEqual('_FOO123');
+
+    await toUpperCase.run(context, null, meta);
+    expect(context.getData()[0].value).toEqual(null);
+
+    await toUpperCase.run(context, undefined, meta);
+    expect(context.getData()[0].value).toEqual(undefined);
+  });
+});
+
+describe('#default()', () => {
+  it('adds default() sanitizer to the context', () => {
+    const ret = sanitizers.default(5);
+
+    expect(ret).toBe(chain);
+    expect(builder.addItem).toHaveBeenCalledWith(new Sanitization(expect.any(Function), true));
+  });
+
+  it('sanitizes to default()', async () => {
+    sanitizers.default(5);
+    const context = builder.build();
+    context.addFieldInstances([
+      {
+        location: 'body',
+        path: 'foo',
+        originalPath: 'foo',
+        value: '',
+        originalValue: '',
+      },
+    ]);
+
+    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const defaultSanitizer = context.stack[0];
+
+    await defaultSanitizer.run(context, 'foo', meta);
+    expect(context.getData()[0].value).toEqual('foo');
+
+    await defaultSanitizer.run(context, 10, meta);
+    expect(context.getData()[0].value).toEqual(10);
+
+    await defaultSanitizer.run(context, '', meta);
+    expect(context.getData()[0].value).toEqual(5);
+
+    await defaultSanitizer.run(context, undefined, meta);
+    expect(context.getData()[0].value).toEqual(5);
+
+    await defaultSanitizer.run(context, null, meta);
+    expect(context.getData()[0].value).toEqual(5);
+
+    await defaultSanitizer.run(context, NaN, meta);
+    expect(context.getData()[0].value).toEqual(5);
   });
 });

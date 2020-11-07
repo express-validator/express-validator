@@ -1,6 +1,7 @@
 import { Request } from '../base';
-import { Context } from '../context';
+import { ReadonlyContext } from '../context';
+import { Result } from '../validation-result';
 
 export interface ContextRunner {
-  run(req: Request, options?: { saveContext?: boolean }): Promise<Context>;
+  run(req: Request, options?: { dryRun?: boolean }): Promise<Result & { context: ReadonlyContext }>;
 }

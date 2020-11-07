@@ -11,9 +11,7 @@ it('includes only valid, non-optional data by default', done => {
     headers: { foo: 'bla', bar: '123' },
   };
 
-  const middleware = check(['foo', 'bar', 'baz'])
-    .optional()
-    .isInt();
+  const middleware = check(['foo', 'bar', 'baz']).optional().isInt();
 
   middleware(req, {}, () => {
     expect(matchedData(req)).toEqual({
@@ -46,12 +44,7 @@ it('does not include valid data from invalid oneOf() chain group', done => {
   };
 
   oneOf([
-    [
-      check('foo').equals('foo'),
-      check('bar')
-        .not()
-        .isInt(),
-    ],
+    [check('foo').equals('foo'), check('bar').not().isInt()],
     [check('baz').equals('baz'), check('bar').isInt()],
   ])(req, {}, () => {
     expect(matchedData(req)).toEqual({
@@ -68,9 +61,7 @@ describe('when option includeOptionals is true', () => {
       headers: { foo: 'bla', bar: '123' },
     };
 
-    const middleware = check(['foo', 'bar', 'baz'])
-      .optional()
-      .isInt();
+    const middleware = check(['foo', 'bar', 'baz']).optional().isInt();
 
     middleware(req, {}, () => {
       const data = matchedData(req, { includeOptionals: true });

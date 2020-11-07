@@ -1,5 +1,5 @@
 ---
-id: version-5.2.0-index
+id: version-6.6.0-index
 title: Getting Started
 original_id: index
 ---
@@ -37,13 +37,13 @@ Then, you'll want to make sure that you validate the input and report any errors
 
 ```js
 // ...rest of the initial code omitted for simplicity.
-const { check, validationResult } = require('express-validator/check');
+const { body, validationResult } = require('express-validator');
 
 app.post('/user', [
   // username must be an email
-  check('username').isEmail(),
+  body('username').isEmail(),
   // password must be at least 5 chars long
-  check('password').isLength({ min: 5 })
+  body('password').isLength({ min: 5 })
 ], (req, res) => {
   // Finds the validation errors in this request and wraps them in an object with handy functions
   const errors = validationResult(req);

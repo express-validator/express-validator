@@ -114,6 +114,7 @@ export type AlphanumericLocale =
 
 export type MobilePhoneLocale =
   | 'any'
+  | 'am-AM'
   | 'ar-AE'
   | 'ar-BH'
   | 'ar-DZ'
@@ -121,14 +122,17 @@ export type MobilePhoneLocale =
   | 'ar-JO'
   | 'ar-IQ'
   | 'ar-KW'
+  | 'ar-LY'
   | 'ar-SA'
   | 'ar-SY'
   | 'ar-TN'
   | 'be-BY'
   | 'bg-BG'
   | 'bn-BD'
+  | 'bs-BA'
   | 'cs-CZ'
   | 'de-AT'
+  | 'de-CH'
   | 'de-DE'
   | 'da-DK'
   | 'el-GR'
@@ -148,12 +152,16 @@ export type MobilePhoneLocale =
   | 'en-PK'
   | 'en-RW'
   | 'en-SG'
+  | 'en-SL'
   | 'en-TZ'
   | 'en-UG'
   | 'en-US'
   | 'en-ZA'
   | 'en-ZM'
+  | 'en-ZW'
   | 'es-CL'
+  | 'es-CO'
+  | 'es-CR'
   | 'es-EC'
   | 'es-ES'
   | 'es-MX'
@@ -165,6 +173,7 @@ export type MobilePhoneLocale =
   | 'fi-FI'
   | 'fj-FJ'
   | 'fo-FO'
+  | 'fr-BE'
   | 'fr-FR'
   | 'fr-GF'
   | 'fr-GP'
@@ -238,6 +247,7 @@ export type PostalCodeLocale =
   | 'MX'
   | 'NL'
   | 'NO'
+  | 'NP'
   | 'NZ'
   | 'PL'
   | 'PR'
@@ -269,7 +279,52 @@ export type HashAlgorithm =
   | 'crc32'
   | 'crc32b';
 
-export type IdentityCard = 'any' | 'ES' | 'he-IL' | 'zh-TW';
+export type IdentityCard = 'any' | 'ar-TN' | 'ES' | 'he-IL' | 'IN' | 'NO' | 'zh-CN' | 'zh-TW';
+export type PassportCountryCode =
+  | 'AM'
+  | 'AR'
+  | 'AT'
+  | 'AU'
+  | 'BE'
+  | 'BG'
+  | 'CA'
+  | 'CH'
+  | 'CN'
+  | 'CY'
+  | 'CZ'
+  | 'DE'
+  | 'DK'
+  | 'DZ'
+  | 'EE'
+  | 'ES'
+  | 'FI'
+  | 'FR'
+  | 'GB'
+  | 'GR'
+  | 'HR'
+  | 'HU'
+  | 'IE'
+  | 'IN'
+  | 'IS'
+  | 'IT'
+  | 'JP'
+  | 'KR'
+  | 'LT'
+  | 'LU'
+  | 'LV'
+  | 'MT'
+  | 'NL'
+  | 'PO'
+  | 'PT'
+  | 'RO'
+  | 'SE'
+  | 'SL'
+  | 'SK'
+  | 'TR'
+  | 'UA'
+  | 'US';
+
+export type TaxIDLocale = 'en-US';
 
 export interface MinMaxOptions {
   min?: number;
@@ -279,6 +334,26 @@ export interface MinMaxOptions {
 export interface MinMaxExtendedOptions extends MinMaxOptions {
   lt?: number;
   gt?: number;
+}
+
+/**
+ * defaults to
+ * {
+ *  ignoreCase: false
+ * }
+ */
+export interface ContainsOptions {
+  ignoreCase?: boolean;
+}
+
+/**
+ * defaults to
+ * {
+ *  urlSafe: false
+ * }
+ */
+export interface IsBase64Options {
+  urlSafe?: boolean;
 }
 
 /**
@@ -360,6 +435,36 @@ export interface IsIntOptions extends MinMaxExtendedOptions {
   allow_leading_zeroes?: boolean;
 }
 
+/**
+ * defaults to
+ * {
+ *  allow_primitives: false
+ * }
+ */
+export interface IsJSONOptions {
+  allow_primitives?: boolean;
+}
+
+/**
+ * defaults to
+ * {
+ *  checkDMS: false
+ * }
+ */
+export interface IsLatLongOptions {
+  checkDMS?: boolean;
+}
+
+/**
+ * defaults to
+ * {
+ *  allow_hyphens: false
+ * }
+ */
+export interface IsIMEIOptions {
+  allow_hyphens?: boolean;
+}
+
 export interface IsISO8601Options {
   strict: boolean;
 }
@@ -398,6 +503,7 @@ export interface IsMobilePhoneOptions {
  */
 export interface IsNumericOptions {
   no_symbols: boolean;
+  locale?: AlphanumericLocale;
 }
 
 /**

@@ -22,6 +22,11 @@ export class SanitizersImpl<Chain> implements Sanitizers<Chain> {
   blacklist(chars: string) {
     return this.addStandardSanitization(validator.blacklist, chars);
   }
+  default(default_value: any) {
+    return this.customSanitizer(value =>
+      [undefined, null, NaN, ''].includes(value) ? default_value : value,
+    );
+  }
   escape() {
     return this.addStandardSanitization(validator.escape);
   }
@@ -56,6 +61,12 @@ export class SanitizersImpl<Chain> implements Sanitizers<Chain> {
   }
   toInt(radix?: number) {
     return this.addStandardSanitization(validator.toInt, radix);
+  }
+  toLowerCase() {
+    return this.customSanitizer(value => (typeof value === 'string' ? value.toLowerCase() : value));
+  }
+  toUpperCase() {
+    return this.customSanitizer(value => (typeof value === 'string' ? value.toUpperCase() : value));
   }
   trim(chars?: string) {
     return this.addStandardSanitization(validator.trim, chars);

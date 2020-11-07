@@ -45,10 +45,7 @@ describe('#addItem()', () => {
     const item2: ContextItem = {
       run: () => Promise.resolve(),
     };
-    builder
-      .addItem(item1)
-      .addItem(item2)
-      .addItem(item1, item2);
+    builder.addItem(item1).addItem(item2).addItem(item1, item2);
 
     const context = builder.build();
     expect(context.stack).toHaveLength(4);

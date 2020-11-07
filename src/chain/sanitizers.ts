@@ -5,6 +5,7 @@ export interface Sanitizers<Return> {
   customSanitizer(sanitizer: CustomSanitizer): Return;
 
   blacklist(chars: string): Return;
+  default(default_value: any): Return;
   escape(): Return;
   unescape(): Return;
   ltrim(chars?: string): Return;
@@ -16,6 +17,8 @@ export interface Sanitizers<Return> {
   toDate(): Return;
   toFloat(): Return;
   toInt(radix?: number): Return;
+  toLowerCase(): Return;
+  toUpperCase(): Return;
   trim(chars?: string): Return;
   whitelist(chars: string): Return;
 }

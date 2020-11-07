@@ -8,13 +8,15 @@ This means most of the APIs _look and work better_ when simply passed into an ex
 
 You can, however, give control of running these validations to your own middleware/route handler.  
 This is possible with the use of the declarative method `run(req)`, available on both
-[validation chain](api-validation-chain.md#runreq) and [sanitization chains](api-sanitization-chain.md#runreq).
+[validation chain](api-validation-chain.md#runreq-options) and [sanitization chains](api-sanitization-chain.md#runreq).
 
 Check the examples below to understand how this method can help you:
 
 ## Example: standardized validation error response
 ```js
 // can be reused by many routes
+
+// parallel processing
 const validate = validations => {
   return async (req, res, next) => {
     await Promise.all(validations.map(validation => validation.run(req)));
@@ -24,10 +26,29 @@ const validate = validations => {
       return next();
     }
 
-    res.status(422).json({ errors: errors.array() });
+    res.status(400).json({ errors: errors.array() });
   };
 };
 
+// sequential processing, stops running validations chain if the previous one have failed.
+const validate = validations => {
+  return async (req, res, next) => {
+    for (let validation of validations) {
+      const result = await validation.run(req);
+      if (result.errors.length) break;
+    }
+
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+      return next();
+    }
+
+    res.status(400).json({ errors: errors.array() });
+  }
+};
+
+```
+```js
 app.post('/api/create-user', validate([
   body('email').isEmail(),
   body('password').isLength({ min: 6 })
@@ -36,6 +57,7 @@ app.post('/api/create-user', validate([
   const user = await User.create({ ... });
 });
 ```
+
 
 ## Example: validating with a condition
 ```js

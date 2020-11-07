@@ -2,6 +2,7 @@ import { ValidationChain } from '../chain';
 import { check } from '../middlewares/check';
 import { ContextBuilder } from '../context-builder';
 import { Request, ValidationHalt } from '../base';
+import { Result } from '../validation-result';
 import { ChainCondition } from './chain-condition';
 
 let condition: ValidationChain;
@@ -20,12 +21,12 @@ beforeEach(() => {
 });
 
 it('runs the condition chain on the request', () => {
-  condition.run = jest.fn().mockResolvedValue(new ContextBuilder().build());
+  condition.run = jest.fn().mockResolvedValue(new Result(e => e, []));
 
   const req = {};
   runItem(req);
 
-  expect(condition.run).toHaveBeenCalledWith(req, { saveContext: false });
+  expect(condition.run).toHaveBeenCalledWith(req, { dryRun: true });
 });
 
 it('does not throw if the chain has no errors', () => {
