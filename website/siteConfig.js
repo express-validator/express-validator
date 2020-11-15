@@ -24,6 +24,11 @@ const siteConfig = {
   },
   onPageNav: 'separate',
   scripts: ['https://buttons.github.io/buttons.js'],
+  deletedDocs: {
+    '6.0.0': [
+      'legacy-api',
+    ],
+  },
 
   // Features
   editUrl: 'https://github.com/express-validator/express-validator/edit/master/docs/',
