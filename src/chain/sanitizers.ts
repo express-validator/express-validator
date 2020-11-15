@@ -2,10 +2,13 @@ import { CustomSanitizer } from '../base';
 import * as Options from '../options';
 
 export interface Sanitizers<Return> {
+  // custom sanitizers
   customSanitizer(sanitizer: CustomSanitizer): Return;
-
-  blacklist(chars: string): Return;
   default(default_value: any): Return;
+  replace(values_to_replace: any, new_value: any): Return;
+
+  // validator's sanitizers
+  blacklist(chars: string): Return;
   escape(): Return;
   unescape(): Return;
   ltrim(chars?: string): Return;

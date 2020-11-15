@@ -57,6 +57,17 @@ app.post('/', [body('username').default('foo')], (req, res, next) => {
   // undefined => 'foo'
   // null      => 'foo'
   // NaN       => 'foo'
+
+### `.replace(values_to_replace, new_value)`
+> *Returns:* the current sanitization chain instance
+
+Replaces the current value with a new one if the current value is included in a given Array.
+
+```js
+app.post('/', [body('username').replace(['bar', 'BAR'], 'foo')], (req, res, next) => {
+  // 'bar_' => 'bar_'
+  // 'bar'  => 'foo'
+  // 'BAR'  => 'foo'
   console.log(req.body.username);
 });
 ```

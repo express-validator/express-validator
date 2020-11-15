@@ -8,9 +8,21 @@ import { Sanitizers } from './sanitizers';
 export class SanitizersImpl<Chain> implements Sanitizers<Chain> {
   constructor(private readonly builder: ContextBuilder, private readonly chain: Chain) {}
 
+  // custom sanitizers
   customSanitizer(sanitizer: CustomSanitizer) {
     this.builder.addItem(new Sanitization(sanitizer, true));
     return this.chain;
+  }
+  default(default_value: any) {
+    return this.customSanitizer(value =>
+      [undefined, null, NaN, ''].includes(value) ? default_value : value,
+    );
+  }
+  replace(values_to_replace: any, new_value: any) {
+    if (!Array.isArray(values_to_replace)) {
+      values_to_replace = [values_to_replace];
+    }
+    return this.customSanitizer(value => (values_to_replace.includes(value) ? new_value : value));
   }
 
   // Standard sanitizers
@@ -21,11 +33,6 @@ export class SanitizersImpl<Chain> implements Sanitizers<Chain> {
 
   blacklist(chars: string) {
     return this.addStandardSanitization(validator.blacklist, chars);
-  }
-  default(default_value: any) {
-    return this.customSanitizer(value =>
-      [undefined, null, NaN, ''].includes(value) ? default_value : value,
-    );
   }
   escape() {
     return this.addStandardSanitization(validator.escape);
