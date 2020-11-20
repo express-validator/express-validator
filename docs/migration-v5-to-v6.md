@@ -35,15 +35,9 @@ app.post('/', (req, res) => {
   }
 });
 
-if (module === require.main) {
-  const port = 3000;
-  app.listen(port, err => {
-    if (err) {
-      throw err;
-    }
-    console.info(`server listening at ${port}`);
-  });
-}
+app.listen(3000, () => {
+  console.info('app listening at port 3000');
+});
 ```
 
 ### For example, we want to make our v5 code to use the [check](https://github.com/express-validator/express-validator/blob/master/docs/api-check.md) and [validationResult](https://github.com/express-validator/express-validator/blob/master/docs/api-validation-result.md) functions in v6 ###
@@ -92,15 +86,9 @@ app.post('/', async (req, res) => {
   }
 });
 
-if (module === require.main) {
-  const port = 3000;
-  app.listen(port, err => {
-    if (err) {
-      throw err;
-    }
-    console.info(`server listening at ${port}`);
-  });
-}
+app.listen(3000, () => {
+  console.info('app listening at port 3000');
+});
 ```
 
 
