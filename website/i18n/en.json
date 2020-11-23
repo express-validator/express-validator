@@ -202,6 +202,15 @@
       },
       "version-6.6.0/version-6.6.0-index": {
         "title": "Getting Started"
+      },
+      "version-6.7.0/version-6.7.0-sanitization-chain-api": {
+        "title": "Sanitization Chain API"
+      },
+      "version-6.7.0/version-6.7.0-running-imperatively": {
+        "title": "Running validations imperatively"
+      },
+      "version-6.7.0/version-6.7.0-index": {
+        "title": "Getting Started"
       }
     },
     "links": {
