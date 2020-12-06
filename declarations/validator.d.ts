@@ -6,7 +6,11 @@ declare module 'validator' {
   ): boolean;
   export function equals(str: string, comparison: string): boolean;
   export function isAfter(str: string, date?: string): boolean;
-  export function isAlpha(str: string, locale?: import('../src/options').AlphaLocale): boolean;
+  export function isAlpha(
+    str: string,
+    locale?: import('../src/options').AlphaLocale,
+    options?: import('../src/options').IsAlphaOptions,
+  ): boolean;
   export function isAlphanumeric(
     str: string,
     locale?: import('../src/options').AlphanumericLocale,
@@ -32,7 +36,7 @@ declare module 'validator' {
     options?: import('../src/options').IsCurrencyOptions,
   ): boolean;
   export function isDataURI(str: string): boolean;
-  export function isDate(str: string): boolean;
+  export function isDate(str: string, options?: import('../src/options').IsDateOptions): boolean;
   export function isDecimal(
     str: string,
     options?: import('../src/options').IsDecimalOptions,

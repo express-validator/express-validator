@@ -18,7 +18,7 @@ export interface Validators<Return> {
   contains(elem: any, options?: Options.ContainsOptions): Return;
   equals(comparison: string): Return;
   isAfter(date?: string): Return;
-  isAlpha(locale?: Options.AlphaLocale): Return;
+  isAlpha(locale?: Options.AlphaLocale, options?: Options.IsAlphaOptions): Return;
   isAlphanumeric(locale?: Options.AlphanumericLocale): Return;
   isAscii(): Return;
   isBase32(): Return;
@@ -31,7 +31,7 @@ export interface Validators<Return> {
   isCreditCard(): Return;
   isCurrency(options?: Options.IsCurrencyOptions): Return;
   isDataURI(): Return;
-  isDate(): Return;
+  isDate(options?: Options.IsDateOptions): Return;
   isDecimal(options?: Options.IsDecimalOptions): Return;
   isDivisibleBy(number: number): Return;
   isEAN(): Return;

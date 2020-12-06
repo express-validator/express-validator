@@ -81,8 +81,8 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isAfter(date?: string) {
     return this.addStandardValidation(validator.isAfter, date);
   }
-  isAlpha(locale?: Options.AlphaLocale) {
-    return this.addStandardValidation(validator.isAlpha, locale);
+  isAlpha(locale?: Options.AlphaLocale, options?: Options.IsAlphaOptions) {
+    return this.addStandardValidation(validator.isAlpha, locale, options);
   }
   isAlphanumeric(locale?: Options.AlphanumericLocale) {
     return this.addStandardValidation(validator.isAlphanumeric, locale);
@@ -120,8 +120,8 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isDataURI() {
     return this.addStandardValidation(validator.isDataURI);
   }
-  isDate() {
-    return this.addStandardValidation(validator.isDate);
+  isDate(options?: Options.IsDateOptions) {
+    return this.addStandardValidation(validator.isDate, options);
   }
   isDecimal(options?: Options.IsDecimalOptions) {
     return this.addStandardValidation(validator.isDecimal, options);
