@@ -35,6 +35,7 @@ export type AlphaLocale =
   | 'en-ZA'
   | 'en-ZM'
   | 'es-ES'
+  | 'fa-AF'
   | 'fa-IR'
   | 'fr-FR'
   | 'he'
@@ -54,7 +55,8 @@ export type AlphaLocale =
   | 'sr-RS@latin'
   | 'sv-SE'
   | 'tr-TR'
-  | 'uk-UA';
+  | 'uk-UA'
+  | 'vi-VN';
 
 export type AlphanumericLocale =
   | 'ar'
@@ -89,6 +91,7 @@ export type AlphanumericLocale =
   | 'en-ZA'
   | 'en-ZM'
   | 'es-ES'
+  | 'fa-AF'
   | 'fa-IR'
   | 'fr-FR'
   | 'fr-BE'
@@ -110,7 +113,8 @@ export type AlphanumericLocale =
   | 'sr-RS@latin'
   | 'sv-SE'
   | 'tr-TR'
-  | 'uk-UA';
+  | 'uk-UA'
+  | 'vi-VN';
 
 export type MobilePhoneLocale =
   | 'any'
@@ -126,6 +130,7 @@ export type MobilePhoneLocale =
   | 'ar-SA'
   | 'ar-SY'
   | 'ar-TN'
+  | 'az-AZ'
   | 'be-BY'
   | 'bg-BG'
   | 'bn-BD'
@@ -149,6 +154,7 @@ export type MobilePhoneLocale =
   | 'en-MU'
   | 'en-NG'
   | 'en-NZ'
+  | 'en-PH'
   | 'en-PK'
   | 'en-RW'
   | 'en-SG'
@@ -204,6 +210,7 @@ export type MobilePhoneLocale =
   | 'th-TH'
   | 'tr-TR'
   | 'uk-UA'
+  | 'uz-Uz'
   | 'vi-VN'
   | 'zh-CN'
   | 'zh-HK'
@@ -214,6 +221,7 @@ export type PostalCodeLocale =
   | 'AD'
   | 'AT'
   | 'AU'
+  | 'AZ'
   | 'BE'
   | 'BG'
   | 'BR'
@@ -279,7 +287,17 @@ export type HashAlgorithm =
   | 'crc32'
   | 'crc32b';
 
-export type IdentityCard = 'any' | 'ar-TN' | 'ES' | 'he-IL' | 'IN' | 'NO' | 'zh-CN' | 'zh-TW';
+export type IdentityCard =
+  | 'any'
+  | 'ar-TN'
+  | 'ES'
+  | 'he-IL'
+  | 'IN'
+  | 'IT'
+  | 'NO'
+  | 'zh-CN'
+  | 'zh-TW';
+
 export type PassportCountryCode =
   | 'AM'
   | 'AR'
@@ -518,7 +536,8 @@ export interface IsNumericOptions {
  *    host_whitelist: false,
  *    host_blacklist: false,
  *    allow_trailing_dot: false,
- *    allow_protocol_relative_urls: false
+ *    allow_protocol_relative_urls: false,
+ *    validate_length: true
  * }
  */
 export interface IsURLOptions {
@@ -533,6 +552,7 @@ export interface IsURLOptions {
   allow_trailing_dot?: boolean;
   allow_protocol_relative_urls?: boolean;
   disallow_auth?: boolean;
+  validate_length?: boolean;
 }
 
 export interface NormalizeEmailOptions {
