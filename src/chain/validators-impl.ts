@@ -93,6 +93,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isBase32() {
     return this.addStandardValidation(validator.isBase32);
   }
+  isBase58() {
+    return this.addStandardValidation(validator.isBase58);
+  }
   isBase64(options?: Options.IsBase64Options) {
     return this.addStandardValidation(validator.isBase64, options);
   }
@@ -276,6 +279,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isSlug() {
     return this.addStandardValidation(validator.isSlug);
   }
+  isStrongPassword(options?: Options.IsStrongPasswordOptions) {
+    return this.addStandardValidation(validator.isStrongPassword, options);
+  }
   isSurrogatePair() {
     return this.addStandardValidation(validator.isSurrogatePair);
   }
@@ -293,6 +299,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   }
   isVariableWidth() {
     return this.addStandardValidation(validator.isVariableWidth);
+  }
+  isVAT(countryCode: Options.VATCountryCode) {
+    return this.addStandardValidation(validator.isVAT, countryCode);
   }
   isWhitelisted(chars: string | string[]) {
     return this.addStandardValidation(validator.isWhitelisted, chars);
