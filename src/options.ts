@@ -344,6 +344,8 @@ export type PassportCountryCode =
 
 export type TaxIDLocale = 'en-US';
 
+export type VATCountryCode = 'GB';
+
 export interface MinMaxOptions {
   min?: number;
   max?: number;
@@ -522,6 +524,38 @@ export interface IsMobilePhoneOptions {
 export interface IsNumericOptions {
   no_symbols: boolean;
   locale?: AlphanumericLocale;
+}
+
+/**
+ * defaults to
+ * {
+ *    minLength: 8,
+ *    minLowercase: 1,
+ *    minUppercase: 1,
+ *    minNumbers: 1,
+ *    minSymbols: 1,
+ *    returnScore: false,
+ *    pointsPerUnique: 1,
+ *    pointsPerRepeat: 0.5,
+ *    pointsForContainingLower: 10,
+ *    pointsForContainingUpper: 10,
+ *    pointsForContainingNumber: 10,
+ *    pointsForContainingSymbol: 10
+ * }
+ */
+export interface IsStrongPasswordOptions {
+  minLength?: number;
+  minLowercase?: number;
+  minUppercase?: number;
+  minNumbers?: number;
+  minSymbols?: number;
+  returnScore?: boolean;
+  pointsPerUnique?: number;
+  pointsPerRepeat?: number;
+  pointsForContainingLower?: number;
+  pointsForContainingUpper?: number;
+  pointsForContainingNumber?: number;
+  pointsForContainingSymbol?: number;
 }
 
 /**

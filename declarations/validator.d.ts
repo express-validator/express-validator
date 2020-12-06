@@ -13,6 +13,7 @@ declare module 'validator' {
   ): boolean;
   export function isAscii(str: string): boolean;
   export function isBase32(str: string): boolean;
+  export function isBase58(str: string): boolean;
   export function isBase64(
     str: string,
     options?: import('../src/options').IsBase64Options,
@@ -112,12 +113,17 @@ declare module 'validator' {
   export function isRgbColor(str: string, includePercentValues?: boolean): boolean;
   export function isSemVer(str: string): boolean;
   export function isSlug(str: string): boolean;
+  export function isStrongPassword(
+    str: string,
+    options?: import('../src/options').IsStrongPasswordOptions,
+  ): boolean;
   export function isSurrogatePair(str: string): boolean;
   export function isTaxID(str: string, locale: import('../src/options').TaxIDLocale): boolean;
   export function isURL(str: string, options?: import('../src/options').IsURLOptions): boolean;
   export function isUUID(str: string, version?: import('../src/options').UUIDVersion): boolean;
   export function isUppercase(str: string): boolean;
   export function isVariableWidth(str: string): boolean;
+  export function isVAT(str: string, countryCode: import('../src/options').VATCountryCode): boolean;
   export function isWhitelisted(str: string, chars: string | string[]): boolean;
   export function matches(str: string, pattern: RegExp | string, modifiers?: string): boolean;
 
