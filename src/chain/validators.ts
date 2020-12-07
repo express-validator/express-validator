@@ -18,10 +18,11 @@ export interface Validators<Return> {
   contains(elem: any, options?: Options.ContainsOptions): Return;
   equals(comparison: string): Return;
   isAfter(date?: string): Return;
-  isAlpha(locale?: Options.AlphaLocale): Return;
+  isAlpha(locale?: Options.AlphaLocale, options?: Options.IsAlphaOptions): Return;
   isAlphanumeric(locale?: Options.AlphanumericLocale): Return;
   isAscii(): Return;
   isBase32(): Return;
+  isBase58(): Return;
   isBase64(options?: Options.IsBase64Options): Return;
   isBefore(date?: string): Return;
   isBIC(): Return;
@@ -31,7 +32,7 @@ export interface Validators<Return> {
   isCreditCard(): Return;
   isCurrency(options?: Options.IsCurrencyOptions): Return;
   isDataURI(): Return;
-  isDate(): Return;
+  isDate(options?: Options.IsDateOptions): Return;
   isDecimal(options?: Options.IsDecimalOptions): Return;
   isDivisibleBy(number: number): Return;
   isEAN(): Return;
@@ -85,12 +86,14 @@ export interface Validators<Return> {
   isRFC3339(): Return;
   isSemVer(): Return;
   isSlug(): Return;
+  isStrongPassword(options?: Options.IsStrongPasswordOptions): Return;
   isSurrogatePair(): Return;
   isTaxID(locale: Options.TaxIDLocale): Return;
   isURL(options?: Options.IsURLOptions): Return;
   isUUID(version?: Options.UUIDVersion): Return;
   isUppercase(): Return;
   isVariableWidth(): Return;
+  isVAT(countryCode: Options.VATCountryCode): Return;
   isWhitelisted(chars: string | string[]): Return;
   matches(pattern: RegExp | string, modifiers?: string): Return;
 }
