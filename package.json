@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "lodash": "^4.17.20",
-    "validator": "^13.5.1"
+    "validator": "^13.5.2"
   },
   "devDependencies": {
     "@types/jest": "^26.0.15",
