@@ -4,7 +4,8 @@
   "author": "Christoph Tavan <dev@tavan.de>",
   "contributors": [
     "Rusty Bailey <rustylbailey@gmail.com>",
-    "Gustavo Henke <guhenke@gmail.com>"
+    "Gustavo Henke <guhenke@gmail.com>",
+    "Federico Ciardi <fed.ciardi@gmail.com>"
   ],
   "version": "6.8.0",
   "homepage": "https://express-validator.github.io",
