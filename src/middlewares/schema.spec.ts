@@ -186,7 +186,7 @@ describe('on each field', () => {
 });
 
 describe('on schema that contains fields with bail methods', () => {
-  it('should stop validation chain with only one error', async () => {
+  it('stops validation chain with only one error', async () => {
     const schema = checkSchema({
       foo: {
         exists: {
@@ -200,11 +200,11 @@ describe('on schema that contains fields with bail methods', () => {
       },
     });
 
-    const context = await schema[0].run({ params: {} });
+    const { context } = await schema[0].run({ params: {} });
     expect(context.errors).toHaveLength(1);
   });
 
-  it('should not bail if valid value', async () => {
+  it('does not bail if value is valid', async () => {
     const schema = checkSchema({
       foo: {
         exists: {
@@ -218,11 +218,11 @@ describe('on schema that contains fields with bail methods', () => {
       },
     });
 
-    const context = await schema[0].run({ params: { foo: 'a' } });
+    const { context } = await schema[0].run({ params: { foo: 'a' } });
     expect(context.errors).toHaveLength(0);
   });
 
-  it('should bail with message', async () => {
+  it('bails with message', async () => {
     const schema = checkSchema({
       foo: {
         exists: {
@@ -237,12 +237,12 @@ describe('on schema that contains fields with bail methods', () => {
       },
     });
 
-    const context = await schema[0].run({ params: {} });
+    const { context } = await schema[0].run({ params: {} });
     expect(context.errors).toHaveLength(1);
     expect(chainToContext(schema[0]).stack[0]).toHaveProperty('message', 'Value not exists');
   });
 
-  it('should support multiple bail methods', async () => {
+  it('support multiple bail methods', async () => {
     const schema = checkSchema({
       foo: {
         exists: {
@@ -259,7 +259,7 @@ describe('on schema that contains fields with bail methods', () => {
       },
     });
 
-    const context = await schema[0].run({ params: { foo: 'notAnEmail' } });
+    const { context } = await schema[0].run({ params: { foo: 'notAnEmail' } });
     expect(context.errors).toHaveLength(1);
   });
 });
