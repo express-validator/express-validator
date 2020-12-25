@@ -6,8 +6,10 @@ title: validationResult()
 These methods are all available via `require('express-validator')`.
 
 ## `validationResult(req)`
+
 - `req`: the express request object
-> *Returns:* a [`Result`](#result) object
+
+> _Returns:_ a [`Result`](#result) object
 
 Extracts the validation errors from a request and makes them available in a [`Result`](#result) object.
 
@@ -28,10 +30,11 @@ has the following format _by default_:
 }
 ```
 
-
 ### `.withDefaults(options)`
-- `options` *(optional)*: an object of options. Defaults to `{ formatter: error => error }`
-> *Returns:* a new [`validationResult`](#validationresultreq) function, using the provided options
+
+- `options` _(optional)_: an object of options. Defaults to `{ formatter: error => error }`
+
+> _Returns:_ a new [`validationResult`](#validationresultreq) function, using the provided options
 
 Creates a new `validationResult()`-like function with default options passed to the generated
 [`Result`](#result) instance.
@@ -42,11 +45,11 @@ Below is an example which sets a default error formatter:
 const { validationResult } = require('express-validator');
 
 const myValidationResult = validationResult.withDefaults({
-  formatter: (error) => {
+  formatter: error => {
     return {
       myLocation: error.location,
     };
-  }
+  },
 });
 
 app.post('/create-user', yourValidationChains, (req, res) => {
@@ -56,11 +59,13 @@ app.post('/create-user', yourValidationChains, (req, res) => {
 ```
 
 ## `Result`
+
 An object that holds the current state of validation errors in a request and allows access to it in
 a variety of ways.
 
 ### `.isEmpty()`
-> *Returns:* a boolean indicating whether this result object contains no errors at all.
+
+> _Returns:_ a boolean indicating whether this result object contains no errors at all.
 
 ```js
 app.post('/create-user', yourValidationChains, (req, res) => {
@@ -71,9 +76,11 @@ app.post('/create-user', yourValidationChains, (req, res) => {
 ```
 
 ### `.formatWith(formatter)`
+
 - `formatter(error)`: the function to use to format when returning errors.  
-  The `error` argument is an object in the format of `{ location, msg, param, value, nestedErrors }`, as described above.
-> *Returns:* a new `Result` instance
+   The `error` argument is an object in the format of `{ location, msg, param, value, nestedErrors }`, as described above.
+
+> _Returns:_ a new `Result` instance
 
 ```js
 app.post('/create-user', yourValidationChains, (req, res, next) => {
@@ -93,8 +100,10 @@ app.post('/create-user', yourValidationChains, (req, res, next) => {
 ```
 
 ### `.array([options])`
-- `options` *(optional)*: an object of options. Defaults to `{ onlyFirstError: false }`
-> *Returns:* an array of validation errors.
+
+- `options` _(optional)_: an object of options. Defaults to `{ onlyFirstError: false }`
+
+> _Returns:_ an array of validation errors.
 
 Gets all validation errors contained in this result object.
 
@@ -102,11 +111,13 @@ If the option `onlyFirstError` is set to `true`, then only the first
 error for each field will be included.
 
 ### `.mapped()`
-> *Returns:* an object where the keys are the field names, and the values are the validation errors
+
+> _Returns:_ an object where the keys are the field names, and the values are the validation errors
 
 Gets the first validation error of each failed field in the form of an object.
 
 ### `.throw()`
+
 If this result object has errors, then this method will throw an exception
 decorated with the same validation result API.
 

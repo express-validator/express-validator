@@ -13,6 +13,7 @@ This is possible with the use of the declarative method `run(req)`, available on
 Check the examples below to understand how this method can help you:
 
 ## Example: standardized validation error response
+
 ```js
 // can be reused by many routes
 
@@ -44,10 +45,10 @@ const validate = validations => {
     }
 
     res.status(400).json({ errors: errors.array() });
-  }
+  };
 };
-
 ```
+
 ```js
 app.post('/api/create-user', validate([
   body('email').isEmail(),
@@ -58,20 +59,23 @@ app.post('/api/create-user', validate([
 });
 ```
 
-
 ## Example: validating with a condition
-```js
-app.post('/update-settings', [
-  body('email').isEmail(),
-  body('password').optional().isLength({ min: 6 })
-], async (req, res, next) => {
-  // if a password has been provided, then a confirmation must also be provided.
-  if (req.body.password) {
-    await body('passwordConfirmation')
-      .equals(req.body.password).withMessage('passwords do not match')
-      .run(req);
-  }
 
-  // Check the validation errors, and update the user's settings.
-});
+```js
+app.post(
+  '/update-settings',
+  body('email').isEmail(),
+  body('password').optional().isLength({ min: 6 }),
+  async (req, res, next) => {
+    // if a password has been provided, then a confirmation must also be provided.
+    if (req.body.password) {
+      await body('passwordConfirmation')
+        .equals(req.body.password)
+        .withMessage('passwords do not match')
+        .run(req);
+    }
+
+    // Check the validation errors, and update the user's settings.
+  },
+);
 ```

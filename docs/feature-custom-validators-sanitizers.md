@@ -10,6 +10,7 @@ building your application.
 For these cases, you may consider writing a custom validator or a custom sanitizer.
 
 ## Custom validator
+
 A custom validator may be implemented by using the chain method [`.custom()`](api-validation-chain.md#customvalidator).
 It takes a validator function.
 
@@ -19,37 +20,48 @@ or `throw` any value/reject a promise to [use a custom error message](feature-er
 > **Note:** if your custom validator returns a promise, it must reject to indicate that the field is invalid.
 
 ### Example: checking if e-mail is in use
+
 ```js
 const { body } = require('express-validator');
 
-app.post('/user', body('email').custom(value => {
-  return User.findUserByEmail(value).then(user => {
-    if (user) {
-      return Promise.reject('E-mail already in use');
-    }
-  });
-}), (req, res) => {
-  // Handle the request
-});
+app.post(
+  '/user',
+  body('email').custom(value => {
+    return User.findUserByEmail(value).then(user => {
+      if (user) {
+        return Promise.reject('E-mail already in use');
+      }
+    });
+  }),
+  (req, res) => {
+    // Handle the request
+  },
+);
 ```
 
 ### Example: checking if password confirmation matches password
+
 ```js
 const { body } = require('express-validator');
 
-app.post('/user', body('passwordConfirmation').custom((value, { req }) => {
-  if (value !== req.body.password) {
-    throw new Error('Password confirmation does not match password');
-  }
-  
-  // Indicates the success of this synchronous custom validator
-  return true;
-}), (req, res) => {
-  // Handle the request
-});
+app.post(
+  '/user',
+  body('passwordConfirmation').custom((value, { req }) => {
+    if (value !== req.body.password) {
+      throw new Error('Password confirmation does not match password');
+    }
+
+    // Indicates the success of this synchronous custom validator
+    return true;
+  }),
+  (req, res) => {
+    // Handle the request
+  },
+);
 ```
 
 ## Custom sanitizers
+
 Custom sanitizers can be implemented by using the method `.customSanitizer()`, no matter if
 the [validation chain one](api-validation-chain.md#customsanitizersanitizer) or
 the [sanitization chain one](api-sanitization-chain.md#customsanitizersanitizer).  
@@ -57,12 +69,17 @@ Just like with the validators, you specify the sanitizer function, which _must_ 
 moment.
 
 ### Example: converting to MongoDB's ObjectID
+
 ```js
 const { param } = require('express-validator');
 
-app.post('/object/:id', param('id').customSanitizer(value => {
-  return ObjectId(value);
-}), (req, res) => {
-  // Handle the request
-});
+app.post(
+  '/object/:id',
+  param('id').customSanitizer(value => {
+    return ObjectId(value);
+  }),
+  (req, res) => {
+    // Handle the request
+  },
+);
 ```
