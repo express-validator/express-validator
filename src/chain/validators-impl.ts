@@ -114,7 +114,12 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isBIC() {
     return this.addStandardValidation(validator.isBIC);
   }
-  isBoolean() {
+  isBoolean(options?: Options.IsBooleanOptions) {
+    if (options?.strict) {
+      return this.custom(value => {
+        return value === true || value === false;
+      });
+    }
     return this.addStandardValidation(validator.isBoolean);
   }
   isBtcAddress() {

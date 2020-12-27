@@ -410,6 +410,16 @@ export interface IsBase64Options {
 /**
  * defaults to
  * {
+ *  strict: false
+ * }
+ */
+export interface IsBooleanOptions {
+  strict?: boolean;
+}
+
+/**
+ * defaults to
+ * {
  *   symbol: '$',
  *   require_symbol: false,
  *   allow_space_after_symbol: false,
