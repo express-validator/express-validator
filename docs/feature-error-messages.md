@@ -117,3 +117,20 @@ oneOf([someValidation, anotherValidation], ({ req }) => {
 ```
 
 <!-- prettier-ignore-end -->
+
+## Complex errors
+
+Error messages can be more complex types than a simple `string`.  
+For example you can provide an object with multiple properties:
+
+<!-- prettier-ignore-start -->
+
+```js
+// check(field, withMessage) and .withMessage() work the same
+check('email').isEmail().withMessage({
+  message: 'Not an email',
+  errorCode: 1,
+})
+```
+
+<!-- prettier-ignore-end -->
