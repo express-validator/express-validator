@@ -132,6 +132,34 @@ describe('#isAlpha()', () => {
   });
 });
 
+describe('strict #isBoolean()', () => {
+  it('adds validator to the context', () => {
+    const ret = validators.isBoolean({ strict: true });
+
+    expect(ret).toBe(chain);
+    expect(builder.addItem).toHaveBeenCalledWith(new CustomValidation(expect.any(Function), false));
+  });
+
+  it('checks if context is strict boolean', async () => {
+    validators.isBoolean({ strict: true });
+    const context = builder.build();
+
+    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const isBoolean = context.stack[0];
+
+    await isBoolean.run(context, true, meta);
+    await isBoolean.run(context, false, meta);
+    expect(context.errors).toHaveLength(0);
+
+    await isBoolean.run(context, 0, meta);
+    await isBoolean.run(context, 'true', meta);
+    await isBoolean.run(context, 'false', meta);
+    await isBoolean.run(context, [false], meta);
+    await isBoolean.run(context, ['true'], meta);
+    expect(context.errors).toHaveLength(5);
+  });
+});
+
 describe('#isString()', () => {
   it('adds custom validator to the context', () => {
     const ret = validators.isString();
