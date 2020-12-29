@@ -23,6 +23,9 @@
       "validation-result-api": {
         "title": "validationResult()"
       },
+      "faq": {
+        "title": "FAQ"
+      },
       "custom-validators-sanitizers": {
         "title": "Custom validators/sanitizers"
       },
@@ -263,7 +266,8 @@
     "categories": {
       "Introduction": "Introduction",
       "Features": "Features",
-      "API": "API"
+      "API": "API",
+      "More": "More"
     }
   },
   "pages-strings": {

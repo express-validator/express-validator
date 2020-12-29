@@ -17,6 +17,7 @@
       "sanitization-chain-api",
       "matched-data-api",
       "validation-result-api"
-    ]
+    ],
+    "More": ["faq"]
   }
 }
