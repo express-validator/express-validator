@@ -23,6 +23,8 @@ This means you can use any of those methods, e.g. `isInt`, `isEmail`, `contains`
 > **For a complete list of standard validators and their options**,
 > please check [validator.js' docs](https://github.com/validatorjs/validator.js#validators).
 
+> **Note:** Since validator.js only accepts `string` as input, any value (including arrays and objects) that needs to be validated by a Standard Validator [is first converted to such type](faq.md#why-arrays-are-not-validatedsanitized-correctly).
+
 ## Sanitization Chain API
 
 A validation chain also is a subset of the [Sanitization Chain](api-sanitization-chain.md), meaning
@@ -185,6 +187,16 @@ Adds a validator to check if a value is not empty; that is, a string with a leng
 ```js
 check('username').notEmpty();
 ```
+
+> **Note:** This is not intended to check that the length of an array is greater than zero, as `.notEmpty()` will only validate the first element of it.  
+> To require a minimum array length use `.isArray({ min: 1 })`.  
+> ```js
+> // weekdays: ['sunday', 'monday']
+> check('weekdays').notEmpty(); // Passes validation
+>
+> // names: ['', 'John']
+> check('names').notEmpty(); // Does not pass validation because names[0] is empty.
+> ```
 
 ### `.optional(options)`
 
