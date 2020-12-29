@@ -22,18 +22,22 @@ export function toString(value: any, deep = true): string {
   return String(value);
 }
 ```
+
 As we can see above, when validating or sanitizing an `array` only the first element of it is processed.
 
 > You can use [wildcards](feature-wildcards.md) to validate/sanitize all the values of the array.
 
 ### Example:
+
 ```js
-  // weekdays: ['sunday', 100]
-  body('weekdays').isString(); // Passes validation
-  body('weekdays.*').isString(); // Does not pass validation
-``` 
+// weekdays: ['sunday', 100]
+body('weekdays').isString(); // Passes validation
+body('weekdays.*').isString(); // Does not pass validation
+```
+
 In this example the first chain processes only the first element of the array and the validation erroneously passes.
-In the second one, instead, all the elements are validated and the chain correctly returns an error.  
+In the second one, instead, all the elements are validated and the chain correctly returns an error.
 
 ### Referenced issues:
+
 > [#791](https://github.com/express-validator/express-validator/issues/791), [#883](https://github.com/express-validator/express-validator/issues/883), [#931](https://github.com/express-validator/express-validator/issues/931)

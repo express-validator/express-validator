@@ -189,7 +189,8 @@ check('username').notEmpty();
 ```
 
 > **Note:** This is not intended to check that the length of an array is greater than zero, as `.notEmpty()` will only validate the first element of it.  
-> To require a minimum array length use `.isArray({ min: 1 })`.  
+> To require a minimum array length use `.isArray({ min: 1 })`.
+>
 > ```js
 > // weekdays: ['sunday', 'monday']
 > check('weekdays').notEmpty(); // Passes validation
