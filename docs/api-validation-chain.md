@@ -21,7 +21,7 @@ and are called "standard validators" in express-validator.
 This means you can use any of those methods, e.g. `isInt`, `isEmail`, `contains`, etc.
 
 > **For a complete list of standard validators and their options**,
-> please check [validator.js' docs](https://github.com/chriso/validator.js#validators).
+> please check [validator.js' docs](https://github.com/validatorjs/validator.js#validators).
 
 ## Sanitization Chain API
 

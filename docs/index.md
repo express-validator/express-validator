@@ -4,7 +4,7 @@ title: Getting Started
 ---
 
 express-validator is a set of [express.js](http://expressjs.com/) middlewares that wraps
-[validator.js](https://github.com/chriso/validator.js) validator and sanitizer functions.
+[validator.js](https://github.com/validatorjs/validator.js) validator and sanitizer functions.
 
 ## Installation
 
@@ -77,7 +77,7 @@ is submitted, your server will respond like this:
 ```
 
 For all the available validators in express-validator (just like its options),
-take a look at validator.js docs [here](https://github.com/chriso/validator.js#validators).
+take a look at validator.js docs [here](https://github.com/validatorjs/validator.js#validators).
 
 ## What's next
 

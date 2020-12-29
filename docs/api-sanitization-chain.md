@@ -25,7 +25,7 @@ and are called "standard sanitizers" in express-validator.
 This means you can use any of those methods, e.g. `normalizeEmail`, `trim`, `toInt`, etc.
 
 > **For a complete list of standard sanitizers and their options**,
-> please check [validator.js' docs](https://github.com/chriso/validator.js#sanitizers).
+> please check [validator.js' docs](https://github.com/validatorjs/validator.js#sanitizers).
 
 ## Additional methods
 
