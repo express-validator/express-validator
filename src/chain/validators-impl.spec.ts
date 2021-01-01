@@ -121,6 +121,17 @@ describe('#exists()', () => {
   });
 });
 
+describe('#isAlpha()', () => {
+  it('checks options.ignore transformation from string[] to string', () => {
+    const ret = validators.isAlpha('it-IT', { ignore: ['b', 'a', 'r'] });
+
+    expect(ret).toBe(chain);
+    expect(builder.addItem).toHaveBeenCalledWith(
+      new StandardValidation(validator.isAlpha, false, ['it-IT', { ignore: 'bar' }]),
+    );
+  });
+});
+
 describe('#isString()', () => {
   it('adds custom validator to the context', () => {
     const ret = validators.isString();

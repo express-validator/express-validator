@@ -82,7 +82,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
     return this.addStandardValidation(validator.isAfter, date);
   }
   isAlpha(locale?: Options.AlphaLocale, options?: Options.IsAlphaOptions) {
-    return this.addStandardValidation(validator.isAlpha, locale, options);
+    const ignore = Array.isArray(options?.ignore) ? options?.ignore.join('') : options?.ignore;
+    delete options?.ignore;
+    return this.addStandardValidation(validator.isAlpha, locale, { ...options, ignore });
   }
   isAlphanumeric(locale?: Options.AlphanumericLocale) {
     return this.addStandardValidation(validator.isAlphanumeric, locale);
