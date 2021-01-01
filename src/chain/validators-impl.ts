@@ -83,7 +83,6 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   }
   isAlpha(locale?: Options.AlphaLocale, options?: Options.IsAlphaOptions) {
     const ignore = Array.isArray(options?.ignore) ? options?.ignore.join('') : options?.ignore;
-    delete options?.ignore;
     return this.addStandardValidation(validator.isAlpha, locale, { ...options, ignore });
   }
   isAlphanumeric(locale?: Options.AlphanumericLocale) {
