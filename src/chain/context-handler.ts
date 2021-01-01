@@ -6,4 +6,5 @@ export interface ContextHandler<Chain> {
   bail(): Chain;
   if(condition: CustomValidator | ValidationChain): Chain;
   optional(options?: Partial<Optional> | true): Chain;
+  rename(newPath: string): Chain;
 }

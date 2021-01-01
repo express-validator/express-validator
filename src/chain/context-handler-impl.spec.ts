@@ -3,6 +3,7 @@ import { ChainCondition, CustomCondition } from '../context-items';
 import { check } from '../middlewares/check';
 import { Bail } from '../context-items/bail';
 import { ContextHandler, ContextHandlerImpl } from './';
+import { Rename } from '../context-items/rename';
 
 let builder: ContextBuilder;
 let contextHandler: ContextHandler<any>;
@@ -72,5 +73,12 @@ describe('#optional()', () => {
 
     contextHandler.optional(false);
     expect(builder.setOptional).toHaveBeenNthCalledWith(3, false);
+  });
+});
+
+describe('#rename()', () => {
+  it('adds a Rename item', () => {
+    contextHandler.rename('foo');
+    expect(builder.addItem).toHaveBeenCalledWith(new Rename('foo'));
   });
 });
