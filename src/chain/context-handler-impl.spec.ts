@@ -2,8 +2,8 @@ import { ContextBuilder } from '../context-builder';
 import { ChainCondition, CustomCondition } from '../context-items';
 import { check } from '../middlewares/check';
 import { Bail } from '../context-items/bail';
-import { ContextHandler, ContextHandlerImpl } from './';
 import { Rename } from '../context-items/rename';
+import { ContextHandler, ContextHandlerImpl } from './';
 
 let builder: ContextBuilder;
 let contextHandler: ContextHandler<any>;
