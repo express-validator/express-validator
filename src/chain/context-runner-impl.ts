@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 import { InternalRequest, Request, ValidationHalt, contextsKey } from '../base';
 import { Context, ReadonlyContext } from '../context';
 import { ContextBuilder } from '../context-builder';
+import { Rename } from '../context-items/rename';
 import { SelectFields, selectFields as baseSelectFields } from '../select-fields';
 import { Result } from '../validation-result';
 import { ContextRunner } from './context-runner';
@@ -43,14 +44,19 @@ export class ContextRunnerImpl implements ContextRunner {
             path,
           });
 
-          // An instance is mutable, so if an item changed its value, there's no need to call getData again
-          const newValue = instance.value;
+          if (contextItem instanceof Rename) {
+            // change instance path
+            instance.path = contextItem.newPath;
+          } else {
+            // An instance is mutable, so if an item changed its value, there's no need to call getData again
+            const newValue = instance.value;
 
-          // Checks whether the value changed.
-          // Avoids e.g. undefined values being set on the request if it didn't have the key initially.
-          const reqValue = path !== '' ? _.get(req[location], path) : req[location];
-          if (!options.dryRun && reqValue !== instance.value) {
-            path !== '' ? _.set(req[location], path, newValue) : _.set(req, location, newValue);
+            // Checks whether the value changed.
+            // Avoids e.g. undefined values being set on the request if it didn't have the key initially.
+            const reqValue = path !== '' ? _.get(req[location], path) : req[location];
+            if (!options.dryRun && reqValue !== instance.value) {
+              path !== '' ? _.set(req[location], path, newValue) : _.set(req, location, newValue);
+            }
           }
         } catch (e) {
           if (e instanceof ValidationHalt) {

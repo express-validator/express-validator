@@ -3,6 +3,7 @@ import { FieldInstance, InternalRequest, ValidationHalt, contextsKey } from '../
 import { ContextBuilder } from '../context-builder';
 import { ContextItem } from '../context-items';
 import { Result } from '../validation-result';
+import { Rename } from '../context-items/rename';
 import { ContextRunnerImpl } from './context-runner-impl';
 
 let builder: ContextBuilder;
@@ -204,5 +205,25 @@ describe('with dryRun: true option', () => {
     await contextRunner.run(req, { dryRun: true });
     expect(req.query).toHaveProperty('foo', 123);
     expect(req.query).toHaveProperty('bar', 456);
+  });
+});
+
+it('contextItem is instance of Rename', async () => {
+  const rename = new Rename('bar');
+  const mockItem = { run: jest.fn() };
+  builder.setFields(['foo']).addItem(rename).addItem(mockItem);
+  selectFields.mockReturnValue([
+    { location: 'query', path: 'foo', originalPath: 'foo', value: 123, originalValue: 123 },
+  ]);
+
+  const req = { query: { foo: 123 } };
+  await contextRunner.run(req);
+  expect(req.query).toEqual({ bar: 123 });
+  expect(mockItem.run).toHaveBeenCalledWith(expect.any(Context), 123, {
+    req: expect.objectContaining({
+      query: { bar: 123 },
+    }),
+    location: 'query',
+    path: 'bar',
   });
 });
