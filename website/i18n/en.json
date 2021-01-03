@@ -250,6 +250,9 @@
       },
       "version-6.9.0/version-6.9.0-index": {
         "title": "Getting Started"
+      },
+      "version-6.9.1/version-6.9.1-custom-error-messages": {
+        "title": "Custom Error Messages"
       }
     },
     "links": {
