@@ -58,10 +58,17 @@ export type ValidationSchema = Schema;
 const validLocations: Location[] = ['body', 'cookies', 'headers', 'params', 'query'];
 const protectedNames = ['errorMessage', 'in'];
 
-export function checkSchema(schema: Schema, defaultLocations: Location[] = validLocations) {
+export function checkSchema<Req = any, Res = any, NextFn = any>(
+  schema: Schema,
+  defaultLocations: Location[] = validLocations,
+) {
   return Object.keys(schema).map(field => {
     const config = schema[field];
-    const chain = check(field, ensureLocations(config, defaultLocations), config.errorMessage);
+    const chain = check<Req, Res, NextFn>(
+      field,
+      ensureLocations(config, defaultLocations),
+      config.errorMessage,
+    );
 
     Object.keys(config)
       .filter((method: keyof ParamSchema): method is keyof InternalParamSchema => {

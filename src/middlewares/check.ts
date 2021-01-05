@@ -9,11 +9,11 @@ import { InternalRequest, Location } from '../base';
 import { bindAll } from '../utils';
 import { ContextBuilder } from '../context-builder';
 
-export function check(
+export function check<Req = any, Res = any, NextFn = any>(
   fields: string | string[] = '',
   locations: Location[] = [],
   message?: any,
-): ValidationChain {
+): ValidationChain<Req, Res, NextFn> {
   const builder = new ContextBuilder()
     .setFields(Array.isArray(fields) ? fields : [fields])
     .setLocations(locations)
