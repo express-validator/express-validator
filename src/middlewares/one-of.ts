@@ -12,11 +12,14 @@ export type OneOfCustomMessageBuilder = (options: { req: Request }) => any;
 export function oneOf(
   chains: (ValidationChain | ValidationChain[])[],
   message?: OneOfCustomMessageBuilder,
-): Middleware;
-export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?: any): Middleware;
+): Middleware & { run(req: Request): Promise<void> };
+export function oneOf(
+  chains: (ValidationChain | ValidationChain[])[],
+  message?: any,
+): Middleware & { run(req: Request): Promise<void> };
 
 export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?: any) {
-  return async (req: InternalRequest, _res: any, next: (err?: any) => void) => {
+  const middleware = async (req: InternalRequest, _res: any, next: (err?: any) => void) => {
     const surrogateContext = new ContextBuilder().addItem(dummyItem).build();
 
     // Run each group of chains in parallel, and within each group, run each chain in parallel too.
@@ -56,4 +59,14 @@ export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?:
       next(e);
     }
   };
+
+  const run = async (req: Request) => {
+    return new Promise<void>((resolve, reject) => {
+      middleware(req, {}, (e?: any) => {
+        e ? reject(e) : resolve();
+      });
+    });
+  };
+
+  return Object.assign(middleware, { run });
 }

@@ -159,3 +159,41 @@ describe('error message', () => {
     });
   });
 });
+
+describe('imperatively run oneOf', () => {
+  it('context should have errors', async () => {
+    const req: InternalRequest = {
+      body: { foo: true },
+    };
+
+    const middleware = oneOf([check('foo').isInt()]);
+    await middleware.run(req);
+
+    const context = getOneOfContext(req);
+    expect(context.errors.length).toEqual(1);
+  });
+
+  it('should throw an error', async () => {
+    const req: InternalRequest = {
+      body: { foo: true },
+    };
+    const error = new Error();
+    const spy = jest.spyOn(ContextRunnerImpl.prototype, 'run').mockRejectedValue(error);
+
+    const middleware = oneOf([check('foo').isBoolean()]);
+    expect(middleware.run(req)).rejects.toThrow();
+    spy.mockRestore();
+  });
+
+  it('successful validation', async () => {
+    const req: InternalRequest = {
+      body: { foo: true },
+    };
+
+    const middleware = oneOf([check('foo').isBoolean()]);
+    await middleware.run(req);
+
+    const context = getOneOfContext(req);
+    expect(context.errors.length).toEqual(0);
+  });
+});
