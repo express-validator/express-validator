@@ -104,6 +104,7 @@ export function checkSchema(schema: Schema, defaultLocations: Location[] = valid
   const run = async (req: Request) => {
     return await Promise.all(chains.map(chain => chain.run(req)));
   };
+
   return Object.assign(chains, { run });
 }
 
