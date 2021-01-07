@@ -18,7 +18,7 @@ describe('#toString', () => {
     expect(toString(value)).toEqual('[object Object]');
   });
 
-  it('test missing object toString', () => {
+  it('calls Object.prototype.toString() when passed object does not have a toString function', () => {
     const value = {
       foo: 'foo',
     };
