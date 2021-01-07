@@ -1,7 +1,7 @@
 import { toString } from './utils';
 
 describe('#toString', () => {
-  it('test custom object toString function', () => {
+  it('calls custom toString function', () => {
     const value = {
       toString() {
         return 'foo';
