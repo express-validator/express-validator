@@ -10,7 +10,7 @@ describe('#toString', () => {
     expect(toString(value)).toEqual('foo');
   });
 
-  it('test custom object toString not "function"', () => {
+  it('calls Object.prototype.toString() when custom one is not function', () => {
     const value = {
       toString: 'something',
     };
