@@ -12,11 +12,11 @@ export type OneOfCustomMessageBuilder = (options: { req: Request }) => any;
 export function oneOf(
   chains: (ValidationChain | ValidationChain[])[],
   message?: OneOfCustomMessageBuilder,
-): Middleware & { run(req: Request): Promise<void> };
+): Middleware & { run: (req: Request) => Promise<void> };
 export function oneOf(
   chains: (ValidationChain | ValidationChain[])[],
   message?: any,
-): Middleware & { run(req: Request): Promise<void> };
+): Middleware & { run: (req: Request) => Promise<void> };
 
 export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?: any) {
   const middleware = async (req: InternalRequest, _res: any, next: (err?: any) => void) => {

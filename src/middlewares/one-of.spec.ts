@@ -173,7 +173,7 @@ describe('imperatively run oneOf', () => {
     expect(context.errors.length).toEqual(1);
   });
 
-  it('should throw an error', async () => {
+  it('should throw an error if ContextRunner throws', async () => {
     const req: InternalRequest = {
       body: { foo: true },
     };
@@ -181,7 +181,7 @@ describe('imperatively run oneOf', () => {
     const spy = jest.spyOn(ContextRunnerImpl.prototype, 'run').mockRejectedValue(error);
 
     const middleware = oneOf([check('foo').isBoolean()]);
-    expect(middleware.run(req)).rejects.toThrow();
+    await expect(middleware.run(req)).rejects.toThrow(error);
     spy.mockRestore();
   });
 
