@@ -271,13 +271,9 @@ it('run checkSchema imperatively', async () => {
   const schema = checkSchema({
     foo: {
       exists: true,
-      isLength: {
-        options: {
-          min: 5,
-        },
-      },
+      isString: true,
     },
   });
 
-  expect(schema.run(req)).resolves;
+  return expect(schema.run(req)).resolves;
 });

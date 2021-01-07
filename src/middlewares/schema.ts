@@ -1,7 +1,7 @@
 import { Sanitizers } from '../chain/sanitizers';
 import { Validators } from '../chain/validators';
 import { DynamicMessageCreator, Location, Request } from '../base';
-import { ValidatorsImpl } from '../chain';
+import { ValidationChain, ValidatorsImpl } from '../chain';
 import { Optional } from '../context';
 import { check } from './check';
 
@@ -58,7 +58,12 @@ export type ValidationSchema = Schema;
 const validLocations: Location[] = ['body', 'cookies', 'headers', 'params', 'query'];
 const protectedNames = ['errorMessage', 'in'];
 
-export function checkSchema(schema: Schema, defaultLocations: Location[] = validLocations) {
+export function checkSchema(
+  schema: Schema,
+  defaultLocations: Location[] = validLocations,
+): ValidationChain[] & {
+  run: (req: Request) => Promise<unknown[]>;
+} {
   const chains = Object.keys(schema).map(field => {
     const config = schema[field];
     const chain = check(field, ensureLocations(config, defaultLocations), config.errorMessage);
