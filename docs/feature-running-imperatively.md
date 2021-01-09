@@ -7,8 +7,7 @@ express-validator favors the declarative way of doing things that express middle
 This means most of the APIs _look and work better_ when simply passed into an express route handler.
 
 You can, however, give control of running these validations to your own middleware/route handler.  
-This is possible with the use of the declarative method `run(req)`, available on both
-[validation chain](api-validation-chain.md#runreq-options) and [sanitization chains](api-sanitization-chain.md#runreq).
+This is possible with the use of the declarative method `run(req)`, available on [validation chain](api-validation-chain.md#runreq-options), [sanitization chain](api-sanitization-chain.md#runreq) and [`checkSchema`](api-check.md#checkschemaschema).
 
 Check the examples below to understand how this method can help you:
 

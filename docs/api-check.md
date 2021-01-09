@@ -52,7 +52,7 @@ Same as `check([fields, message])`, but only checking `req.query`.
 
 - `schema`: the schema to validate. Must comply with the format described in [Schema Validation](feature-schema-validation.md).
 
-> _Returns:_ an array of validation chains
+> _Returns:_ an array of validation chains and `{ run: (req) => Promise<unknown[]> }`
 
 ## `oneOf(validationChains[, message])`
 

@@ -263,3 +263,17 @@ describe('on schema that contains fields with bail methods', () => {
     expect(context.errors).toHaveLength(1);
   });
 });
+
+it('run checkSchema imperatively', async () => {
+  const req = {
+    body: { foo: 'foo' },
+  };
+  const schema = checkSchema({
+    foo: {
+      exists: true,
+      isString: true,
+    },
+  });
+
+  return expect(schema.run(req)).resolves;
+});
