@@ -14,6 +14,9 @@ export function toString(value: any, deep = true): string {
   } else if (value instanceof Date) {
     return value.toISOString();
   } else if (value && typeof value === 'object' && value.toString) {
+    if (typeof value.toString !== 'function') {
+      return Object.getPrototypeOf(value).toString.call(value);
+    }
     return value.toString();
   } else if (value == null || (isNaN(value) && !value.length)) {
     return '';
