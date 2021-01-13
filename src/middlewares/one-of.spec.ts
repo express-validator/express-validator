@@ -161,7 +161,7 @@ describe('error message', () => {
 });
 
 describe('imperatively run oneOf', () => {
-  it('context should have errors', async () => {
+  it('sets errors in context when validation fails', async () => {
     const req: InternalRequest = {
       body: { foo: true },
     };
@@ -185,7 +185,7 @@ describe('imperatively run oneOf', () => {
     spy.mockRestore();
   });
 
-  it('successful validation', async () => {
+  it('sets no error in context when successful', async () => {
     const req: InternalRequest = {
       body: { foo: true },
     };
