@@ -159,3 +159,41 @@ describe('error message', () => {
     });
   });
 });
+
+describe('imperatively run oneOf', () => {
+  it('sets errors in context when validation fails', async () => {
+    const req: InternalRequest = {
+      body: { foo: true },
+    };
+
+    const middleware = oneOf([check('foo').isInt()]);
+    await middleware.run(req);
+
+    const context = getOneOfContext(req);
+    expect(context.errors.length).toEqual(1);
+  });
+
+  it('should throw an error if ContextRunner throws', async () => {
+    const req: InternalRequest = {
+      body: { foo: true },
+    };
+    const error = new Error();
+    const spy = jest.spyOn(ContextRunnerImpl.prototype, 'run').mockRejectedValue(error);
+
+    const middleware = oneOf([check('foo').isBoolean()]);
+    await expect(middleware.run(req)).rejects.toThrow(error);
+    spy.mockRestore();
+  });
+
+  it('sets no error in context when successful', async () => {
+    const req: InternalRequest = {
+      body: { foo: true },
+    };
+
+    const middleware = oneOf([check('foo').isBoolean()]);
+    await middleware.run(req);
+
+    const context = getOneOfContext(req);
+    expect(context.errors.length).toEqual(0);
+  });
+});
