@@ -11,6 +11,7 @@ export interface Validators<Return> {
   custom(validator: CustomValidator): Return;
   exists(options?: { checkFalsy?: boolean; checkNull?: boolean }): Return;
   isArray(options?: { min?: number; max?: number }): Return;
+  isObject(options?: { strict?: boolean }): Return;
   isString(): Return;
   notEmpty(options?: Options.IsEmptyOptions): Return;
 

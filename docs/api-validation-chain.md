@@ -151,6 +151,15 @@ body('oldPassword')
 
 Adds a validator to check if a value is an array.
 
+### `.isObject(options)`
+
+- `options` _(optional)_: an object which accepts the following options:
+  - `strict`: If set to `false` the validation passes also for `array` and `null` types (defaults to `true`).
+
+> _Returns:_ the current validation chain instance
+
+Adds a validator to check if a value is an object.
+
 ### `.isString()`
 
 > _Returns:_ the current validation chain instance

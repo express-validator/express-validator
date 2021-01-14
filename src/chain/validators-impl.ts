@@ -58,6 +58,14 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
     );
   }
 
+  isObject(options: { strict?: boolean } = { strict: true }) {
+    return this.custom(
+      value =>
+        typeof value === 'object' &&
+        (options.strict ? value !== null && !Array.isArray(value) : true),
+    );
+  }
+
   isString() {
     return this.custom(value => typeof value === 'string');
   }

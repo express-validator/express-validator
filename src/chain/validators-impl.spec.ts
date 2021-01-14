@@ -159,6 +159,55 @@ describe('#isString()', () => {
   });
 });
 
+describe('#isObject()', () => {
+  it('adds custom validator to the context', () => {
+    const ret = validators.isObject();
+
+    expect(ret).toBe(chain);
+    expect(builder.addItem).toHaveBeenCalledWith(new CustomValidation(expect.any(Function), false));
+  });
+
+  it('checks if context is object', async () => {
+    validators.isObject();
+    const context = builder.build();
+
+    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const isObject = context.stack[0];
+
+    await isObject.run(context, {}, meta);
+    await isObject.run(context, { foo: 'foo' }, meta);
+    expect(context.errors).toHaveLength(0);
+
+    await isObject.run(context, 'foo', meta);
+    await isObject.run(context, 5, meta);
+    await isObject.run(context, true, meta);
+    await isObject.run(context, null, meta);
+    await isObject.run(context, undefined, meta);
+    await isObject.run(context, ['foo'], meta);
+    expect(context.errors).toHaveLength(6);
+  });
+
+  it('checks if context is object with strict = false', async () => {
+    validators.isObject({ strict: false });
+    const context = builder.build();
+
+    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const isObject = context.stack[0];
+
+    await isObject.run(context, {}, meta);
+    await isObject.run(context, { foo: 'foo' }, meta);
+    await isObject.run(context, ['foo'], meta);
+    await isObject.run(context, null, meta);
+    expect(context.errors).toHaveLength(0);
+
+    await isObject.run(context, 'foo', meta);
+    await isObject.run(context, 5, meta);
+    await isObject.run(context, true, meta);
+    await isObject.run(context, undefined, meta);
+    expect(context.errors).toHaveLength(4);
+  });
+});
+
 describe('#isArray()', () => {
   it('adds custom validator to the context', () => {
     const ret = validators.isArray();
