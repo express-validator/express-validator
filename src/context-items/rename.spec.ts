@@ -3,7 +3,7 @@ import { Meta } from '../base';
 import { Rename } from './rename';
 
 it('the new path is identical to the old one', () => {
-  const context = new ContextBuilder().build();
+  const context = new ContextBuilder().setFields(['foo']).build();
   const meta: Meta = { req: {}, location: 'body', path: 'foo' };
 
   expect(new Rename('foo').run(context, 'value', meta)).resolves;
@@ -16,20 +16,11 @@ it('throws an error if trying to rename more than one field', async () => {
   await expect(new Rename('_foo').run(context, 'value', meta)).rejects.toThrow();
 });
 
-describe('throws an error if using wildcards', () => {
-  it('in context fields', async () => {
-    const context = new ContextBuilder().setFields(['foo.*']).build();
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+it('throws an error if using wildcards in new path', async () => {
+  const context = new ContextBuilder().setFields(['foo']).build();
+  const meta: Meta = { req: {}, location: 'body', path: 'foo' };
 
-    await expect(new Rename('_foo').run(context, 'value', meta)).rejects.toThrow();
-  });
-
-  it('in new path', async () => {
-    const context = new ContextBuilder().setFields(['foo']).build();
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
-
-    await expect(new Rename('foo.*').run(context, 'value', meta)).rejects.toThrow();
-  });
+  await expect(new Rename('foo.*').run(context, 'value', meta)).rejects.toThrow();
 });
 
 it('throws an error if the new path is already assigned to a property', async () => {

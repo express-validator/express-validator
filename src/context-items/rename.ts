@@ -13,8 +13,8 @@ export class Rename implements ContextItem {
       if (context.fields.length !== 1) {
         throw new Error('Cannot rename multiple fields.');
       }
-      const field = context.fields[0];
-      if (field.includes('*') || this.newPath.includes('*')) {
+
+      if (this.newPath.includes('*')) {
         throw new Error('Cannot use rename() with wildcards.');
       }
 
