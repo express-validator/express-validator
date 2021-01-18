@@ -3,6 +3,7 @@ import { InternalRequest, Request, ValidationError, contextsKey } from './base';
 import { bindAll } from './utils';
 
 export type ErrorFormatter<T = any> = (error: ValidationError) => T;
+// eslint-disable-next-line no-use-before-define
 export type ResultFactory<T> = (req: Request) => Result<T>;
 
 interface ResultFactoryBuilderOptions<T = any> {
