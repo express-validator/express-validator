@@ -79,7 +79,7 @@ describe('body()', () => {
 });
 
 describe('cookie()', () => {
-  it('checks only the body location', async () => {
+  it('checks only the cookie location', async () => {
     const chain = cookie('foo').isInt();
     const errors = await runAndGetErrors(chain, req);
     expect(errors).toHaveLength(1);
@@ -88,7 +88,7 @@ describe('cookie()', () => {
 });
 
 describe('header()', () => {
-  it('checks only the body location', async () => {
+  it('checks only the header location', async () => {
     const chain = header('foo').isInt();
     const errors = await runAndGetErrors(chain, req);
     expect(errors).toHaveLength(1);
@@ -97,7 +97,7 @@ describe('header()', () => {
 });
 
 describe('param()', () => {
-  it('checks only the body location', async () => {
+  it('checks only the param location', async () => {
     const chain = param('foo').isInt();
     const errors = await runAndGetErrors(chain, req);
     expect(errors).toHaveLength(1);
@@ -106,7 +106,7 @@ describe('param()', () => {
 });
 
 describe('query()', () => {
-  it('checks only the body location', async () => {
+  it('checks only the query location', async () => {
     const chain = query('foo').isInt();
     const errors = await runAndGetErrors(chain, req);
     expect(errors).toHaveLength(1);
