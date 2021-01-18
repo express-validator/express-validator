@@ -1,5 +1,16 @@
 import { ReadonlyContext } from './context';
 
+export interface Request {
+  [k: string]: any;
+  body?: any;
+  cookies?: Record<string, any>;
+  headers?: Record<string, any>;
+  params?: Record<string, any>;
+  query?: Record<string, any>;
+}
+
+export type Middleware = (req: Request, res: any, next: (err?: any) => void) => void;
+
 export type Location = 'body' | 'cookies' | 'headers' | 'params' | 'query';
 export type Meta = { req: Request; location: Location; path: string };
 
@@ -37,21 +48,10 @@ export type ValidationError =
       nestedErrors?: unknown[];
     };
 
-export interface Request {
-  [k: string]: any;
-  body?: any;
-  cookies?: Record<string, any>;
-  headers?: Record<string, any>;
-  params?: Record<string, any>;
-  query?: Record<string, any>;
-}
-
 export const contextsKey = 'express-validator#contexts';
 
 export interface InternalRequest extends Request {
   [contextsKey]?: ReadonlyContext[];
 }
-
-export type Middleware = (req: Request, res: any, next: (err?: any) => void) => void;
 
 export class ValidationHalt extends Error {}
