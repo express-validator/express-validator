@@ -1,5 +1,4 @@
 {
-  "parser": "typescript",
   "arrowParens": "avoid",
   "bracketSpacing": true,
   "printWidth": 100,

@@ -16,18 +16,15 @@ const { body } = require('express-validator');
 const app = express();
 app.use(express.json());
 
-app.post('/comment', [
-  body('email')
-    .isEmail()
-    .normalizeEmail(),
-  body('text')
-    .not().isEmpty()
-    .trim()
-    .escape(),
-  body('notifyOnReply').toBoolean()
-], (req, res) => {
-  // Handle the request somehow
-});
+app.post(
+  '/comment',
+  body('email').isEmail().normalizeEmail(),
+  body('text').not().isEmpty().trim().escape(),
+  body('notifyOnReply').toBoolean(),
+  (req, res) => {
+    // Handle the request somehow
+  },
+);
 ```
 
 In the example above, we are validating `email` and `text` fields,
@@ -37,5 +34,5 @@ The `notifyOnReply` field isn't validated, but it can still make use of the same
 to convert it to a JavaScript boolean.
 
 > **Important:** please note that sanitization mutates the request.
-This means that if `req.body.text` was sent with the value `   Hello world :>)`, after the sanitization
-its value will be `Hello world :&gt;)`.
+> This means that if `req.body.text` was sent with the value ` Hello world :>)`, after the sanitization
+> its value will be `Hello world :&gt;)`.

@@ -8,91 +8,115 @@
     "ecmaVersion": 2016,
     "sourceType": "module"
   },
-  "plugins": [
-    "@typescript-eslint",
-    "import",
-    "prettier"
-  ],
-  "extends": [
-    "prettier",
-    "prettier/@typescript-eslint",
-    "plugin:prettier/recommended"
-  ],
+  "plugins": ["@typescript-eslint", "import", "prettier"],
+  "extends": ["prettier", "prettier/@typescript-eslint", "plugin:prettier/recommended"],
   "globals": {},
   "rules": {
     // Possible errors
-    "no-empty": [ "error", {
-      "allowEmptyCatch": true
-    }],
+    "no-empty": [
+      "error",
+      {
+        "allowEmptyCatch": true
+      }
+    ],
 
     // Best practices
-    "curly": [ "error", "all" ],
-    "eqeqeq": [ "error", "always", {
-      "null": "ignore"
-    }],
+    "curly": ["error", "all"],
+    "eqeqeq": [
+      "error",
+      "always",
+      {
+        "null": "ignore"
+      }
+    ],
     "no-caller": "error",
     "no-new": "error",
     "no-with": "error",
 
     // Stylistic issues
-    "brace-style": [ "error", "1tbs", {
-      "allowSingleLine": true
-    }],
-    "comma-dangle": [ "error", "always-multiline" ],
-    "comma-style": [ "error", "last" ],
+    "brace-style": [
+      "error",
+      "1tbs",
+      {
+        "allowSingleLine": true
+      }
+    ],
+    "comma-dangle": ["error", "always-multiline"],
+    "comma-style": ["error", "last"],
     "func-call-spacing": ["error", "never"],
     "indent": "off",
     // "@typescript-eslint/indent": [ "error", 2, {
     //   "SwitchCase": 1
     // }],
     "no-trailing-spaces": "error",
-    "key-spacing": [ "error", {
-      "beforeColon": false,
-      "afterColon": true
-    }],
+    "key-spacing": [
+      "error",
+      {
+        "beforeColon": false,
+        "afterColon": true
+      }
+    ],
     "keyword-spacing": "error",
     "new-cap": "error",
     "no-bitwise": "error",
-    "space-before-function-paren": [ "error", {
-      "anonymous": "ignore",
-      "named": "never"
-    }],
+    "space-before-function-paren": [
+      "error",
+      {
+        "anonymous": "ignore",
+        "named": "never"
+      }
+    ],
     "space-infix-ops": "error",
-    "space-unary-ops": [ "error", {
-      "words": false,
-      "nonwords": false
-    }],
+    "space-unary-ops": [
+      "error",
+      {
+        "words": false,
+        "nonwords": false
+      }
+    ],
 
     // Variables
-    "no-use-before-define": [ "error", {
-      "functions": false
-    }],
+    "no-use-before-define": [
+      "error",
+      {
+        "functions": false
+      }
+    ],
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "error",
 
     // ES6+
-    "sort-imports": ["error", {
-      "ignoreCase": false,
-      "ignoreDeclarationSort": true,
-      "ignoreMemberSort": false
-    }],
+    "sort-imports": [
+      "error",
+      {
+        "ignoreCase": false,
+        "ignoreDeclarationSort": true,
+        "ignoreMemberSort": false
+      }
+    ],
     "import/newline-after-import": ["error"],
-    "import/order": ["error", {
-      "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
-      "newlines-between": "never"
-    }],
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
+        "newlines-between": "never"
+      }
+    ],
 
     // TS-specific
-    "@typescript-eslint/member-delimiter-style": ["error", {
-      "multiline": {
-        "delimiter": "semi",
-        "requireLast": true
-      },
-      "singleline": {
-        "delimiter": "semi",
-        "requireLast": false
+    "@typescript-eslint/member-delimiter-style": [
+      "error",
+      {
+        "multiline": {
+          "delimiter": "semi",
+          "requireLast": true
+        },
+        "singleline": {
+          "delimiter": "semi",
+          "requireLast": false
+        }
       }
-    }],
+    ],
     "@typescript-eslint/no-require-imports": "error"
   }
 }

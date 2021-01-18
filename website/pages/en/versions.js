@@ -40,21 +40,25 @@ const VersionsTable = ({ versions }) => (
 class Versions extends React.Component {
   get latestVersion() {
     const name = versions[0];
-    return [{
-      name,
-      docs: docsUrl,
-      infoLabel: 'Release Notes',
-      infoUrl: `${repoUrl}/releases/v${name}`
-    }];
+    return [
+      {
+        name,
+        docs: docsUrl,
+        infoLabel: 'Release Notes',
+        infoUrl: `${repoUrl}/releases/v${name}`,
+      },
+    ];
   }
 
   get nextVersion() {
-    return [{
-      name: 'master',
-      docs: `${docsUrl}/next`,
-      infoLabel: 'Source code',
-      infoUrl: repoUrl
-    }];
+    return [
+      {
+        name: 'master',
+        docs: `${docsUrl}/next`,
+        infoLabel: 'Source code',
+        infoUrl: repoUrl,
+      },
+    ];
   }
 
   get olderVersions() {
@@ -62,7 +66,7 @@ class Versions extends React.Component {
       name: version,
       docs: `${docsUrl}/${version}/`,
       infoLabel: 'Release Notes',
-      infoUrl: `${repoUrl}/releases/v${version}`
+      infoUrl: `${repoUrl}/releases/v${version}`,
     }));
   }
 
@@ -77,20 +81,19 @@ class Versions extends React.Component {
 
             <h3 id="latest">Current version (Stable)</h3>
             <p>Latest version of express-validator.</p>
-            <VersionsTable versions={this.latestVersion}/>
+            <VersionsTable versions={this.latestVersion} />
 
             <h3 id="latest">Latest version</h3>
             <p>Here you can find the latest documentation and unreleased code.</p>
-            <VersionsTable versions={this.nextVersion}/>
+            <VersionsTable versions={this.nextVersion} />
 
             {this.olderVersions.length > 0 && (
               <div>
                 <h3 id="archive">Past versions</h3>
                 <p>Here you can find documentation for previous versions of express-validator.</p>
-                <VersionsTable versions={this.olderVersions}/>
+                <VersionsTable versions={this.olderVersions} />
                 <p>
-                  You can find past versions of this project{' '}
-                  <a href={this.repoUrl}> on GitHub </a>.
+                  You can find past versions of this project <a href={this.repoUrl}> on GitHub </a>.
                 </p>
               </div>
             )}

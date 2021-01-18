@@ -4,9 +4,10 @@
   "author": "Christoph Tavan <dev@tavan.de>",
   "contributors": [
     "Rusty Bailey <rustylbailey@gmail.com>",
-    "Gustavo Henke <guhenke@gmail.com>"
+    "Gustavo Henke <guhenke@gmail.com>",
+    "Federico Ciardi <fed.ciardi@gmail.com>"
   ],
-  "version": "6.6.1",
+  "version": "6.9.2",
   "homepage": "https://express-validator.github.io",
   "license": "MIT",
   "repository": {
@@ -33,7 +34,7 @@
     "docs:version": "npm --prefix ./website run version",
     "prepublishOnly": "tsc",
     "test": "jest",
-    "lint": "eslint --ignore-path .gitignore 'src/**/*.ts'",
+    "lint": "eslint --ignore-path .gitignore 'src/**/*.ts' && prettier -c .",
     "report-coverage": "cat coverage/lcov.info | coveralls",
     "version": "npm run docs:version -- $npm_package_version && npm run docs:build && git add -A website"
   },
@@ -42,23 +43,23 @@
   },
   "dependencies": {
     "lodash": "^4.17.20",
-    "validator": "^13.1.1"
+    "validator": "^13.5.2"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.0",
-    "@types/lodash": "^4.14.158",
-    "@typescript-eslint/eslint-plugin": "^3.3.0",
-    "@typescript-eslint/parser": "^3.3.0",
+    "@types/jest": "^26.0.20",
+    "@types/lodash": "^4.14.168",
+    "@typescript-eslint/eslint-plugin": "^4.14.0",
+    "@typescript-eslint/parser": "^4.14.0",
     "coveralls": "^3.1.0",
     "docusaurus": "^1.14.6",
-    "eslint": "^7.3.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-import": "^2.21.2",
-    "eslint-plugin-prettier": "^3.1.4",
-    "jest": "^26.4.2",
-    "prettier": "^2.1.2",
-    "ts-jest": "^26.4.1",
-    "typescript": "^3.9.5"
+    "eslint": "^7.18.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.3.1",
+    "jest": "^26.6.3",
+    "prettier": "^2.2.1",
+    "ts-jest": "^26.4.4",
+    "typescript": "^3.9.7"
   },
   "keywords": [
     "express",

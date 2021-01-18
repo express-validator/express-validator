@@ -18,6 +18,7 @@ app.get('/', body('trimMe').trim(), (req, res, next) => {
 ```
 
 ## Standard sanitizers
+
 All sanitizers listed by validator.js are made available within a Sanitization Chain,
 and are called "standard sanitizers" in express-validator.
 
@@ -27,12 +28,15 @@ This means you can use any of those methods, e.g. `normalizeEmail`, `trim`, `toI
 > please check [validator.js' docs](https://github.com/chriso/validator.js#sanitizers).
 
 ## Additional methods
+
 In addition to the standard sanitizers, the following methods are also available within a Sanitization Chain:
 
 ### `.customSanitizer(sanitizer)`
+
 - `sanitizer(value, { req, location, path })`: the custom sanitizer function.
   Receives the value of the field being sanitized, as well as the express request, the location and the field path.
-> *Returns:* the current sanitization chain instance
+
+> _Returns:_ the current sanitization chain instance
 
 Adds a custom sanitizer to the current sanitization chain. It must synchronously return the new value.
 
@@ -40,31 +44,39 @@ Example:
 
 ```js
 const { param } = require('express-validator');
-app.get('/object/:id', param('id').customSanitizer((value, { req }) => {
-  return req.query.type === 'user' ? ObjectId(value) : Number(value);
-}), objectHandler)
+app.get(
+  '/object/:id',
+  param('id').customSanitizer((value, { req }) => {
+    return req.query.type === 'user' ? ObjectId(value) : Number(value);
+  }),
+  objectHandler,
+);
 ```
 
 ### `.default(default_value)`
-> *Returns:* the current sanitization chain instance
+
+> _Returns:_ the current sanitization chain instance
 
 Replaces the current value with a default one if the current value is included in `['', null, undefined, NaN]`.
 
 ```js
-app.post('/', [body('username').default('foo')], (req, res, next) => {
+app.post('/', body('username').default('foo'), (req, res, next) => {
   // 'bar'     => 'bar'
   // ''        => 'foo'
   // undefined => 'foo'
   // null      => 'foo'
   // NaN       => 'foo'
+});
+```
 
 ### `.replace(values_to_replace, new_value)`
-> *Returns:* the current sanitization chain instance
+
+> _Returns:_ the current sanitization chain instance
 
 Replaces the current value with a new one if the current value is included in a given Array.
 
 ```js
-app.post('/', [body('username').replace(['bar', 'BAR'], 'foo')], (req, res, next) => {
+app.post('/', body('username').replace(['bar', 'BAR'], 'foo'), (req, res, next) => {
   // 'bar_' => 'bar_'
   // 'bar'  => 'foo'
   // 'BAR'  => 'foo'
@@ -73,7 +85,8 @@ app.post('/', [body('username').replace(['bar', 'BAR'], 'foo')], (req, res, next
 ```
 
 ### `.run(req)`
-> *Returns:* a promise that resolves when the sanitization chain ran.
+
+> _Returns:_ a promise that resolves when the sanitization chain ran.
 
 Runs the current sanitization chain in an imperative way.
 
@@ -90,7 +103,8 @@ app.post('/create-post', async (req, res, next) => {
 ```
 
 ### `.toArray()`
-> *Returns:* the current sanitization chain instance
+
+> _Returns:_ the current sanitization chain instance
 
 Converts the value to an array. `undefined` will result in an empty array.
 
@@ -104,7 +118,8 @@ app.post('/', [body('checkboxes').toArray()], (req, res, next) => {
 ```
 
 ### `.toLowerCase()`
-> *Returns:* the current sanitization chain instance
+
+> _Returns:_ the current sanitization chain instance
 
 Converts the value to lower case. Non string value will return itself.
 
@@ -118,7 +133,8 @@ app.post('/', [body('username').toLowerCase()], (req, res, next) => {
 ```
 
 ### `.toUpperCase()`
-> *Returns:* the current sanitization chain instance
+
+> _Returns:_ the current sanitization chain instance
 
 Converts the value to upper case. Non string value will return itself.
 

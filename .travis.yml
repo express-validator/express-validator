@@ -1,9 +1,9 @@
 language: node_js
 node_js:
   # LTS
-  - "10"
-  - "12"
-  - "14"
+  - '10'
+  - '12'
+  - '14'
 before_install:
   - npm install -g npm
 install:

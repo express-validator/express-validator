@@ -1,7 +1,7 @@
 import { Sanitizers } from '../chain/sanitizers';
 import { Validators } from '../chain/validators';
-import { DynamicMessageCreator, Location } from '../base';
-import { ValidatorsImpl } from '../chain';
+import { DynamicMessageCreator, Location, Request } from '../base';
+import { ValidationChain, ValidatorsImpl } from '../chain';
 import { Optional } from '../context';
 import { check } from './check';
 
@@ -11,6 +11,7 @@ type ValidatorSchemaOptions<K extends keyof Validators<any>> =
       options?: Parameters<Validators<any>[K]> | Parameters<Validators<any>[K]>[0];
       errorMessage?: DynamicMessageCreator | any;
       negated?: boolean;
+      bail?: boolean;
     };
 
 export type ValidatorsSchema = { [K in keyof Validators<any>]?: ValidatorSchemaOptions<K> };
@@ -57,8 +58,13 @@ export type ValidationSchema = Schema;
 const validLocations: Location[] = ['body', 'cookies', 'headers', 'params', 'query'];
 const protectedNames = ['errorMessage', 'in'];
 
-export function checkSchema(schema: Schema, defaultLocations: Location[] = validLocations) {
-  return Object.keys(schema).map(field => {
+export function checkSchema(
+  schema: Schema,
+  defaultLocations: Location[] = validLocations,
+): ValidationChain[] & {
+  run: (req: Request) => Promise<unknown[]>;
+} {
+  const chains = Object.keys(schema).map(field => {
     const config = schema[field];
     const chain = check(field, ensureLocations(config, defaultLocations), config.errorMessage);
 
@@ -91,10 +97,20 @@ export function checkSchema(schema: Schema, defaultLocations: Location[] = valid
         if (isValidatorOptions(method, methodCfg) && methodCfg.errorMessage) {
           chain.withMessage(methodCfg.errorMessage);
         }
+
+        if (isValidatorOptions(method, methodCfg) && methodCfg.bail) {
+          chain.bail();
+        }
       });
 
     return chain;
   });
+
+  const run = async (req: Request) => {
+    return await Promise.all(chains.map(chain => chain.run(req)));
+  };
+
+  return Object.assign(chains, { run });
 }
 
 function isValidatorOptions(

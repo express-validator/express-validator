@@ -184,3 +184,96 @@ describe('on each field', () => {
     expect(context.errors).toHaveLength(1);
   });
 });
+
+describe('on schema that contains fields with bail methods', () => {
+  it('stops validation chain with only one error', async () => {
+    const schema = checkSchema({
+      foo: {
+        exists: {
+          bail: true,
+        },
+        isLength: {
+          options: {
+            min: 5,
+          },
+        },
+      },
+    });
+
+    const { context } = await schema[0].run({ params: {} });
+    expect(context.errors).toHaveLength(1);
+  });
+
+  it('does not bail if value is valid', async () => {
+    const schema = checkSchema({
+      foo: {
+        exists: {
+          bail: true,
+        },
+        isLength: {
+          options: {
+            max: 5,
+          },
+        },
+      },
+    });
+
+    const { context } = await schema[0].run({ params: { foo: 'a' } });
+    expect(context.errors).toHaveLength(0);
+  });
+
+  it('bails with message', async () => {
+    const schema = checkSchema({
+      foo: {
+        exists: {
+          bail: true,
+          errorMessage: 'Value not exists',
+        },
+        isLength: {
+          options: {
+            max: 5,
+          },
+        },
+      },
+    });
+
+    const { context } = await schema[0].run({ params: {} });
+    expect(context.errors).toHaveLength(1);
+    expect(chainToContext(schema[0]).stack[0]).toHaveProperty('message', 'Value not exists');
+  });
+
+  it('support multiple bail methods', async () => {
+    const schema = checkSchema({
+      foo: {
+        exists: {
+          bail: true,
+        },
+        isEmail: {
+          bail: true,
+        },
+        isLength: {
+          options: {
+            min: 11,
+          },
+        },
+      },
+    });
+
+    const { context } = await schema[0].run({ params: { foo: 'notAnEmail' } });
+    expect(context.errors).toHaveLength(1);
+  });
+});
+
+it('run checkSchema imperatively', async () => {
+  const req = {
+    body: { foo: 'foo' },
+  };
+  const schema = checkSchema({
+    foo: {
+      exists: true,
+      isString: true,
+    },
+  });
+
+  return expect(schema.run(req)).resolves;
+});

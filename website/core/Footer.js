@@ -9,7 +9,9 @@ const React = require('react');
 
 class Footer extends React.Component {
   get repoUrl() {
-    const { config: { repoPath } } = this.props;
+    const {
+      config: { repoPath },
+    } = this.props;
     return `https://github.com/${repoPath}`;
   }
 
@@ -20,7 +22,6 @@ class Footer extends React.Component {
 
   render() {
     const { config } = this.props;
-    const currentYear = new Date().getFullYear();
     return (
       <footer className="nav-footer" id="footer">
         <section className="sitemap">
@@ -36,19 +37,16 @@ class Footer extends React.Component {
           </a>
           <div>
             <h5>Docs</h5>
-            <a href={this.docUrl('index.html', this.props.language)}>
-              Getting Started
-            </a>
-            <a href={this.docUrl('check-api.html', this.props.language)}>
-              API Reference
-            </a>
+            <a href={this.docUrl('index.html', this.props.language)}>Getting Started</a>
+            <a href={this.docUrl('check-api.html', this.props.language)}>API Reference</a>
           </div>
           <div>
             <h5>Community</h5>
             <a
               href="http://stackoverflow.com/questions/tagged/express-validator"
               target="_blank"
-              rel="noreferrer noopener">
+              rel="noreferrer noopener"
+            >
               Stack Overflow
             </a>
           </div>
@@ -62,7 +60,8 @@ class Footer extends React.Component {
               data-count-href="/express-validator/express-validator/stargazers"
               data-show-count={true}
               data-count-aria-label="# stargazers on GitHub"
-              aria-label="Star this project on GitHub">
+              aria-label="Star this project on GitHub"
+            >
               Star
             </a>
           </div>

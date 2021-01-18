@@ -25,9 +25,7 @@ const siteConfig = {
   onPageNav: 'separate',
   scripts: ['https://buttons.github.io/buttons.js'],
   deletedDocs: {
-    '6.0.0': [
-      'legacy-api',
-    ],
+    '6.0.0': ['legacy-api'],
   },
 
   // Features

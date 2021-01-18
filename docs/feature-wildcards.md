@@ -18,25 +18,29 @@ const { check, sanitize } = require('express-validator');
 const app = express();
 app.use(express.json());
 
-app.post('/addresses', [
+app.post(
+  '/addresses',
   check('addresses.*.postalCode').isPostalCode(),
-  sanitize('addresses.*.number').toInt()
-], (req, res) => {
-  // Handle the request
-});
+  sanitize('addresses.*.number').toInt(),
+  (req, res) => {
+    // Handle the request
+  },
+);
 ```
 
 This will handle cases where you send an array of addresses:
+
 ```json
 {
   "addresses": [
     { "postalCode": "2010", "number": "500" },
-    { "postalCode": "", "number": "501" },
+    { "postalCode": "", "number": "501" }
   ]
 }
 ```
 
 ...or even cases where you want a predefined set of addresses:
+
 ```json
 {
   "addresses": {

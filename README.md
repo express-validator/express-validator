@@ -5,8 +5,8 @@
 [![Dependency Status](https://img.shields.io/david/express-validator/express-validator.svg)](https://david-dm.org/express-validator/express-validator)
 [![Coverage Status](https://img.shields.io/coveralls/express-validator/express-validator.svg)](https://coveralls.io/github/express-validator/express-validator?branch=master)
 
-An [express.js]( https://github.com/visionmedia/express ) middleware for
-[validator]( https://github.com/chriso/validator.js ).
+An [express.js](https://github.com/visionmedia/express) middleware for
+[validator](https://github.com/chriso/validator.js).
 
 - [Installation](#installation)
 - [Documentation](#documentation)
@@ -14,6 +14,7 @@ An [express.js]( https://github.com/visionmedia/express ) middleware for
 - [License](#license)
 
 ## Installation
+
 ```
 npm install express-validator
 ```
@@ -21,6 +22,7 @@ npm install express-validator
 Also make sure that you have Node.js 8 or newer in order to use it.
 
 ## Documentation
+
 Please refer to the documentation website on https://express-validator.github.io.
 
 ## Changelog

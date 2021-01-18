@@ -7,12 +7,13 @@ express-validator favors the declarative way of doing things that express middle
 This means most of the APIs _look and work better_ when simply passed into an express route handler.
 
 You can, however, give control of running these validations to your own middleware/route handler.  
-This is possible with the use of the declarative method `run(req)`, available on both
-[validation chain](api-validation-chain.md#runreq-options) and [sanitization chains](api-sanitization-chain.md#runreq).
+This is possible with the use of the declarative method `run(req)`, available on
+[validation chain](api-validation-chain.md#runreq-options), [sanitization chain](api-sanitization-chain.md#runreq), [`checkSchema`](api-check.md#checkschemaschema) and [`oneOf`](api-check.md#oneofvalidationchains-message).
 
 Check the examples below to understand how this method can help you:
 
 ## Example: standardized validation error response
+
 ```js
 // can be reused by many routes
 
@@ -44,10 +45,10 @@ const validate = validations => {
     }
 
     res.status(400).json({ errors: errors.array() });
-  }
+  };
 };
-
 ```
+
 ```js
 app.post('/api/create-user', validate([
   body('email').isEmail(),
@@ -58,20 +59,23 @@ app.post('/api/create-user', validate([
 });
 ```
 
-
 ## Example: validating with a condition
-```js
-app.post('/update-settings', [
-  body('email').isEmail(),
-  body('password').optional().isLength({ min: 6 })
-], async (req, res, next) => {
-  // if a password has been provided, then a confirmation must also be provided.
-  if (req.body.password) {
-    await body('passwordConfirmation')
-      .equals(req.body.password).withMessage('passwords do not match')
-      .run(req);
-  }
 
-  // Check the validation errors, and update the user's settings.
-});
+```js
+app.post(
+  '/update-settings',
+  body('email').isEmail(),
+  body('password').optional().isLength({ min: 6 }),
+  async (req, res, next) => {
+    // if a password has been provided, then a confirmation must also be provided.
+    if (req.body.password) {
+      await body('passwordConfirmation')
+        .equals(req.body.password)
+        .withMessage('passwords do not match')
+        .run(req);
+    }
+
+    // Check the validation errors, and update the user's settings.
+  },
+);
 ```

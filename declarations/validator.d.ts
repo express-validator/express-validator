@@ -6,13 +6,18 @@ declare module 'validator' {
   ): boolean;
   export function equals(str: string, comparison: string): boolean;
   export function isAfter(str: string, date?: string): boolean;
-  export function isAlpha(str: string, locale?: import('../src/options').AlphaLocale): boolean;
+  export function isAlpha(
+    str: string,
+    locale?: import('../src/options').AlphaLocale,
+    options?: import('../src/options').IsAlphaOptions,
+  ): boolean;
   export function isAlphanumeric(
     str: string,
     locale?: import('../src/options').AlphanumericLocale,
   ): boolean;
   export function isAscii(str: string): boolean;
   export function isBase32(str: string): boolean;
+  export function isBase58(str: string): boolean;
   export function isBase64(
     str: string,
     options?: import('../src/options').IsBase64Options,
@@ -31,7 +36,7 @@ declare module 'validator' {
     options?: import('../src/options').IsCurrencyOptions,
   ): boolean;
   export function isDataURI(str: string): boolean;
-  export function isDate(str: string): boolean;
+  export function isDate(str: string, options?: import('../src/options').IsDateOptions): boolean;
   export function isDecimal(
     str: string,
     options?: import('../src/options').IsDecimalOptions,
@@ -112,12 +117,17 @@ declare module 'validator' {
   export function isRgbColor(str: string, includePercentValues?: boolean): boolean;
   export function isSemVer(str: string): boolean;
   export function isSlug(str: string): boolean;
+  export function isStrongPassword(
+    str: string,
+    options?: import('../src/options').IsStrongPasswordOptions,
+  ): boolean;
   export function isSurrogatePair(str: string): boolean;
   export function isTaxID(str: string, locale: import('../src/options').TaxIDLocale): boolean;
   export function isURL(str: string, options?: import('../src/options').IsURLOptions): boolean;
   export function isUUID(str: string, version?: import('../src/options').UUIDVersion): boolean;
   export function isUppercase(str: string): boolean;
   export function isVariableWidth(str: string): boolean;
+  export function isVAT(str: string, countryCode: import('../src/options').VATCountryCode): boolean;
   export function isWhitelisted(str: string, chars: string | string[]): boolean;
   export function matches(str: string, pattern: RegExp | string, modifiers?: string): boolean;
 
