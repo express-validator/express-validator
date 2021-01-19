@@ -27,7 +27,7 @@ export interface Validators<Return> {
   isBase64(options?: Options.IsBase64Options): Return;
   isBefore(date?: string): Return;
   isBIC(): Return;
-  isBoolean(): Return;
+  isBoolean(options?: Options.IsBooleanOptions): Return;
   isBtcAddress(): Return;
   isByteLength(options: Options.MinMaxExtendedOptions): Return;
   isCreditCard(): Return;
