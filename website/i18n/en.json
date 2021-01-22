@@ -50,6 +50,9 @@
       "index": {
         "title": "Getting Started"
       },
+      "migration-v5-to-v6": {
+        "title": "Migration from v5 to v6"
+      },
       "version-5.2.0/version-5.2.0-check-api": {
         "title": "check API"
       },

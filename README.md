@@ -6,7 +6,7 @@
 [![Coverage Status](https://img.shields.io/coveralls/express-validator/express-validator.svg)](https://coveralls.io/github/express-validator/express-validator?branch=master)
 
 An [express.js](https://github.com/visionmedia/express) middleware for
-[validator](https://github.com/chriso/validator.js).
+[validator](https://github.com/validatorjs/validator.js).
 
 - [Installation](#installation)
 - [Documentation](#documentation)
