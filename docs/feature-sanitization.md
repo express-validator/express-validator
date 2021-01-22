@@ -6,7 +6,7 @@ title: Sanitization
 Sometimes, receiving input in a HTTP request isn't only about making sure that
 the data is in the right format, but also that **it is free of noise**.
 
-[validator.js provides a handful of sanitizers](https://github.com/chriso/validator.js#sanitizers)
+[validator.js provides a handful of sanitizers](https://github.com/validatorjs/validator.js#sanitizers)
 that can be used to take care of the data that comes in.
 
 ```js

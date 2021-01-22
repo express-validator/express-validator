@@ -23,6 +23,9 @@
       "validation-result-api": {
         "title": "validationResult()"
       },
+      "faq": {
+        "title": "FAQ"
+      },
       "custom-validators-sanitizers": {
         "title": "Custom validators/sanitizers"
       },
@@ -46,6 +49,9 @@
       },
       "index": {
         "title": "Getting Started"
+      },
+      "migration-v5-to-v6": {
+        "title": "Migration from v5 to v6"
       },
       "version-5.2.0/version-5.2.0-check-api": {
         "title": "check API"
@@ -263,7 +269,8 @@
     "categories": {
       "Introduction": "Introduction",
       "Features": "Features",
-      "API": "API"
+      "API": "API",
+      "More": "More"
     }
   },
   "pages-strings": {

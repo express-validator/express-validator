@@ -4,7 +4,7 @@ title: Custom validators/sanitizers
 ---
 
 Although express-validator offers plenty of handy validators and sanitizers through its underlying
-dependency [validator.js](https://github.com/chriso/validator.js), it doesn't always suffice when
+dependency [validator.js](https://github.com/validatorjs/validator.js), it doesn't always suffice when
 building your application.
 
 For these cases, you may consider writing a custom validator or a custom sanitizer.
