@@ -20,8 +20,10 @@ npm install --save express-validator
 > this guide.
 
 Let's get started by writing a basic route to create a user in the database:
+
 <!--DOCUSAURUS_CODE_TABS-->
 <!--JavaScript-->
+
 ```js
 const express = require('express');
 const app = express();
@@ -34,7 +36,9 @@ app.post('/user', (req, res) => {
   }).then(user => res.json(user));
 });
 ```
+
 <!--TypeScript-->
+
 ```typescript
 import express from 'express';
 const app = express();
@@ -47,12 +51,14 @@ app.post('/user', (req: express.Request, res: express.Response) => {
   }).then(user => res.json(user));
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 Then, you'll want to make sure that you validate the input and report any errors before creating the user:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--JavaScript-->
+
 ```js
 // ...rest of the initial code omitted for simplicity.
 const { body, validationResult } = require('express-validator');
@@ -77,7 +83,9 @@ app.post(
   },
 );
 ```
+
 <!--TypeScript-->
+
 ```typescript
 // ...rest of the initial code omitted for simplicity.
 import { body, validationResult } from 'express-validator';
@@ -102,6 +110,7 @@ app.post(
   },
 );
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 _Voila!_ Now, whenever a request that includes invalid `username` or `password` fields
