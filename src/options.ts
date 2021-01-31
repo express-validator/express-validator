@@ -1,4 +1,4 @@
-export type URLProtocol = 'http' | 'https' | 'ftp';
+export type URLProtocol = 'http' | 'https' | 'ftp' | string;
 export type UUIDVersion = 3 | 4 | 5 | '3' | '4' | '5' | 'all';
 export type IPVersion = 4 | 6;
 
