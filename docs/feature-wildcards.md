@@ -13,7 +13,7 @@ We can do this with the following code:
 
 ```js
 const express = require('express');
-const { check, sanitize } = require('express-validator');
+const { check } = require('express-validator');
 
 const app = express();
 app.use(express.json());
@@ -21,7 +21,7 @@ app.use(express.json());
 app.post(
   '/addresses',
   check('addresses.*.postalCode').isPostalCode(),
-  sanitize('addresses.*.number').toInt(),
+  check('addresses.*.number').toInt(),
   (req, res) => {
     // Handle the request
   },

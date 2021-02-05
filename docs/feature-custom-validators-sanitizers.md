@@ -21,6 +21,9 @@ or `throw` any value/reject a promise to [use a custom error message](feature-er
 
 ### Example: checking if e-mail is in use
 
+<!--DOCUSAURUS_CODE_TABS-->
+<!--JavaScript-->
+
 ```js
 const { body } = require('express-validator');
 
@@ -38,6 +41,26 @@ app.post(
   },
 );
 ```
+
+<!--TypeScript-->
+
+```js
+import { body, CustomValidator } from 'express-validator';
+// This allows you to reuse the validator
+const isValidUser: CustomValidator = value => {
+  return User.findUserByEmail(value).then(user => {
+    if (user) {
+      return Promise.reject('E-mail already in use');
+    }
+  });
+};
+
+app.post('/user', body('email').custom(isValidUser), (req, res) => {
+  // Handle the request
+});
+```
+
+<!--END_DOCUSAURUS_CODE_TABS-->
 
 ### Example: checking if password confirmation matches password
 
@@ -70,6 +93,9 @@ moment.
 
 ### Example: converting to MongoDB's ObjectID
 
+<!--DOCUSAURUS_CODE_TABS-->
+<!--JavaScript-->
+
 ```js
 const { param } = require('express-validator');
 
@@ -83,3 +109,19 @@ app.post(
   },
 );
 ```
+
+<!--TypeScript-->
+
+```typescript
+import { param } from 'express-validator';
+// This allows you to reuse the validator
+const toObjectId: CustomSanitizer = value => {
+  return ObjectId(value);
+};
+
+app.post('/object/:id', param('id').customSanitizer(toObjectId), (req, res) => {
+  // Handle the request
+});
+```
+
+<!--END_DOCUSAURUS_CODE_TABS-->
