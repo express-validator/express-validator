@@ -82,7 +82,11 @@ app.post('/create-user', yourValidationChains, (req, res) => {
 
 > _Returns:_ a new `Result` instance
 
+<!--DOCUSAURUS_CODE_TABS-->
+<!--JavaScript-->
+
 ```js
+const { validationResult } = require('express-validator');
 app.post('/create-user', yourValidationChains, (req, res, next) => {
   const errorFormatter = ({ location, msg, param, value, nestedErrors }) => {
     // Build your resulting errors however you want! String, object, whatever - it works!
@@ -98,6 +102,28 @@ app.post('/create-user', yourValidationChains, (req, res, next) => {
   // Handle your request as if no errors happened
 });
 ```
+
+<!--TypeScript-->
+
+```typescript
+import { validationResult, ValidationError } from 'express-validator';
+app.post('/create-user', yourValidationChains, (req, res, next) => {
+  const errorFormatter = ({ location, msg, param, value, nestedErrors }: ValidationError) => {
+    // Build your resulting errors however you want! String, object, whatever - it works!
+    return `${location}[${param}]: ${msg}`;
+  };
+  const result = validationResult(req).formatWith(errorFormatter);
+  if (!result.isEmpty()) {
+    // Response will contain something like
+    // { errors: [ "body[password]: must be at least 10 chars long" ] }
+    return res.json({ errors: result.array() });
+  }
+
+  // Handle your request as if no errors happened
+});
+```
+
+<!--END_DOCUSAURUS_CODE_TABS-->
 
 ### `.array([options])`
 

@@ -21,6 +21,9 @@ npm install --save express-validator
 
 Let's get started by writing a basic route to create a user in the database:
 
+<!--DOCUSAURUS_CODE_TABS-->
+<!--JavaScript-->
+
 ```js
 const express = require('express');
 const app = express();
@@ -34,7 +37,27 @@ app.post('/user', (req, res) => {
 });
 ```
 
+<!--TypeScript-->
+
+```typescript
+import express from 'express';
+const app = express();
+
+app.use(express.json());
+app.post('/user', (req: express.Request, res: express.Response) => {
+  User.create({
+    username: req.body.username,
+    password: req.body.password,
+  }).then(user => res.json(user));
+});
+```
+
+<!--END_DOCUSAURUS_CODE_TABS-->
+
 Then, you'll want to make sure that you validate the input and report any errors before creating the user:
+
+<!--DOCUSAURUS_CODE_TABS-->
+<!--JavaScript-->
 
 ```js
 // ...rest of the initial code omitted for simplicity.
@@ -60,6 +83,35 @@ app.post(
   },
 );
 ```
+
+<!--TypeScript-->
+
+```typescript
+// ...rest of the initial code omitted for simplicity.
+import { body, validationResult } from 'express-validator';
+
+app.post(
+  '/user',
+  // username must be an email
+  body('username').isEmail(),
+  // password must be at least 5 chars long
+  body('password').isLength({ min: 5 }),
+  (req: express.Request, res: express.Response) => {
+    // Finds the validation errors in this request and wraps them in an object with handy functions
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    User.create({
+      username: req.body.username,
+      password: req.body.password,
+    }).then(user => res.json(user));
+  },
+);
+```
+
+<!--END_DOCUSAURUS_CODE_TABS-->
 
 _Voila!_ Now, whenever a request that includes invalid `username` or `password` fields
 is submitted, your server will respond like this:
