@@ -12,7 +12,7 @@
     "noImplicitThis": true,
     "noUnusedParameters": true,
     "strictNullChecks": true,
-    "outDir": "./"
+    "outDir": "./src"
   },
   "exclude": ["node_modules", "coverage", "src/**/*.spec.ts"]
 }
