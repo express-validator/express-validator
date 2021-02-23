@@ -1,9 +1,10 @@
 ---
 name: Bug report
 about: Report a reproducible bug or regression.
-title: 'Bug:'
-labels: bug
+title: ''
+labels: 'i: bug, i: needs triage'
 assignees: ''
+
 ---
 
 ## Describe the bug

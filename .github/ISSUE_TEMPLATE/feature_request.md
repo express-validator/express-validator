@@ -2,8 +2,9 @@
 name: Feature request
 about: Suggest an idea for this project.
 title: ''
-labels: enhancement
+labels: 'i: enhancement, i: needs triage'
 assignees: ''
+
 ---
 
 ## Is your feature request related to a problem? Please describe.
