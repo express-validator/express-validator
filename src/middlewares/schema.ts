@@ -41,19 +41,9 @@ export type ParamSchema = InternalParamSchema & {
 };
 
 /**
- * @deprecated  Only here for v5 compatibility. Please use ParamSchema instead.
- */
-export type ValidationParamSchema = ParamSchema;
-
-/**
  * Defines a mapping from field name to a validations/sanitizations schema.
  */
 export type Schema = Record<string, ParamSchema>;
-
-/**
- * @deprecated  Only here for v5 compatibility. Please use Schema instead.
- */
-export type ValidationSchema = Schema;
 
 const validLocations: Location[] = ['body', 'cookies', 'headers', 'params', 'query'];
 const protectedNames = ['errorMessage', 'in'];
