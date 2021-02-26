@@ -4,7 +4,6 @@ about: Report a reproducible bug or regression.
 title: ''
 labels: 'i: bug, i: needs triage'
 assignees: ''
-
 ---
 
 ## Describe the bug
