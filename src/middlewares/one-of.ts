@@ -3,6 +3,7 @@ import { ContextRunnerImpl, ValidationChain } from '../chain';
 import { InternalRequest, Middleware, Request } from '../base';
 import { ContextBuilder } from '../context-builder';
 import { ContextItem } from '../context-items';
+import { ResultWithContext } from '../chain';
 
 // A dummy context item that gets added to surrogate contexts just to make them run
 const dummyItem: ContextItem = { async run() {} };
@@ -12,13 +13,15 @@ export type OneOfCustomMessageBuilder = (options: { req: Request }) => any;
 export function oneOf(
   chains: (ValidationChain | ValidationChain[])[],
   message?: OneOfCustomMessageBuilder,
-): Middleware & { run: (req: Request) => Promise<void> };
+): Middleware & { run: (req: Request) => Promise<ResultWithContext> };
 export function oneOf(
   chains: (ValidationChain | ValidationChain[])[],
   message?: any,
-): Middleware & { run: (req: Request) => Promise<void> };
+): Middleware & { run: (req: Request) => Promise<ResultWithContext> };
 
 export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?: any) {
+  let result: ResultWithContext;
+
   const middleware = async (req: InternalRequest, _res: any, next: (err?: any) => void) => {
     const surrogateContext = new ContextBuilder().addItem(dummyItem).build();
 
@@ -53,7 +56,7 @@ export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?:
       }
 
       // Final context running pass to ensure contexts are added and values are modified properly
-      await new ContextRunnerImpl(surrogateContext).run(req);
+      result = await new ContextRunnerImpl(surrogateContext).run(req);
       next();
     } catch (e) {
       next(e);
@@ -61,9 +64,9 @@ export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?:
   };
 
   const run = async (req: Request) => {
-    return new Promise<void>((resolve, reject) => {
+    return new Promise<ResultWithContext>((resolve, reject) => {
       middleware(req, {}, (e?: any) => {
-        e ? reject(e) : resolve();
+        e ? reject(e) : resolve(result);
       });
     });
   };
