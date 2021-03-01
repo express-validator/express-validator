@@ -13,7 +13,6 @@
     "API": [
       "check-api",
       "validation-chain-api",
-      "filter-api",
       "sanitization-chain-api",
       "matched-data-api",
       "validation-result-api"

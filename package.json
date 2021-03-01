@@ -18,8 +18,6 @@
   "types": "./src/index.d.ts",
   "files": [
     "src",
-    "check",
-    "filter",
     "!**/*.spec.ts",
     "!**/*.ts",
     "**/*.d.ts",
@@ -28,7 +26,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "clean": "git clean -Xf src check filter",
+    "clean": "git clean -Xf src",
     "docs:build": "npm --prefix ./website run build",
     "docs:publish": "USE_SSH=true DEPLOYMENT_BRANCH=master npm --prefix ./website run publish-gh-pages",
     "docs:serve": "npm --prefix ./website run serve",
