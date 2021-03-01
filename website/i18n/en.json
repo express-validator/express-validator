@@ -8,9 +8,6 @@
       "check-api": {
         "title": "Validation middlewares"
       },
-      "filter-api": {
-        "title": "Sanitization middlewares"
-      },
       "matched-data-api": {
         "title": "matchedData()"
       },
