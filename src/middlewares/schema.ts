@@ -118,19 +118,9 @@ export type ParamSchema<T extends string = DefaultSchemaKeys> = BaseParamSchema 
   };
 
 /**
- * @deprecated  Only here for v5 compatibility. Please use ParamSchema instead.
- */
-export type ValidationParamSchema = ParamSchema;
-
-/**
  * Defines a mapping from field name to a validations/sanitizations schema.
  */
 export type Schema<T extends string = DefaultSchemaKeys> = Record<string, ParamSchema<T>>;
-
-/**
- * @deprecated  Only here for v5 compatibility. Please use Schema instead.
- */
-export type ValidationSchema = Schema;
 
 const validLocations: Location[] = ['body', 'cookies', 'headers', 'params', 'query'];
 const protectedNames = ['errorMessage', 'in', 'optional'];

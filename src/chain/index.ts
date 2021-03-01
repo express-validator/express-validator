@@ -6,5 +6,4 @@ export * from './context-runner';
 export * from './context-runner-impl';
 export * from './validators';
 export * from './validators-impl';
-export * from './sanitization-chain';
 export * from './validation-chain';
