@@ -18,10 +18,17 @@ export class Sanitization implements ContextItem {
       return Promise.resolve(sanitizerValue);
     };
 
-    const newValue = this.custom
-      ? await runCustomSanitizer()
-      : (this.sanitizer as StandardSanitizer)(toString(value), ...this.options);
+    if (this.custom) {
+      const newValue = await runCustomSanitizer();
+      context.setData(path, newValue, location);
+      return;
+    }
+    const values = Array.isArray(value) ? value : [value];
+    const newValues = values.map(value => {
+      return (this.sanitizer as StandardSanitizer)(toString(value), ...this.options);
+    });
 
-    context.setData(path, newValue, location);
+    // We get only the first value of the array if the orginal value was wrapped.
+    context.setData(path, values !== value ? newValues[0] : newValues, location);
   }
 }

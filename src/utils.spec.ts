@@ -1,6 +1,11 @@
 import { toString } from './utils';
 
 describe('#toString', () => {
+  it('arrays should be converted to a single string', () => {
+    const value = ['foo', 1, false];
+    expect(toString(value)).toEqual('foo,1,false');
+  });
+
   it('calls custom toString function', () => {
     const value = {
       toString() {

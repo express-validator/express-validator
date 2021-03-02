@@ -58,26 +58,27 @@ describe('when sanitizer is a standard one', () => {
     sanitization = new Sanitization(sanitizer, false);
 
     await sanitization.run(context, false, meta);
-    expect(sanitizer).toHaveBeenLastCalledWith('false');
+    expect(sanitizer).toHaveBeenNthCalledWith(1, 'false');
 
     await sanitization.run(context, 42, meta);
-    expect(sanitizer).toHaveBeenLastCalledWith('42');
+    expect(sanitizer).toHaveBeenNthCalledWith(2, '42');
 
     // new Date(Date.UTC()) makes sure we'll not have to deal with timezones
     await sanitization.run(context, new Date(Date.UTC(2019, 4, 1, 10, 30, 50, 0)), meta);
-    expect(sanitizer).toHaveBeenLastCalledWith('2019-05-01T10:30:50.000Z');
+    expect(sanitizer).toHaveBeenNthCalledWith(3, '2019-05-01T10:30:50.000Z');
 
     await sanitization.run(context, null, meta);
-    expect(sanitizer).toHaveBeenLastCalledWith('');
+    expect(sanitizer).toHaveBeenNthCalledWith(4, '');
 
     await sanitization.run(context, undefined, meta);
-    expect(sanitizer).toHaveBeenLastCalledWith('');
+    expect(sanitizer).toHaveBeenNthCalledWith(5, '');
 
     await sanitization.run(context, [42, 1], meta);
-    expect(sanitizer).toHaveBeenLastCalledWith('42');
+    expect(sanitizer).toHaveBeenNthCalledWith(6, '42');
+    expect(sanitizer).toHaveBeenNthCalledWith(7, '1');
 
     await sanitization.run(context, { toString: () => 'wow' }, meta);
-    expect(sanitizer).toHaveBeenLastCalledWith('wow');
+    expect(sanitizer).toHaveBeenNthCalledWith(8, 'wow');
   });
 
   it('calls it with the options', async () => {
