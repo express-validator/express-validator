@@ -1,4 +1,4 @@
-import { Request } from '../base';
+import { Request } from 'express';
 import { ContextBuilder } from '../context-builder';
 import { Sanitizers } from './sanitizers';
 import { Validators } from './validators';

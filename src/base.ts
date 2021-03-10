@@ -1,13 +1,5 @@
+import { Request } from 'express';
 import { ReadonlyContext } from './context';
-
-export interface Request {
-  [k: string]: any;
-  body?: any;
-  cookies?: Record<string, any>;
-  headers?: Record<string, any>;
-  params?: Record<string, any>;
-  query?: Record<string, any>;
-}
 
 export type Middleware = (req: Request, res: any, next: (err?: any) => void) => void;
 

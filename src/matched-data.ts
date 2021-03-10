@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
-import { FieldInstance, InternalRequest, Location, Request, contextsKey } from './base';
+import { Request } from 'express';
+import { FieldInstance, InternalRequest, Location, contextsKey } from './base';
 import { Context } from './context';
 
 interface FieldInstanceBag {

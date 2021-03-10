@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
-import { InternalRequest, Request, ValidationError, contextsKey } from './base';
+import { Request } from 'express';
+import { InternalRequest, ValidationError, contextsKey } from './base';
 import { bindAll } from './utils';
 
 export type ErrorFormatter<T = any> = (error: ValidationError) => T;

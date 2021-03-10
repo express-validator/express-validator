@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
-import { InternalRequest, Request, ValidationHalt, contextsKey } from '../base';
+import { Request } from 'express';
+import { InternalRequest, ValidationHalt, contextsKey } from '../base';
 import { Context, ReadonlyContext } from '../context';
 import { ContextBuilder } from '../context-builder';
 import { SelectFields, selectFields as baseSelectFields } from '../select-fields';

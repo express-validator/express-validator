@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
+import { Request } from 'express';
 import { ContextRunnerImpl, ValidationChain } from '../chain';
-import { InternalRequest, Middleware, Request } from '../base';
+import { InternalRequest, Middleware } from '../base';
 import { ContextBuilder } from '../context-builder';
 import { ContextItem } from '../context-items';
 

@@ -1,4 +1,4 @@
-import { Request } from '../base';
+import { Request } from 'express';
 import { ReadonlyContext } from '../context';
 import { Result } from '../validation-result';
 

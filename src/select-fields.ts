@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
-import { FieldInstance, Location, Request } from './base';
+import { Request } from 'express';
+import { FieldInstance, Location } from './base';
 
 export type SelectFields = (
   req: Request,

@@ -1,6 +1,7 @@
+import { Request } from 'express';
 import { Sanitizers } from '../chain/sanitizers';
 import { Validators } from '../chain/validators';
-import { DynamicMessageCreator, Location, Request } from '../base';
+import { DynamicMessageCreator, Location } from '../base';
 import { ValidationChain, ValidatorsImpl } from '../chain';
 import { Optional } from '../context';
 import { check } from './check';
