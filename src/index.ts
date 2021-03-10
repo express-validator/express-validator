@@ -5,6 +5,7 @@ export {
   CustomSanitizer,
   DynamicMessageCreator,
   ValidationError,
+  Request,
 } from './base';
 
 export { SanitizationChain, ValidationChain } from './chain';
