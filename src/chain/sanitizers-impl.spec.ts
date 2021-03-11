@@ -1,4 +1,5 @@
 import * as validator from 'validator';
+import { Request } from 'express';
 import { Sanitization } from '../context-items/sanitization';
 import { Meta } from '../base';
 import { ContextBuilder } from '../context-builder';
@@ -122,7 +123,7 @@ describe('#toArray()', () => {
       },
     ]);
 
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const meta: Meta = { req: {} as Request, location: 'body', path: 'foo' };
     const toArray = context.stack[0];
 
     await toArray.run(context, [], meta);
@@ -165,7 +166,7 @@ describe('#toLowerCase()', () => {
       },
     ]);
 
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const meta: Meta = { req: {} as Request, location: 'body', path: 'foo' };
     const toLowerCase = context.stack[0];
 
     await toLowerCase.run(context, '', meta);
@@ -209,7 +210,7 @@ describe('#toUpperCase()', () => {
       },
     ]);
 
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const meta: Meta = { req: {} as Request, location: 'body', path: 'foo' };
     const toUpperCase = context.stack[0];
 
     await toUpperCase.run(context, '', meta);
@@ -253,7 +254,7 @@ describe('#default()', () => {
       },
     ]);
 
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const meta: Meta = { req: {} as Request, location: 'body', path: 'foo' };
     const defaultSanitizer = context.stack[0];
 
     await defaultSanitizer.run(context, 'foo', meta);
@@ -297,7 +298,7 @@ describe('#replace()', () => {
       },
     ]);
 
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const meta: Meta = { req: {} as Request, location: 'body', path: 'foo' };
     const replace = context.stack[0];
 
     await replace.run(context, '', meta);
@@ -332,7 +333,7 @@ describe('#replace()', () => {
       },
     ]);
 
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const meta: Meta = { req: {} as Request, location: 'body', path: 'foo' };
     const replace = context.stack[0];
 
     await replace.run(context, 'foo', meta);
@@ -370,7 +371,7 @@ describe('#replace()', () => {
       },
     ]);
 
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const meta: Meta = { req: {} as Request, location: 'body', path: 'foo' };
     const replace = context.stack[0];
 
     await replace.run(context, 'foo', meta);
