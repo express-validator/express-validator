@@ -78,13 +78,13 @@ it('runs items on the stack with required data', async () => {
 });
 
 it('runs items on the stack in order', async () => {
-  let item1Resolve = () => {};
+  let item1Resolve: Function = () => {};
   const item1Promise = new Promise(resolve => {
     item1Resolve = resolve;
   });
   const item1: ContextItem = { run: jest.fn().mockReturnValueOnce(item1Promise) };
 
-  let item2Resolve = () => {};
+  let item2Resolve: Function = () => {};
   const item2Promise = new Promise(resolve => {
     item2Resolve = resolve;
   });
