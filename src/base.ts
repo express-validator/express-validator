@@ -48,7 +48,7 @@ export type ValidationError =
       nestedErrors?: unknown[];
     };
 
-export const contextsKey = 'express-validator#contexts';
+export const contextsKey = Symbol('contexts');
 
 export interface InternalRequest extends Request {
   [contextsKey]?: ReadonlyContext[];
