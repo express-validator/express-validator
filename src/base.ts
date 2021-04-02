@@ -48,7 +48,7 @@ export type ValidationError =
       nestedErrors?: unknown[];
     };
 
-// Not using simbols because of #813
+// Not using Symbol because of #813
 export const contextsKey = 'express-validator#contexts';
 
 export interface InternalRequest extends Request {
