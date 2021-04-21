@@ -1,5 +1,6 @@
 import { InternalRequest, contextsKey } from '../base';
-import { ContextRunnerImpl, ResultWithContext } from '../chain/context-runner-impl';
+import { ContextRunnerImpl } from '../chain/context-runner-impl';
+import { Result } from '../validation-result';
 import { check } from './validation-chain-builders';
 import { oneOf } from './one-of';
 
@@ -194,7 +195,7 @@ describe('imperatively run oneOf', () => {
     const result = await middleware.run(req);
 
     const context = getOneOfContext(req);
-    expect(result).toBeInstanceOf(ResultWithContext);
+    expect(result).toBeInstanceOf(Result);
     expect(context.errors.length).toEqual(0);
   });
 });

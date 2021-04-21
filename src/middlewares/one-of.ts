@@ -3,7 +3,7 @@ import { ContextRunnerImpl, ValidationChain } from '../chain';
 import { InternalRequest, Middleware, Request } from '../base';
 import { ContextBuilder } from '../context-builder';
 import { ContextItem } from '../context-items';
-import { ResultWithContext } from '../chain';
+import { Result } from '../validation-result';
 
 // A dummy context item that gets added to surrogate contexts just to make them run
 const dummyItem: ContextItem = { async run() {} };
@@ -13,14 +13,14 @@ export type OneOfCustomMessageBuilder = (options: { req: Request }) => any;
 export function oneOf(
   chains: (ValidationChain | ValidationChain[])[],
   message?: OneOfCustomMessageBuilder,
-): Middleware & { run: (req: Request) => Promise<ResultWithContext> };
+): Middleware & { run: (req: Request) => Promise<Result> };
 export function oneOf(
   chains: (ValidationChain | ValidationChain[])[],
   message?: any,
-): Middleware & { run: (req: Request) => Promise<ResultWithContext> };
+): Middleware & { run: (req: Request) => Promise<Result> };
 
 export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?: any) {
-  let result: ResultWithContext;
+  let result: Result;
 
   const middleware = async (req: InternalRequest, _res: any, next: (err?: any) => void) => {
     const surrogateContext = new ContextBuilder().addItem(dummyItem).build();
@@ -64,7 +64,7 @@ export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?:
   };
 
   const run = async (req: Request) => {
-    return new Promise<ResultWithContext>((resolve, reject) => {
+    return new Promise<Result>((resolve, reject) => {
       middleware(req, {}, (e?: any) => {
         e ? reject(e) : resolve(result);
       });
