@@ -9,16 +9,19 @@ const dummyItem: ContextItem = { async run() {} };
 
 export type OneOfCustomMessageBuilder = (options: { req: Request }) => any;
 
-export function oneOf(
-  chains: (ValidationChain | ValidationChain[])[],
-  message?: OneOfCustomMessageBuilder,
-): Middleware & { run: (req: Request) => Promise<void> };
-export function oneOf(
-  chains: (ValidationChain | ValidationChain[])[],
-  message?: any,
-): Middleware & { run: (req: Request) => Promise<void> };
+export type OneOfErrorType = 'grouped' | 'leastErroredOnly' | 'legacy';
 
-export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?: any) {
+export interface OneOfOptions {
+  message?: OneOfCustomMessageBuilder | any;
+  errorType?: OneOfErrorType;
+}
+
+export function oneOf(
+  chains: (ValidationChain | ValidationChain[])[],
+  options: OneOfOptions = {},
+): Middleware & { run: (req: Request) => Promise<void> } {
+  options = { errorType: 'grouped', ...options };
+
   const middleware = async (req: InternalRequest, _res: any, next: (err?: any) => void) => {
     const surrogateContext = new ContextBuilder().addItem(dummyItem).build();
 
@@ -45,10 +48,31 @@ export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?:
       const success = allErrors.some(groupErrors => groupErrors.length === 0);
 
       if (!success) {
+        let error;
+        switch (options.errorType) {
+          case 'grouped':
+            error = allErrors;
+            break;
+          case 'leastErroredOnly':
+            let leastErroredIndex = 0;
+            for (let i = 1; i < allErrors.length; i++) {
+              if (allErrors[i].length < allErrors[leastErroredIndex].length) {
+                leastErroredIndex = i;
+              }
+            }
+            error = allErrors[leastErroredIndex];
+            break;
+          default:
+            // legacy
+            error = _.flatMap(allErrors);
+        }
+
         // Only add an error to the context if no group of chains had success.
         surrogateContext.addError(
-          typeof message === 'function' ? message({ req }) : message || 'Invalid value(s)',
-          _.flatMap(allErrors),
+          typeof options.message === 'function'
+            ? options.message({ req })
+            : options.message || 'Invalid value(s)',
+          error,
         );
       }
 

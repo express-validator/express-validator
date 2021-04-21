@@ -1,7 +1,7 @@
 import { InternalRequest, contextsKey } from '../base';
 import { ContextRunnerImpl } from '../chain/context-runner-impl';
 import { check } from './validation-chain-builders';
-import { oneOf } from './one-of';
+import { OneOfErrorType, OneOfOptions, oneOf } from './one-of';
 
 const getOneOfContext = (req: InternalRequest) => {
   const contexts = req[contextsKey] || [];
@@ -55,17 +55,7 @@ describe('with a list of chains', () => {
 
     oneOf([check('foo').isInt(), check('bar').isInt()])(req, {}, () => {
       const context = getOneOfContext(req);
-      expect(context.errors).toHaveLength(1);
-      expect(context.errors).toContainEqual(
-        expect.objectContaining({
-          param: '_error',
-          nestedErrors: expect.arrayContaining([
-            expect.objectContaining({ param: 'foo' }),
-            expect.objectContaining({ param: 'bar' }),
-          ]),
-        }),
-      );
-
+      expect(context.errors).toMatchSnapshot();
       done();
     });
   });
@@ -91,18 +81,7 @@ describe('with a list of chain groups', () => {
 
     oneOf([[check('foo').isInt(), check('bar').isInt()], check('baz').isAlpha()])(req, {}, () => {
       const context = getOneOfContext(req);
-      expect(context.errors).toHaveLength(1);
-      expect(context.errors).toContainEqual(
-        expect.objectContaining({
-          param: '_error',
-          nestedErrors: expect.arrayContaining([
-            expect.objectContaining({ param: 'foo' }),
-            expect.objectContaining({ param: 'bar' }),
-            expect.objectContaining({ param: 'baz' }),
-          ]),
-        }),
-      );
-
+      expect(context.errors).toMatchSnapshot();
       done();
     });
   });
@@ -138,7 +117,7 @@ describe('error message', () => {
       body: { foo: true },
     };
 
-    oneOf([check('foo').isInt()], 'not today')(req, {}, () => {
+    oneOf([check('foo').isInt()], { message: 'not today' })(req, {}, () => {
       const context = getOneOfContext(req);
       expect(context.errors[0]).toHaveProperty('msg', 'not today');
       done();
@@ -151,10 +130,52 @@ describe('error message', () => {
     };
 
     const message = jest.fn(() => 'keep trying');
-    oneOf([check('foo').isInt()], message)(req, {}, () => {
+    oneOf([check('foo').isInt()], { message })(req, {}, () => {
       const context = getOneOfContext(req);
-      expect(context.errors[0]).toHaveProperty('msg', 'keep trying');
+      expect(context.errors).toMatchSnapshot();
       expect(message).toHaveBeenCalledWith({ req });
+      done();
+    });
+  });
+});
+
+describe('should let the user to choose between multiple error types', () => {
+  // TODO: Can't use it.each because it doesn't support done() in TypeScript
+  const errorTypes: OneOfErrorType[] = ['grouped', 'legacy'];
+  errorTypes.forEach(errorType => {
+    it(`${errorType} error type`, done => {
+      const req: InternalRequest = {
+        body: { foo: true },
+      };
+      const options: OneOfOptions = {
+        errorType,
+      };
+
+      oneOf([check('foo').isString(), check('bar').isFloat()], options)(req, {}, () => {
+        const context = getOneOfContext(req);
+        expect(context.errors).toMatchSnapshot();
+        done();
+      });
+    });
+  });
+
+  it('leastErroredOnly error type', done => {
+    const req: InternalRequest = {
+      body: { foo: true, bar: 'bar' },
+    };
+    const options: OneOfOptions = {
+      errorType: 'leastErroredOnly',
+    };
+
+    oneOf(
+      [
+        [check('foo').isFloat(), check('bar').isInt()],
+        [check('foo').isString(), check('bar').isString()],
+      ],
+      options,
+    )(req, {}, () => {
+      const context = getOneOfContext(req);
+      expect(context.errors).toMatchSnapshot();
       done();
     });
   });
