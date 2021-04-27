@@ -369,6 +369,8 @@ export type PassportCountryCode =
   | 'UA'
   | 'US';
 
+export type LicensePlateLocale = 'de-DE' | 'de-LI' | 'pt-PT' | 'sq-AL' | 'pt-BR';
+
 export type TaxIDLocale = 'en-US';
 
 export type VATCountryCode = 'GB';
