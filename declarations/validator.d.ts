@@ -81,6 +81,10 @@ declare module 'validator' {
     options?: import('../src/options').IsLatLongOptions,
   ): boolean;
   export function isLength(str: string, options: import('../src/options').MinMaxOptions): boolean;
+  export function isLicensePlate(
+    str: string,
+    options: import('../src/options').LicensePlateLocale,
+  ): boolean;
   export function isLocale(str: string): boolean;
   export function isLowercase(str: string): boolean;
   export function isMagnetURI(str: string): boolean;
