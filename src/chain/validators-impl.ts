@@ -236,8 +236,8 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isLength(options: Options.MinMaxOptions) {
     return this.addStandardValidation(validator.isLength, options);
   }
-  isLicensePlate(options: Options.LicensePlateLocale) {
-    return this.addStandardValidation(validator.isLicensePlate, options);
+  isLicensePlate(locale: Options.LicensePlateLocale) {
+    return this.addStandardValidation(validator.isLicensePlate, locale);
   }
   isLocale() {
     return this.addStandardValidation(validator.isLocale);
