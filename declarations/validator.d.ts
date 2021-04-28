@@ -83,7 +83,7 @@ declare module 'validator' {
   export function isLength(str: string, options: import('../src/options').MinMaxOptions): boolean;
   export function isLicensePlate(
     str: string,
-    options: import('../src/options').LicensePlateLocale,
+    locale: import('../src/options').LicensePlateLocale,
   ): boolean;
   export function isLocale(str: string): boolean;
   export function isLowercase(str: string): boolean;
