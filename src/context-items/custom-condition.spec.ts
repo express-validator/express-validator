@@ -46,6 +46,11 @@ it('throws a validation halt if the condition is falsy', async () => {
   await expect(runItem()).rejects.toThrowError(ValidationHalt);
 });
 
+it('does not throw if a falsy value is resolved in a Promise', async () => {
+  condition.mockResolvedValue(false);
+  await expect(runItem()).resolves.toBeUndefined();
+});
+
 it('throws a validation halt if the condition is a rejected promise', async () => {
   condition.mockRejectedValue('foo');
   await expect(runItem()).rejects.toThrowError(ValidationHalt);
