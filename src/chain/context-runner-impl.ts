@@ -6,7 +6,7 @@ import { SelectFields, selectFields as baseSelectFields } from '../select-fields
 import { Result } from '../validation-result';
 import { ContextRunner } from './context-runner';
 
-class ResultWithContext extends Result {
+export class ResultWithContext extends Result {
   constructor(readonly context: ReadonlyContext) {
     super(error => error, context.errors);
   }

@@ -60,7 +60,7 @@ Same as `check([fields, message])`, but only checking `req.query`.
   or an array of arrays containing validation chains.
 - `message` _(optional)_: an error message to use when all chains failed. Defaults to `Invalid value(s)`; see also [Dynamic Messages](feature-error-messages.md#dynamic-messages).
 
-> _Returns:_ a middleware instance and `{ run: (req) => Promise<void> }`
+> _Returns:_ a middleware instance and `{ run: (req) => Promise<Result> }`
 
 Creates a middleware instance that will ensure at least one of the given chains passes the validation.  
 If none of the given chains passes, an error will be pushed to the `_error` pseudo-field,
