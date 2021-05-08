@@ -21,9 +21,9 @@
     "src",
     "check",
     "filter",
-    "!*.spec.ts",
-    "!*.ts",
-    "*.d.ts"
+    "!**/*.spec.ts",
+    "!**/*.ts",
+    "**/*.d.ts"
   ],
   "scripts": {
     "build": "tsc",
