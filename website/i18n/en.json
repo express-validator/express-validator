@@ -188,6 +188,12 @@
       "version-6.10.0/version-6.10.0-migration-v5-to-v6": {
         "title": "Migration from v5 to v6"
       },
+      "version-6.11.0/version-6.11.0-check-api": {
+        "title": "Validation middlewares"
+      },
+      "version-6.11.0/version-6.11.0-validation-chain-api": {
+        "title": "Validation Chain API"
+      },
       "version-6.2.0/version-6.2.0-validation-chain-api": {
         "title": "Validation Chain API"
       },
