@@ -398,7 +398,7 @@ export interface IsAlphaOptions {
 }
 
 export interface IsAlphanumericOptions {
-  ignore?: string | string[] | RegExp;
+  ignore?: string | RegExp;
 }
 
 /**
