@@ -397,6 +397,10 @@ export interface IsAlphaOptions {
   ignore?: string | string[] | RegExp;
 }
 
+export interface IsAlphanumericOptions {
+  ignore?: string | RegExp;
+}
+
 /**
  * defaults to
  * {

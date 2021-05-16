@@ -20,7 +20,10 @@ export interface Validators<Return> {
   equals(comparison: string): Return;
   isAfter(date?: string): Return;
   isAlpha(locale?: Options.AlphaLocale, options?: Options.IsAlphaOptions): Return;
-  isAlphanumeric(locale?: Options.AlphanumericLocale): Return;
+  isAlphanumeric(
+    locale?: Options.AlphanumericLocale,
+    options?: Options.IsAlphanumericOptions,
+  ): Return;
   isAscii(): Return;
   isBase32(): Return;
   isBase58(): Return;
