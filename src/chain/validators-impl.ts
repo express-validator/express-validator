@@ -94,8 +94,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
     return this.addStandardValidation(validator.isAlpha, locale, { ...options, ignore });
   }
   isAlphanumeric(locale?: Options.AlphanumericLocale, options?: Options.IsAlphanumericOptions) {
-    const ignore = options?.ignore;
-    return this.addStandardValidation(validator.isAlphanumeric, locale, { ...options, ignore });
+    return this.addStandardValidation(validator.isAlphanumeric, locale, options);
   }
   isAscii() {
     return this.addStandardValidation(validator.isAscii);
