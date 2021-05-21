@@ -113,6 +113,25 @@ describe('on each field', () => {
     );
   });
 
+  it('halts chain execution if "if" statement resolves to false', async () => {
+    const schema = checkSchema({
+      foo: {
+        if: (value) => {
+          return value !== ""
+        },
+        isEmpty: true
+      }
+    })
+
+    const result = await Promise.all(
+      schema.map(chain => chain.run({
+        query: { foo: "" }
+      }))
+    )
+
+    expect(result).toHaveLength(0);
+  })
+
   it('sets error message', () => {
     const chain = checkSchema({
       foo: {
