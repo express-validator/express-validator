@@ -1,4 +1,4 @@
-import { CustomValidator, DynamicMessageCreator } from '../base';
+import { CustomValidator, DynamicMessageCreator, StandardValidator } from '../base';
 import * as Options from '../options';
 
 export interface Validators<Return> {
@@ -9,6 +9,7 @@ export interface Validators<Return> {
 
   // custom validators
   custom(validator: CustomValidator): Return;
+  if(condition: StandardValidator): Return;
   exists(options?: { checkFalsy?: boolean; checkNull?: boolean }): Return;
   isArray(options?: { min?: number; max?: number }): Return;
   isObject(options?: { strict?: boolean }): Return;
