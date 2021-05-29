@@ -83,8 +83,7 @@ export function checkSchema(
         // Using "!" because typescript doesn't know it isn't undefined.
         const methodCfg = config[method]!;
         
-        const field = method === 'if' ? 'condition' : 'options';
-        let options: any[] = methodCfg === true ? [] : methodCfg[field] || [];
+        let options: any[] = methodCfg === true ? [] : methodCfg.options || [];
         if (options != null && !Array.isArray(options)) {
           options = [options];
         }

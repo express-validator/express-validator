@@ -15,7 +15,6 @@ export type Location = 'body' | 'cookies' | 'headers' | 'params' | 'query';
 export type Meta = { req: Request; location: Location; path: string };
 
 export type CustomValidator = (input: any, meta: Meta) => any;
-export type ConditionValidator = (input: any, meta: Meta) => boolean;
 export type StandardValidator = (input: string, ...options: any[]) => boolean;
 
 export type CustomSanitizer = (input: any, meta: Meta) => any;
