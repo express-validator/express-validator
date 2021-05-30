@@ -17,11 +17,12 @@ Every detail you can give will be of great help.
 
 Do you want to dedicate your time to help improve the codebase? Great! Then submitting a pull request is the best way to do this.
 
-If you are a new contributor and you want to improve the codebase you can follow these five steps: 
-1. Fork the repository. 
-2. Choose an issue to work on. 
-3. Work on the issue locally. 
-4. Push to your fork. 
+If you are a new contributor and you want to improve the codebase you can follow these five steps:
+
+1. Fork the repository.
+2. Choose an issue to work on.
+3. Work on the issue locally.
+4. Push to your fork.
 5. Open a Pull Request.
 
 In case you opened a issue, then fixing it yourself is the fastest way to get it done.  
