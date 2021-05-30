@@ -112,28 +112,25 @@ describe('on each field', () => {
       expect.objectContaining({ path: 'bar', value: 'a', originalValue: 'baz' }),
     );
   });
-  
-  it('halts validation if `if` statement is falsy', async () => {
+
+  it('halts chain execution if "if" statement resolves to false', async () => {
     const schema = checkSchema({
       foo: {
-        if: {
-          condition: (value, _) => {
-            return value;
-          }
+        if: (value) => {
+          return value !== ""
         },
-        notEmpty: true // will cause error if `if` condition does not halt execution
-    });
-    
-    const results = await Promise.all(
-      schema.map(chain =>
-        chain.run({
-          query: { foo: '' },
-        }),
-      ),
-    );
-    
-    expect(results[0].context.errors).toHaveLength(0);
-  }
+        isEmpty: true
+      }
+    })
+
+    const result = await Promise.all(
+      schema.map(chain => chain.run({
+        query: { foo: "" }
+      }))
+    )
+
+    expect(result).toHaveLength(0);
+  })
 
   it('sets error message', () => {
     const chain = checkSchema({
