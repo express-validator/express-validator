@@ -22,7 +22,7 @@ If you are a new contributor and you want to improve the codebase you can follow
 1. Fork the repository.
 2. Choose an issue to work on.
 3. Work on the issue locally.
-4. Push to your fork. 
+4. Push to your fork.
 5. Open a Pull Request.
 
 In case you opened a issue, then fixing it yourself is the fastest way to get it done.  
