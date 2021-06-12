@@ -17,8 +17,6 @@ beforeEach(() => {
   jest.spyOn(context, 'addError');
 
   validator = jest.fn();
-  validation = new CustomValidation(validator, false);
-  validation.message = undefined;
 });
 
 // There are 4 tests that are pretty much the same with just small variations among them.
@@ -34,6 +32,11 @@ const createSyncTest = (options: { returnValue: any; addsError: boolean }) => as
 };
 
 describe('when not negated', () => {
+  beforeEach(() => {
+    validation = new CustomValidation(validator, false);
+    validation.message = 'nope';
+  });
+
   it(
     'adds error if validator returns falsy',
     createSyncTest({ returnValue: false, addsError: true }),
@@ -44,7 +47,27 @@ describe('when not negated', () => {
     createSyncTest({ returnValue: true, addsError: false }),
   );
 
+  describe('with message set', () => {
+    it('adds error with validation message if validator throws', async () => {
+      validator.mockImplementation(() => {
+        throw new Error('boom');
+      });
+      await validation.run(context, 'bar', meta);
+      expect(context.addError).toHaveBeenCalledWith('nope', 'bar', meta);
+    });
+
+    it('adds error with validation message if validator returns a promise that rejects', async () => {
+      validator.mockRejectedValue('a bomb');
+      await validation.run(context, 'bar', meta);
+      expect(context.addError).toHaveBeenCalledWith('nope', 'bar', meta);
+    });
+  });
+
   describe('without message set', () => {
+    beforeEach(() => {
+      validation.message = undefined;
+    });
+
     it('adds error with thrown message if validator throws', async () => {
       validator.mockImplementation(() => {
         throw new Error('boom');
@@ -57,25 +80,6 @@ describe('when not negated', () => {
       validator.mockRejectedValue('a bomb');
       await validation.run(context, 'bar', meta);
       expect(context.addError).toHaveBeenCalledWith('a bomb', 'bar', meta);
-    });
-  });
-
-  describe('with message set', () => {
-    it('adds error with validation message if validator throws', async () => {
-      validation.message = 'nope';
-      validator.mockImplementation(() => {
-        throw new Error('boom');
-      });
-      await validation.run(context, 'bar', meta);
-      expect(context.addError).toHaveBeenCalledWith('nope', 'bar', meta);
-    });
-
-    it('adds error with validation message if validator returns a promise that rejects', async () => {
-      // Validation's message
-      validation.message = 'nope';
-      validator.mockRejectedValue('a bomb');
-      await validation.run(context, 'bar', meta);
-      expect(context.addError).toHaveBeenCalledWith('nope', 'bar', meta);
     });
   });
 
@@ -117,7 +121,6 @@ describe('when negated', () => {
   });
 
   it('adds error with validation message if validator returns a promise that resolves', async () => {
-    validation.message = 'nope';
     validator.mockResolvedValue(true);
     await validation.run(context, 'bar', meta);
     expect(context.addError).toHaveBeenCalledWith('nope', 'bar', meta);
