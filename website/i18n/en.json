@@ -194,6 +194,9 @@
       "version-6.11.0/version-6.11.0-validation-chain-api": {
         "title": "Validation Chain API"
       },
+      "version-6.12.0/version-6.12.0-custom-error-messages": {
+        "title": "Custom Error Messages"
+      },
       "version-6.2.0/version-6.2.0-validation-chain-api": {
         "title": "Validation Chain API"
       },
