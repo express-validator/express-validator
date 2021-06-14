@@ -65,6 +65,13 @@ app.post(
 );
 ```
 
+You may still use the [`.withMessage()` method](api-validation-chain.md#withmessagemessage) to
+override any message obtained from the custom validator with a custom message that is more appropriate
+to the route's context.
+
+This is especially useful if you wish to reuse a custom validator function across several routes
+throughout the application.
+
 ### Field Level
 
 Messages can be specified at the field level by using the second parameter of the

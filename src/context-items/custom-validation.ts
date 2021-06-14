@@ -24,7 +24,7 @@ export class CustomValidation implements ContextItem {
         return;
       }
 
-      context.addError((err instanceof Error ? err.message : err) || this.message, value, meta);
+      context.addError(this.message || (err instanceof Error ? err.message : err), value, meta);
     }
   }
 }
