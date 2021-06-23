@@ -140,23 +140,18 @@ describe('error message', () => {
 });
 
 describe('should let the user to choose between multiple error types', () => {
-  // TODO: Can't use it.each because it doesn't support done() in TypeScript
-  const errorTypes: OneOfErrorType[] = ['grouped', 'legacy'];
-  errorTypes.forEach(errorType => {
-    it(`${errorType} error type`, done => {
-      const req: InternalRequest = {
-        body: { foo: true },
-      };
-      const options: OneOfOptions = {
-        errorType,
-      };
+  let errors: OneOfErrorType[] = ['grouped', 'legacy'];
+  it.each(errors)(`%s error type`, async errorType => {
+    const req: InternalRequest = {
+      body: { foo: true },
+    };
+    const options: OneOfOptions = {
+      errorType,
+    };
 
-      oneOf([check('foo').isString(), check('bar').isFloat()], options)(req, {}, () => {
-        const context = getOneOfContext(req);
-        expect(context.errors).toMatchSnapshot();
-        done();
-      });
-    });
+    await oneOf([check('foo').isString(), check('bar').isFloat()], options).run(req);
+    const context = getOneOfContext(req);
+    expect(context.errors).toMatchSnapshot();
   });
 
   it('leastErroredOnly error type', done => {
@@ -170,7 +165,8 @@ describe('should let the user to choose between multiple error types', () => {
     oneOf(
       [
         [check('foo').isFloat(), check('bar').isInt()],
-        [check('foo').isString(), check('bar').isString()],
+        [check('foo').isString(), check('bar').isString()], // least errored
+        [check('foo').isFloat(), check('bar').isBoolean()],
       ],
       options,
     )(req, {}, () => {
