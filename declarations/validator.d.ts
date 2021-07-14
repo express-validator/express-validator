@@ -72,7 +72,7 @@ declare module 'validator' {
   export function isISO31661Alpha2(str: string): boolean;
   export function isISO31661Alpha3(str: string): boolean;
   export function isISRC(str: string): boolean;
-  export function isIn(str: string, values: any[]): boolean;
+  export function isIn(str: string, values: readonly any[]): boolean;
   export function isInt(str: string, options?: import('../src/options').IsIntOptions): boolean;
   export function isJSON(str: string, options?: import('../src/options').IsJSONOptions): boolean;
   export function isJWT(str: string): boolean;
@@ -94,7 +94,7 @@ declare module 'validator' {
     str: string,
     locale:
       | import('../src/options').MobilePhoneLocale
-      | import('../src/options').MobilePhoneLocale[],
+      | readonly import('../src/options').MobilePhoneLocale[],
     options?: import('../src/options').IsMobilePhoneOptions,
   ): boolean;
   export function isMongoId(str: string): boolean;
@@ -128,7 +128,7 @@ declare module 'validator' {
   export function isUppercase(str: string): boolean;
   export function isVariableWidth(str: string): boolean;
   export function isVAT(str: string, countryCode: import('../src/options').VATCountryCode): boolean;
-  export function isWhitelisted(str: string, chars: string | string[]): boolean;
+  export function isWhitelisted(str: string, chars: string | readonly string[]): boolean;
   export function matches(str: string, pattern: RegExp | string, modifiers?: string): boolean;
 
   export function blacklist(str: string, chars: string): string;
