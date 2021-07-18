@@ -177,6 +177,29 @@ describe('should let the user to choose between multiple error types', () => {
   });
 });
 
+describe('should default to grouped errorType', () => {
+  it('when no options are provided', async () => {
+    const req: InternalRequest = {
+      body: { foo: true },
+    };
+    await oneOf([check('foo').isString(), check('bar').isFloat()]).run(req);
+    const context = getOneOfContext(req);
+    expect(context.errors[0]?.nestedErrors?.length).toEqual(2);
+  });
+
+  it('when invalid error type is provided', async () => {
+    const req: InternalRequest = {
+      body: { foo: true },
+    };
+    await oneOf([check('foo').isString(), check('bar').isFloat()], {
+      // @ts-ignore
+      errorType: 'invalid error type',
+    }).run(req);
+    const context = getOneOfContext(req);
+    expect(context.errors[0]?.nestedErrors?.length).toEqual(2);
+  });
+});
+
 describe('imperatively run oneOf', () => {
   it('sets errors in context when validation fails', async () => {
     const req: InternalRequest = {

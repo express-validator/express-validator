@@ -11,9 +11,20 @@ export type OneOfCustomMessageBuilder = (options: { req: Request }) => any;
 
 export type OneOfErrorType = 'grouped' | 'leastErroredOnly' | 'flat';
 
+// Not used in this file, just for third party users.
+export type OneOfOptions =
+  | {
+      message?: OneOfCustomMessageBuilder;
+      errorType?: OneOfErrorType;
+    }
+  | {
+      message?: any;
+      errorType?: OneOfErrorType;
+    };
+
 export function oneOf(
   chains: (ValidationChain | ValidationChain[])[],
-  options?: { message: OneOfCustomMessageBuilder; errorType?: OneOfErrorType },
+  options?: { message?: OneOfCustomMessageBuilder; errorType?: OneOfErrorType },
 ): Middleware & { run: (req: Request) => Promise<void> };
 export function oneOf(
   chains: (ValidationChain | ValidationChain[])[],
@@ -23,8 +34,6 @@ export function oneOf(
   chains: (ValidationChain | ValidationChain[])[],
   options: { message?: any; errorType?: OneOfErrorType } = {},
 ): Middleware & { run: (req: Request) => Promise<void> } {
-  options = { errorType: 'grouped', ...options };
-
   const middleware = async (req: InternalRequest, _res: any, next: (err?: any) => void) => {
     const surrogateContext = new ContextBuilder().addItem(dummyItem).build();
 
@@ -53,8 +62,8 @@ export function oneOf(
       if (!success) {
         let error;
         switch (options.errorType) {
-          case 'grouped':
-            error = allErrors;
+          case 'flat':
+            error = _.flatMap(allErrors);
             break;
           case 'leastErroredOnly':
             let leastErroredIndex = 0;
@@ -66,8 +75,8 @@ export function oneOf(
             error = allErrors[leastErroredIndex];
             break;
           default:
-            // flat
-            error = _.flatMap(allErrors);
+            // grouped
+            error = allErrors;
         }
 
         // Only add an error to the context if no group of chains had success.

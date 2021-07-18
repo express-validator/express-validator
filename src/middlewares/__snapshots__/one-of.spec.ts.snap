@@ -19,6 +19,29 @@ Array [
 ]
 `;
 
+exports[`should let the user to choose between multiple error types flat error type 1`] = `
+Array [
+  Object {
+    "msg": "Invalid value(s)",
+    "nestedErrors": Array [
+      Object {
+        "location": "body",
+        "msg": "Invalid value",
+        "param": "foo",
+        "value": true,
+      },
+      Object {
+        "location": "body",
+        "msg": "Invalid value",
+        "param": "bar",
+        "value": undefined,
+      },
+    ],
+    "param": "_error",
+  },
+]
+`;
+
 exports[`should let the user to choose between multiple error types grouped error type 1`] = `
 Array [
   Object {
@@ -56,29 +79,6 @@ Array [
         "msg": "Invalid value",
         "param": "foo",
         "value": true,
-      },
-    ],
-    "param": "_error",
-  },
-]
-`;
-
-exports[`should let the user to choose between multiple error types flat error type 1`] = `
-Array [
-  Object {
-    "msg": "Invalid value(s)",
-    "nestedErrors": Array [
-      Object {
-        "location": "body",
-        "msg": "Invalid value",
-        "param": "foo",
-        "value": true,
-      },
-      Object {
-        "location": "body",
-        "msg": "Invalid value",
-        "param": "bar",
-        "value": undefined,
       },
     ],
     "param": "_error",
