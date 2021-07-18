@@ -63,7 +63,7 @@ Array [
 ]
 `;
 
-exports[`should let the user to choose between multiple error types legacy error type 1`] = `
+exports[`should let the user to choose between multiple error types flat error type 1`] = `
 Array [
   Object {
     "msg": "Invalid value(s)",

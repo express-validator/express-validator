@@ -140,7 +140,7 @@ describe('error message', () => {
 });
 
 describe('should let the user to choose between multiple error types', () => {
-  let errors: OneOfErrorType[] = ['grouped', 'legacy'];
+  let errors: OneOfErrorType[] = ['grouped', 'flat'];
   it.each(errors)(`%s error type`, async errorType => {
     const req: InternalRequest = {
       body: { foo: true },

@@ -9,16 +9,19 @@ const dummyItem: ContextItem = { async run() {} };
 
 export type OneOfCustomMessageBuilder = (options: { req: Request }) => any;
 
-export type OneOfErrorType = 'grouped' | 'leastErroredOnly' | 'legacy';
-
-export interface OneOfOptions {
-  message?: OneOfCustomMessageBuilder | any;
-  errorType?: OneOfErrorType;
-}
+export type OneOfErrorType = 'grouped' | 'leastErroredOnly' | 'flat';
 
 export function oneOf(
   chains: (ValidationChain | ValidationChain[])[],
-  options: OneOfOptions = {},
+  options?: { message: OneOfCustomMessageBuilder; errorType?: OneOfErrorType },
+): Middleware & { run: (req: Request) => Promise<void> };
+export function oneOf(
+  chains: (ValidationChain | ValidationChain[])[],
+  options?: { message?: any; errorType?: OneOfErrorType },
+): Middleware & { run: (req: Request) => Promise<void> };
+export function oneOf(
+  chains: (ValidationChain | ValidationChain[])[],
+  options: { message?: any; errorType?: OneOfErrorType } = {},
 ): Middleware & { run: (req: Request) => Promise<void> } {
   options = { errorType: 'grouped', ...options };
 
@@ -63,7 +66,7 @@ export function oneOf(
             error = allErrors[leastErroredIndex];
             break;
           default:
-            // legacy
+            // flat
             error = _.flatMap(allErrors);
         }
 
