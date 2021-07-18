@@ -19,7 +19,7 @@ Check the examples below to understand how this method can help you:
 
 ```js
 const express = require('express');
-const { validateResult, ValidationChain } = require('express-validator');
+const { validationResult, ValidationChain } = require('express-validator');
 // can be reused by many routes
 
 // parallel processing
@@ -58,7 +58,7 @@ const validate = validations => {
 
 ```typescript
 import express from 'express';
-import { validateResult, ValidationChain } from 'express-validator';
+import { validationResult, ValidationChain } from 'express-validator';
 // can be reused by many routes
 
 // parallel processing
