@@ -35,7 +35,6 @@
     "prepublishOnly": "tsc",
     "test": "jest",
     "lint": "eslint --ignore-path .gitignore 'src/**/*.ts' && prettier -c .",
-    "report-coverage": "cat coverage/lcov.info | coveralls",
     "version": "npm run docs:version -- $npm_package_version && npm run docs:build && git add -A website"
   },
   "engines": {
@@ -50,7 +49,6 @@
     "@types/lodash": "^4.14.168",
     "@typescript-eslint/eslint-plugin": "^4.14.0",
     "@typescript-eslint/parser": "^4.14.0",
-    "coveralls": "^3.1.0",
     "docusaurus": "^1.14.7",
     "eslint": "^7.18.0",
     "eslint-config-prettier": "^7.1.0",
