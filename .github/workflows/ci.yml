@@ -21,6 +21,22 @@ jobs:
         run: npm ci
       - name: Test
         run: npm test
+      - name: Submit coverage
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.github_token }}
+          flag-name: gh-${{ matrix.test_number }}
+          parallel: true
+
+  teardown:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Coveralls Finished
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.github_token }}
+        parallel-finished: true
 
   lint:
     runs-on: ubuntu-latest
