@@ -197,6 +197,9 @@
       "version-6.12.0/version-6.12.0-custom-error-messages": {
         "title": "Custom Error Messages"
       },
+      "version-6.12.1/version-6.12.1-running-imperatively": {
+        "title": "Running validations imperatively"
+      },
       "version-6.2.0/version-6.2.0-validation-chain-api": {
         "title": "Validation Chain API"
       },
