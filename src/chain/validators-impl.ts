@@ -218,7 +218,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isISRC() {
     return this.addStandardValidation(validator.isISRC);
   }
-  isIn(values: any[]) {
+  isIn(values: readonly any[]) {
     return this.addStandardValidation(validator.isIn, values);
   }
   isInt(options?: Options.IsIntOptions) {
@@ -255,7 +255,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
     return this.addStandardValidation(validator.isMimeType);
   }
   isMobilePhone(
-    locale: Options.MobilePhoneLocale | Options.MobilePhoneLocale[],
+    locale: Options.MobilePhoneLocale | readonly Options.MobilePhoneLocale[],
     options?: Options.IsMobilePhoneOptions,
   ) {
     return this.addStandardValidation(validator.isMobilePhone, locale, options);
@@ -317,7 +317,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isVAT(countryCode: Options.VATCountryCode) {
     return this.addStandardValidation(validator.isVAT, countryCode);
   }
-  isWhitelisted(chars: string | string[]) {
+  isWhitelisted(chars: string | readonly string[]) {
     return this.addStandardValidation(validator.isWhitelisted, chars);
   }
   matches(pattern: RegExp | string, modifiers?: string) {

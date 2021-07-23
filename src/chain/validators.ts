@@ -63,7 +63,7 @@ export interface Validators<Return> {
   isISO31661Alpha2(): Return;
   isISO31661Alpha3(): Return;
   isISRC(): Return;
-  isIn(values: any[]): Return;
+  isIn(values: readonly any[]): Return;
   isInt(options?: Options.IsIntOptions): Return;
   isJSON(options?: Options.IsJSONOptions): Return;
   isJWT(): Return;
@@ -76,7 +76,7 @@ export interface Validators<Return> {
   isMD5(): Return;
   isMimeType(): Return;
   isMobilePhone(
-    locale: Options.MobilePhoneLocale | Options.MobilePhoneLocale[],
+    locale: Options.MobilePhoneLocale | readonly Options.MobilePhoneLocale[],
     options?: Options.IsMobilePhoneOptions,
   ): Return;
   isMongoId(): Return;
@@ -98,6 +98,6 @@ export interface Validators<Return> {
   isUppercase(): Return;
   isVariableWidth(): Return;
   isVAT(countryCode: Options.VATCountryCode): Return;
-  isWhitelisted(chars: string | string[]): Return;
+  isWhitelisted(chars: string | readonly string[]): Return;
   matches(pattern: RegExp | string, modifiers?: string): Return;
 }
