@@ -90,6 +90,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
     return this.addStandardValidation(validator.isAfter, date);
   }
   isAlpha(locale?: Options.AlphaLocale, options?: Options.IsAlphaOptions) {
+    // TODO(v7): remove string[] support
     const ignore = Array.isArray(options?.ignore) ? options?.ignore.join('') : options?.ignore;
     return this.addStandardValidation(validator.isAlpha, locale, { ...options, ignore });
   }
@@ -236,7 +237,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isLength(options: Options.MinMaxOptions) {
     return this.addStandardValidation(validator.isLength, options);
   }
-  isLicensePlate(locale: Options.LicensePlateLocale) {
+  isLicensePlate(locale: Options.IsLicensePlateLocale) {
     return this.addStandardValidation(validator.isLicensePlate, locale);
   }
   isLocale() {

@@ -14,6 +14,7 @@ declare module 'validator' {
   export function isAlphanumeric(
     str: string,
     locale?: import('../src/options').AlphanumericLocale,
+    options?: import('../src/options').IsAlphanumericOptions,
   ): boolean;
   export function isAscii(str: string): boolean;
   export function isBase32(str: string): boolean;
@@ -83,7 +84,7 @@ declare module 'validator' {
   export function isLength(str: string, options: import('../src/options').MinMaxOptions): boolean;
   export function isLicensePlate(
     str: string,
-    locale: import('../src/options').LicensePlateLocale,
+    locale: import('../src/options').IsLicensePlateLocale,
   ): boolean;
   export function isLocale(str: string): boolean;
   export function isLowercase(str: string): boolean;

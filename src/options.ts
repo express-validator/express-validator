@@ -369,7 +369,7 @@ export type PassportCountryCode =
   | 'UA'
   | 'US';
 
-export type LicensePlateLocale = 'de-DE' | 'de-LI' | 'pt-PT' | 'sq-AL' | 'pt-BR';
+export type IsLicensePlateLocale = 'de-DE' | 'de-LI' | 'pt-PT' | 'sq-AL' | 'any';
 
 export type TaxIDLocale = 'en-US';
 
@@ -396,6 +396,7 @@ export interface ContainsOptions {
 }
 
 export interface IsAlphaOptions {
+  // TODO(v7): remove string[] support
   ignore?: string | string[] | RegExp;
 }
 
@@ -579,11 +580,21 @@ export interface IsISSNOptions {
 
 /**
  * defaults to
+ * ```js
  * {
- *    no_colons: false
+ *    no_separators: false
  * }
+ * ```
  */
 export interface IsMACAddressOptions {
+  // no_separators replaces no_colons.
+  // Since it is a bool we don't require any particular logic to support both of them together.
+  // See https://github.com/validatorjs/validator.js/pull/1616
+  no_separators?: boolean;
+  /**
+   * @deprecated use `no_separators` instead
+   */
+  // TODO(v7): remove no_colons
   no_colons?: boolean;
 }
 
