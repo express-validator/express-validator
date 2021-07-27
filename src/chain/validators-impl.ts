@@ -195,8 +195,8 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isIP(version?: Options.IPVersion) {
     return this.addStandardValidation(validator.isIP, version);
   }
-  isIPRange() {
-    return this.addStandardValidation(validator.isIPRange);
+  isIPRange(version?: Options.IPVersion) {
+    return this.addStandardValidation(validator.isIPRange, version);
   }
   isISBN(version?: number) {
     return this.addStandardValidation(validator.isISBN, version);
