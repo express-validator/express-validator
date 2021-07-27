@@ -186,7 +186,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isIBAN() {
     return this.addStandardValidation(validator.isIBAN);
   }
-  isIdentityCard(locale: Options.IdentityCard) {
+  isIdentityCard(locale: Options.IdentityCardLocale) {
     return this.addStandardValidation(validator.isIdentityCard, locale);
   }
   isIMEI(options?: Options.IsIMEIOptions) {

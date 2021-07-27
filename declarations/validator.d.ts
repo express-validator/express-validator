@@ -58,11 +58,11 @@ declare module 'validator' {
   export function isIBAN(str: string): boolean;
   export function isIdentityCard(
     str: string,
-    locale?: import('../src/options').IdentityCard,
+    locale?: import('../src/options').IdentityCardLocale,
   ): boolean;
   export function isIMEI(str: string, options?: import('../src/options').IsIMEIOptions): boolean;
   export function isIP(str: string, version?: import('../src/options').IPVersion): boolean;
-  export function isIPRange(str: string): boolean;
+  export function isIPRange(str: string, version?: import('../src/options').IPVersion): boolean;
   export function isISBN(str: string, version?: number): boolean;
   export function isISSN(str: string, options?: import('../src/options').IsISSNOptions): boolean;
   export function isISIN(str: string): boolean;

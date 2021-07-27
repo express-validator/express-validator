@@ -52,7 +52,7 @@ export interface Validators<Return> {
   isHexadecimal(): Return;
   isHSL(): Return;
   isIBAN(): Return;
-  isIdentityCard(locale?: Options.IdentityCard): Return;
+  isIdentityCard(locale?: Options.IdentityCardLocale): Return;
   isIMEI(options?: Options.IsIMEIOptions): Return;
   isIP(version?: Options.IPVersion): Return;
   isIPRange(): Return;
