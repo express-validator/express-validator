@@ -3,8 +3,8 @@ import { Validators } from '../chain/validators';
 import { DynamicMessageCreator, Location, Request } from '../base';
 import { ValidationChain, ValidatorsImpl } from '../chain';
 import { Optional, ReadonlyContext } from '../context';
-import { check } from './check';
 import { Result } from '../validation-result';
+import { check } from './check';
 
 type ValidatorSchemaOptions<K extends keyof Validators<any>> =
   | true
