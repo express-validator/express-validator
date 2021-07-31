@@ -1,5 +1,5 @@
 import * as validator from 'validator';
-import { ConditionFn, CustomValidator, StandardValidator } from '../base';
+import { CustomValidator, StandardValidator } from '../base';
 import { CustomValidation, StandardValidation } from '../context-items';
 import { ContextBuilder } from '../context-builder';
 import * as Options from '../options';
@@ -25,19 +25,6 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
     this.negateNext = true;
     return this.chain;
   }
-
-  // TODO: add if functionality here, requires refactor of negateNext?
-  // if(conditionFn: ConditionFn) {
-  //   if (conditionFn(value)) { // how to pass meta here?
-  //     this.negateAll = true; // or new property?
-  //   } else {
-  //     return this.chain
-  //   }
-  // }
-  if(_: ConditionFn) { // attempt to allow test to run
-    return this.chain;
-  }
-
 
   withMessage(message: any) {
     this.lastValidator.message = message;
