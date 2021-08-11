@@ -9,6 +9,8 @@ export {
 
 export { ValidationChain } from './chain';
 
+export { extend } from './extend';
+
 export * from './middlewares/one-of';
 export * from './middlewares/validation-chain-builders';
 

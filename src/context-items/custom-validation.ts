@@ -5,11 +5,15 @@ import { ContextItem } from './context-item';
 export class CustomValidation implements ContextItem {
   message: any;
 
-  constructor(private readonly validator: CustomValidator, private readonly negated: boolean) {}
+  constructor(
+    private readonly validator: CustomValidator,
+    private readonly negated: boolean,
+    private readonly options?: any,
+  ) {}
 
   async run(context: Context, value: any, meta: Meta) {
     try {
-      const result = this.validator(value, meta);
+      const result = this.validator(value, meta, this.options);
       const actualResult = await result;
       const isPromise = result && result.then;
       const failed = this.negated ? actualResult : !actualResult;

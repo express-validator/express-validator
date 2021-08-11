@@ -32,8 +32,8 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   }
 
   // custom validators
-  custom(validator: CustomValidator) {
-    return this.addItem(new CustomValidation(validator, this.negateNext));
+  custom(validator: CustomValidator, options?: any) {
+    return this.addItem(new CustomValidation(validator, this.negateNext, options));
   }
 
   exists(options: { checkFalsy?: boolean; checkNull?: boolean } = {}) {

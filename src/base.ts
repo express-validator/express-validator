@@ -14,11 +14,15 @@ export type Middleware = (req: Request, res: any, next: (err?: any) => void) => 
 export type Location = 'body' | 'cookies' | 'headers' | 'params' | 'query';
 export type Meta = { req: Request; location: Location; path: string };
 
-export type CustomValidator = (input: any, meta: Meta) => any;
+export type CustomValidator = (input: any, meta: Meta, options?: any) => any;
 export type StandardValidator = (input: string, ...options: any[]) => boolean;
 
 export type CustomSanitizer = (input: any, meta: Meta) => any;
 export type StandardSanitizer = (input: string, ...options: any[]) => any;
+
+export type CustomValidators = {
+  [name: string]: CustomValidator;
+};
 
 export type DynamicMessageCreator = (value: any, meta: Meta) => any;
 

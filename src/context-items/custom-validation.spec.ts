@@ -17,7 +17,7 @@ beforeEach(() => {
   jest.spyOn(context, 'addError');
 
   validator = jest.fn();
-  validation = new CustomValidation(validator, false);
+  validation = new CustomValidation(validator, false, { customOption: true });
   validation.message = 'nope';
 });
 
@@ -32,6 +32,11 @@ const createSyncTest = (options: { returnValue: any; addsError: boolean }) => as
     expect(context.addError).not.toHaveBeenCalled();
   }
 };
+
+it('calls validator with value, meta and options', async () => {
+  await validation.run(context, 'bar', meta);
+  expect(validator).toBeCalledWith('bar', meta, { customOption: true });
+});
 
 describe('when not negated', () => {
   it(
