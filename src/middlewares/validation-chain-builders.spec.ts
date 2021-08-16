@@ -48,6 +48,23 @@ describe('buildCheckFunction()', () => {
       value: 'asd',
     });
   });
+
+  describe('when at least 1 locations specified', () => {
+    // for #1010
+    it('should apply default value to each specified location if default option is not empty', async () => {
+      const custom = buildCheckFunction(['cookies', 'headers']);
+      const chain = custom('bar').default(10);
+
+      await chain.run(req);
+
+      expect(req.cookies).toHaveProperty('bar', 10);
+      expect(req.headers).toHaveProperty('bar', 10);
+
+      expect(req.body).not.toHaveProperty('bar');
+      expect(req.params).not.toHaveProperty('bar');
+      expect(req.query).not.toHaveProperty('bar');
+    });
+  });
 });
 
 describe('check()', () => {
