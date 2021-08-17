@@ -25,6 +25,7 @@ assignees: ''
 
 <!-- A clear and concise description of what you expected to happen. -->
 
-## Express-validator version:
+## Environment:
 
-- Version: <!-- [e.g. 6.6.1] -->
+- Express-validator version: <!-- [e.g. 6.6.1] -->
+- Express version: <!-- [e.g. 4.17.1] -->
