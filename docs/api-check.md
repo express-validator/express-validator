@@ -54,17 +54,22 @@ Same as `check([fields, message])`, but only checking `req.query`.
 
 > _Returns:_ an array of validation chains and `{ run: (req) => Promise<unknown[]> }`
 
-## `oneOf(validationChains[, message])`
+## `oneOf(validationChains[, options])`
 
 - `validationChains`: an array of [validation chains](api-validation-chain.md) created with `check()` or any of its variations,
   or an array of arrays containing validation chains.
-- `message` _(optional)_: an error message to use when all chains failed. Defaults to `Invalid value(s)`; see also [Dynamic Messages](feature-error-messages.md#dynamic-messages).
+- `options` _(optional)_:
+  - `message` _(optional)_: an error message to use when all chains failed. Defaults to `Invalid value(s)`; see also [Dynamic Messages](feature-error-messages.md#dynamic-messages).
+  - `errorType` _(optional)_: 
+    - `grouped` _(default)_: groups the errors according to the original validation chain groups;
+    - `flat`: joins the errors from different chain groups together;
+    - `leastErroredOnly`: returns only the errors of the least errored chain group.
 
 > _Returns:_ a middleware instance and `{ run: (req) => Promise<void> }`
 
 Creates a middleware instance that will ensure at least one of the given chains passes the validation.  
 If none of the given chains passes, an error will be pushed to the `_error` pseudo-field,
-using the given `message`, and the errors of each chain will be made available under a key `nestedErrors`.
+using the given `message`. The errors, formatted according to the `errorType` option, will be made available under the `nestedErrors` key.
 
 Example:
 

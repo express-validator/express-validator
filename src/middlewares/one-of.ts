@@ -9,16 +9,31 @@ const dummyItem: ContextItem = { async run() {} };
 
 export type OneOfCustomMessageBuilder = (options: { req: Request }) => any;
 
-export function oneOf(
-  chains: (ValidationChain | ValidationChain[])[],
-  message?: OneOfCustomMessageBuilder,
-): Middleware & { run: (req: Request) => Promise<void> };
-export function oneOf(
-  chains: (ValidationChain | ValidationChain[])[],
-  message?: any,
-): Middleware & { run: (req: Request) => Promise<void> };
+export type OneOfErrorType = 'grouped' | 'leastErroredOnly' | 'flat';
 
-export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?: any) {
+// Not used in this file, just for third party users.
+export type OneOfOptions =
+  | {
+      message?: OneOfCustomMessageBuilder;
+      errorType?: OneOfErrorType;
+    }
+  | {
+      message?: any;
+      errorType?: OneOfErrorType;
+    };
+
+export function oneOf(
+  chains: (ValidationChain | ValidationChain[])[],
+  options?: { message?: OneOfCustomMessageBuilder; errorType?: OneOfErrorType },
+): Middleware & { run: (req: Request) => Promise<void> };
+export function oneOf(
+  chains: (ValidationChain | ValidationChain[])[],
+  options?: { message?: any; errorType?: OneOfErrorType },
+): Middleware & { run: (req: Request) => Promise<void> };
+export function oneOf(
+  chains: (ValidationChain | ValidationChain[])[],
+  options: { message?: any; errorType?: OneOfErrorType } = {},
+): Middleware & { run: (req: Request) => Promise<void> } {
   const middleware = async (req: InternalRequest, _res: any, next: (err?: any) => void) => {
     const surrogateContext = new ContextBuilder().addItem(dummyItem).build();
 
@@ -45,10 +60,31 @@ export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?:
       const success = allErrors.some(groupErrors => groupErrors.length === 0);
 
       if (!success) {
+        let error;
+        switch (options.errorType) {
+          case 'flat':
+            error = _.flatMap(allErrors);
+            break;
+          case 'leastErroredOnly':
+            let leastErroredIndex = 0;
+            for (let i = 1; i < allErrors.length; i++) {
+              if (allErrors[i].length < allErrors[leastErroredIndex].length) {
+                leastErroredIndex = i;
+              }
+            }
+            error = allErrors[leastErroredIndex];
+            break;
+          default:
+            // grouped
+            error = allErrors;
+        }
+
         // Only add an error to the context if no group of chains had success.
         surrogateContext.addError(
-          typeof message === 'function' ? message({ req }) : message || 'Invalid value(s)',
-          _.flatMap(allErrors),
+          typeof options.message === 'function'
+            ? options.message({ req })
+            : options.message || 'Invalid value(s)',
+          error,
         );
       }
 
