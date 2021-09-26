@@ -2,8 +2,7 @@ import { Sanitizers } from '../chain/sanitizers';
 import { Validators } from '../chain/validators';
 import { DynamicMessageCreator, Location, Request } from '../base';
 import { ValidationChain, ValidatorsImpl } from '../chain';
-import { Optional, ReadonlyContext } from '../context';
-import { Result } from '../validation-result';
+import { ResultWithContext } from '../chain/context-runner-impl';
 import { check } from './check';
 
 type ValidatorSchemaOptions<K extends keyof Validators<any>> =
@@ -63,7 +62,7 @@ export function checkSchema(
   schema: Schema,
   defaultLocations: Location[] = validLocations,
 ): ValidationChain[] & {
-  run: (req: Request) => Promise<(Result & { context: ReadonlyContext })[]>;
+  run: (req: Request) => Promise<ResultWithContext[]>;
 } {
   const chains = Object.keys(schema).map(field => {
     const config = schema[field];
