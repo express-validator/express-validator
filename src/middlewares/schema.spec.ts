@@ -277,3 +277,17 @@ it('run checkSchema imperatively', async () => {
 
   return expect(schema.run(req)).resolves;
 });
+
+it('correctly pass falsy values to `options` property of methods', async () => {
+  const req = {
+    body: { foo: undefined },
+  };
+  const schema = checkSchema({
+    foo: {
+      in: ['body'],
+      default: { options: 0 },
+    },
+  });
+  await schema.run(req);
+  expect(req.body.foo).toEqual(0);
+});

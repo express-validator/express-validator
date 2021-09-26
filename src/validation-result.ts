@@ -10,9 +10,7 @@ interface ResultFactoryBuilderOptions<T = any> {
   formatter: ErrorFormatter<T>;
 }
 
-// Assign to a variable so that TS doesn't use its catch all overload, which returns any
-const withWithDefaults = { withDefaults };
-export const validationResult = Object.assign(withDefaults<ValidationError>(), withWithDefaults);
+export const validationResult = Object.assign(withDefaults<ValidationError>(), { withDefaults });
 
 export class Result<T = any> {
   constructor(
