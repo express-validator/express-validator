@@ -3,6 +3,7 @@ import { Validators } from '../chain/validators';
 import { DynamicMessageCreator, Location, Request } from '../base';
 import { ValidationChain, ValidatorsImpl } from '../chain';
 import { Optional } from '../context';
+import { ResultWithContext } from '../chain/context-runner-impl';
 import { check } from './check';
 
 type ValidatorSchemaOptions<K extends keyof Validators<any>> =
@@ -62,7 +63,7 @@ export function checkSchema(
   schema: Schema,
   defaultLocations: Location[] = validLocations,
 ): ValidationChain[] & {
-  run: (req: Request) => Promise<unknown[]>;
+  run: (req: Request) => Promise<ResultWithContext[]>;
 } {
   const chains = Object.keys(schema).map(field => {
     const config = schema[field];
