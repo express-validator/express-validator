@@ -14,6 +14,7 @@ declare module 'validator' {
   export function isAlphanumeric(
     str: string,
     locale?: import('../src/options').AlphanumericLocale,
+    options?: import('../src/options').IsAlphanumericOptions,
   ): boolean;
   export function isAscii(str: string): boolean;
   export function isBase32(str: string): boolean;
@@ -57,11 +58,11 @@ declare module 'validator' {
   export function isIBAN(str: string): boolean;
   export function isIdentityCard(
     str: string,
-    locale?: import('../src/options').IdentityCard,
+    locale?: import('../src/options').IdentityCardLocale,
   ): boolean;
   export function isIMEI(str: string, options?: import('../src/options').IsIMEIOptions): boolean;
   export function isIP(str: string, version?: import('../src/options').IPVersion): boolean;
-  export function isIPRange(str: string): boolean;
+  export function isIPRange(str: string, version?: import('../src/options').IPVersion): boolean;
   export function isISBN(str: string, version?: number): boolean;
   export function isISSN(str: string, options?: import('../src/options').IsISSNOptions): boolean;
   export function isISIN(str: string): boolean;
@@ -81,6 +82,10 @@ declare module 'validator' {
     options?: import('../src/options').IsLatLongOptions,
   ): boolean;
   export function isLength(str: string, options: import('../src/options').MinMaxOptions): boolean;
+  export function isLicensePlate(
+    str: string,
+    locale: import('../src/options').IsLicensePlateLocale,
+  ): boolean;
   export function isLocale(str: string): boolean;
   export function isLowercase(str: string): boolean;
   export function isMagnetURI(str: string): boolean;

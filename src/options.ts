@@ -135,6 +135,7 @@ export type MobilePhoneLocale =
   | 'ar-LB'
   | 'ar-LY'
   | 'ar-MA'
+  | 'ar-OM'
   | 'ar-SA'
   | 'ar-SY'
   | 'ar-TN'
@@ -194,6 +195,7 @@ export type MobilePhoneLocale =
   | 'fj-FJ'
   | 'fo-FO'
   | 'fr-BE'
+  | 'fr-CH'
   | 'fr-FR'
   | 'fr-GF'
   | 'fr-GP'
@@ -203,6 +205,7 @@ export type MobilePhoneLocale =
   | 'he-IL'
   | 'hu-HU'
   | 'id-ID'
+  | 'it-CH'
   | 'it-IT'
   | 'it-SM'
   | 'ja-JP'
@@ -210,12 +213,15 @@ export type MobilePhoneLocale =
   | 'kk-KZ'
   | 'kl-GL'
   | 'lt-LT'
+  | 'lv-LV'
   | 'ms-MY'
+  | 'mz-MZ'
   | 'nb-NO'
   | 'nl-NL'
   | 'ne-NP'
   | 'nn-NO'
   | 'pl-PL'
+  | 'pt-AO'
   | 'pt-BR'
   | 'pt-PT'
   | 'ro-RO'
@@ -269,6 +275,7 @@ export type PostalCodeLocale =
   | 'IT'
   | 'JP'
   | 'KE'
+  | 'KR'
   | 'LI'
   | 'LT'
   | 'LU'
@@ -312,13 +319,16 @@ export type HashAlgorithm =
   | 'crc32'
   | 'crc32b';
 
-export type IdentityCard =
+export type IdentityCardLocale =
   | 'any'
+  | 'ar-LY'
   | 'ar-TN'
   | 'ES'
   | 'he-IL'
   | 'IN'
   | 'IT'
+  | 'IR'
+  | 'MZ'
   | 'NO'
   | 'zh-CN'
   | 'zh-TW';
@@ -331,6 +341,7 @@ export type PassportCountryCode =
   | 'BE'
   | 'BG'
   | 'BY'
+  | 'BR'
   | 'CA'
   | 'CH'
   | 'CN'
@@ -349,6 +360,7 @@ export type PassportCountryCode =
   | 'HU'
   | 'IE'
   | 'IN'
+  | 'IR'
   | 'IS'
   | 'IT'
   | 'JP'
@@ -356,7 +368,10 @@ export type PassportCountryCode =
   | 'LT'
   | 'LU'
   | 'LV'
+  | 'LY'
   | 'MT'
+  | 'MY'
+  | 'MZ'
   | 'NL'
   | 'PO'
   | 'PT'
@@ -369,9 +384,43 @@ export type PassportCountryCode =
   | 'UA'
   | 'US';
 
-export type TaxIDLocale = 'en-US';
+export type IsLicensePlateLocale = 'de-DE' | 'de-LI' | 'pt-BR' | 'pt-PT' | 'sq-AL' | 'any';
 
-export type VATCountryCode = 'GB';
+export type TaxIDLocale =
+  | 'bg-BG'
+  | 'cs-CZ'
+  | 'de-AT'
+  | 'de-DE'
+  | 'dk-DK'
+  | 'el-CY'
+  | 'el-GR'
+  | 'en-GB'
+  | 'en-IE'
+  | 'en-US'
+  | 'es-ES'
+  | 'et-EE'
+  | 'fi-FI'
+  | 'fr-BE'
+  | 'fr-FR'
+  | 'fr-LU'
+  | 'hr-HR'
+  | 'hu-HU'
+  | 'it-IT'
+  | 'lb-LU'
+  | 'lt-LT'
+  | 'lv-LV'
+  | 'mt-MT'
+  | 'nl-BE'
+  | 'nl-NL'
+  | 'pl-PL'
+  | 'pt-BR'
+  | 'pt-PT'
+  | 'ro-RO'
+  | 'sk-SK'
+  | 'sl-SI'
+  | 'sv-SE';
+
+export type VATCountryCode = 'GB' | 'IT';
 
 export interface MinMaxOptions {
   min?: number;
@@ -394,6 +443,7 @@ export interface ContainsOptions {
 }
 
 export interface IsAlphaOptions {
+  // TODO(v7): remove string[] support
   ignore?: string | string[] | RegExp;
 }
 
@@ -577,11 +627,21 @@ export interface IsISSNOptions {
 
 /**
  * defaults to
+ * ```js
  * {
- *    no_colons: false
+ *    no_separators: false
  * }
+ * ```
  */
 export interface IsMACAddressOptions {
+  // no_separators replaces no_colons.
+  // Since it is a bool we don't require any particular logic to support both of them together.
+  // See https://github.com/validatorjs/validator.js/pull/1616
+  no_separators?: boolean;
+  /**
+   * @deprecated use `no_separators` instead
+   */
+  // TODO(v7): remove no_colons
   no_colons?: boolean;
 }
 
