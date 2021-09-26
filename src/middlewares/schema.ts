@@ -1,6 +1,6 @@
 import { Sanitizers } from '../chain/sanitizers';
 import { Validators } from '../chain/validators';
-import { DynamicMessageCreator, Location, Request } from '../base';
+import { CustomValidator, DynamicMessageCreator, Location, Request } from '../base';
 import { ValidationChain, ValidatorsImpl } from '../chain';
 import { Optional } from '../context';
 import { ResultWithContext } from '../chain/context-runner-impl';
@@ -13,6 +13,7 @@ type ValidatorSchemaOptions<K extends keyof Validators<any>> =
       errorMessage?: DynamicMessageCreator | any;
       negated?: boolean;
       bail?: boolean;
+      if?: CustomValidator | ValidationChain | CustomValidator;
     };
 
 export type ValidatorsSchema = { [K in keyof Validators<any>]?: ValidatorSchemaOptions<K> };
@@ -87,6 +88,10 @@ export function checkSchema(
         let options: any[] = methodCfg === true ? [] : methodCfg.options ?? [];
         if (options != null && !Array.isArray(options)) {
           options = [options];
+        }
+
+        if (isValidatorOptions(method, methodCfg) && methodCfg.if) {
+          chain.if(methodCfg.if);
         }
 
         if (isValidatorOptions(method, methodCfg) && methodCfg.negated) {
