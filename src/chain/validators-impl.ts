@@ -90,6 +90,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
     return this.addStandardValidation(validator.isAfter, date);
   }
   isAlpha(locale?: Options.AlphaLocale, options?: Options.IsAlphaOptions) {
+    // TODO(v7): remove string[] support
     const ignore = Array.isArray(options?.ignore) ? options?.ignore.join('') : options?.ignore;
     return this.addStandardValidation(validator.isAlpha, locale, { ...options, ignore });
   }
@@ -185,7 +186,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isIBAN() {
     return this.addStandardValidation(validator.isIBAN);
   }
-  isIdentityCard(locale: Options.IdentityCard) {
+  isIdentityCard(locale: Options.IdentityCardLocale) {
     return this.addStandardValidation(validator.isIdentityCard, locale);
   }
   isIMEI(options?: Options.IsIMEIOptions) {
@@ -194,8 +195,8 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isIP(version?: Options.IPVersion) {
     return this.addStandardValidation(validator.isIP, version);
   }
-  isIPRange() {
-    return this.addStandardValidation(validator.isIPRange);
+  isIPRange(version?: Options.IPVersion) {
+    return this.addStandardValidation(validator.isIPRange, version);
   }
   isISBN(version?: number) {
     return this.addStandardValidation(validator.isISBN, version);
@@ -235,6 +236,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   }
   isLength(options: Options.MinMaxOptions) {
     return this.addStandardValidation(validator.isLength, options);
+  }
+  isLicensePlate(locale: Options.IsLicensePlateLocale) {
+    return this.addStandardValidation(validator.isLicensePlate, locale);
   }
   isLocale() {
     return this.addStandardValidation(validator.isLocale);

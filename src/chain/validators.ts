@@ -52,10 +52,10 @@ export interface Validators<Return> {
   isHexadecimal(): Return;
   isHSL(): Return;
   isIBAN(): Return;
-  isIdentityCard(locale?: Options.IdentityCard): Return;
+  isIdentityCard(locale?: Options.IdentityCardLocale): Return;
   isIMEI(options?: Options.IsIMEIOptions): Return;
   isIP(version?: Options.IPVersion): Return;
-  isIPRange(): Return;
+  isIPRange(version?: Options.IPVersion): Return;
   isISBN(version?: number): Return;
   isISSN(options?: Options.IsISSNOptions): Return;
   isISIN(): Return;
@@ -69,6 +69,7 @@ export interface Validators<Return> {
   isJWT(): Return;
   isLatLong(options?: Options.IsLatLongOptions): Return;
   isLength(options: Options.MinMaxOptions): Return;
+  isLicensePlate(locale: Options.IsLicensePlateLocale): Return;
   isLocale(): Return;
   isLowercase(): Return;
   isMagnetURI(): Return;
