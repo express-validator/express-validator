@@ -10,6 +10,19 @@ const dummyItem: ContextItem = { async run() {} };
 
 export type OneOfCustomMessageBuilder = (options: { req: Request }) => any;
 
+export type OneOfErrorType = 'grouped' | 'leastErroredOnly' | 'flat';
+
+// Not used in this file, just for third party users.
+export type OneOfOptions =
+  | {
+      message?: OneOfCustomMessageBuilder;
+      errorType?: OneOfErrorType;
+    }
+  | {
+      message?: any;
+      errorType?: OneOfErrorType;
+    };
+
 /**
  * Creates a middleware that will ensure that at least one of the given validation chains
  * or validation chain groups are valid.
@@ -20,11 +33,11 @@ export type OneOfCustomMessageBuilder = (options: { req: Request }) => any;
  * @param chains an array of validation chains to check if are valid.
  *               If any of the items of `chains` is an array of validation chains, then all of them
  *               must be valid together for the request to be considered valid.
- * @param message a function for creating a custom error message in case none of the chains are valid
+ * @param options.message a function for creating a custom error message in case none of the chains are valid
  */
 export function oneOf(
   chains: (ValidationChain | ValidationChain[])[],
-  message?: OneOfCustomMessageBuilder,
+  options?: { message?: OneOfCustomMessageBuilder; errorType?: OneOfErrorType },
 ): Middleware & { run: (req: Request) => Promise<Result> };
 
 /**
@@ -37,16 +50,18 @@ export function oneOf(
  * @param chains an array of validation chains to check if are valid.
  *               If any of the items of `chains` is an array of validation chains, then all of them
  *               must be valid together for the request to be considered valid.
- * @param message an error message to use in case none of the chains are valid
+ * @param options.message an error message to use in case none of the chains are valid
  */
 export function oneOf(
   chains: (ValidationChain | ValidationChain[])[],
-  message?: any,
+  options?: { message?: any; errorType?: OneOfErrorType },
 ): Middleware & { run: (req: Request) => Promise<Result> };
 
-export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?: any) {
+export function oneOf(
+  chains: (ValidationChain | ValidationChain[])[],
+  options: { message?: any; errorType?: OneOfErrorType } = {},
+): Middleware & { run: (req: Request) => Promise<Result> } {
   let result: Result;
-
   const middleware = async (req: InternalRequest, _res: any, next: (err?: any) => void) => {
     const surrogateContext = new ContextBuilder().addItem(dummyItem).build();
 
@@ -73,10 +88,31 @@ export function oneOf(chains: (ValidationChain | ValidationChain[])[], message?:
       const success = allErrors.some(groupErrors => groupErrors.length === 0);
 
       if (!success) {
+        let error;
+        switch (options.errorType) {
+          case 'flat':
+            error = _.flatMap(allErrors);
+            break;
+          case 'leastErroredOnly':
+            let leastErroredIndex = 0;
+            for (let i = 1; i < allErrors.length; i++) {
+              if (allErrors[i].length < allErrors[leastErroredIndex].length) {
+                leastErroredIndex = i;
+              }
+            }
+            error = allErrors[leastErroredIndex];
+            break;
+          default:
+            // grouped
+            error = allErrors;
+        }
+
         // Only add an error to the context if no group of chains had success.
         surrogateContext.addError(
-          typeof message === 'function' ? message({ req }) : message || 'Invalid value(s)',
-          _.flatMap(allErrors),
+          typeof options.message === 'function'
+            ? options.message({ req })
+            : options.message || 'Invalid value(s)',
+          error,
         );
       }
 
