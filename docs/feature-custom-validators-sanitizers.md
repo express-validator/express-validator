@@ -62,6 +62,8 @@ app.post('/user', body('email').custom(isValidUser), (req, res) => {
 
 <!--END_DOCUSAURUS_CODE_TABS-->
 
+> **Note:** In the example above, validation might fail even due to issues with fetching User information. The implications of accessing the data layer during validation should be carefully considered.
+
 ### Example: checking if password confirmation matches password
 
 ```js
@@ -69,6 +71,7 @@ const { body } = require('express-validator');
 
 app.post(
   '/user',
+  body('password').isLength({ min: 5 }),
   body('passwordConfirmation').custom((value, { req }) => {
     if (value !== req.body.password) {
       throw new Error('Password confirmation does not match password');
