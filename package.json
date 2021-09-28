@@ -17,13 +17,14 @@
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
   "files": [
-    "docs",
     "src",
     "check",
     "filter",
     "!**/*.spec.ts",
     "!**/*.ts",
-    "**/*.d.ts"
+    "**/*.d.ts",
+    "!website",
+    "!docs"
   ],
   "scripts": {
     "build": "tsc",
