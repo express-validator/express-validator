@@ -72,7 +72,9 @@ app.put(
     'addresses.*.postalCode': {
       // Make this field optional when undefined or null
       optional: { options: { nullable: true } },
-      isPostalCode: true,
+      isPostalCode: {
+        options: 'US', // set postalCode locale here
+      },
     },
   }),
   (req, res, next) => {
