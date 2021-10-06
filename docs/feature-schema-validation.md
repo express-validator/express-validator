@@ -68,6 +68,14 @@ app.put(
         bail: true,
       },
     },
+    // Support if functionality in schemas
+    someField: {
+      isInt: {
+        if: value => {
+          return value !== '';
+        },
+      },
+    },
     // Wildcards/dots for nested fields work as well
     'addresses.*.postalCode': {
       // Make this field optional when undefined or null
