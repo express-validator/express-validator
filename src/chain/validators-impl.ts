@@ -28,9 +28,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
 
   withMessage(message: any) {
     this.lastValidator = {
-        ...this.lastValidator,
-        message: message
-    }
+      ...this.lastValidator,
+      message: message,
+    };
     return this.chain;
   }
 
