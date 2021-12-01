@@ -8,7 +8,7 @@ jobs:
       # a more recent Node.js version
       fail-fast: false
       matrix:
-        node: [12, 14, 16]
+        node: [8, 10, 12, 14, 16, 17]
     steps:
       - name: Check out
         uses: actions/checkout@v2
