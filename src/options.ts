@@ -1,5 +1,5 @@
 export type URLProtocol = 'http' | 'https' | 'ftp' | string;
-export type UUIDVersion = 3 | 4 | 5 | '3' | '4' | '5' | 'all';
+export type UUIDVersion = 1 | 2 | 3 | 4 | 5 | '1' | '2' | '3' | '4' | '5' | 'all';
 export type IPVersion = 4 | 6;
 
 export type AlphaLocale =
@@ -470,11 +470,13 @@ export interface MinMaxExtendedOptions extends MinMaxOptions {
 /**
  * defaults to
  * {
- *  ignoreCase: false
+ *  ignoreCase: false,
+ *  minOccurrences: 1
  * }
  */
 export interface ContainsOptions {
   ignoreCase?: boolean;
+  minOccurrences?: number;
 }
 
 export interface IsAlphaOptions {
@@ -500,10 +502,12 @@ export interface IsBase64Options {
  * defaults to
  * {
  *  strict: false
+ *  loose: false
  * }
  */
 export interface IsBooleanOptions {
   strict?: boolean;
+  loose?: boolean;
 }
 
 /**
@@ -570,6 +574,7 @@ export interface IsEmailOptions {
   allow_ip_domain?: boolean;
   domain_specific_validation?: boolean;
   blacklisted_chars?: string;
+  host_blacklist?: string[];
 }
 
 /**
@@ -592,14 +597,16 @@ export interface IsFloatOptions extends MinMaxExtendedOptions {
  *    require_tld: true,
  *    allow_underscores: false,
  *    allow_trailing_dot: false,
- *    allow_numeric_tld: false
+ *    allow_numeric_tld: false,
+ *    allow_wildcard?: false
  * }
  */
 export interface IsFQDNOptions {
   require_tld?: boolean;
   allow_underscores?: boolean;
   allow_trailing_dot?: boolean;
-  allow_numeric_tld?: false;
+  allow_numeric_tld?: boolean;
+  allow_wildcard?: boolean;
 }
 
 export interface IsIntOptions extends MinMaxExtendedOptions {
@@ -741,7 +748,9 @@ export interface IsStrongPasswordOptions {
  *    host_blacklist: false,
  *    allow_trailing_dot: false,
  *    allow_protocol_relative_urls: false,
- *    validate_length: true
+ *    validate_length: true,
+ *    allow_fragments: true,
+ *    allow_query_components: true
  * }
  */
 export interface IsURLOptions {
@@ -758,6 +767,8 @@ export interface IsURLOptions {
   allow_protocol_relative_urls?: boolean;
   disallow_auth?: boolean;
   validate_length?: boolean;
+  allow_fragments?: boolean;
+  allow_query_components?: boolean;
 }
 
 export interface NormalizeEmailOptions {

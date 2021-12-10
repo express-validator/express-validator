@@ -25,7 +25,10 @@ declare module 'validator' {
   ): boolean;
   export function isBefore(str: string, date?: string): boolean;
   export function isBIC(str: string): boolean;
-  export function isBoolean(str: string): boolean;
+  export function isBoolean(
+    str: string,
+    options?: import('../src/options').IsBooleanOptions,
+  ): boolean;
   export function isBtcAddress(str: string): boolean;
   export function isByteLength(
     str: string,

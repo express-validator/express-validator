@@ -132,6 +132,42 @@ describe('#isAlpha()', () => {
   });
 });
 
+describe('default #isBoolean()', () => {
+  it('adds validator to the context', () => {
+    const ret = validators.isBoolean();
+
+    expect(ret).toBe(chain);
+    expect(builder.addItem).toHaveBeenCalledWith(
+      new StandardValidation(validator.isBoolean, false, expect.any(Array)),
+    );
+  });
+
+  it('checks if context is strict boolean', async () => {
+    validators.isBoolean();
+    const context = builder.build();
+
+    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const isBoolean = context.stack[0];
+
+    await isBoolean.run(context, true, meta);
+    await isBoolean.run(context, false, meta);
+    await isBoolean.run(context, 'true', meta);
+    await isBoolean.run(context, 'false', meta);
+    await isBoolean.run(context, 1, meta);
+    await isBoolean.run(context, 0, meta);
+    // The two below are passing because we are using a StandardValidator which does take passes the value to `toString`
+    await isBoolean.run(context, [false], meta);
+    await isBoolean.run(context, ['true'], meta);
+    expect(context.errors).toHaveLength(0);
+
+    await isBoolean.run(context, 'no', meta);
+    await isBoolean.run(context, 'True', meta);
+    await isBoolean.run(context, 'False', meta);
+    await isBoolean.run(context, 'yes', meta);
+    expect(context.errors).toHaveLength(4);
+  });
+});
+
 describe('strict #isBoolean()', () => {
   it('adds validator to the context', () => {
     const ret = validators.isBoolean({ strict: true });
@@ -154,9 +190,45 @@ describe('strict #isBoolean()', () => {
     await isBoolean.run(context, 0, meta);
     await isBoolean.run(context, 'true', meta);
     await isBoolean.run(context, 'false', meta);
+    // The two below are not passing because we are using a custom validator which does take the raw value and do not pass it through `toString`
     await isBoolean.run(context, [false], meta);
     await isBoolean.run(context, ['true'], meta);
     expect(context.errors).toHaveLength(5);
+  });
+});
+
+describe('loose #isBoolean()', () => {
+  it('adds validator to the context', () => {
+    const ret = validators.isBoolean({ loose: true });
+
+    expect(ret).toBe(chain);
+    expect(builder.addItem).toHaveBeenCalledWith(
+      new StandardValidation(validator.isBoolean, false, [{ loose: true }]),
+    );
+  });
+
+  it('checks if context is strict boolean', async () => {
+    validators.isBoolean({ loose: true });
+    const context = builder.build();
+
+    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const isBoolean = context.stack[0];
+
+    await isBoolean.run(context, true, meta);
+    await isBoolean.run(context, false, meta);
+    await isBoolean.run(context, 'true', meta);
+    await isBoolean.run(context, 'false', meta);
+    await isBoolean.run(context, 'no', meta);
+    await isBoolean.run(context, 'True', meta);
+    await isBoolean.run(context, 'False', meta);
+    await isBoolean.run(context, 'FalSE', meta);
+    await isBoolean.run(context, 'yes', meta);
+    await isBoolean.run(context, 1, meta);
+    await isBoolean.run(context, 0, meta);
+
+    await isBoolean.run(context, [false], meta);
+    await isBoolean.run(context, ['true'], meta);
+    expect(context.errors).toHaveLength(0);
   });
 });
 
