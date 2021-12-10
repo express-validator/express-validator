@@ -216,6 +216,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isISO31661Alpha3() {
     return this.addStandardValidation(validator.isISO31661Alpha3);
   }
+  isISO4217() {
+    return this.addStandardValidation(validator.isISO4217);
+  }
   isISRC() {
     return this.addStandardValidation(validator.isISRC);
   }

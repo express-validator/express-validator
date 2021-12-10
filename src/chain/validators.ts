@@ -62,6 +62,7 @@ export interface Validators<Return> {
   isISO8601(options?: Options.IsISO8601Options): Return;
   isISO31661Alpha2(): Return;
   isISO31661Alpha3(): Return;
+  isISO4217(): Return;
   isISRC(): Return;
   isIn(values: readonly any[]): Return;
   isInt(options?: Options.IsIntOptions): Return;

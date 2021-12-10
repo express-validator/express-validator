@@ -72,6 +72,7 @@ declare module 'validator' {
   ): boolean;
   export function isISO31661Alpha2(str: string): boolean;
   export function isISO31661Alpha3(str: string): boolean;
+  export function isISO4217(str: string): boolean;
   export function isISRC(str: string): boolean;
   export function isIn(str: string, values: readonly any[]): boolean;
   export function isInt(str: string, options?: import('../src/options').IsIntOptions): boolean;
