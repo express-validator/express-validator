@@ -115,13 +115,18 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isBIC() {
     return this.addStandardValidation(validator.isBIC);
   }
+  /**
+   * There are basically three levels of strictness for this validator.
+   * Passing `{ strict: true }` as option only passes the validation if the value is a JS bool. (It also overrides the loose property of the options).
+   * Passing `{ loose: true|false }` along with no `strict` prop of with `strict` falsy follows the behaviour specified in validator.js docs.
+   */
   isBoolean(options?: Options.IsBooleanOptions) {
     if (options?.strict) {
       return this.custom(value => {
         return value === true || value === false;
       });
     }
-    return this.addStandardValidation(validator.isBoolean);
+    return this.addStandardValidation(validator.isBoolean, options);
   }
   isBtcAddress() {
     return this.addStandardValidation(validator.isBtcAddress);
@@ -215,6 +220,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   }
   isISO31661Alpha3() {
     return this.addStandardValidation(validator.isISO31661Alpha3);
+  }
+  isISO4217() {
+    return this.addStandardValidation(validator.isISO4217);
   }
   isISRC() {
     return this.addStandardValidation(validator.isISRC);

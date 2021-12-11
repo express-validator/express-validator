@@ -1,5 +1,5 @@
 export type URLProtocol = 'http' | 'https' | 'ftp' | string;
-export type UUIDVersion = 3 | 4 | 5 | '3' | '4' | '5' | 'all';
+export type UUIDVersion = 1 | 2 | 3 | 4 | 5 | '1' | '2' | '3' | '4' | '5' | 'all';
 export type IPVersion = 4 | 6;
 
 export type AlphaLocale =
@@ -38,8 +38,10 @@ export type AlphaLocale =
   | 'es-ES'
   | 'fa-AF'
   | 'fa-IR'
+  | 'fi-FI'
   | 'fr-FR'
   | 'he'
+  | 'hi-IN'
   | 'hu-HU'
   | 'id-ID'
   | 'it-IT'
@@ -97,9 +99,11 @@ export type AlphanumericLocale =
   | 'es-ES'
   | 'fa-AF'
   | 'fa-IR'
+  | 'fi-FI'
   | 'fr-FR'
   | 'fr-BE'
   | 'he'
+  | 'hi-IN'
   | 'hu-HU'
   | 'it-IT'
   | 'id-ID'
@@ -136,6 +140,7 @@ export type MobilePhoneLocale =
   | 'ar-LY'
   | 'ar-MA'
   | 'ar-OM'
+  | 'ar-PS'
   | 'ar-SA'
   | 'ar-SY'
   | 'ar-TN'
@@ -150,19 +155,25 @@ export type MobilePhoneLocale =
   | 'de-DE'
   | 'de-LU'
   | 'da-DK'
+  | 'dz-BT'
   | 'el-GR'
   | 'en-AU'
+  | 'en-BM'
+  | 'en-BW'
   | 'en-CA'
   | 'en-GB'
   | 'en-GG'
   | 'en-GH'
+  | 'en-GY'
   | 'en-HK'
   | 'en-HN'
   | 'en-IE'
   | 'en-IN'
   | 'en-KE'
+  | 'en-KI'
   | 'en-MT'
   | 'en-MU'
+  | 'en-NA'
   | 'en-NG'
   | 'en-NZ'
   | 'en-PH'
@@ -181,6 +192,7 @@ export type MobilePhoneLocale =
   | 'es-CL'
   | 'es-CO'
   | 'es-CR'
+  | 'es-CU'
   | 'es-DO'
   | 'es-EC'
   | 'es-ES'
@@ -188,18 +200,23 @@ export type MobilePhoneLocale =
   | 'es-PA'
   | 'es-PE'
   | 'es-PY'
+  | 'es-SV'
   | 'es-UY'
+  | 'es-VE'
   | 'et-EE'
   | 'fa-IR'
   | 'fi-FI'
   | 'fj-FJ'
   | 'fo-FO'
   | 'fr-BE'
+  | 'fr-BF'
   | 'fr-CH'
+  | 'fr-CM'
   | 'fr-FR'
   | 'fr-GF'
   | 'fr-GP'
   | 'fr-MQ'
+  | 'fr-PF'
   | 'fr-RE'
   | 'ga-IE'
   | 'he-IL'
@@ -217,6 +234,7 @@ export type MobilePhoneLocale =
   | 'ms-MY'
   | 'mz-MZ'
   | 'nb-NO'
+  | 'nl-BE'
   | 'nl-NL'
   | 'ne-NP'
   | 'nn-NO'
@@ -226,12 +244,15 @@ export type MobilePhoneLocale =
   | 'pt-PT'
   | 'ro-RO'
   | 'ru-RU'
+  | 'si-LK'
   | 'sk-SK'
   | 'sl-SI'
   | 'sq-AL'
   | 'sr-RS'
   | 'sv-SE'
+  | 'tg-TJ'
   | 'th-TH'
+  | 'tk-TM'
   | 'tr-TR'
   | 'uk-UA'
   | 'uz-Uz'
@@ -277,6 +298,7 @@ export type PostalCodeLocale =
   | 'KE'
   | 'KR'
   | 'LI'
+  | 'LK'
   | 'LT'
   | 'LU'
   | 'LV'
@@ -324,12 +346,15 @@ export type IdentityCardLocale =
   | 'ar-LY'
   | 'ar-TN'
   | 'ES'
+  | 'FI'
   | 'he-IL'
   | 'IN'
   | 'IT'
   | 'IR'
   | 'MZ'
   | 'NO'
+  | 'PL'
+  | 'TH'
   | 'zh-CN'
   | 'zh-TW';
 
@@ -358,6 +383,7 @@ export type PassportCountryCode =
   | 'GR'
   | 'HR'
   | 'HU'
+  | 'ID'
   | 'IE'
   | 'IN'
   | 'IR'
@@ -373,6 +399,7 @@ export type PassportCountryCode =
   | 'MY'
   | 'MZ'
   | 'NL'
+  | 'PL'
   | 'PO'
   | 'PT'
   | 'RO'
@@ -384,7 +411,15 @@ export type PassportCountryCode =
   | 'UA'
   | 'US';
 
-export type IsLicensePlateLocale = 'de-DE' | 'de-LI' | 'pt-BR' | 'pt-PT' | 'sq-AL' | 'any';
+export type IsLicensePlateLocale =
+  | 'cs-CZ'
+  | 'de-DE'
+  | 'de-LI'
+  | 'fi-FI'
+  | 'pt-BR'
+  | 'pt-PT'
+  | 'sq-AL'
+  | 'any';
 
 export type TaxIDLocale =
   | 'bg-BG'
@@ -420,7 +455,7 @@ export type TaxIDLocale =
   | 'sl-SI'
   | 'sv-SE';
 
-export type VATCountryCode = 'GB' | 'IT';
+export type VATCountryCode = 'GB' | 'IT' | 'NL';
 
 export interface MinMaxOptions {
   min?: number;
@@ -435,11 +470,13 @@ export interface MinMaxExtendedOptions extends MinMaxOptions {
 /**
  * defaults to
  * {
- *  ignoreCase: false
+ *  ignoreCase: false,
+ *  minOccurrences: 1
  * }
  */
 export interface ContainsOptions {
   ignoreCase?: boolean;
+  minOccurrences?: number;
 }
 
 export interface IsAlphaOptions {
@@ -465,10 +502,12 @@ export interface IsBase64Options {
  * defaults to
  * {
  *  strict: false
+ *  loose: false
  * }
  */
 export interface IsBooleanOptions {
   strict?: boolean;
+  loose?: boolean;
 }
 
 /**
@@ -535,6 +574,7 @@ export interface IsEmailOptions {
   allow_ip_domain?: boolean;
   domain_specific_validation?: boolean;
   blacklisted_chars?: string;
+  host_blacklist?: string[];
 }
 
 /**
@@ -557,14 +597,16 @@ export interface IsFloatOptions extends MinMaxExtendedOptions {
  *    require_tld: true,
  *    allow_underscores: false,
  *    allow_trailing_dot: false,
- *    allow_numeric_tld: false
+ *    allow_numeric_tld: false,
+ *    allow_wildcard?: false
  * }
  */
 export interface IsFQDNOptions {
   require_tld?: boolean;
   allow_underscores?: boolean;
   allow_trailing_dot?: boolean;
-  allow_numeric_tld?: false;
+  allow_numeric_tld?: boolean;
+  allow_wildcard?: boolean;
 }
 
 export interface IsIntOptions extends MinMaxExtendedOptions {
@@ -706,7 +748,9 @@ export interface IsStrongPasswordOptions {
  *    host_blacklist: false,
  *    allow_trailing_dot: false,
  *    allow_protocol_relative_urls: false,
- *    validate_length: true
+ *    validate_length: true,
+ *    allow_fragments: true,
+ *    allow_query_components: true
  * }
  */
 export interface IsURLOptions {
@@ -723,6 +767,8 @@ export interface IsURLOptions {
   allow_protocol_relative_urls?: boolean;
   disallow_auth?: boolean;
   validate_length?: boolean;
+  allow_fragments?: boolean;
+  allow_query_components?: boolean;
 }
 
 export interface NormalizeEmailOptions {
