@@ -155,7 +155,7 @@ describe('default #isBoolean()', () => {
     await isBoolean.run(context, 'false', meta);
     await isBoolean.run(context, 1, meta);
     await isBoolean.run(context, 0, meta);
-    // The two below are passing because we are using a StandardValidator which does take passes the value to `toString`
+    // The two below are passing because we are using a StandardValidator which passes the value to `toString`
     await isBoolean.run(context, [false], meta);
     await isBoolean.run(context, ['true'], meta);
     expect(context.errors).toHaveLength(0);
@@ -190,7 +190,7 @@ describe('strict #isBoolean()', () => {
     await isBoolean.run(context, 0, meta);
     await isBoolean.run(context, 'true', meta);
     await isBoolean.run(context, 'false', meta);
-    // The two below are not passing because we are using a custom validator which does take the raw value and do not pass it through `toString`
+    // The two below are not passing because we are using a custom validator which takes the raw value and does not pass it through `toString`
     await isBoolean.run(context, [false], meta);
     await isBoolean.run(context, ['true'], meta);
     expect(context.errors).toHaveLength(5);
