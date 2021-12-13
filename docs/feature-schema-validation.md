@@ -10,7 +10,7 @@ the error messages, locations and validations/sanitizations.
 Its syntax looks like this:
 
 ```js
-const { checkSchema } = require('express-validator');
+const { checkSchema, validationResult } = require('express-validator');
 app.put(
   '/user/:id/password',
   checkSchema({
@@ -86,6 +86,10 @@ app.put(
     },
   }),
   (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
     // handle the request as usual
   },
 );
