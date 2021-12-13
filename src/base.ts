@@ -11,7 +11,7 @@ export interface Request {
 
 export type Middleware = (req: Request, res: any, next: (err?: any) => void) => void;
 
-export type Location = 'body' | 'cookies' | 'headers' | 'params' | 'query';
+export type Location = 'body' | 'cookies' | 'headers' | 'params' | 'query' | 'files';
 export type Meta = { req: Request; location: Location; path: string };
 
 export type CustomValidator = (input: any, meta: Meta) => any;
