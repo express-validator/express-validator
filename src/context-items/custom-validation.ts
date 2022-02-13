@@ -17,14 +17,19 @@ export class CustomValidation implements ContextItem {
       // A promise that was resolved only adds an error if negated.
       // Otherwise it always suceeds
       if ((!isPromise && failed) || (isPromise && this.negated)) {
-        context.addError(this.message, value, meta);
+        context.addError(this.message, value, meta, this);
       }
     } catch (err) {
       if (this.negated) {
         return;
       }
 
-      context.addError(this.message || (err instanceof Error ? err.message : err), value, meta);
+      context.addError(
+        this.message || (err instanceof Error ? err.message : err),
+        value,
+        meta,
+        this,
+      );
     }
   }
 }
