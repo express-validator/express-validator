@@ -72,7 +72,7 @@ export class Context {
     instance.value = value;
   }
 
-  addError(message: any, value: any, meta: Meta, condition: ContextItem): void;
+  addError(message: any, value: any, meta: Meta, condition?: ContextItem): void;
   addError(message: any, nestedErrors: ValidationError[]): void;
   addError(message: any, valueOrNestedErrors: any, meta?: Meta, condition?: ContextItem) {
     const msg = message || this.message || 'Invalid value';
