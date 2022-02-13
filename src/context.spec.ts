@@ -1,6 +1,7 @@
 import { Context } from './context';
 import { ContextBuilder } from './context-builder';
 import { FieldInstance, Meta } from './base';
+import { StandardValidation } from './context-items';
 
 let context: Context;
 let data: FieldInstance[];
@@ -92,6 +93,25 @@ describe('#addError()', () => {
       param: 'bar',
       location: 'headers',
     });
+  });
+
+  it('includes failed validation condition on error result as nonenumerable property', () => {
+    const meta: Meta = {
+      path: 'bar',
+      location: 'headers',
+      req: {},
+    };
+    let validator: jest.Mock;
+    validator = jest.fn();
+    let validation = new StandardValidation(validator, false);
+    validation.message = 'nope';
+    context.addError('bar', 'foo', meta, validation);
+    let serializedError = JSON.parse(JSON.stringify(context.errors[0]));
+
+    expect(context.errors).toHaveLength(1);
+    expect(context.errors[0]).toHaveProperty('condition', validation);
+    // Nonenumerable property addition will not affect existing express responses
+    expect(serializedError).not.toHaveProperty('condition');
   });
 });
 
