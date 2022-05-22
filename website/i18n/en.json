@@ -206,6 +206,9 @@
       "version-6.13.0/version-6.13.0-schema-validation": {
         "title": "Schema Validation"
       },
+      "version-6.14.1/version-6.14.1-schema-validation": {
+        "title": "Schema Validation"
+      },
       "version-6.2.0/version-6.2.0-validation-chain-api": {
         "title": "Validation Chain API"
       },
