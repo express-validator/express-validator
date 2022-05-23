@@ -333,6 +333,10 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
     return this.addStandardValidation(validator.isWhitelisted, chars);
   }
   matches(pattern: RegExp | string, modifiers?: string) {
-    return this.addStandardValidation(validator.matches, pattern, modifiers);
+    return this.addStandardValidation(
+      validator.matches,
+      typeof pattern === 'string' ? pattern : pattern.source,
+      modifiers,
+    );
   }
 }
