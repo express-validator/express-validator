@@ -333,8 +333,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
     return this.addStandardValidation(validator.isWhitelisted, chars);
   }
   matches(pattern: RegExp | string, modifiers?: string) {
-    return this.addStandardValidation.apply([
-      this,
+    return this.addStandardValidation.apply(this, [
       validator.matches,
       ...(typeof pattern === 'string'
         ? [pattern, modifiers]
