@@ -334,7 +334,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   }
   matches(pattern: RegExp | string, modifiers?: string) {
     return this.addStandardValidation.apply([
-      null,
+      this,
       validator.matches,
       ...(typeof pattern === 'string'
         ? [pattern, modifiers]
