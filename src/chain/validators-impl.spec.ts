@@ -363,3 +363,19 @@ describe('#notEmpty()', () => {
     );
   });
 });
+
+describe('correctly merges validator.matches flags', () => {
+  it('correctly uses modifiers and string', () => {
+    validators.matches('baz', 'gi');
+    expect(builder.addItem).toHaveBeenCalledWith(
+      new StandardValidation(validator.matches, false, ['baz', 'gi']),
+    );
+  });
+
+  it('correctly uses modifiers and regex flags', () => {
+    validators.matches(/baz/gi, 'm');
+    expect(builder.addItem).toHaveBeenCalledWith(
+      new StandardValidation(validator.matches, false, ['baz', "mgi"]),
+    );
+  });
+});

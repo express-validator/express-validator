@@ -337,7 +337,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
       validator.matches,
       ...(typeof pattern === 'string'
         ? [pattern, modifiers]
-        : [pattern.source, ...[new Set((modifiers || '') + pattern.flags)].join('')]),
+        : [pattern.source, [...new Set((modifiers || '') + pattern.flags)].join('')]),
     ]);
   }
 }
