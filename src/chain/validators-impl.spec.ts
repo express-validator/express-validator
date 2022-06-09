@@ -406,7 +406,7 @@ describe('always correctly validates with validator.matches using the g flag', (
 
       // try three times because per #1127 validation failed one other time
       let i = 0;
-      let results = [];
+      const results = [];
       while (++i < 3) {
         await validator.run(req);
         results.push(...validationResult(req).array());
