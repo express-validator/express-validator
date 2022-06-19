@@ -2,6 +2,8 @@ import * as validator from 'validator';
 import { Meta } from '../base';
 import { CustomValidation, StandardValidation } from '../context-items';
 import { ContextBuilder } from '../context-builder';
+import { body } from '../middlewares/validation-chain-builders';
+import { validationResult } from '../validation-result';
 import { Validators } from './validators';
 import { ValidatorsImpl } from './validators-impl';
 
@@ -361,5 +363,56 @@ describe('#notEmpty()', () => {
     expect(builder.addItem).toHaveBeenCalledWith(
       new StandardValidation(validator.isEmpty, true, expect.any(Array)),
     );
+  });
+});
+
+describe('correctly merges validator.matches flags', () => {
+  it('correctly uses modifiers and string', () => {
+    validators.matches('baz', 'gi');
+    expect(builder.addItem).toHaveBeenCalledWith(
+      new StandardValidation(validator.matches, false, ['baz', 'gi']),
+    );
+  });
+
+  it('correctly uses modifiers and regex flags', () => {
+    validators.matches(/baz/gi, 'm');
+    expect(builder.addItem).toHaveBeenCalledWith(
+      new StandardValidation(validator.matches, false, ['baz', 'mgi']),
+    );
+  });
+});
+
+describe('always correctly validates with validator.matches using the g flag', () => {
+  const expectedErr = {
+    value: 'fo157115',
+    msg: 'INVALID USER FORMAT',
+    param: 'user',
+    location: 'body',
+  };
+  [
+    { name: 'with valid value', user: 'it157115', expected: [] },
+    {
+      name: 'with invalid value',
+      user: 'fo157115',
+      expected: [expectedErr, expectedErr, expectedErr],
+    },
+  ].forEach(config => {
+    it(config.name, async () => {
+      const req = { body: { user: config.user } };
+      const validator = body('user')
+        .toLowerCase()
+        .matches(/^(it)(\d{6})$/g)
+        .withMessage('INVALID USER FORMAT');
+
+      // try three times because per #1127 validation failed one other time
+      let i = 0;
+      const results = [];
+      while (++i < 3) {
+        await validator.run(req);
+        results.push(...validationResult(req).array());
+      }
+
+      expect(results).toEqual(config.expected);
+    });
   });
 });
