@@ -1,7 +1,8 @@
 import * as validator from 'validator';
 import { Meta } from '../base';
-import { CustomValidation, StandardValidation } from '../context-items';
+import { ContextItem, CustomValidation, StandardValidation } from '../context-items';
 import { ContextBuilder } from '../context-builder';
+import { Context } from '../context';
 import { Validators } from './validators';
 import { ValidatorsImpl } from './validators-impl';
 
@@ -18,7 +19,7 @@ beforeEach(() => {
 });
 
 it('has methods for all standard validators', () => {
-  // Cast is here to workaround the lack of index signature
+  // Cast is here as workaround for the lack of index signature
   const validatorModule = validator as any;
 
   Object.keys(validator)
@@ -184,6 +185,83 @@ describe('#isString()', () => {
     await isString.run(context, undefined, meta);
     await isString.run(context, [], meta);
     expect(context.errors).toHaveLength(5);
+  });
+});
+
+describe('#hasSchema()', () => {
+  const sampleSchema = {
+    foo: 'bar',
+    fooPattern: /\d\d[A-Z]/,
+    someDate: Date,
+    someFoo: [String, Number, undefined],
+    someNumber: Number,
+    someBoolean: Boolean,
+    someNestedObject: {
+      someObject: Object,
+      someStrictObject: {
+        foo: 1,
+        bar: 2,
+      },
+    },
+  };
+  const sampleBody = {
+    foo: 'bar',
+    fooPattern: '19A',
+    someDate: new Date(),
+    someString: 'someString',
+    someNumber: 5,
+    someBoolean: true,
+    someNestedObject: {
+      someObject: {},
+      someStrictObject: {
+        foo: 1,
+        bar: 2,
+      },
+    },
+  };
+  let ret: any, context: Context, hasSchema: ContextItem;
+  const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+  beforeEach(() => {
+    ret = validators.hasSchema(sampleSchema);
+    context = builder.build();
+    hasSchema = context.stack[0];
+  });
+
+  it('adds custom validator to the context', () => {
+    expect(ret).toBe(chain);
+    expect(builder.addItem).toHaveBeenCalledWith(new CustomValidation(expect.any(Function), false));
+  });
+
+  it('returns no errors with valid schema', async () => {
+    validators.hasSchema(sampleSchema);
+    await hasSchema.run(context, { ...sampleBody }, meta);
+    expect(context.errors).toHaveLength(0);
+  });
+
+  it('returns error with invalid body', async () => {
+    await hasSchema.run(context, { bar: 'foo' }, meta);
+    expect(context.errors).toHaveLength(1);
+  });
+
+  it('returns error with invalid property pattern', async () => {
+    await hasSchema.run(context, { fooPattern: 'foo' }, meta);
+    expect(context.errors).toHaveLength(1);
+  });
+  it('returns error with invalid nested object', async () => {
+    await hasSchema.run(
+      context,
+      {
+        someNestedObject: {
+          someObject: {},
+          someStrictObject: {
+            foo: 2,
+            bar: 2,
+          },
+        },
+      },
+      meta,
+    );
+    expect(context.errors).toHaveLength(1);
   });
 });
 

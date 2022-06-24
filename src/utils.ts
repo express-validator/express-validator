@@ -26,3 +26,25 @@ export function toString(value: any, deep = true): string {
 
   return String(value);
 }
+
+export function isDate(value: any): boolean {
+  return global.toString.call(value) === '[object Date]';
+}
+
+export function isFunction(value: any): boolean {
+  return typeof value === typeof isNaN;
+}
+
+export function isRegExp(value: any): boolean {
+  return global.toString.call(value) === '[object RegExp]';
+}
+
+export function isObject(value: any, options: { strict?: boolean } = { strict: true }): boolean {
+  return (
+    typeof value === 'object' && (options.strict ? value !== null && !Array.isArray(value) : true)
+  );
+}
+
+export function isString(value: any): value is string {
+  return typeof value === 'string';
+}

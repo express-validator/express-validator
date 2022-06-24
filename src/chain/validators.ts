@@ -1,5 +1,6 @@
 import { CustomValidator, DynamicMessageCreator } from '../base';
 import * as Options from '../options';
+import { Schema } from './schema-validator';
 
 export interface Validators<Return> {
   // validation manipulation
@@ -10,6 +11,7 @@ export interface Validators<Return> {
   // custom validators
   custom(validator: CustomValidator): Return;
   exists(options?: { checkFalsy?: boolean; checkNull?: boolean }): Return;
+  hasSchema(schema: Schema, forbidExtraProperties?: boolean): Return;
   isArray(options?: { min?: number; max?: number }): Return;
   isObject(options?: { strict?: boolean }): Return;
   isString(): Return;

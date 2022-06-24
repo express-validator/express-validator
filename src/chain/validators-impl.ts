@@ -3,6 +3,9 @@ import { CustomValidator, StandardValidator } from '../base';
 import { CustomValidation, StandardValidation } from '../context-items';
 import { ContextBuilder } from '../context-builder';
 import * as Options from '../options';
+import { isObject } from '../utils';
+import { Schema } from './schema-validator';
+import { schemaValidator } from './schema-validator-impl';
 import { Validators } from './validators';
 
 export class ValidatorsImpl<Chain> implements Validators<Chain> {
@@ -49,6 +52,15 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
     return this.custom(validator);
   }
 
+  hasSchema(schema: Schema, forbidExtraProperties?: boolean) {
+    return this.custom((value, meta) => {
+      const result = schemaValidator(value, schema, forbidExtraProperties);
+      meta.path = result || meta.path;
+
+      return !result;
+    });
+  }
+
   isArray(options: { min?: number; max?: number } = {}) {
     return this.custom(
       value =>
@@ -59,11 +71,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   }
 
   isObject(options: { strict?: boolean } = { strict: true }) {
-    return this.custom(
-      value =>
-        typeof value === 'object' &&
-        (options.strict ? value !== null && !Array.isArray(value) : true),
-    );
+    return this.custom(value => isObject(value, options));
   }
 
   isString() {
