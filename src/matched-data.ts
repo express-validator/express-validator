@@ -47,7 +47,9 @@ function createValidityFilter(onlyValidData = true) {
           error =>
             error.location === field.instance.location &&
             error.param === field.instance.path &&
-            field.instance.value != null,
+            (!field.context.optional ||
+              !field.context.optional.nullable ||
+              field.instance.value != null),
         );
 
         return !hasError;
