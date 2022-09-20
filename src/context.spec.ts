@@ -123,7 +123,7 @@ describe('#getData()', () => {
     context = new ContextBuilder().setOptional({ checkFalsy: false, nullable: true }).build();
     context.addFieldInstances(data);
 
-    expect(context.getData({ requiredOnly: true })).toEqual([]);
+    expect(context.getData({ requiredOnly: true })).toEqual([data[0]]);
   });
 
   it('filters out falsies when context optional with checkFalsy = true', () => {

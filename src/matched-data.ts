@@ -45,9 +45,10 @@ function createValidityFilter(onlyValidData = true) {
     : (field: FieldInstanceBag) => {
         const hasError = field.context.errors.some(
           error =>
-            error.location === field.instance.location && error.param === field.instance.path,
+            error.location === field.instance.location &&
+            error.param === field.instance.path &&
+            field.instance.value !== null,
         );
-
         return !hasError;
       };
 }
