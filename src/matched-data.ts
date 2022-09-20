@@ -43,13 +43,14 @@ function createValidityFilter(onlyValidData = true) {
   return !onlyValidData
     ? () => true
     : (field: FieldInstanceBag) => {
+        const isValidNullable =
+          field.context.optional && field.context.optional.nullable && field.instance.value == null;
+
         const hasError = field.context.errors.some(
           error =>
             error.location === field.instance.location &&
             error.param === field.instance.path &&
-            (!field.context.optional ||
-              !field.context.optional.nullable ||
-              field.instance.value != null),
+            !isValidNullable,
         );
 
         return !hasError;
