@@ -38,6 +38,22 @@ it('includes data that was validated with wildcards', done => {
   });
 });
 
+it('includes nullable optional', done => {
+  const req = {
+    headers: { foo: [1, 2, 3] },
+    query: { bar: null },
+  };
+
+  check(['foo.*', 'bar']).optional({ nullable: true }).isInt()(req, {}, () => {
+    expect(matchedData(req)).toEqual({
+      foo: [1, 2, 3],
+      bar: null,
+    });
+
+    done();
+  });
+});
+
 it('does not include valid data from invalid oneOf() chain group', done => {
   const req = {
     query: { foo: 'foo', bar: 123, baz: 'baz' },
