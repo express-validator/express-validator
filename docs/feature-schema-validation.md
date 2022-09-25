@@ -59,7 +59,7 @@ app.put(
       },
       rtrim: {
         // Options as an array
-        options: [[' ', '-']],
+        options: [' -'],
       },
     },
     // Support bail functionality in schemas

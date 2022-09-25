@@ -58,7 +58,7 @@ app.put('/user/:id/password', checkSchema({
     },
     rtrim: {
       // Options as an array
-      options: [[" ", "-"]],
+      options: [' -'],
     },
   },
   // Wildcards/dots for nested fields work as well
