@@ -3,16 +3,78 @@ import * as Options from '../options';
 
 export interface Validators<Return> {
   // validation manipulation
+  /**
+   * Negates the result of the next validator.
+   *
+   * @example check('weekday').not().isIn(['sunday', 'saturday'])
+   * @returns the current validation chain
+   */
   not(): Return;
+
+  /**
+   * Sets the error message for the previous validator.
+   *
+   * @param message a function for dynamically creating the error message based on the field value
+   * @returns the current validation chain
+   */
   withMessage(message: DynamicMessageCreator): Return;
+
+  /**
+   * Sets the error message for the previous validator.
+   *
+   * @param message the error message
+   * @returns the current validation chain
+   */
   withMessage(message: any): Return;
 
   // custom validators
+  /**
+   * Adds a custom validator to the validation chain.
+   *
+   * @param validator the custom validator
+   * @returns the current validation chain
+   */
   custom(validator: CustomValidator): Return;
+
+  /**
+   * Adds a validator to check that the fields exist in the request.
+   * By default, this means that the value of the fields may not be `undefined`;
+   * all other values are acceptable.
+   *
+   * @param options
+   * @returns the current validation chain
+   */
   exists(options?: { checkFalsy?: boolean; checkNull?: boolean }): Return;
+
+  /**
+   * Adds a validator to check if a value is an array.
+   *
+   * @param options
+   * @returns the current validation chain
+   */
   isArray(options?: { min?: number; max?: number }): Return;
+
+  /**
+   * Adds a validator to check if a value is an object.
+   *
+   * @param options
+   * @returns the current validation chain
+   */
   isObject(options?: { strict?: boolean }): Return;
+
+  /**
+   * Adds a validator to check if a value is a string.
+   *
+   * @returns the current validation chain
+   */
   isString(): Return;
+
+  /**
+   * Adds a validator to check if a value is not empty; that is, a string with length of 1 or more.
+   *
+   * @param options
+   * @returns the current validation chain
+   */
   notEmpty(options?: Options.IsEmptyOptions): Return;
 
   // validator's validators

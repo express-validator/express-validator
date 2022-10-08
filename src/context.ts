@@ -6,7 +6,22 @@ function getDataMapKey(path: string, location: Location) {
   return `${location}:${path}`;
 }
 
-export type Optional = { nullable: boolean; checkFalsy: boolean } | false;
+export type Optional =
+  | {
+      /**
+       * Whether a field whose value is `null` or `undefined` is to be considered optional.
+       * @default false
+       */
+      nullable: boolean;
+
+      /**
+       * Whether a field whose value is falsy (that is, `0`, `false`, `null`, `undefined` or an empty
+       * string) is to be considered optional.
+       * @default false
+       */
+      checkFalsy: boolean;
+    }
+  | false;
 
 export class Context {
   private readonly _errors: ValidationError[] = [];

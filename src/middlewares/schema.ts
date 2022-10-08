@@ -60,6 +60,14 @@ export type ValidationSchema = Schema;
 const validLocations: Location[] = ['body', 'cookies', 'headers', 'params', 'query'];
 const protectedNames = ['errorMessage', 'in'];
 
+/**
+ * Creates an express middleware with validations for multiple fields at once in the form of
+ * a schema object.
+ *
+ * @param schema the schema to validate.
+ * @param defaultLocations
+ * @returns
+ */
 export function checkSchema(
   schema: Schema,
   defaultLocations: Location[] = validLocations,
