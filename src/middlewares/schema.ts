@@ -1,3 +1,4 @@
+import * as assert from 'assert';
 import { Sanitizers } from '../chain/sanitizers';
 import { Validators } from '../chain/validators';
 import { CustomValidator, DynamicMessageCreator, Location, Request } from '../base';
@@ -36,7 +37,11 @@ type ValidatorSchemaOptions<K extends keyof Validators<any>> = {
   if?: CustomValidator | ValidationChain;
 };
 
-export type ValidatorsSchema = { [K in keyof Validators<any>]?: true | ValidatorSchemaOptions<K> };
+export type ValidatorsSchema = {
+  [K in Exclude<keyof Validators<any>, 'custom'>]?: true | ValidatorSchemaOptions<K>;
+} & {
+  custom?: ValidatorSchemaOptions<'custom'> | ValidatorSchemaOptions<'custom'>[];
+};
 
 type SanitizerSchemaOptions<K extends keyof Sanitizers<any>> = {
   /**
@@ -46,7 +51,13 @@ type SanitizerSchemaOptions<K extends keyof Sanitizers<any>> = {
   options?: Parameters<Sanitizers<any>[K]> | Parameters<Sanitizers<any>[K]>[0];
 };
 
-export type SanitizersSchema = { [K in keyof Sanitizers<any>]?: true | SanitizerSchemaOptions<K> };
+export type SanitizersSchema = {
+  [K in Exclude<keyof Sanitizers<any>, 'customSanitizer'>]?: true | SanitizerSchemaOptions<K>;
+} & {
+  customSanitizer?:
+    | SanitizerSchemaOptions<'customSanitizer'>
+    | SanitizerSchemaOptions<'customSanitizer'>[];
+};
 
 type InternalParamSchema = ValidatorsSchema & SanitizersSchema;
 
@@ -126,28 +137,15 @@ export function checkSchema(
 
         // Using "!" because typescript doesn't know it isn't undefined.
         const methodCfg = config[method]!;
-
-        let options: any[] = methodCfg === true ? [] : methodCfg.options ?? [];
-        if (options != null && !Array.isArray(options)) {
-          options = [options];
-        }
-
-        if (isValidatorOptions(method, methodCfg) && methodCfg.if) {
-          chain.if(methodCfg.if);
-        }
-
-        if (isValidatorOptions(method, methodCfg) && methodCfg.negated) {
-          chain.not();
-        }
-
-        (chain[method] as any)(...options);
-
-        if (isValidatorOptions(method, methodCfg) && methodCfg.errorMessage) {
-          chain.withMessage(methodCfg.errorMessage);
-        }
-
-        if (isValidatorOptions(method, methodCfg) && methodCfg.bail) {
-          chain.bail();
+        if (methodCfg === true) {
+          // Validators which require options shouldn't be receiving a boolean,
+          // but many of express-validator tutorials are old and will be in plain JS,
+          // so just use a type cast and pretend that no arguments are sufficient.
+          (chain[method] as () => void)();
+        } else if (Array.isArray(methodCfg)) {
+          methodCfg.forEach(config => applyValidator(chain, method, config));
+        } else {
+          applyValidator(chain, method, methodCfg);
         }
       });
 
@@ -161,11 +159,36 @@ export function checkSchema(
   return Object.assign(chains, { run });
 }
 
-function isValidatorOptions(
-  method: string,
-  methodCfg: any,
-): methodCfg is Exclude<ValidatorSchemaOptions<any>, true> {
-  return methodCfg !== true && method in ValidatorsImpl.prototype;
+function applyValidator<K extends keyof InternalParamSchema>(
+  chain: ValidationChain,
+  name: K,
+  config: InternalParamSchema[K],
+) {
+  assert(typeof config === 'object' && config && !Array.isArray(config));
+  const options: any[] = Array.isArray(config.options)
+    ? config.options
+    : config.options !== undefined
+    ? [config.options]
+    : [];
+
+  if (isValidatorOptions(name, config)) {
+    config.if && chain.if(config.if);
+    config.negated && chain.not();
+  }
+
+  (chain[name] as any)(...options);
+
+  if (isValidatorOptions(name, config)) {
+    config.errorMessage && chain.withMessage(config.errorMessage);
+    config.bail && chain.bail();
+  }
+}
+
+function isValidatorOptions<K extends keyof InternalParamSchema>(
+  method: K,
+  config: object,
+): config is ValidatorSchemaOptions<any> {
+  return config && method in ValidatorsImpl.prototype;
 }
 
 function ensureLocations(config: ParamSchema, defaults: Location[]) {

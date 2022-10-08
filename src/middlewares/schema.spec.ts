@@ -199,6 +199,32 @@ describe('on each field', () => {
     const { context } = await chain.run({ params: { foo: '' } });
     expect(context.errors).toHaveLength(1);
   });
+
+  it('can set multiple custom validators', async () => {
+    const validator1 = jest.fn();
+    const validator2 = jest.fn();
+    const schema = checkSchema({
+      foo: {
+        custom: [{ options: validator1 }, { options: validator2 }],
+      },
+    });
+    await schema.run({});
+    expect(validator1).toHaveBeenCalled();
+    expect(validator2).toHaveBeenCalled();
+  });
+
+  it('can set multiple custom sanitizers', async () => {
+    const sanitizer1 = jest.fn();
+    const sanitizer2 = jest.fn();
+    const schema = checkSchema({
+      foo: {
+        customSanitizer: [{ options: sanitizer1 }, { options: sanitizer2 }],
+      },
+    });
+    await schema.run({});
+    expect(sanitizer1).toHaveBeenCalled();
+    expect(sanitizer2).toHaveBeenCalled();
+  });
 });
 
 describe('on schema that contains fields with bail methods', () => {
