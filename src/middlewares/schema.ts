@@ -9,11 +9,33 @@ import { check } from './check';
 type ValidatorSchemaOptions<K extends keyof Validators<any>> =
   | true
   | {
+      /**
+       * Options to pass to the validator.
+       * Not used with custom validators.
+       */
       options?: Parameters<Validators<any>[K]> | Parameters<Validators<any>[K]>[0];
+
+      /**
+       * The error message if there's a validation error,
+       * or a function for creating an error message dynamically.
+       */
       errorMessage?: DynamicMessageCreator | any;
+
+      /**
+       * Whether the validation should be reversed.
+       */
       negated?: boolean;
+
+      /**
+       * Whether the validation should bail after running this validator
+       */
       bail?: boolean;
-      if?: CustomValidator | ValidationChain | CustomValidator;
+
+      /**
+       * Specify a condition upon which this validator should run.
+       * Can either be a validation chain, or a custom validator function.
+       */
+      if?: CustomValidator | ValidationChain;
     };
 
 export type ValidatorsSchema = { [K in keyof Validators<any>]?: ValidatorSchemaOptions<K> };
@@ -21,6 +43,10 @@ export type ValidatorsSchema = { [K in keyof Validators<any>]?: ValidatorSchemaO
 type SanitizerSchemaOptions<K extends keyof Sanitizers<any>> =
   | true
   | {
+      /**
+       * Options to pass to the sanitizer.
+       * Not used with custom sanitizers.
+       */
       options?: Parameters<Sanitizers<any>[K]> | Parameters<Sanitizers<any>[K]>[0];
     };
 
@@ -29,12 +55,24 @@ export type SanitizersSchema = { [K in keyof Sanitizers<any>]?: SanitizerSchemaO
 type InternalParamSchema = ValidatorsSchema & SanitizersSchema;
 
 /**
- * Defines a schema of validations/sanitizations plus a general validation error message
- * and possible field locations.
+ * Defines a schema of validations/sanitizations for a field
  */
 export type ParamSchema = InternalParamSchema & {
+  /**
+   * Which request location(s) the field to validate is.
+   * If unset, the field will be checked in every request location.
+   */
   in?: Location | Location[];
+
+  /**
+   * The general error message in case a validator doesn't specify one,
+   * or a function for creating the error message dynamically.
+   */
   errorMessage?: DynamicMessageCreator | any;
+
+  /**
+   * Whether this field should be considered optional
+   */
   optional?:
     | true
     | {
