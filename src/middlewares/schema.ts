@@ -6,51 +6,47 @@ import { Optional } from '../context';
 import { ResultWithContext } from '../chain/context-runner-impl';
 import { check } from './check';
 
-type ValidatorSchemaOptions<K extends keyof Validators<any>> =
-  | true
-  | {
-      /**
-       * Options to pass to the validator.
-       * Not used with custom validators.
-       */
-      options?: Parameters<Validators<any>[K]> | Parameters<Validators<any>[K]>[0];
+type ValidatorSchemaOptions<K extends keyof Validators<any>> = {
+  /**
+   * Options to pass to the validator.
+   * Not used with custom validators.
+   */
+  options?: Parameters<Validators<any>[K]> | Parameters<Validators<any>[K]>[0];
 
-      /**
-       * The error message if there's a validation error,
-       * or a function for creating an error message dynamically.
-       */
-      errorMessage?: DynamicMessageCreator | any;
+  /**
+   * The error message if there's a validation error,
+   * or a function for creating an error message dynamically.
+   */
+  errorMessage?: DynamicMessageCreator | any;
 
-      /**
-       * Whether the validation should be reversed.
-       */
-      negated?: boolean;
+  /**
+   * Whether the validation should be reversed.
+   */
+  negated?: boolean;
 
-      /**
-       * Whether the validation should bail after running this validator
-       */
-      bail?: boolean;
+  /**
+   * Whether the validation should bail after running this validator
+   */
+  bail?: boolean;
 
-      /**
-       * Specify a condition upon which this validator should run.
-       * Can either be a validation chain, or a custom validator function.
-       */
-      if?: CustomValidator | ValidationChain;
-    };
+  /**
+   * Specify a condition upon which this validator should run.
+   * Can either be a validation chain, or a custom validator function.
+   */
+  if?: CustomValidator | ValidationChain;
+};
 
-export type ValidatorsSchema = { [K in keyof Validators<any>]?: ValidatorSchemaOptions<K> };
+export type ValidatorsSchema = { [K in keyof Validators<any>]?: true | ValidatorSchemaOptions<K> };
 
-type SanitizerSchemaOptions<K extends keyof Sanitizers<any>> =
-  | true
-  | {
-      /**
-       * Options to pass to the sanitizer.
-       * Not used with custom sanitizers.
-       */
-      options?: Parameters<Sanitizers<any>[K]> | Parameters<Sanitizers<any>[K]>[0];
-    };
+type SanitizerSchemaOptions<K extends keyof Sanitizers<any>> = {
+  /**
+   * Options to pass to the sanitizer.
+   * Not used with custom sanitizers.
+   */
+  options?: Parameters<Sanitizers<any>[K]> | Parameters<Sanitizers<any>[K]>[0];
+};
 
-export type SanitizersSchema = { [K in keyof Sanitizers<any>]?: SanitizerSchemaOptions<K> };
+export type SanitizersSchema = { [K in keyof Sanitizers<any>]?: true | SanitizerSchemaOptions<K> };
 
 type InternalParamSchema = ValidatorsSchema & SanitizersSchema;
 
@@ -96,7 +92,7 @@ export type Schema = Record<string, ParamSchema>;
 export type ValidationSchema = Schema;
 
 const validLocations: Location[] = ['body', 'cookies', 'headers', 'params', 'query'];
-const protectedNames = ['errorMessage', 'in'];
+const protectedNames: (keyof ParamSchema)[] = ['errorMessage', 'in'];
 
 /**
  * Creates an express middleware with validations for multiple fields at once in the form of
