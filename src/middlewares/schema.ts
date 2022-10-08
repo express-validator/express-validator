@@ -10,7 +10,6 @@ import { check } from './check';
 type ValidatorSchemaOptions<K extends keyof Validators<any>> = {
   /**
    * Options to pass to the validator.
-   * Not used with custom validators.
    */
   options?: Parameters<Validators<any>[K]> | Parameters<Validators<any>[K]>[0];
 
@@ -46,7 +45,6 @@ export type ValidatorsSchema = {
 type SanitizerSchemaOptions<K extends keyof Sanitizers<any>> = {
   /**
    * Options to pass to the sanitizer.
-   * Not used with custom sanitizers.
    */
   options?: Parameters<Sanitizers<any>[K]> | Parameters<Sanitizers<any>[K]>[0];
 };
