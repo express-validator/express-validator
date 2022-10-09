@@ -200,30 +200,42 @@ describe('on each field', () => {
     expect(context.errors).toHaveLength(1);
   });
 
-  it('can set multiple custom validators', async () => {
+  it('can set custom validators with random names', async () => {
     const validator1 = jest.fn();
     const validator2 = jest.fn();
     const schema = checkSchema({
       foo: {
-        custom: [{ options: validator1 }, { options: validator2 }],
+        isFoo: { custom: validator1 },
+        replace: {
+          options: ['foo', 'bar'],
+        },
+        isBar: { custom: validator2 },
       },
     });
-    await schema.run({});
-    expect(validator1).toHaveBeenCalled();
-    expect(validator2).toHaveBeenCalled();
+    await schema.run({
+      body: { foo: 'foo' },
+    });
+    expect(validator1).toHaveBeenCalledWith('foo', expect.objectContaining({}));
+    expect(validator2).toHaveBeenCalledWith('bar', expect.objectContaining({}));
   });
 
-  it('can set multiple custom sanitizers', async () => {
-    const sanitizer1 = jest.fn();
-    const sanitizer2 = jest.fn();
+  it('can set custom sanitizers with random names', async () => {
+    const sanitizer1 = jest.fn(() => 'foo');
+    const sanitizer2 = jest.fn(() => 'baz');
     const schema = checkSchema({
       foo: {
-        customSanitizer: [{ options: sanitizer1 }, { options: sanitizer2 }],
+        toFoo: { customSanitizer: sanitizer1 },
+        replace: {
+          options: ['foo', 'bar'],
+        },
+        toBaz: { customSanitizer: sanitizer2 },
       },
     });
-    await schema.run({});
-    expect(sanitizer1).toHaveBeenCalled();
-    expect(sanitizer2).toHaveBeenCalled();
+    await schema.run({
+      body: { foo: 1 },
+    });
+    expect(sanitizer1).toHaveBeenCalledWith(1, expect.objectContaining({}));
+    expect(sanitizer2).toHaveBeenCalledWith('bar', expect.objectContaining({}));
   });
 });
 
