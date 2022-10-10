@@ -219,6 +219,24 @@ describe('on each field', () => {
     expect(validator2).toHaveBeenCalledWith('bar', expect.objectContaining({}));
   });
 
+  it('does not run a custom validator specified under a standard validator/sanitizer name', async () => {
+    const validator = jest.fn();
+    const schema = checkSchema({
+      foo: {
+        isInt: {
+          // @ts-expect-error
+          custom: validator,
+        },
+        toInt: {
+          // @ts-expect-error
+          custom: validator,
+        },
+      },
+    });
+    await schema.run({});
+    expect(validator).not.toHaveBeenCalled();
+  });
+
   it('can set custom sanitizers with random names', async () => {
     const sanitizer1 = jest.fn(() => 'foo');
     const sanitizer2 = jest.fn(() => 'baz');
@@ -236,6 +254,24 @@ describe('on each field', () => {
     });
     expect(sanitizer1).toHaveBeenCalledWith(1, expect.objectContaining({}));
     expect(sanitizer2).toHaveBeenCalledWith('bar', expect.objectContaining({}));
+  });
+
+  it('does not run a custom sanitizer specified under a standard validator/sanitizer name', async () => {
+    const sanitizer = jest.fn();
+    const schema = checkSchema({
+      foo: {
+        isInt: {
+          // @ts-expect-error
+          customSanitizer: sanitizer,
+        },
+        toInt: {
+          // @ts-expect-error
+          customSanitizer: sanitizer,
+        },
+      },
+    });
+    await schema.run({});
+    expect(sanitizer).not.toHaveBeenCalled();
   });
 });
 
