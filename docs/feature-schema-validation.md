@@ -12,7 +12,7 @@ Its syntax looks like this:
 ```js
 const { checkSchema, validationResult } = require('express-validator');
 app.put(
-  '/user/:id/password',
+  '/user/:id',
   checkSchema({
     id: {
       // The location of the field, can be one or more of body, cookies, headers, params or query.
