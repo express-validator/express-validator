@@ -70,15 +70,16 @@ export class Context {
     readonly stack: ReadonlyArray<ContextItem>,
     readonly optional: Optional,
     readonly bail: boolean,
+    readonly defaultValue?: any,
     readonly message?: any,
   ) {}
 
   getData(options: { requiredOnly: boolean } = { requiredOnly: false }) {
     // Have to store this.optional in a const otherwise TS thinks the value could have changed
     // when the functions below run
-    const { optional } = this;
+    const { optional, defaultValue } = this;
     const checks =
-      options.requiredOnly && optional
+      options.requiredOnly && optional && defaultValue === undefined
         ? [
             (value: any) => value !== undefined,
             (value: any) => (optional.nullable ? value != null : true),

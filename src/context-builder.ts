@@ -9,6 +9,7 @@ export class ContextBuilder {
   private message: any;
   private optional: Optional = false;
   private requestBail = false;
+  private defaultValue: any;
 
   setFields(fields: string[]) {
     this.fields = fields;
@@ -40,6 +41,11 @@ export class ContextBuilder {
     return this;
   }
 
+  setDefaultValue(defaultValue: any) {
+    this.defaultValue = defaultValue;
+    return this;
+  }
+
   build() {
     return new Context(
       this.fields,
@@ -47,6 +53,7 @@ export class ContextBuilder {
       this.stack,
       this.optional,
       this.requestBail,
+      this.defaultValue,
       this.message,
     );
   }
