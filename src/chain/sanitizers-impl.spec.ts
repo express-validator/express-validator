@@ -13,6 +13,7 @@ beforeEach(() => {
   chain = {};
   builder = new ContextBuilder();
   jest.spyOn(builder, 'addItem');
+  jest.spyOn(builder, 'setDefaultValue');
 
   sanitizers = new SanitizersImpl(builder, chain);
 });
@@ -235,6 +236,7 @@ describe('#default()', () => {
 
     expect(ret).toBe(chain);
     expect(builder.addItem).toHaveBeenCalledWith(new Sanitization(expect.any(Function), true));
+    expect(builder.setDefaultValue).toHaveBeenCalledWith(5);
   });
 
   it('sanitizes to default()', async () => {

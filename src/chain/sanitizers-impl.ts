@@ -14,6 +14,7 @@ export class SanitizersImpl<Chain> implements Sanitizers<Chain> {
     return this.chain;
   }
   default(default_value: any) {
+    this.builder.setDefaultValue(default_value);
     return this.customSanitizer(value =>
       [undefined, null, NaN, ''].includes(value) ? default_value : value,
     );

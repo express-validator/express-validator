@@ -258,6 +258,23 @@ describe('#getData()', () => {
     expect(context.getData({ requiredOnly: true })).toEqual([]);
   });
 
+  it('returns default value when context optional with default value and empty data', () => {
+    context = new ContextBuilder()
+      .setOptional({ checkFalsy: false, nullable: false })
+      .setDefaultValue([])
+      .build();
+    expect(context.getData()).toEqual([]);
+  });
+
+  it('returns all data when context not optional when context optional with default value', () => {
+    context = new ContextBuilder()
+      .setOptional({ checkFalsy: false, nullable: false })
+      .setDefaultValue([])
+      .build();
+    context.addFieldInstances(data);
+    expect(context.getData()).toEqual(data);
+  });
+
   describe('when same path occurs multiple times', () => {
     it('keeps only fields with value', () => {
       data = [
