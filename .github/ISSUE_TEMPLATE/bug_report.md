@@ -12,7 +12,13 @@ assignees: ''
 
 ## To Reproduce
 
-<!-- Steps to reproduce the behavior -->
+<!--
+Steps to reproduce the behavior.
+If possible, please include a link to a Runkit notebook.
+
+You can use the following template to get started:
+https://runkit.com/gustavohenke/express-validator-issue-template
+-->
 
 1. <!-- Go to '...' -->
 2. <!-- Click on '...' -->
@@ -29,3 +35,4 @@ assignees: ''
 
 - Express-validator version: <!-- [e.g. 6.6.1] -->
 - Express version: <!-- [e.g. 4.17.1] -->
+- Node.js version: <!-- [e.g. 14.20.1] -->
