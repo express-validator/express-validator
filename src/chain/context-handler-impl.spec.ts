@@ -1,7 +1,9 @@
 import { ContextBuilder } from '../context-builder';
 import { ChainCondition, CustomCondition } from '../context-items';
+import { Sanitization } from '../context-items/sanitization';
 import { check } from '../middlewares/check';
 import { Bail } from '../context-items/bail';
+import { Meta } from '../base';
 import { ContextHandler, ContextHandlerImpl } from './';
 
 let builder: ContextBuilder;
@@ -11,6 +13,7 @@ beforeEach(() => {
   builder = new ContextBuilder();
   jest.spyOn(builder, 'setOptional');
   jest.spyOn(builder, 'setRequestBail');
+  jest.spyOn(builder, 'setDefaultValue');
   jest.spyOn(builder, 'addItem');
 
   contextHandler = new ContextHandlerImpl(builder, {});
@@ -84,5 +87,48 @@ describe('#optional()', () => {
 
     contextHandler.optional(false);
     expect(builder.setOptional).toHaveBeenNthCalledWith(3, false);
+  });
+});
+
+describe('#default()', () => {
+  it('adds default() sanitizer to the context', () => {
+    contextHandler.default(5);
+
+    expect(builder.addItem).toHaveBeenCalledWith(new Sanitization(expect.any(Function), true));
+    expect(builder.setDefaultValue).toHaveBeenCalledWith(5);
+  });
+
+  it('sanitizes to default()', async () => {
+    contextHandler.default(5);
+    const context = builder.build();
+    context.addFieldInstances([
+      {
+        location: 'body',
+        path: 'foo',
+        originalPath: 'foo',
+        value: '',
+      },
+    ]);
+
+    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const defaultSanitizer = context.stack[0];
+
+    await defaultSanitizer.run(context, 'foo', meta);
+    expect(context.getData()[0].value).toEqual('foo');
+
+    await defaultSanitizer.run(context, 10, meta);
+    expect(context.getData()[0].value).toEqual(10);
+
+    await defaultSanitizer.run(context, '', meta);
+    expect(context.getData()[0].value).toEqual(5);
+
+    await defaultSanitizer.run(context, undefined, meta);
+    expect(context.getData()[0].value).toEqual(5);
+
+    await defaultSanitizer.run(context, null, meta);
+    expect(context.getData()[0].value).toEqual(5);
+
+    await defaultSanitizer.run(context, NaN, meta);
+    expect(context.getData()[0].value).toEqual(5);
   });
 });

@@ -13,7 +13,6 @@ beforeEach(() => {
   chain = {};
   builder = new ContextBuilder();
   jest.spyOn(builder, 'addItem');
-  jest.spyOn(builder, 'setDefaultValue');
 
   sanitizers = new SanitizersImpl(builder, chain);
 });
@@ -227,50 +226,6 @@ describe('#toUpperCase()', () => {
 
     await toUpperCase.run(context, undefined, meta);
     expect(context.getData()[0].value).toEqual(undefined);
-  });
-});
-
-describe('#default()', () => {
-  it('adds default() sanitizer to the context', () => {
-    const ret = sanitizers.default(5);
-
-    expect(ret).toBe(chain);
-    expect(builder.addItem).toHaveBeenCalledWith(new Sanitization(expect.any(Function), true));
-    expect(builder.setDefaultValue).toHaveBeenCalledWith(5);
-  });
-
-  it('sanitizes to default()', async () => {
-    sanitizers.default(5);
-    const context = builder.build();
-    context.addFieldInstances([
-      {
-        location: 'body',
-        path: 'foo',
-        originalPath: 'foo',
-        value: '',
-      },
-    ]);
-
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
-    const defaultSanitizer = context.stack[0];
-
-    await defaultSanitizer.run(context, 'foo', meta);
-    expect(context.getData()[0].value).toEqual('foo');
-
-    await defaultSanitizer.run(context, 10, meta);
-    expect(context.getData()[0].value).toEqual(10);
-
-    await defaultSanitizer.run(context, '', meta);
-    expect(context.getData()[0].value).toEqual(5);
-
-    await defaultSanitizer.run(context, undefined, meta);
-    expect(context.getData()[0].value).toEqual(5);
-
-    await defaultSanitizer.run(context, null, meta);
-    expect(context.getData()[0].value).toEqual(5);
-
-    await defaultSanitizer.run(context, NaN, meta);
-    expect(context.getData()[0].value).toEqual(5);
   });
 });
 

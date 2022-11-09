@@ -3,6 +3,7 @@ import { Optional } from '../context';
 import { ContextBuilder } from '../context-builder';
 import { ChainCondition, CustomCondition } from '../context-items';
 import { Bail } from '../context-items/bail';
+import { Sanitization } from '../context-items/sanitization';
 import { BailOptions, ContextHandler } from './context-handler';
 import { ContextRunner } from './context-runner';
 
@@ -38,6 +39,15 @@ export class ContextHandlerImpl<Chain> implements ContextHandler<Chain> {
       });
     }
 
+    return this.chain;
+  }
+
+  default(default_value: any) {
+    this.builder.setDefaultValue(default_value);
+    const sanitizer = (value: any) => {
+      return [undefined, null, NaN, ''].includes(value) ? default_value : value;
+    };
+    this.builder.addItem(new Sanitization(sanitizer, true));
     return this.chain;
   }
 }

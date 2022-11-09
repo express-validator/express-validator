@@ -64,4 +64,12 @@ export interface ContextHandler<Chain> {
    * @returns the current validation chain
    */
   optional(options?: Partial<Optional> | true): Chain;
+
+  /**
+   * Replaces the value of the field if it's one of `''`, `null`, `undefined` or `NaN`.
+   *
+   * @param default_value the value to replace with
+   * @returns the current validation chain
+   */
+  default(default_value: any): Chain;
 }
