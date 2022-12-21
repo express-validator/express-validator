@@ -112,7 +112,7 @@ Converts the value to an array. `undefined` will result in an empty array.
 
 ```js
 app.post('/', [body('checkboxes').toArray()], (req, res, next) => {
-  // ['foo', 'bar]  => ['foo', 'bar']
+  // ['foo', 'bar']  => ['foo', 'bar']
   // 'foo'          => ['foo']
   // undefined      => []
   console.log(req.body.checkboxes);
