@@ -74,7 +74,7 @@ type CustomSanitizerSchemaOptions = {
 };
 
 export type SanitizersSchema = {
-  [K in keyof Sanitizers<any>]?: true | SanitizerSchemaOptions<K>;
+  [K in keyof Sanitizers<any>]?: SanitizerSchemaOptions<K>;
 };
 
 type BaseParamSchema = {
@@ -115,7 +115,7 @@ export type ParamSchema<T extends string = DefaultSchemaKeys> = BaseParamSchema 
       ? ValidatorsSchema[K]
       : K extends keyof SanitizersSchema
       ? SanitizersSchema[K]
-      : CustomSanitizerSchemaOptions | CustomValidatorSchemaOptions;
+      : CustomValidatorSchemaOptions | CustomSanitizerSchemaOptions;
   };
 
 /**
@@ -171,7 +171,7 @@ export function checkSchema<T extends string = DefaultSchemaKeys>(
         !isCustomSanitizer(entry)
       ) {
         console.warn(
-          `express-validator: schema of "${field}" has unknown validator/sanitizer with "${entry[0]}"`,
+          `express-validator: schema of "${field}" has unknown validator/sanitizer "${entry[0]}"`,
         );
         continue;
       }
