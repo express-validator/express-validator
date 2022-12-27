@@ -103,6 +103,11 @@ type BaseParamSchema = {
     | {
         options?: Partial<Optional>;
       };
+
+  /**
+   * Replaces the value of the field if it's one of `''`, `null`, `undefined` or `NaN`.
+   */
+  default?: any;
 };
 
 export type DefaultSchemaKeys =
