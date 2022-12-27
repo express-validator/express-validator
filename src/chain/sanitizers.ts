@@ -12,14 +12,6 @@ export interface Sanitizers<Return> {
   customSanitizer(sanitizer: CustomSanitizer): Return;
 
   /**
-   * Replaces the value of the field if it's one of `''`, `null`, `undefined` or `NaN`.
-   *
-   * @param default_value the value to replace with
-   * @returns the current validation chain
-   */
-  default(default_value: any): Return;
-
-  /**
    * Replaces a field's value with another value.
    *
    * @param values_to_replace one or more values that should be replaced

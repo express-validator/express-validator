@@ -13,12 +13,6 @@ export class SanitizersImpl<Chain> implements Sanitizers<Chain> {
     this.builder.addItem(new Sanitization(sanitizer, true));
     return this.chain;
   }
-  default(default_value: any) {
-    // this.builder.setDefaultValue(default_value);
-    return this.customSanitizer(value =>
-      [undefined, null, NaN, ''].includes(value) ? default_value : value,
-    );
-  }
   replace(values_to_replace: any, new_value: any) {
     if (!Array.isArray(values_to_replace)) {
       values_to_replace = [values_to_replace];
