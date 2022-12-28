@@ -62,7 +62,7 @@ Same as `check([fields, message])`, but only checking `req.query`.
   or an array of arrays containing validation chains.
 - `options` _(optional)_:
   - `message` _(optional)_: an error message to use when all chains failed. Defaults to `Invalid value(s)`; see also [Dynamic Messages](feature-error-messages.md#dynamic-messages).
-  - `errorType` _(optional)_: 
+  - `errorType` _(optional)_:
     - `grouped` _(default)_: groups the errors according to the original validation chain groups;
     - `flat`: joins the errors from different chain groups together;
     - `leastErroredOnly`: returns only the errors of the least errored chain group.
