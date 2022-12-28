@@ -9,7 +9,7 @@
     "sourceType": "module"
   },
   "plugins": ["@typescript-eslint", "import", "prettier"],
-  "extends": ["prettier", "prettier/@typescript-eslint", "plugin:prettier/recommended"],
+  "extends": ["prettier"],
   "globals": {},
   "rules": {
     // Possible errors
