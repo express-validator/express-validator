@@ -1,5 +1,5 @@
 ---
-id: version-6.11.0-validation-chain-api
+id: validation-chain-api
 title: Validation Chain API
 original_id: validation-chain-api
 ---

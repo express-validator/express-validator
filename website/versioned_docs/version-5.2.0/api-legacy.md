@@ -1,5 +1,5 @@
 ---
-id: version-5.2.0-legacy-api
+id: legacy-api
 title: Legacy API
 original_id: legacy-api
 ---

@@ -1,5 +1,5 @@
 ---
-id: version-6.4.1-matched-data-api
+id: matched-data-api
 title: matchedData()
 original_id: matched-data-api
 ---

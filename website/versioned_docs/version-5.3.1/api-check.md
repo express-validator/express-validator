@@ -1,5 +1,5 @@
 ---
-id: version-5.3.1-check-api
+id: check-api
 title: check API
 original_id: check-api
 ---

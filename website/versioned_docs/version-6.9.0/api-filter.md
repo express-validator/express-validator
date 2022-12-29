@@ -1,5 +1,5 @@
 ---
-id: version-6.9.0-filter-api
+id: filter-api
 title: Sanitization middlewares
 original_id: filter-api
 ---

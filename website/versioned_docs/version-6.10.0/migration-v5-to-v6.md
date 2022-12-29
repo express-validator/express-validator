@@ -1,5 +1,5 @@
 ---
-id: version-6.10.0-migration-v5-to-v6
+id: migration-v5-to-v6
 title: Migration from v5 to v6
 original_id: migration-v5-to-v6
 ---

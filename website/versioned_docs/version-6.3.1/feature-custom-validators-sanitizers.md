@@ -1,5 +1,5 @@
 ---
-id: version-6.3.1-custom-validators-sanitizers
+id: custom-validators-sanitizers
 title: Custom validators/sanitizers
 original_id: custom-validators-sanitizers
 ---

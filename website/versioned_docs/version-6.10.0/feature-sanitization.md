@@ -1,5 +1,5 @@
 ---
-id: version-6.10.0-sanitization
+id: sanitization
 title: Sanitization
 original_id: sanitization
 ---

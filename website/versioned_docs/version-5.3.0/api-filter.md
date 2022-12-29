@@ -1,5 +1,5 @@
 ---
-id: version-5.3.0-filter-api
+id: filter-api
 title: filter API
 original_id: filter-api
 ---

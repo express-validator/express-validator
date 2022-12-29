@@ -1,5 +1,5 @@
 ---
-id: version-6.6.0-running-imperatively
+id: running-imperatively
 title: Running validations imperatively
 original_id: running-imperatively
 ---

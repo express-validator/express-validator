@@ -1,5 +1,5 @@
 ---
-id: version-5.2.0-validation-result-api
+id: validation-result-api
 title: Validation Result API
 original_id: validation-result-api
 ---

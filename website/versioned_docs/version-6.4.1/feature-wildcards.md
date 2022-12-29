@@ -1,5 +1,5 @@
 ---
-id: version-6.4.1-wildcards
+id: wildcards
 title: Wildcards
 original_id: wildcards
 ---

@@ -1,5 +1,5 @@
 ---
-id: version-6.12.0-custom-error-messages
+id: custom-error-messages
 title: Custom Error Messages
 original_id: custom-error-messages
 ---

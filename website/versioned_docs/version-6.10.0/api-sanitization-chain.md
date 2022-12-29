@@ -1,5 +1,5 @@
 ---
-id: version-6.10.0-sanitization-chain-api
+id: sanitization-chain-api
 title: Sanitization Chain API
 original_id: sanitization-chain-api
 ---

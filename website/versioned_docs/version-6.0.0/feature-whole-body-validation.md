@@ -1,5 +1,5 @@
 ---
-id: version-6.0.0-whole-body-validation
+id: whole-body-validation
 title: Whole Body Validation
 original_id: whole-body-validation
 ---

@@ -1,5 +1,5 @@
 ---
-id: version-5.2.0-schema-validation
+id: schema-validation
 title: Schema Validation
 original_id: schema-validation
 ---

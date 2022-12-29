@@ -1,5 +1,5 @@
 ---
-id: version-6.6.0-index
+id: index
 title: Getting Started
 original_id: index
 ---
