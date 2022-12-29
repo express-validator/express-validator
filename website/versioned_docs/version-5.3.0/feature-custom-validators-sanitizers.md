@@ -40,6 +40,9 @@ app.post('/user', body('passwordConfirmation').custom((value, { req }) => {
   if (value !== req.body.password) {
     throw new Error('Password confirmation does not match password');
   }
+  
+  // Indicates the success of this synchronous custom validator
+  return true;
 }), (req, res) => {
   // Handle the request
 });
