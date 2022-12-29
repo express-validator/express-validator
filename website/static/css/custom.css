@@ -1,16 +1,9 @@
-/* your custom css */
-
-@media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
-}
-
-@media only screen and (min-width: 1024px) {
-}
-
-@media only screen and (max-width: 1023px) {
-}
-
-@media only screen and (min-width: 1400px) {
-}
-
-@media only screen and (min-width: 1500px) {
+:root {
+  --ifm-color-primary-lightest: #8b00e6;
+  --ifm-color-primary-lighter: #7b00cc;
+  --ifm-color-primary-light: #7600c3;
+  --ifm-color-primary: #6b00b1;
+  --ifm-color-primary-dark: #60009f;
+  --ifm-color-primary-darker: #5b0096;
+  --ifm-color-primary-darkest: #4b007c;
 }
