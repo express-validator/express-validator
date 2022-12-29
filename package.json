@@ -46,6 +46,8 @@
     "validator": "^13.7.0"
   },
   "devDependencies": {
+    "@docusaurus/core": "^2.2.0",
+    "@docusaurus/preset-classic": "^2.2.0",
     "@types/jest": "^26.0.20",
     "@types/lodash": "^4.14.168",
     "@typescript-eslint/eslint-plugin": "^5.47.1",
