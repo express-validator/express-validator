@@ -1,0 +1,24 @@
+{
+  "version-6.1.0/docs": {
+    "Introduction": [
+      "version-6.1.0/index"
+    ],
+    "Features": [
+      "version-6.1.0/sanitization",
+      "version-6.1.0/custom-validators-sanitizers",
+      "version-6.1.0/custom-error-messages",
+      "version-6.1.0/wildcards",
+      "version-6.1.0/schema-validation",
+      "version-6.1.0/whole-body-validation",
+      "version-6.1.0/running-imperatively"
+    ],
+    "API": [
+      "version-6.1.0/check-api",
+      "version-6.1.0/validation-chain-api",
+      "version-6.1.0/filter-api",
+      "version-6.1.0/sanitization-chain-api",
+      "version-6.1.0/matched-data-api",
+      "version-6.1.0/validation-result-api"
+    ]
+  }
+}
