@@ -7,6 +7,9 @@ const presetConfig = {
   theme: {
     customCss: require.resolve('./static/css/custom.css'),
   },
+  pages: {
+    path: 'pages',
+  },
   docs: {
     path: '../docs/',
     sidebarPath: require.resolve('./sidebars.json'),
@@ -117,6 +120,7 @@ const siteConfig = {
       },
     ],
   ],
+  staticDirectories: ['static'],
 
   // Metadata
   title: 'express-validator',
