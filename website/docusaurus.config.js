@@ -1,4 +1,6 @@
-// See https://docusaurus.io/docs/site-config.html for all the possible site configuration options.
+const REPO_URL = 'https://github.com/express-validator/express-validator';
+
+// https://docusaurus.io/docs/api/docusaurus-config
 const siteConfig = {
   presets: [
     [
@@ -10,7 +12,7 @@ const siteConfig = {
         docs: {
           path: '../docs/',
           sidebarPath: require.resolve('./sidebars.json'),
-          editUrl: 'https://github.com/express-validator/express-validator/edit/master/docs/',
+          editUrl: `${REPO_URL}/edit/master/docs/`,
         },
       },
     ],
@@ -47,7 +49,7 @@ const siteConfig = {
           position: 'right',
         },
         {
-          href: 'https://github.com/express-validator/express-validator',
+          href: REPO_URL,
           label: 'GitHub',
           position: 'right',
         },
@@ -81,7 +83,27 @@ const siteConfig = {
             },
           ],
         },
-        { title: 'More', items: [] },
+        {
+          title: 'More',
+          items: [
+            {
+              label: 'GitHub',
+              href: 'https://github.com/express-validator/express-validator',
+            },
+            {
+              html: `<a
+                  class="github-button footer__link-item" href=${REPO_URL}
+                  data-icon="octicon-star"
+                  data-count-href="/express-validator/express-validator/stargazers"
+                  data-show-count={true}
+                  data-count-aria-label="# stargazers on GitHub"
+                  aria-label="Star this project on GitHub"
+                >
+                  Star
+                </a>`,
+            },
+          ],
+        },
       ],
       copyright: 'Copyright © ' + new Date().getFullYear() + ' express-validator',
     },
