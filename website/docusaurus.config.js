@@ -34,12 +34,12 @@ const themeConfig = {
       src: 'img/logo.svg',
     },
     items: [
-      { type: 'doc', docId: 'index', label: 'Docs', position: 'left' },
-      { type: 'doc', docId: 'check-api', label: 'API', position: 'left' },
       {
         type: 'docsVersionDropdown',
-        position: 'right',
+        position: 'left',
       },
+      { type: 'doc', docId: 'index', label: 'Docs', position: 'right' },
+      { type: 'doc', docId: 'check-api', label: 'API', position: 'right' },
       {
         href: REPO_URL,
         label: 'GitHub',
