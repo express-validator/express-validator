@@ -30,11 +30,12 @@
     "build": "tsc",
     "clean": "git clean -Xf src check filter",
     "docs:build": "npm --prefix ./website run build",
-    "docs:publish": "USE_SSH=true CURRENT_BRANCH=master npm --prefix ./website run publish-gh-pages",
+    "docs:publish": "USE_SSH=true DEPLOYMENT_BRANCH=master npm --prefix ./website run publish-gh-pages",
     "docs:serve": "npm --prefix ./website run serve",
     "docs:start": "npm --prefix ./website start",
     "docs:version": "npm --prefix ./website run version",
     "prepublishOnly": "tsc",
+    "postpublish": "npm run docs:publish",
     "test": "jest",
     "lint": "eslint --ignore-path .gitignore 'src/**/*.ts' && prettier -c .",
     "version": "npm run docs:version -- $npm_package_version && npm run docs:build && git add -A website"
