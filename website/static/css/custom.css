@@ -1,9 +1,73 @@
 :root {
-  --ifm-color-primary-lightest: #8b00e6;
-  --ifm-color-primary-lighter: #7b00cc;
-  --ifm-color-primary-light: #7600c3;
-  --ifm-color-primary: #6b00b1;
-  --ifm-color-primary-dark: #60009f;
-  --ifm-color-primary-darker: #5b0096;
-  --ifm-color-primary-darkest: #4b007c;
+  --light-mode-primary-lightest: #8b00e6;
+  --light-mode-primary-lighter: #7b00cc;
+  --light-mode-primary-light: #7600c3;
+  --light-mode-primary: #6b00b1;
+  --light-mode-primary-dark: #60009f;
+  --light-mode-primary-darker: #5b0096;
+  --light-mode-primary-darkest: #4b007c;
+
+  --dark-mode-primary-darkest: #b557f5;
+  --dark-mode-primary-darker: #d29af9;
+  --dark-mode-primary-dark: #dcb0fa;
+  --dark-mode-primary: #e4bffd;
+  --dark-mode-primary-light: #ffffff;
+  --dark-mode-primary-lighter: #ffffff;
+  --dark-mode-primary-lightest: #ffffff;
+
+  --ifm-color-primary-lightest: var(----light-mode-primary-lightest);
+  --ifm-color-primary-lighter: var(--light-mode-primary-lighter);
+  --ifm-color-primary-light: var(--light-mode-primary-light);
+  --ifm-color-primary: var(--light-mode-primary);
+  --ifm-color-primary-dark: var(--light-mode-primary-dark);
+  --ifm-color-primary-darker: var(--light-mode-primary-darker);
+  --ifm-color-primary-darkest: var(--light-mode-primary-darkest);
+  --ifm-background-color: #fff;
+
+  --ifm-navbar-background-color: var(--light-mode-primary);
+  --ifm-navbar-link-color: #fff;
+  --ifm-navbar-link-hover-color: #fff;
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary-darkest: var(--dark-mode-primary-darkest);
+  --ifm-color-primary-darker: var(--dark-mode-primary-darker);
+  --ifm-color-primary-dark: var(--dark-mode-primary-dark);
+  --ifm-color-primary: var(--dark-mode-primary);
+  --ifm-color-primary-light: var(--dark-mode-primary-light);
+  --ifm-color-primary-lighter: var(--dark-mode-primary-lighter);
+  --ifm-color-primary-lightest: var(--dark-mode-primary-lightest);
+  --ifm-background-color: #0d0c0c;
+}
+
+[data-theme='light'] .footer--dark {
+  /* Docusaurus bug?
+    In light mode with a dark footer, the color used is primary, which has an awful contrast with our theme. */
+  --ifm-footer-link-hover-color: var(--dark-mode-primary);
+}
+
+.navbar {
+  color: #fff;
+}
+
+.navbar-sidebar {
+  background: var(--ifm-background-color);
+}
+
+.navbar-sidebar__brand {
+  background: var(--ifm-navbar-background-color);
+}
+
+.navbar-sidebar__back {
+  color: var(--ifm-menu-color);
+}
+
+.navbar__link--active {
+  font-weight: bold;
+}
+
+/* HACK: This targets the color mode switch.
+  It doesn't (atm) have a stable class both in development and production modes */
+.navbar button:hover {
+  background-color: var(----light-mode-primary-lightest);
 }

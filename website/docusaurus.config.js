@@ -23,6 +23,9 @@ const themeConfig = {
   //     facetFilters: ['type:lvl3', 'language:LANGUAGE', 'version:VERSION'],
   //   },
   // },
+  colorMode: {
+    respectPrefersColorScheme: true,
+  },
   docs: {
     sidebar: {
       autoCollapseCategories: false,
