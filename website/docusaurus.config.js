@@ -87,7 +87,7 @@ const themeConfig = {
                   class="github-button footer__link-item" href=${REPO_URL}
                   data-icon="octicon-star"
                   data-count-href="/express-validator/express-validator/stargazers"
-                  data-show-count={true}
+                  data-show-count="true"
                   data-count-aria-label="# stargazers on GitHub"
                   aria-label="Star this project on GitHub"
                 >
