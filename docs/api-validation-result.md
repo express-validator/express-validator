@@ -3,6 +3,9 @@ id: validation-result-api
 title: validationResult()
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 These methods are all available via `require('express-validator')`.
 
 ## `validationResult(req)`
@@ -82,8 +85,8 @@ app.post('/create-user', yourValidationChains, (req, res) => {
 
 > _Returns:_ a new `Result` instance
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--JavaScript-->
+<Tabs>
+<TabItem value="js" label="JavaScript">
 
 ```js
 const { validationResult } = require('express-validator');
@@ -103,10 +106,11 @@ app.post('/create-user', yourValidationChains, (req, res, next) => {
 });
 ```
 
-<!--TypeScript-->
+</TabItem>
+<TabItem value="ts" label="TypeScript">
 
 ```typescript
-import { validationResult, ValidationError } from 'express-validator';
+import { value validationResult, value ValidationError } from 'express-validator';
 app.post('/create-user', yourValidationChains, (req, res, next) => {
   const errorFormatter = ({ location, msg, param, value, nestedErrors }: ValidationError) => {
     // Build your resulting errors however you want! String, object, whatever - it works!
@@ -123,7 +127,8 @@ app.post('/create-user', yourValidationChains, (req, res, next) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 ### `.array([options])`
 

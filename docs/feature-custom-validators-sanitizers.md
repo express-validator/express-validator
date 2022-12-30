@@ -3,6 +3,9 @@ id: custom-validators-sanitizers
 title: Custom validators/sanitizers
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 Although express-validator offers plenty of handy validators and sanitizers through its underlying
 dependency [validator.js](https://github.com/validatorjs/validator.js), it doesn't always suffice when
 building your application.
@@ -21,8 +24,8 @@ or `throw` any value/reject a promise to [use a custom error message](feature-er
 
 ### Example: checking if e-mail is in use
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--JavaScript-->
+<Tabs>
+<TabItem value="js" label="JavaScript">
 
 ```js
 const { body } = require('express-validator');
@@ -42,7 +45,8 @@ app.post(
 );
 ```
 
-<!--TypeScript-->
+</TabItem>
+<TabItem value="ts" label="TypeScript">
 
 ```js
 import { body, CustomValidator } from 'express-validator';
@@ -60,7 +64,8 @@ app.post('/user', body('email').custom(isValidUser), (req, res) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 > **Note:** In the example above, validation might fail even due to issues with fetching User information. The implications of accessing the data layer during validation should be carefully considered.
 
@@ -96,8 +101,8 @@ moment.
 
 ### Example: converting to MongoDB's ObjectID
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--JavaScript-->
+<Tabs>
+<TabItem value="js" label="JavaScript">
 
 ```js
 const { param } = require('express-validator');
@@ -113,10 +118,11 @@ app.post(
 );
 ```
 
-<!--TypeScript-->
+</TabItem>
+<TabItem value="ts" label="TypeScript">
 
 ```typescript
-import { param } from 'express-validator';
+import { value param } from 'express-validator';
 // This allows you to reuse the validator
 const toObjectId: CustomSanitizer = value => {
   return ObjectId(value);
@@ -127,4 +133,5 @@ app.post('/object/:id', param('id').customSanitizer(toObjectId), (req, res) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>

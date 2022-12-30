@@ -3,6 +3,9 @@ id: running-imperatively
 title: Running validations imperatively
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 express-validator favors the declarative way of doing things that express middlewares bring.
 This means most of the APIs _look and work better_ when simply passed into an express route handler.
 
@@ -14,8 +17,8 @@ Check the examples below to understand how this method can help you:
 
 ## Example: standardized validation error response
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--JavaScript-->
+<Tabs>
+<TabItem value="js" label="JavaScript">
 
 ```js
 const express = require('express');
@@ -54,11 +57,12 @@ const validate = validations => {
 };
 ```
 
-<!--TypeScript-->
+</TabItem>
+<TabItem value="ts" label="TypeScript">
 
 ```typescript
 import express from 'express';
-import { validationResult, ValidationChain } from 'express-validator';
+import { value validationResult, value ValidationChain } from 'express-validator';
 // can be reused by many routes
 
 // parallel processing
@@ -93,7 +97,8 @@ const validate = (validations: ValidationChain[]) => {
 };
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 ```js
 app.post('/api/create-user', validate([

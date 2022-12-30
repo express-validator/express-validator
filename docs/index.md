@@ -3,6 +3,9 @@ id: index
 title: Getting Started
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 express-validator is a set of [express.js](http://expressjs.com/) middlewares that wraps
 [validator.js](https://github.com/validatorjs/validator.js) validator and sanitizer functions.
 
@@ -21,8 +24,8 @@ npm install --save express-validator
 
 Let's get started by writing a basic route to create a user in the database:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--JavaScript-->
+<Tabs>
+<TabItem value="js" label="JavaScript">
 
 ```js
 const express = require('express');
@@ -37,7 +40,8 @@ app.post('/user', (req, res) => {
 });
 ```
 
-<!--TypeScript-->
+</TabItem>
+<TabItem value="ts" label="TypeScript">
 
 ```typescript
 import express from 'express';
@@ -52,12 +56,13 @@ app.post('/user', (req: express.Request, res: express.Response) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 Then, you'll want to make sure that you validate the input and report any errors before creating the user:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--JavaScript-->
+<Tabs>
+<TabItem value="js" label="JavaScript">
 
 ```js
 // ...rest of the initial code omitted for simplicity.
@@ -84,11 +89,12 @@ app.post(
 );
 ```
 
-<!--TypeScript-->
+</TabItem>
+<TabItem value="ts" label="TypeScript">
 
 ```typescript
 // ...rest of the initial code omitted for simplicity.
-import { body, validationResult } from 'express-validator';
+import { value body, value validationResult } from 'express-validator';
 
 app.post(
   '/user',
@@ -111,7 +117,8 @@ app.post(
 );
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 _Voila!_ Now, whenever a request that includes invalid `username` or `password` fields
 is submitted, your server will respond like this:
