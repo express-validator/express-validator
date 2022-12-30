@@ -11,6 +11,7 @@ const presetConfig = {
     path: '../docs/',
     sidebarPath: require.resolve('./sidebars.json'),
     editUrl: `${REPO_URL}/edit/master/docs/`,
+    sidebarCollapsible: false,
   },
 };
 
