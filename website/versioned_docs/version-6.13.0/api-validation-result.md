@@ -1,7 +1,6 @@
 ---
 id: validation-result-api
 title: validationResult()
-original_id: validation-result-api
 ---
 
 import Tabs from '@theme/Tabs';

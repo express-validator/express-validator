@@ -1,7 +1,6 @@
 ---
 id: validation-result-api
 title: Validation Result API
-original_id: validation-result-api
 ---
 
 This is an unified API for dealing with errors, both in legacy and check APIs.

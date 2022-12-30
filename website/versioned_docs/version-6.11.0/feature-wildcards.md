@@ -1,7 +1,6 @@
 ---
 id: wildcards
 title: Wildcards
-original_id: wildcards
 ---
 
 Sometimes you will want to apply the same rules to all items of an array or all keys of some object.  

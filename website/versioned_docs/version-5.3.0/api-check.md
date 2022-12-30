@@ -1,7 +1,6 @@
 ---
 id: check-api
 title: check API
-original_id: check-api
 ---
 
 These methods are all available via `require('express-validator/check')`.

@@ -1,7 +1,6 @@
 ---
 id: migration-v5-to-v6
 title: Migration from v5 to v6
-original_id: migration-v5-to-v6
 ---
 
 Starting with v6, the approach for doing validations is more declarative and, in turn, some of the APIs we had in v5 require some changes.

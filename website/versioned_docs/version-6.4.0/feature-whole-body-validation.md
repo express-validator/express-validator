@@ -1,7 +1,6 @@
 ---
 id: whole-body-validation
 title: Whole Body Validation
-original_id: whole-body-validation
 ---
 
 Sometimes you need to validate a request whose body is a string, an array, or even a number!

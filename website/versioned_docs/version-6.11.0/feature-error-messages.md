@@ -1,7 +1,6 @@
 ---
 id: custom-error-messages
 title: Custom Error Messages
-original_id: custom-error-messages
 ---
 
 express-validator's default error message is a simple `Invalid value`.  

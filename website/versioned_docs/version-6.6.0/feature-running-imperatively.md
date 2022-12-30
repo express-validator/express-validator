@@ -1,7 +1,6 @@
 ---
 id: running-imperatively
 title: Running validations imperatively
-original_id: running-imperatively
 ---
 
 express-validator favors the declarative way of doing things that express middlewares bring.

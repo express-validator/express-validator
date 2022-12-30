@@ -1,7 +1,6 @@
 ---
 id: schema-validation
 title: Schema Validation
-original_id: schema-validation
 ---
 
 Schemas are a special, object-based way of defining validations or sanitizations on requests.  

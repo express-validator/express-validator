@@ -1,7 +1,6 @@
 ---
 id: validation-chain-api
 title: Validation Chain API
-original_id: validation-chain-api
 ---
 
 The validation chain is a middleware, and it _should_ be passed to an Express route handler.

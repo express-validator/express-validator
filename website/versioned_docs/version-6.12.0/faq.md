@@ -1,7 +1,6 @@
 ---
 id: faq
 title: FAQ
-original_id: faq
 ---
 
 ## Why arrays are not validated/sanitized correctly?

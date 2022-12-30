@@ -1,7 +1,6 @@
 ---
 id: index
 title: Getting Started
-original_id: index
 ---
 
 import Tabs from '@theme/Tabs';

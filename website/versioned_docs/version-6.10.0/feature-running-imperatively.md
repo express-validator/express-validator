@@ -1,7 +1,6 @@
 ---
 id: running-imperatively
 title: Running validations imperatively
-original_id: running-imperatively
 ---
 
 import Tabs from '@theme/Tabs';

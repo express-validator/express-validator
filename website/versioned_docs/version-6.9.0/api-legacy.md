@@ -1,7 +1,6 @@
 ---
 id: legacy-api
 title: Legacy API
-original_id: legacy-api
 ---
 
 The "legacy API" is the same API used by version 3 and older releases of express-validator.

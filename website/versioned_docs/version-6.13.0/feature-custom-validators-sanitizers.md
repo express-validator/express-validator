@@ -1,7 +1,6 @@
 ---
 id: custom-validators-sanitizers
 title: Custom validators/sanitizers
-original_id: custom-validators-sanitizers
 ---
 
 import Tabs from '@theme/Tabs';

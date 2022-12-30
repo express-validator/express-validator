@@ -1,7 +1,6 @@
 ---
 id: filter-api
 title: filter API
-original_id: filter-api
 ---
 
 These methods are all available via `require('express-validator/filter')`.

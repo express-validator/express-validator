@@ -1,7 +1,6 @@
 ---
 id: sanitization-chain-api
 title: Sanitization Chain API
-original_id: sanitization-chain-api
 ---
 
 The sanitization chain is a middleware, and it _should_ be passed to an Express route handler.
