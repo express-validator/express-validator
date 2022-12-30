@@ -44,7 +44,7 @@ app.listen(3000, () => {
 });
 ```
 
-For example, we want to make our v5 code to use the [`check`](https://github.com/express-validator/express-validator/blob/master/docs/api-check.md) and [`validationResult`](https://github.com/express-validator/express-validator/blob/master/docs/api-validation-result.md) functions in v6
+For example, we want to make our v5 code to use the [`check`](https://github.com/express-validator/express-validator/blob/master/docs/api-check.md) and [`validationResult`](https://github.com/express-validator/express-validator/blob/master/docs/api-validation-result.mdx) functions in v6
 
 1. Change from
    `const expressValidator = require('express-validator')` to

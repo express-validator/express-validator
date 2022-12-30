@@ -238,7 +238,7 @@ You can customize this behavior by passing an object with the following options:
 - `options` _(optional)_: an object of options to customize how the chain will be run:
   - `dryRun`: defines whether errors and sanitizations won't be persisted to `req`. Defaults to `false`.
 
-> _Returns:_ a promise for a [`Result`](api-validation-result.md#result) that resolves when the validation chain ran.
+> _Returns:_ a promise for a [`Result`](api-validation-result.mdx#result) that resolves when the validation chain ran.
 
 Runs the current validation chain in an imperative way.
 
