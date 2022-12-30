@@ -19,8 +19,12 @@ npm install --save express-validator
 
 ## Basic guide
 
-> It's recommended that you have basic knowledge of the express.js module before you go on with
-> this guide.
+:::note
+
+It's recommended that you have basic knowledge of the express.js module before you go on with
+this guide.
+
+:::
 
 Let's get started by writing a basic route to create a user in the database:
 

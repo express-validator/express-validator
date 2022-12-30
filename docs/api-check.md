@@ -22,8 +22,10 @@ Creates a validation chain for one or more fields. They may be located in any of
 
 If any of the fields are present in more than one location, then all instances of that field value must pass the validation.
 
-**Note:** If `fields` is omitted, then the whole request location will be validated.
+:::tip
+If `fields` is omitted, then the whole request location will be validated.
 This is only useful for `req.body`, though; see [Whole Body Validation](feature-whole-body-validation.md) for examples.
+:::
 
 The validators will always be executed serially for the same field.  
 This means that if the chain targets more than one field, those will run in parallel, but each of their validators are serial.

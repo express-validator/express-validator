@@ -95,6 +95,8 @@ app.listen(3000, () => {
 });
 ```
 
-> The complete diff between the two versions of the example: https://github.com/shwei/express-validator-migrate-5-to-6/blob/main/v5_to_v6.diff
+:::info
+The complete diff between the two versions of the example: https://github.com/shwei/express-validator-migrate-5-to-6/blob/main/v5_to_v6.diff
 
-> To see the sample codes in action I created the project [express-validator-migrate-5-to-6](https://github.com/shwei/express-validator-migrate-5-to-6).
+To see the sample codes in action I created the project [express-validator-migrate-5-to-6](https://github.com/shwei/express-validator-migrate-5-to-6).
+:::

@@ -20,10 +20,18 @@ and are called "standard validators" in express-validator.
 
 This means you can use any of those methods, e.g. `isInt`, `isEmail`, `contains`, etc.
 
-> **For a complete list of standard validators and their options**,
-> please check [validator.js' docs](https://github.com/validatorjs/validator.js#validators).
+:::info
 
-> **Note:** Since validator.js only accepts `string` as input, any value (including arrays and objects) that needs to be validated by a Standard Validator [is first converted to such type](faq.md#why-arrays-are-not-validatedsanitized-correctly).
+**For a complete list of standard validators and their options**,
+please check [validator.js' docs](https://github.com/validatorjs/validator.js#validators).
+
+:::
+
+:::note
+
+Since validator.js only accepts `string` as input, any value (including arrays and objects) that needs to be validated by a Standard Validator [is first converted to such type](faq.md#why-arrays-are-not-validatedsanitized-correctly).
+
+:::
 
 ## Sanitization Chain API
 
@@ -127,7 +135,11 @@ The condition can be either:
   If it returns truthy or a promise that resolves, the validation chain will continue
   running. If it returns falsy, a promise that rejects or if it throws, the validation chain will stop.
 
-> _Note:_ async functions must return a resolved or rejected `Promise` because `truthy` or `falsy` values won't stop the chain ([#1028](https://github.com/express-validator/express-validator/issues/1028#issuecomment-830561518)).
+:::note
+
+Async functions must return a resolved or rejected `Promise` because `truthy` or `falsy` values won't stop the chain ([#1028](https://github.com/express-validator/express-validator/issues/1028#issuecomment-830561518)).
+
+:::
 
 - A validation chain [created through `check()` or similar functions](api-check.md#check-field-message).
 
@@ -190,16 +202,19 @@ Adds a validator to check if a value is not empty; that is, a string with a leng
 check('username').notEmpty();
 ```
 
-> **Note:** This is not intended to check that the length of an array is greater than zero, as `.notEmpty()` will only validate the first element of it.  
-> To require a minimum array length use `.isArray({ min: 1 })`.
->
-> ```js
-> // weekdays: ['sunday', 'monday']
-> check('weekdays').notEmpty(); // Passes validation
->
-> // names: ['', 'John']
-> check('names').notEmpty(); // Does not pass validation because names[0] is empty.
-> ```
+:::note
+This is not intended to check that the length of an array is greater than zero, as `.notEmpty()` will only validate the first element of it.  
+To require a minimum array length use `.isArray({ min: 1 })`.
+
+```js
+// weekdays: ['sunday', 'monday']
+check('weekdays').notEmpty(); // Passes validation
+
+// names: ['', 'John']
+check('names').notEmpty(); // Does not pass validation because names[0] is empty.
+```
+
+:::
 
 ### `.optional(options)`
 
