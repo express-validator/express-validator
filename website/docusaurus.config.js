@@ -20,13 +20,14 @@ const presetConfig = {
 
 /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
 const themeConfig = {
-  // algolia: {
-  //   apiKey: 'd6d85148b3b81778cf952442d4292bea',
-  //   indexName: 'express-validator',
-  //   algoliaOptions: {
-  //     facetFilters: ['type:lvl3', 'language:LANGUAGE', 'version:VERSION'],
-  //   },
-  // },
+  algolia: {
+    appId: 'FQ1KVDLIFN',
+    apiKey: 'ae064d27baea810146de2d45f8b0dd58',
+    indexName: 'express-validator',
+    algoliaOptions: {
+      facetFilters: ['type:lvl3', 'language:LANGUAGE', 'version:VERSION'],
+    },
+  },
   colorMode: {
     respectPrefersColorScheme: true,
   },
