@@ -3,6 +3,7 @@
     "start": "docusaurus start",
     "build": "docusaurus build",
     "publish-gh-pages": "docusaurus publish",
+    "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
     "version": "docusaurus version",
     "rename-version": "docusaurus rename-version"
