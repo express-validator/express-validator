@@ -17,6 +17,14 @@ const siteConfig = {
       },
     ],
   ],
+  plugins: [
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        fromExtensions: ['html'],
+      },
+    ],
+  ],
 
   // Metadata
   title: 'express-validator',
