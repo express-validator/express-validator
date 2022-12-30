@@ -29,6 +29,7 @@ const themeConfig = {
     },
   },
   navbar: {
+    title: 'express-validator',
     logo: {
       src: 'img/logo.svg',
     },
