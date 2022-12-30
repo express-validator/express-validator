@@ -1,7 +1,6 @@
 ---
-id: version-6.9.0-index
+id: index
 title: Getting Started
-original_id: index
 ---
 
 express-validator is a set of [express.js](http://expressjs.com/) middlewares that wraps

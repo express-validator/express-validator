@@ -10,6 +10,7 @@
 /filter/**/*.d.ts
 
 # Docs
+/website/.docusaurus
 /website/build
 /website/versioned_docs
 /website/versioned_sidebars

@@ -1,7 +1,6 @@
 ---
-id: version-5.3.0-custom-validators-sanitizers
+id: custom-validators-sanitizers
 title: Custom validators/sanitizers
-original_id: custom-validators-sanitizers
 ---
 
 Although express-validator offers plenty of handy validators and sanitizers through its underlying
@@ -40,6 +39,9 @@ app.post('/user', body('passwordConfirmation').custom((value, { req }) => {
   if (value !== req.body.password) {
     throw new Error('Password confirmation does not match password');
   }
+  
+  // Indicates the success of this synchronous custom validator
+  return true;
 }), (req, res) => {
   // Handle the request
 });

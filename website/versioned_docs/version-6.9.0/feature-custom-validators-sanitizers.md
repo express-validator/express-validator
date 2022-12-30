@@ -1,7 +1,6 @@
 ---
-id: version-6.9.0-custom-validators-sanitizers
+id: custom-validators-sanitizers
 title: Custom validators/sanitizers
-original_id: custom-validators-sanitizers
 ---
 
 Although express-validator offers plenty of handy validators and sanitizers through its underlying
