@@ -50,7 +50,7 @@ const themeConfig = {
   footer: {
     style: 'dark',
     logo: {
-      src: 'img/logo.svg',
+      src: 'img/logo-horizontal.svg',
     },
     links: [
       {
