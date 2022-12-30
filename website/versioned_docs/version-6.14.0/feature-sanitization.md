@@ -33,6 +33,8 @@ like e-mail normalization (`normalizeEmail`) and trimming (`trim`)/HTML escaping
 The `notifyOnReply` field isn't validated, but it can still make use of the same `check` function
 to convert it to a JavaScript boolean.
 
-> **Important:** please note that sanitization mutates the request.
-> This means that if `req.body.text` was sent with the value ` Hello world :>)`, after the sanitization
-> its value will be `Hello world :&gt;)`.
+:::info
+**Important:** please note that sanitization mutates the request.
+This means that if `req.body.text` was sent with the value ` Hello world :>)`, after the sanitization
+its value will be `Hello world :&gt;)`.
+:::

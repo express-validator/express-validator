@@ -88,7 +88,6 @@ app.post('/create-user', yourValidationChains, (req, res) => {
 <Tabs>
 <TabItem value="js" label="JavaScript">
 
-
 ```js
 const { validationResult } = require('express-validator');
 app.post('/create-user', yourValidationChains, (req, res, next) => {
@@ -111,7 +110,7 @@ app.post('/create-user', yourValidationChains, (req, res, next) => {
 <TabItem value="ts" label="TypeScript">
 
 ```typescript
-import { validationResult, ValidationError } from 'express-validator';
+import { value validationResult, value ValidationError } from 'express-validator';
 app.post('/create-user', yourValidationChains, (req, res, next) => {
   const errorFormatter = ({ location, msg, param, value, nestedErrors }: ValidationError) => {
     // Build your resulting errors however you want! String, object, whatever - it works!

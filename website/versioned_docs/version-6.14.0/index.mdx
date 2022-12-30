@@ -19,14 +19,17 @@ npm install --save express-validator
 
 ## Basic guide
 
-> It's recommended that you have basic knowledge of the express.js module before you go on with
-> this guide.
+:::note
+
+It's recommended that you have basic knowledge of the express.js module before you go on with
+this guide.
+
+:::
 
 Let's get started by writing a basic route to create a user in the database:
 
 <Tabs>
 <TabItem value="js" label="JavaScript">
-
 
 ```js
 const express = require('express');
@@ -65,7 +68,6 @@ Then, you'll want to make sure that you validate the input and report any errors
 <Tabs>
 <TabItem value="js" label="JavaScript">
 
-
 ```js
 // ...rest of the initial code omitted for simplicity.
 const { body, validationResult } = require('express-validator');
@@ -96,7 +98,7 @@ app.post(
 
 ```typescript
 // ...rest of the initial code omitted for simplicity.
-import { body, validationResult } from 'express-validator';
+import { value body, value validationResult } from 'express-validator';
 
 app.post(
   '/user',
@@ -146,7 +148,7 @@ This completes the basic guide on getting started with express-validator.
 You might want to continue reading about some of the more advanced features available:
 
 - [Sanitization](feature-sanitization.md)
-- [Custom validators/sanitizers](feature-custom-validators-sanitizers.md)
+- [Custom validators/sanitizers](feature-custom-validators-sanitizers.mdx)
 - [Custom error messages](feature-error-messages.md)
 - [Wildcards](feature-wildcards.md)
 - [Schema validation](feature-schema-validation.md)
