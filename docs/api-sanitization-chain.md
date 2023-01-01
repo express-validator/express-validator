@@ -33,7 +33,7 @@ please check [validator.js' docs](https://github.com/validatorjs/validator.js#sa
 
 :::note
 
-Since validator.js only accepts `string` as input, any value (including arrays and objects) that needs to be sanitized by a Standard Sanitizer [is first converted to such type](faq.md#why-arrays-are-not-validatedsanitized-correctly).
+Since validator.js only accepts `string` as input, any value (including arrays and objects) that needs to be sanitized by a Standard Sanitizer is first converted to such type.
 
 :::
 

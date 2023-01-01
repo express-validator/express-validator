@@ -17,6 +17,6 @@
       "matched-data-api",
       "validation-result-api"
     ],
-    "More": ["faq", "migration-v5-to-v6"]
+    "More": ["migration-v5-to-v6"]
   }
 }

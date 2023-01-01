@@ -6,6 +6,7 @@ import { Sanitization } from './sanitization';
 let context: Context;
 let sanitizer: jest.Mock;
 let sanitization: Sanitization;
+let toString: jest.Mock;
 const meta: Meta = {
   req: { cookies: { foo: 'bar' } },
   location: 'cookies',
@@ -26,7 +27,8 @@ beforeEach(() => {
   jest.spyOn(context, 'setData');
 
   sanitizer = jest.fn();
-  sanitization = new Sanitization(sanitizer, true);
+  toString = jest.fn(val => val);
+  sanitization = new Sanitization(sanitizer, true, [], toString);
 });
 
 it('persists sanitized value back into the context', async () => {
@@ -45,7 +47,7 @@ describe('when sanitizer is a custom one', () => {
 
   it('calls it with the value of an async function and the meta', async () => {
     sanitizer = jest.fn(async value => 'foo ' + value);
-    sanitization = new Sanitization(sanitizer, true);
+    sanitization = new Sanitization(sanitizer, true, [], toString);
     await sanitization.run(context, 'bar', meta);
 
     expect(sanitizer).toHaveBeenCalledWith('bar', meta);
@@ -54,34 +56,28 @@ describe('when sanitizer is a custom one', () => {
 });
 
 describe('when sanitizer is a standard one', () => {
-  it('calls it with the value as a string', async () => {
-    sanitization = new Sanitization(sanitizer, false);
+  it('calls it with the stringified value of non-array field', async () => {
+    toString.mockReturnValue('hey');
+    sanitization = new Sanitization(sanitizer, false, [], toString);
 
     await sanitization.run(context, false, meta);
-    expect(sanitizer).toHaveBeenLastCalledWith('false');
+    expect(toString).toHaveBeenCalledWith(false);
+    expect(sanitizer).toHaveBeenCalledWith('hey');
+  });
 
-    await sanitization.run(context, 42, meta);
-    expect(sanitizer).toHaveBeenLastCalledWith('42');
+  it('calls it for each item in array field', async () => {
+    toString.mockImplementation(val => `hey${val}`);
+    sanitization = new Sanitization(sanitizer, false, [], toString);
 
-    // new Date(Date.UTC()) makes sure we'll not have to deal with timezones
-    await sanitization.run(context, new Date(Date.UTC(2019, 4, 1, 10, 30, 50, 0)), meta);
-    expect(sanitizer).toHaveBeenLastCalledWith('2019-05-01T10:30:50.000Z');
-
-    await sanitization.run(context, null, meta);
-    expect(sanitizer).toHaveBeenLastCalledWith('');
-
-    await sanitization.run(context, undefined, meta);
-    expect(sanitizer).toHaveBeenLastCalledWith('');
-
-    await sanitization.run(context, [42, 1], meta);
-    expect(sanitizer).toHaveBeenLastCalledWith('42');
-
-    await sanitization.run(context, { toString: () => 'wow' }, meta);
-    expect(sanitizer).toHaveBeenLastCalledWith('wow');
+    await sanitization.run(context, [1, 42], meta);
+    expect(toString).toHaveBeenNthCalledWith(1, 1);
+    expect(sanitizer).toHaveBeenNthCalledWith(1, 'hey1');
+    expect(toString).toHaveBeenNthCalledWith(2, 42);
+    expect(sanitizer).toHaveBeenNthCalledWith(2, 'hey42');
   });
 
   it('calls it with the options', async () => {
-    sanitization = new Sanitization(sanitizer, false, ['bar', false]);
+    sanitization = new Sanitization(sanitizer, false, ['bar', false], toString);
 
     await sanitization.run(context, 'foo', meta);
     expect(sanitizer).toHaveBeenLastCalledWith('foo', 'bar', false);
