@@ -53,6 +53,11 @@ const themeConfig = {
         label: 'GitHub',
         position: 'right',
       },
+      {
+        type: 'search',
+        position: 'right',
+        className: 'navbar-search',
+      },
     ],
   },
   footer: {

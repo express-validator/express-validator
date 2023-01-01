@@ -71,3 +71,8 @@
 .navbar button:hover {
   background-color: var(----light-mode-primary-lightest);
 }
+
+/* Because of the above hack, the search input needs to be reset. */
+.navbar-search button:hover {
+  background-color: var(--docsearch-searchbox-focus-background);
+}
