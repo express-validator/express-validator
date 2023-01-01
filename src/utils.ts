@@ -10,10 +10,8 @@ export const bindAll = <T>(object: T): { [K in keyof T]: T[K] } => {
   return object;
 };
 
-export function toString(value: any, deep = true): string {
-  if (Array.isArray(value) && value.length && deep) {
-    return toString(value[0], false);
-  } else if (value instanceof Date) {
+export function toString(value: any): string {
+  if (value instanceof Date) {
     return value.toISOString();
   } else if (value && typeof value === 'object' && value.toString) {
     if (typeof value.toString !== 'function') {
