@@ -9,10 +9,15 @@ it('does not throw if the context has no errors', () => {
 
 it('throws a validation halt if the context has errors', () => {
   const context = new ContextBuilder().build();
-  context.addError('foo', 'value', {
-    req: {},
-    location: 'body',
-    path: 'bar',
+  context.addError({
+    type: 'single',
+    message: 'foo',
+    value: 'value',
+    meta: {
+      req: {},
+      location: 'body',
+      path: 'bar',
+    },
   });
 
   expect(() => new Bail().run(context)).toThrowError(ValidationHalt);

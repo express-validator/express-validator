@@ -26,12 +26,14 @@ beforeEach(() => {
 });
 
 describe('#addError()', () => {
+  const meta: Meta = {
+    path: 'bar',
+    location: 'headers',
+    req: {},
+  };
+
   it('pushes an error with default error message', () => {
-    context.addError(null, 'foo', {
-      path: 'bar',
-      location: 'headers',
-      req: {},
-    });
+    context.addError({ type: 'single', value: 'foo', meta });
 
     expect(context.errors).toHaveLength(1);
     expect(context.errors).toContainEqual({
@@ -44,11 +46,7 @@ describe('#addError()', () => {
 
   it('pushes an error with context message', () => {
     context = new ContextBuilder().setMessage('context message').build();
-    context.addError(null, 'foo', {
-      path: 'bar',
-      location: 'headers',
-      req: {},
-    });
+    context.addError({ type: 'single', value: 'foo', meta });
 
     expect(context.errors).toHaveLength(1);
     expect(context.errors).toContainEqual({
@@ -60,11 +58,7 @@ describe('#addError()', () => {
   });
 
   it('pushes an error with argument message', () => {
-    context.addError('oh noes', 'foo', {
-      path: 'bar',
-      location: 'headers',
-      req: {},
-    });
+    context.addError({ type: 'single', message: 'oh noes', value: 'foo', meta });
 
     expect(context.errors).toHaveLength(1);
     expect(context.errors).toContainEqual({
@@ -76,13 +70,8 @@ describe('#addError()', () => {
   });
 
   it('pushes an error with the message function return ', () => {
-    const meta: Meta = {
-      path: 'bar',
-      location: 'headers',
-      req: {},
-    };
     const message = jest.fn(() => 123);
-    context.addError(message, 'foo', meta);
+    context.addError({ type: 'single', message, value: 'foo', meta });
 
     expect(message).toHaveBeenCalledWith('foo', meta);
     expect(context.errors).toHaveLength(1);
