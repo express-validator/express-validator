@@ -27,7 +27,12 @@ const createTest = (options: { returnValue: any; addsError: boolean }) => async 
   validator.mockReturnValue(options.returnValue);
   await validation.run(context, 'bar', meta);
   if (options.addsError) {
-    expect(context.addError).toHaveBeenCalledWith(validation.message, 'bar', meta);
+    expect(context.addError).toHaveBeenCalledWith({
+      type: 'single',
+      message: validation.message,
+      value: 'bar',
+      meta,
+    });
   } else {
     expect(context.addError).not.toHaveBeenCalled();
   }

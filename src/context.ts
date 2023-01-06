@@ -23,6 +23,18 @@ export type Optional =
     }
   | false;
 
+type AddErrorOptions =
+  | {
+      type: 'single';
+      message?: any;
+      value: any;
+      meta: Meta;
+    }
+  | {
+      type: 'nested';
+      message?: any;
+      nestedErrors: ValidationError[];
+    };
 export class Context {
   private readonly _errors: ValidationError[] = [];
   get errors(): ReadonlyArray<ValidationError> {
@@ -87,24 +99,32 @@ export class Context {
     instance.value = value;
   }
 
-  addError(message: any, value: any, meta: Meta): void;
-  addError(message: any, nestedErrors: ValidationError[]): void;
-  addError(message: any, valueOrNestedErrors: any, meta?: Meta) {
-    const msg = message || this.message || 'Invalid value';
-    if (meta) {
-      this._errors.push({
-        value: valueOrNestedErrors,
-        msg: typeof msg === 'function' ? msg(valueOrNestedErrors, meta) : msg,
-        param: meta.path,
-        location: meta.location,
-      });
-    } else {
-      this._errors.push({
-        msg,
-        param: '_error',
-        nestedErrors: valueOrNestedErrors,
-      });
+  addError(opts: AddErrorOptions) {
+    const msg = opts.message || this.message || 'Invalid value';
+    let error: ValidationError;
+    switch (opts.type) {
+      case 'single':
+        error = {
+          value: opts.value,
+          msg: typeof msg === 'function' ? msg(opts.value, opts.meta) : msg,
+          param: opts.meta?.path,
+          location: opts.meta?.location,
+        };
+        break;
+
+      case 'nested':
+        error = {
+          msg,
+          param: '_error',
+          nestedErrors: opts.nestedErrors,
+        };
+        break;
+
+      default:
+        throw new Error(`Unhandled addError case`);
     }
+
+    this._errors.push(error);
   }
 }
 
