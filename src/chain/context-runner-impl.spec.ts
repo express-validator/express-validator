@@ -40,7 +40,7 @@ afterEach(() => {
 it('returns Result for current context', async () => {
   builder.addItem({
     async run(context, value, meta) {
-      context.addError('some error', value, meta);
+      context.addError({ type: 'single', value, meta });
     },
   });
   const result = await contextRunner.run({});
