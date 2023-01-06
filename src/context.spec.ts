@@ -1,6 +1,6 @@
 import { Context } from './context';
 import { ContextBuilder } from './context-builder';
-import { FieldInstance, Meta } from './base';
+import { FieldInstance, Meta, ValidationError } from './base';
 
 let context: Context;
 let data: FieldInstance[];
@@ -26,72 +26,112 @@ beforeEach(() => {
 });
 
 describe('#addError()', () => {
-  it('pushes an error with default error message', () => {
-    context.addError(null, 'foo', {
-      path: 'bar',
-      location: 'headers',
-      req: {},
+  const meta: Meta = {
+    path: 'bar',
+    location: 'headers',
+    req: {},
+  };
+
+  describe('for type single', () => {
+    it('pushes an error with default error message', () => {
+      context.addError({ type: 'single', value: 'foo', meta });
+
+      expect(context.errors).toHaveLength(1);
+      expect(context.errors).toContainEqual({
+        value: 'foo',
+        msg: 'Invalid value',
+        param: 'bar',
+        location: 'headers',
+      });
     });
 
-    expect(context.errors).toHaveLength(1);
-    expect(context.errors).toContainEqual({
-      value: 'foo',
-      msg: 'Invalid value',
-      param: 'bar',
-      location: 'headers',
+    it('pushes an error with context message', () => {
+      context = new ContextBuilder().setMessage('context message').build();
+      context.addError({ type: 'single', value: 'foo', meta });
+
+      expect(context.errors).toHaveLength(1);
+      expect(context.errors).toContainEqual({
+        value: 'foo',
+        msg: 'context message',
+        param: 'bar',
+        location: 'headers',
+      });
+    });
+
+    it('pushes an error with argument message', () => {
+      context.addError({ type: 'single', message: 'oh noes', value: 'foo', meta });
+
+      expect(context.errors).toHaveLength(1);
+      expect(context.errors).toContainEqual({
+        value: 'foo',
+        msg: 'oh noes',
+        param: 'bar',
+        location: 'headers',
+      });
+    });
+
+    it('pushes an error with the message function return ', () => {
+      const message = jest.fn(() => 123);
+      context.addError({ type: 'single', message, value: 'foo', meta });
+
+      expect(message).toHaveBeenCalledWith('foo', meta);
+      expect(context.errors).toHaveLength(1);
+      expect(context.errors).toContainEqual({
+        value: 'foo',
+        msg: 123,
+        param: 'bar',
+        location: 'headers',
+      });
     });
   });
 
-  it('pushes an error with context message', () => {
-    context = new ContextBuilder().setMessage('context message').build();
-    context.addError(null, 'foo', {
-      path: 'bar',
-      location: 'headers',
-      req: {},
-    });
-
-    expect(context.errors).toHaveLength(1);
-    expect(context.errors).toContainEqual({
+  describe('for type nested', () => {
+    const nestedError: ValidationError = {
       value: 'foo',
-      msg: 'context message',
       param: 'bar',
-      location: 'headers',
-    });
-  });
-
-  it('pushes an error with argument message', () => {
-    context.addError('oh noes', 'foo', {
-      path: 'bar',
-      location: 'headers',
-      req: {},
-    });
-
-    expect(context.errors).toHaveLength(1);
-    expect(context.errors).toContainEqual({
-      value: 'foo',
-      msg: 'oh noes',
-      param: 'bar',
-      location: 'headers',
-    });
-  });
-
-  it('pushes an error with the message function return ', () => {
-    const meta: Meta = {
-      path: 'bar',
-      location: 'headers',
-      req: {},
+      location: 'body',
+      msg: 'Oh no',
     };
-    const message = jest.fn(() => 123);
-    context.addError(message, 'foo', meta);
 
-    expect(message).toHaveBeenCalledWith('foo', meta);
-    expect(context.errors).toHaveLength(1);
-    expect(context.errors).toContainEqual({
-      value: 'foo',
-      msg: 123,
-      param: 'bar',
-      location: 'headers',
+    it('pushes an error for the _error param with nested errors', () => {
+      context.addError({
+        type: 'nested',
+        nestedErrors: [nestedError],
+      });
+
+      expect(context.errors).toHaveLength(1);
+      expect(context.errors[0].param).toBe('_error');
+      expect(context.errors[0].nestedErrors).toEqual([nestedError]);
     });
+
+    it('pushes an error with default error message', () => {
+      context.addError({
+        type: 'nested',
+        nestedErrors: [nestedError],
+      });
+
+      expect(context.errors).toHaveLength(1);
+      expect(context.errors[0].msg).toBe('Invalid value');
+    });
+
+    it('pushes an error with argument message', () => {
+      context.addError({
+        type: 'nested',
+        message: 'oh noes',
+        nestedErrors: [nestedError],
+      });
+
+      expect(context.errors).toHaveLength(1);
+      expect(context.errors[0].msg).toBe('oh noes');
+    });
+  });
+
+  it('throws if the error type is incorrect', () => {
+    // The ts-expect-error below adds a static guarantee that we're indeed using a type that isn't
+    // specified in the addError signature.
+    // @ts-expect-error
+    const fn = () => context.addError({ type: 'foo' });
+    expect(fn).toThrow();
   });
 });
 
