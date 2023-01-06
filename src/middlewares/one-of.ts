@@ -108,12 +108,14 @@ export function oneOf(
         }
 
         // Only add an error to the context if no group of chains had success.
-        surrogateContext.addError(
-          typeof options.message === 'function'
-            ? options.message({ req })
-            : options.message || 'Invalid value(s)',
-          error,
-        );
+        surrogateContext.addError({
+          type: 'nested',
+          message:
+            typeof options.message === 'function'
+              ? options.message({ req })
+              : options.message || 'Invalid value(s)',
+          nestedErrors: error,
+        });
       }
 
       // Final context running pass to ensure contexts are added and values are modified properly
