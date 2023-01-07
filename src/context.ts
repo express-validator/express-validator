@@ -108,7 +108,7 @@ export class Context {
         error = {
           value: opts.value,
           msg: typeof msg === 'function' ? msg(opts.value, opts.meta) : msg,
-          param: opts.meta?.path,
+          path: opts.meta?.path,
           location: opts.meta?.location,
         };
         break;
@@ -116,7 +116,7 @@ export class Context {
       case 'nested':
         error = {
           msg: typeof msg === 'function' ? msg(opts.req) : msg,
-          param: '_error',
+          path: '_error',
           nestedErrors: opts.nestedErrors,
         };
         break;

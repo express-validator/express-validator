@@ -58,8 +58,8 @@ export class Result<T = any> {
    */
   mapped(): Record<string, T> {
     return this.errors.reduce((mapping, error) => {
-      if (!mapping[error.param]) {
-        mapping[error.param] = this.formatter(error);
+      if (!mapping[error.path]) {
+        mapping[error.path] = this.formatter(error);
       }
 
       return mapping;

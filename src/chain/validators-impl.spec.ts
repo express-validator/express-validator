@@ -386,7 +386,7 @@ describe('always correctly validates with validator.matches using the g flag', (
   const expectedErr = {
     value: 'fo157115',
     msg: 'INVALID USER FORMAT',
-    param: 'user',
+    path: 'user',
     location: 'body',
   };
   [
