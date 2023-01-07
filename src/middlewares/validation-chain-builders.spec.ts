@@ -38,13 +38,13 @@ describe('buildCheckFunction()', () => {
     expect(errors[0]).toEqual({
       location: 'cookies',
       msg: 'Invalid value',
-      param: 'foo',
+      path: 'foo',
       value: 'asd',
     });
     expect(errors![1]).toEqual({
       location: 'headers',
       msg: 'Invalid value',
-      param: 'foo',
+      path: 'foo',
       value: 'asd',
     });
   });

@@ -9,12 +9,12 @@ Array [
         Object {
           "location": "body",
           "msg": "Invalid value",
-          "param": "foo",
+          "path": "foo",
           "value": true,
         },
       ],
     ],
-    "param": "_error",
+    "path": "_error",
   },
 ]
 `;
@@ -27,17 +27,17 @@ Array [
       Object {
         "location": "body",
         "msg": "Invalid value",
-        "param": "foo",
+        "path": "foo",
         "value": true,
       },
       Object {
         "location": "body",
         "msg": "Invalid value",
-        "param": "bar",
+        "path": "bar",
         "value": undefined,
       },
     ],
-    "param": "_error",
+    "path": "_error",
   },
 ]
 `;
@@ -51,7 +51,7 @@ Array [
         Object {
           "location": "body",
           "msg": "Invalid value",
-          "param": "foo",
+          "path": "foo",
           "value": true,
         },
       ],
@@ -59,12 +59,12 @@ Array [
         Object {
           "location": "body",
           "msg": "Invalid value",
-          "param": "bar",
+          "path": "bar",
           "value": undefined,
         },
       ],
     ],
-    "param": "_error",
+    "path": "_error",
   },
 ]
 `;
@@ -77,11 +77,11 @@ Array [
       Object {
         "location": "body",
         "msg": "Invalid value",
-        "param": "foo",
+        "path": "foo",
         "value": true,
       },
     ],
-    "param": "_error",
+    "path": "_error",
   },
 ]
 `;
@@ -95,13 +95,13 @@ Array [
         Object {
           "location": "cookies",
           "msg": "Invalid value",
-          "param": "foo",
+          "path": "foo",
           "value": true,
         },
         Object {
           "location": "cookies",
           "msg": "Invalid value",
-          "param": "bar",
+          "path": "bar",
           "value": "def",
         },
       ],
@@ -109,12 +109,12 @@ Array [
         Object {
           "location": "cookies",
           "msg": "Invalid value",
-          "param": "baz",
+          "path": "baz",
           "value": 123,
         },
       ],
     ],
-    "param": "_error",
+    "path": "_error",
   },
 ]
 `;
@@ -128,7 +128,7 @@ Array [
         Object {
           "location": "cookies",
           "msg": "Invalid value",
-          "param": "foo",
+          "path": "foo",
           "value": true,
         },
       ],
@@ -136,12 +136,12 @@ Array [
         Object {
           "location": "cookies",
           "msg": "Invalid value",
-          "param": "bar",
+          "path": "bar",
           "value": "def",
         },
       ],
     ],
-    "param": "_error",
+    "path": "_error",
   },
 ]
 `;
