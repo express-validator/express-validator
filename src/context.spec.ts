@@ -86,6 +86,7 @@ describe('#addError()', () => {
   });
 
   describe('for type nested', () => {
+    const req = {};
     const nestedError: ValidationError = {
       value: 'foo',
       param: 'bar',
@@ -96,6 +97,7 @@ describe('#addError()', () => {
     it('pushes an error for the _error param with nested errors', () => {
       context.addError({
         type: 'nested',
+        req,
         nestedErrors: [nestedError],
       });
 
@@ -107,6 +109,7 @@ describe('#addError()', () => {
     it('pushes an error with default error message', () => {
       context.addError({
         type: 'nested',
+        req,
         nestedErrors: [nestedError],
       });
 
@@ -117,12 +120,27 @@ describe('#addError()', () => {
     it('pushes an error with argument message', () => {
       context.addError({
         type: 'nested',
+        req,
         message: 'oh noes',
         nestedErrors: [nestedError],
       });
 
       expect(context.errors).toHaveLength(1);
       expect(context.errors[0].msg).toBe('oh noes');
+    });
+
+    it('pushes an error with the message function return', () => {
+      const message = jest.fn(() => 123);
+      context.addError({
+        type: 'nested',
+        req,
+        message,
+        nestedErrors: [nestedError],
+      });
+
+      expect(message).toHaveBeenCalledWith(req);
+      expect(context.errors).toHaveLength(1);
+      expect(context.errors[0].msg).toBe(123);
     });
   });
 
