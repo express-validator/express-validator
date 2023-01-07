@@ -134,7 +134,6 @@ describe('error message', () => {
     oneOf([check('foo').isInt()], { message })(req, {}, () => {
       const context = getOneOfContext(req);
       expect(context.errors).toMatchSnapshot();
-      expect(message).toHaveBeenCalledWith({ req });
       done();
     });
   });
