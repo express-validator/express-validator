@@ -68,7 +68,7 @@ export interface FieldInstance {
 
 export type ValidationError =
   | {
-      param: '_error';
+      path: '_error';
 
       /**
        * The error message
@@ -90,9 +90,9 @@ export type ValidationError =
       location: Location;
 
       /**
-       * The name of the field which has a validation error
+       * The path to the field which has a validation error
        */
-      param: string;
+      path: string;
 
       /**
        * The value of the field

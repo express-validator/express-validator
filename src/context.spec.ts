@@ -40,7 +40,7 @@ describe('#addError()', () => {
       expect(context.errors).toContainEqual({
         value: 'foo',
         msg: 'Invalid value',
-        param: 'bar',
+        path: 'bar',
         location: 'headers',
       });
     });
@@ -53,7 +53,7 @@ describe('#addError()', () => {
       expect(context.errors).toContainEqual({
         value: 'foo',
         msg: 'context message',
-        param: 'bar',
+        path: 'bar',
         location: 'headers',
       });
     });
@@ -65,7 +65,7 @@ describe('#addError()', () => {
       expect(context.errors).toContainEqual({
         value: 'foo',
         msg: 'oh noes',
-        param: 'bar',
+        path: 'bar',
         location: 'headers',
       });
     });
@@ -79,7 +79,7 @@ describe('#addError()', () => {
       expect(context.errors).toContainEqual({
         value: 'foo',
         msg: 123,
-        param: 'bar',
+        path: 'bar',
         location: 'headers',
       });
     });
@@ -89,7 +89,7 @@ describe('#addError()', () => {
     const req = {};
     const nestedError: ValidationError = {
       value: 'foo',
-      param: 'bar',
+      path: 'bar',
       location: 'body',
       msg: 'Oh no',
     };
@@ -102,7 +102,7 @@ describe('#addError()', () => {
       });
 
       expect(context.errors).toHaveLength(1);
-      expect(context.errors[0].param).toBe('_error');
+      expect(context.errors[0].path).toBe('_error');
       expect(context.errors[0].nestedErrors).toEqual([nestedError]);
     });
 
