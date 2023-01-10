@@ -68,25 +68,46 @@ function expandPath(object: any, path: string | string[], accumulator: string[])
         expandPath(object, subPath, accumulator);
       });
   } else {
-    const reconstructedPath = segments.reduce((prev, segment) => {
-      let part = '';
-      // TODO: Handle brackets?
-      if (segment.includes('.')) {
-        // Special char key access
-        part = `["${segment}"]`;
-      } else if (/^\d+$/.test(segment)) {
-        // Index access
-        part = `[${segment}]`;
-      } else if (prev) {
-        // Object key access
-        part = `.${segment}`;
-      } else {
-        // Top level key
-        part = segment;
-      }
-
-      return prev + part;
-    }, '');
+    const reconstructedPath = reconstructFieldPath(segments);
     accumulator.push(reconstructedPath);
   }
+}
+
+/**
+ * Reconstructs a field path from a list of path segments.
+ *
+ * Most segments will be concatenated by a dot, for example `['foo', 'bar']` becomes `foo.bar`.
+ * However, a numeric segment will be wrapped in brackets to match regular JS array syntax:
+ *
+ * ```
+ * reconstructFieldPath(['foo', 0, 'bar']) // foo[0].bar
+ * ```
+ *
+ * Segments which have a special character such as `.` will be wrapped in brackets and quotes,
+ * which also matches JS syntax for objects with such keys.
+ *
+ * ```
+ * reconstructFieldPath(['foo', 'bar.baz', 'qux']) // foo["bar.baz"].qux
+ * ```
+ */
+export function reconstructFieldPath(segments: readonly string[]): string {
+  return segments.reduce((prev, segment) => {
+    let part = '';
+    // TODO: Handle brackets?
+    if (segment.includes('.')) {
+      // Special char key access
+      part = `["${segment}"]`;
+    } else if (/^\d+$/.test(segment)) {
+      // Index access
+      part = `[${segment}]`;
+    } else if (prev) {
+      // Object key access
+      part = `.${segment}`;
+    } else {
+      // Top level key
+      part = segment;
+    }
+
+    return prev + part;
+  }, '');
 }
