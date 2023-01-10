@@ -66,46 +66,63 @@ export interface FieldInstance {
   originalValue: any;
 }
 
-export type ValidationError =
-  | {
-      path: '_error';
+export type FieldValidationError = {
+  /**
+   * Indicates that the error occurred because a field had an invalid value
+   */
+  type: 'field';
 
-      /**
-       * The error message
-       */
-      msg: any;
+  /**
+   * The location within the request where this field is
+   */
+  location: Location;
 
-      /**
-       * The list of underlying validation errors returned by validation chains in `oneOf()`
-       */
-      nestedErrors: ValidationError[];
-      // These are optional so places don't need to define them, but can reference them
-      location?: undefined;
-      value?: undefined;
-    }
-  | {
-      /**
-       * The location within the request where this field is
-       */
-      location: Location;
+  /**
+   * The path to the field which has a validation error
+   */
+  path: string;
 
-      /**
-       * The path to the field which has a validation error
-       */
-      path: string;
+  /**
+   * The value of the field
+   */
+  value: any;
 
-      /**
-       * The value of the field
-       */
-      value: any;
+  /**
+   * The error message
+   */
+  msg: any;
+};
 
-      /**
-       * The error message
-       */
-      msg: any;
-      // This is optional so places don't need to define it, but can reference it
-      nestedErrors?: unknown[];
-    };
+export type AlternativeValidationError = {
+  /**
+   * Indicates that the error occurred because all alternatives (e.g. in `oneOf()`) were invalid
+   */
+  type: 'alternative';
+
+  /**
+   * The error message
+   */
+  msg: any;
+
+  /**
+   * The list of underlying validation errors returned by validation chains in `oneOf()`
+   */
+  nestedErrors: FieldValidationError[];
+};
+
+/**
+ * A validation error as reported by a middleware.
+ * The properties available in the error object vary according to the type.
+ *
+ * @example
+ *  if (error.type === 'alternative') {
+ *    console.log(`There are ${error.nestedErrors.length} errors under this alternative list`);
+ *  } else if (error.type === 'field') {
+ *    console.log(`There's an error with field ${error.path) in the request ${error.location}`);
+ *  }
+ *
+ */
+export type ValidationError = AlternativeValidationError | FieldValidationError;
 
 // Not using Symbol because of #813
 export const contextsKey = 'express-validator#contexts';

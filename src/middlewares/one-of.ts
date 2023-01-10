@@ -109,7 +109,7 @@ export function oneOf(
 
         // Only add an error to the context if no group of chains had success.
         surrogateContext.addError({
-          type: 'nested',
+          type: 'alternative',
           req,
           message: options.message || 'Invalid value(s)',
           nestedErrors: error,

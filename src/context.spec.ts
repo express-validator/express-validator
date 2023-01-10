@@ -1,6 +1,6 @@
+import { FieldInstance, FieldValidationError, Meta } from './base';
 import { Context } from './context';
 import { ContextBuilder } from './context-builder';
-import { FieldInstance, Meta, ValidationError } from './base';
 
 let context: Context;
 let data: FieldInstance[];
@@ -34,10 +34,11 @@ describe('#addError()', () => {
 
   describe('for type single', () => {
     it('pushes an error with default error message', () => {
-      context.addError({ type: 'single', value: 'foo', meta });
+      context.addError({ type: 'field', value: 'foo', meta });
 
       expect(context.errors).toHaveLength(1);
       expect(context.errors).toContainEqual({
+        type: 'field',
         value: 'foo',
         msg: 'Invalid value',
         path: 'bar',
@@ -47,10 +48,11 @@ describe('#addError()', () => {
 
     it('pushes an error with context message', () => {
       context = new ContextBuilder().setMessage('context message').build();
-      context.addError({ type: 'single', value: 'foo', meta });
+      context.addError({ type: 'field', value: 'foo', meta });
 
       expect(context.errors).toHaveLength(1);
       expect(context.errors).toContainEqual({
+        type: 'field',
         value: 'foo',
         msg: 'context message',
         path: 'bar',
@@ -59,10 +61,11 @@ describe('#addError()', () => {
     });
 
     it('pushes an error with argument message', () => {
-      context.addError({ type: 'single', message: 'oh noes', value: 'foo', meta });
+      context.addError({ type: 'field', message: 'oh noes', value: 'foo', meta });
 
       expect(context.errors).toHaveLength(1);
       expect(context.errors).toContainEqual({
+        type: 'field',
         value: 'foo',
         msg: 'oh noes',
         path: 'bar',
@@ -72,11 +75,12 @@ describe('#addError()', () => {
 
     it('pushes an error with the message function return ', () => {
       const message = jest.fn(() => 123);
-      context.addError({ type: 'single', message, value: 'foo', meta });
+      context.addError({ type: 'field', message, value: 'foo', meta });
 
       expect(message).toHaveBeenCalledWith('foo', meta);
       expect(context.errors).toHaveLength(1);
       expect(context.errors).toContainEqual({
+        type: 'field',
         value: 'foo',
         msg: 123,
         path: 'bar',
@@ -87,28 +91,32 @@ describe('#addError()', () => {
 
   describe('for type nested', () => {
     const req = {};
-    const nestedError: ValidationError = {
+    const nestedError: FieldValidationError = {
+      type: 'field',
       value: 'foo',
       path: 'bar',
       location: 'body',
       msg: 'Oh no',
     };
 
-    it('pushes an error for the _error param with nested errors', () => {
+    it('pushes a request error with nested errors', () => {
       context.addError({
-        type: 'nested',
+        type: 'alternative',
         req,
         nestedErrors: [nestedError],
       });
 
       expect(context.errors).toHaveLength(1);
-      expect(context.errors[0].path).toBe('_error');
-      expect(context.errors[0].nestedErrors).toEqual([nestedError]);
+      expect(context.errors).toContainEqual({
+        type: 'alternative',
+        msg: 'Invalid value',
+        nestedErrors: [nestedError],
+      });
     });
 
     it('pushes an error with default error message', () => {
       context.addError({
-        type: 'nested',
+        type: 'alternative',
         req,
         nestedErrors: [nestedError],
       });
@@ -119,7 +127,7 @@ describe('#addError()', () => {
 
     it('pushes an error with argument message', () => {
       context.addError({
-        type: 'nested',
+        type: 'alternative',
         req,
         message: 'oh noes',
         nestedErrors: [nestedError],
@@ -132,7 +140,7 @@ describe('#addError()', () => {
     it('pushes an error with the message function return', () => {
       const message = jest.fn(() => 123);
       context.addError({
-        type: 'nested',
+        type: 'alternative',
         req,
         message,
         nestedErrors: [nestedError],

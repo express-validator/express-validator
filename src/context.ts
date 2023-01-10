@@ -1,5 +1,12 @@
 import * as _ from 'lodash';
-import { FieldInstance, Location, Meta, Request, ValidationError } from './base';
+import {
+  FieldInstance,
+  FieldValidationError,
+  Location,
+  Meta,
+  Request,
+  ValidationError,
+} from './base';
 import { ContextItem } from './context-items';
 
 function getDataMapKey(path: string, location: Location) {
@@ -25,16 +32,16 @@ export type Optional =
 
 type AddErrorOptions =
   | {
-      type: 'single';
+      type: 'field';
       message?: any;
       value: any;
       meta: Meta;
     }
   | {
-      type: 'nested';
+      type: 'alternative';
       req: Request;
       message?: any;
-      nestedErrors: ValidationError[];
+      nestedErrors: FieldValidationError[];
     };
 export class Context {
   private readonly _errors: ValidationError[] = [];
@@ -104,8 +111,9 @@ export class Context {
     const msg = opts.message || this.message || 'Invalid value';
     let error: ValidationError;
     switch (opts.type) {
-      case 'single':
+      case 'field':
         error = {
+          type: 'field',
           value: opts.value,
           msg: typeof msg === 'function' ? msg(opts.value, opts.meta) : msg,
           path: opts.meta?.path,
@@ -113,10 +121,10 @@ export class Context {
         };
         break;
 
-      case 'nested':
+      case 'alternative':
         error = {
+          type: 'alternative',
           msg: typeof msg === 'function' ? msg(opts.req) : msg,
-          path: '_error',
           nestedErrors: opts.nestedErrors,
         };
         break;

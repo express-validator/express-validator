@@ -4,6 +4,8 @@ export {
   CustomValidator,
   CustomSanitizer,
   DynamicMessageCreator,
+  FieldValidationError,
+  AlternativeValidationError,
   ValidationError,
 } from './base';
 
