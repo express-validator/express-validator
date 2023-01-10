@@ -384,6 +384,7 @@ describe('correctly merges validator.matches flags', () => {
 
 describe('always correctly validates with validator.matches using the g flag', () => {
   const expectedErr = {
+    type: 'field',
     value: 'fo157115',
     msg: 'INVALID USER FORMAT',
     path: 'user',

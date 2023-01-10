@@ -58,8 +58,9 @@ export class Result<T = any> {
    */
   mapped(): Record<string, T> {
     return this.errors.reduce((mapping, error) => {
-      if (!mapping[error.path]) {
-        mapping[error.path] = this.formatter(error);
+      const key = error.type === 'field' ? error.path : `_${error.type}`;
+      if (!mapping[key]) {
+        mapping[key] = this.formatter(error);
       }
 
       return mapping;

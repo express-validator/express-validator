@@ -3,9 +3,9 @@ import { ErrorFormatter, validationResult } from './validation-result';
 import { ContextBuilder } from './context-builder';
 
 const allErrors: ValidationError[] = [
-  { path: 'foo', msg: 'blabla', location: 'body', value: 123 },
-  { path: 'foo', msg: 'watwat', location: 'body', value: 123 },
-  { path: 'bar', msg: 'yay', location: 'query', value: 'qux' },
+  { type: 'field', path: 'foo', msg: 'blabla', location: 'body', value: 123 },
+  { type: 'field', path: 'foo', msg: 'watwat', location: 'body', value: 123 },
+  { type: 'field', path: 'bar', msg: 'yay', location: 'query', value: 'qux' },
 ];
 
 const makeContextsList = (errors: ValidationError[]) => {
@@ -116,7 +116,7 @@ describe('#formatWith()', () => {
 
 describe('.withDefaults()', () => {
   it('lets specify custom default formatter', () => {
-    let formatter: ErrorFormatter = err => `${err.path} is broken, fix it`;
+    let formatter: ErrorFormatter = err => `${err.type} is broken, fix it`;
     const customFactory = validationResult.withDefaults({ formatter });
 
     let result = customFactory({ [contextsKey]: makeContextsList(allErrors) });
