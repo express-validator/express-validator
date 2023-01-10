@@ -184,7 +184,12 @@ describe('should default to grouped errorType', () => {
     };
     await oneOf([check('foo').isString(), check('bar').isFloat()]).run(req);
     const context = getOneOfContext(req);
-    expect(context.errors[0]?.nestedErrors?.length).toEqual(2);
+    expect(context.errors[0]).toEqual(
+      expect.objectContaining({
+        type: 'alternative',
+        nestedErrors: [expect.anything(), expect.anything()],
+      }),
+    );
   });
 
   it('when invalid error type is provided', async () => {
@@ -196,7 +201,12 @@ describe('should default to grouped errorType', () => {
       errorType: 'invalid error type',
     }).run(req);
     const context = getOneOfContext(req);
-    expect(context.errors[0]?.nestedErrors?.length).toEqual(2);
+    expect(context.errors[0]).toEqual(
+      expect.objectContaining({
+        type: 'alternative',
+        nestedErrors: [expect.anything(), expect.anything()],
+      }),
+    );
   });
 });
 

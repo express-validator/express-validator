@@ -36,12 +36,14 @@ describe('buildCheckFunction()', () => {
     const errors = await runAndGetErrors(chain, req);
     expect(errors).toHaveLength(2);
     expect(errors[0]).toEqual({
+      type: 'field',
       location: 'cookies',
       msg: 'Invalid value',
       path: 'foo',
       value: 'asd',
     });
     expect(errors![1]).toEqual({
+      type: 'field',
       location: 'headers',
       msg: 'Invalid value',
       path: 'foo',
@@ -58,7 +60,7 @@ describe('check()', () => {
       const chain = check('foo').isInt();
       const errors = await runAndGetErrors(chain, req);
       expect(errors).toHaveLength(1);
-      expect(errors[0].location).toBe(location);
+      expect(errors[0]).toEqual(expect.objectContaining({ type: 'field', location }));
     });
   });
 
@@ -74,7 +76,7 @@ describe('body()', () => {
     const chain = body('foo').isInt();
     const errors = await runAndGetErrors(chain, req);
     expect(errors).toHaveLength(1);
-    expect(errors[0].location).toBe('body');
+    expect(errors[0]).toEqual(expect.objectContaining({ type: 'field', location: 'body' }));
   });
 });
 
@@ -83,7 +85,7 @@ describe('cookie()', () => {
     const chain = cookie('foo').isInt();
     const errors = await runAndGetErrors(chain, req);
     expect(errors).toHaveLength(1);
-    expect(errors[0].location).toBe('cookies');
+    expect(errors[0]).toEqual(expect.objectContaining({ type: 'field', location: 'cookies' }));
   });
 });
 
@@ -92,7 +94,7 @@ describe('header()', () => {
     const chain = header('foo').isInt();
     const errors = await runAndGetErrors(chain, req);
     expect(errors).toHaveLength(1);
-    expect(errors[0].location).toBe('headers');
+    expect(errors[0]).toEqual(expect.objectContaining({ type: 'field', location: 'headers' }));
   });
 });
 
@@ -101,7 +103,7 @@ describe('param()', () => {
     const chain = param('foo').isInt();
     const errors = await runAndGetErrors(chain, req);
     expect(errors).toHaveLength(1);
-    expect(errors[0].location).toBe('params');
+    expect(errors[0]).toEqual(expect.objectContaining({ type: 'field', location: 'params' }));
   });
 });
 
@@ -110,6 +112,6 @@ describe('query()', () => {
     const chain = query('foo').isInt();
     const errors = await runAndGetErrors(chain, req);
     expect(errors).toHaveLength(1);
-    expect(errors[0].location).toBe('query');
+    expect(errors[0]).toEqual(expect.objectContaining({ type: 'field', location: 'query' }));
   });
 });
