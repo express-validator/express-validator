@@ -26,7 +26,7 @@ const createSyncTest = (options: { returnValue: any; addsError: boolean }) => as
   await validation.run(context, 'bar', meta);
   if (options.addsError) {
     expect(context.addError).toHaveBeenCalledWith({
-      type: 'single',
+      type: 'field',
       message: validation.message,
       value: 'bar',
       meta,
@@ -59,7 +59,7 @@ describe('when not negated', () => {
       });
       await validation.run(context, 'bar', meta);
       expect(context.addError).toHaveBeenCalledWith({
-        type: 'single',
+        type: 'field',
         message: 'nope',
         value: 'bar',
         meta,
@@ -70,7 +70,7 @@ describe('when not negated', () => {
       validator.mockRejectedValue('a bomb');
       await validation.run(context, 'bar', meta);
       expect(context.addError).toHaveBeenCalledWith({
-        type: 'single',
+        type: 'field',
         message: 'nope',
         value: 'bar',
         meta,
@@ -89,7 +89,7 @@ describe('when not negated', () => {
       });
       await validation.run(context, 'bar', meta);
       expect(context.addError).toHaveBeenCalledWith({
-        type: 'single',
+        type: 'field',
         message: 'boom',
         value: 'bar',
         meta,
@@ -100,7 +100,7 @@ describe('when not negated', () => {
       validator.mockRejectedValue('a bomb');
       await validation.run(context, 'bar', meta);
       expect(context.addError).toHaveBeenCalledWith({
-        type: 'single',
+        type: 'field',
         message: 'a bomb',
         value: 'bar',
         meta,
@@ -149,7 +149,7 @@ describe('when negated', () => {
     validator.mockResolvedValue(true);
     await validation.run(context, 'bar', meta);
     expect(context.addError).toHaveBeenCalledWith({
-      type: 'single',
+      type: 'field',
       message: 'nope',
       value: 'bar',
       meta,

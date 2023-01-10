@@ -20,7 +20,7 @@ export class StandardValidation implements ContextItem {
     values.forEach(value => {
       const result = this.validator(this.stringify(value), ...this.options);
       if (this.negated ? result : !result) {
-        context.addError({ type: 'single', message: this.message, value, meta });
+        context.addError({ type: 'field', message: this.message, value, meta });
       }
     });
   }

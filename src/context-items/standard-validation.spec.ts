@@ -28,7 +28,7 @@ const createTest = (options: { returnValue: any; addsError: boolean }) => async 
   await validation.run(context, 'bar', meta);
   if (options.addsError) {
     expect(context.addError).toHaveBeenCalledWith({
-      type: 'single',
+      type: 'field',
       message: validation.message,
       value: 'bar',
       meta,
