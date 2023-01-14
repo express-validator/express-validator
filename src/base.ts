@@ -55,8 +55,9 @@ export interface FieldInstance {
   originalPath: string;
   location: Location;
   value: any;
-  originalValue: any;
 }
+
+export type UnknownFieldInstance = Omit<FieldInstance, 'originalPath' | 'originalValue'>;
 
 export type FieldValidationError = {
   /**
@@ -83,6 +84,23 @@ export type FieldValidationError = {
    * The error message
    */
   msg: any;
+};
+
+export type UnknownFieldsError = {
+  /**
+   * Indicates that the error occurred because one or more fields are unknown in the request
+   */
+  type: 'unknown_fields';
+
+  /**
+   * The error message
+   */
+  msg: any;
+
+  /**
+   * The list of fields that are unknown
+   */
+  fields: UnknownFieldInstance[];
 };
 
 export type AlternativeValidationError = {
@@ -114,7 +132,10 @@ export type AlternativeValidationError = {
  *  }
  *
  */
-export type ValidationError = AlternativeValidationError | FieldValidationError;
+export type ValidationError =
+  | AlternativeValidationError
+  | UnknownFieldsError
+  | FieldValidationError;
 
 /**
  * A function which creates an error message based on a field's value.

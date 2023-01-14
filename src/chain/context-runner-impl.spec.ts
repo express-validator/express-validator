@@ -12,8 +12,8 @@ let selectFields: jest.Mock;
 let contextRunner: ContextRunnerImpl;
 
 const instances: FieldInstance[] = [
-  { location: 'query', path: 'foo', originalPath: 'foo', value: 123, originalValue: 123 },
-  { location: 'query', path: 'bar', originalPath: 'bar', value: 456, originalValue: 456 },
+  { location: 'query', path: 'foo', originalPath: 'foo', value: 123 },
+  { location: 'query', path: 'bar', originalPath: 'bar', value: 456 },
 ];
 
 // Used in value persistence tests
@@ -168,9 +168,7 @@ describe('instance value persistence onto request', () => {
   });
 
   it('happens on request location, if path empty', async () => {
-    selectFields.mockReturnValue([
-      { location: 'query', path: '', originalPath: '', value: 123, originalValue: 123 },
-    ]);
+    selectFields.mockReturnValue([{ location: 'query', path: '', originalPath: '', value: 123 }]);
 
     const req = { query: {} };
     await contextRunner.run(req);
@@ -179,7 +177,7 @@ describe('instance value persistence onto request', () => {
 
   it('does not happen if value did not change', async () => {
     selectFields.mockReturnValue([
-      { location: 'query', path: 'foo', originalPath: 'foo', value: '123', originalValue: 123 },
+      { location: 'query', path: 'foo', originalPath: 'foo', value: '123' },
     ]);
     const req = { query: {} };
     await contextRunner.run(req);

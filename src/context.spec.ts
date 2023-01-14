@@ -12,14 +12,12 @@ beforeEach(() => {
       location: 'body',
       originalPath: 'foo',
       path: 'foo',
-      originalValue: 123,
       value: 123,
     },
     {
       location: 'params',
       originalPath: 'bar.baz',
       path: 'bar.baz',
-      originalValue: 'false',
       value: false,
     },
   ];

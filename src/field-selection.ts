@@ -38,7 +38,6 @@ function expandField(req: Request, field: string, location: Location): FieldInst
       path,
       originalPath,
       value,
-      originalValue: value,
     };
   });
 }
