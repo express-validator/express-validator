@@ -146,7 +146,7 @@ describe('#addError()', () => {
         nestedErrors: [nestedError],
       });
 
-      expect(message).toHaveBeenCalledWith(req);
+      expect(message).toHaveBeenCalledWith([nestedError], { req });
       expect(context.errors).toHaveLength(1);
       expect(context.errors[0].msg).toBe(123);
     });

@@ -1,6 +1,6 @@
 import { Sanitizers } from '../chain/sanitizers';
 import { Validators } from '../chain/validators';
-import { CustomValidator, DynamicMessageCreator, Location, Request } from '../base';
+import { CustomValidator, FieldMessageFactory, Location, Request } from '../base';
 import { ValidationChain, ValidatorsImpl } from '../chain';
 import { Optional } from '../context';
 import { ResultWithContext } from '../chain/context-runner-impl';
@@ -19,7 +19,7 @@ type ValidatorSchemaOptions<K extends keyof Validators<any>> =
        * The error message if there's a validation error,
        * or a function for creating an error message dynamically.
        */
-      errorMessage?: DynamicMessageCreator | any;
+      errorMessage?: FieldMessageFactory | any;
 
       /**
        * Whether the validation should be reversed.
@@ -68,7 +68,7 @@ export type ParamSchema = InternalParamSchema & {
    * The general error message in case a validator doesn't specify one,
    * or a function for creating the error message dynamically.
    */
-  errorMessage?: DynamicMessageCreator | any;
+  errorMessage?: FieldMessageFactory | any;
 
   /**
    * Whether this field should be considered optional

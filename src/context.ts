@@ -124,7 +124,7 @@ export class Context {
       case 'alternative':
         error = {
           type: 'alternative',
-          msg: typeof msg === 'function' ? msg(opts.req) : msg,
+          msg: typeof msg === 'function' ? msg(opts.nestedErrors, { req: opts.req }) : msg,
           nestedErrors: opts.nestedErrors,
         };
         break;
