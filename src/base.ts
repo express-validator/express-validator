@@ -50,14 +50,6 @@ export type StandardValidator = (input: string, ...options: any[]) => boolean;
 export type CustomSanitizer = (input: any, meta: Meta) => any;
 export type StandardSanitizer = (input: string, ...options: any[]) => any;
 
-/**
- * A function which returns an error message based on a field's value.
- *
- * @param input the field value
- * @param meta metadata about the field that was validated
- */
-export type DynamicMessageCreator = (value: any, meta: Meta) => any;
-
 export interface FieldInstance {
   path: string;
   originalPath: string;
@@ -123,6 +115,26 @@ export type AlternativeValidationError = {
  *
  */
 export type ValidationError = AlternativeValidationError | FieldValidationError;
+
+/**
+ * A function which creates an error message based on a field's value.
+ *
+ * @param input the field value
+ * @param meta metadata about the field that was validated
+ */
+export type FieldMessageFactory = (value: any, meta: Meta) => any;
+
+/**
+ * A function which creates an error message based on an alternative's nested errors.
+ *
+ * @see `oneOf()`
+ * @param nestedErrors The errors from the invalid alternative(s).
+ * @param opts
+ */
+export type AlternativeMessageFactory = (
+  nestedErrors: FieldValidationError[],
+  opts: { req: Request },
+) => any;
 
 // Not using Symbol because of #813
 export const contextsKey = 'express-validator#contexts';
