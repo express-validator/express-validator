@@ -57,7 +57,7 @@ export interface FieldInstance {
   value: any;
 }
 
-export type UnknownFieldInstance = Omit<FieldInstance, 'originalPath' | 'originalValue'>;
+export type UnknownFieldInstance = Omit<FieldInstance, 'originalPath'>;
 
 export type FieldValidationError = {
   /**
