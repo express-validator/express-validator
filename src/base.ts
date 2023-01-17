@@ -157,6 +157,18 @@ export type AlternativeMessageFactory = (
   opts: { req: Request },
 ) => any;
 
+/**
+ * A function which creates an error message based on unknown fields.
+ *
+ * @see `checkExact()`
+ * @param unknownFields The unknown fields found in the request
+ * @param opts
+ */
+export type UnknownFieldMessageFactory = (
+  unknownFields: UnknownFieldInstance[],
+  opts: { req: Request },
+) => any;
+
 // Not using Symbol because of #813
 export const contextsKey = 'express-validator#contexts';
 
