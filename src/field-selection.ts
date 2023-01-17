@@ -84,7 +84,7 @@ export const selectUnknownFields = (
     pathToTree(segments, tree);
   });
 
-  const instances: FieldInstance[] = [];
+  const instances: UnknownFieldInstance[] = [];
   for (const location of locations) {
     if (req[location] != null) {
       instances.push(...findUnknownFields(location, req[location], tree));

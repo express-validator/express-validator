@@ -252,6 +252,17 @@ describe('selectUnknownFields()', () => {
     });
   });
 
+  it('selects nested unknown fields under an array', () => {
+    const req = { body: { foo: ['bar', 'baz'] } };
+    const instances = selectUnknownFields(req, ['foo[0]'], ['body']);
+    expect(instances).toHaveLength(1);
+    expect(instances[0]).toMatchObject({
+      path: 'foo[1]',
+      value: 'baz',
+      location: 'body',
+    });
+  });
+
   // This one seems controversial.
   // The nested property wouldn't pass validation - unless it's optional, in which case it's fair to
   // argue that 'foo' should be selected?
