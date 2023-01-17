@@ -3,7 +3,7 @@ import { Validators } from '../chain/validators';
 import { CustomValidator, FieldMessageFactory, Location, Request } from '../base';
 import { ValidationChain, ValidatorsImpl } from '../chain';
 import { Optional } from '../context';
-import { ResultWithContext } from '../chain/context-runner-impl';
+import { ResultWithContext } from '../chain/context-runner';
 import { check } from './check';
 
 type ValidatorSchemaOptions<K extends keyof Validators<any>> =
