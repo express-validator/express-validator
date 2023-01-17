@@ -4,7 +4,7 @@ import { Validators } from '../chain/validators';
 import { CustomSanitizer, CustomValidator, FieldMessageFactory, Location, Request } from '../base';
 import { SanitizersImpl, ValidationChain, ValidatorsImpl } from '../chain';
 import { Optional } from '../context';
-import { ResultWithContext } from '../chain/context-runner-impl';
+import { ResultWithContext } from '../chain/context-runner';
 import { check } from './check';
 
 type BaseValidatorSchemaOptions = {
