@@ -1,13 +1,7 @@
 import * as _ from 'lodash';
 import { Sanitizers } from '../chain/sanitizers';
 import { Validators } from '../chain/validators';
-import {
-  CustomSanitizer,
-  CustomValidator,
-  DynamicMessageCreator,
-  Location,
-  Request,
-} from '../base';
+import { CustomSanitizer, CustomValidator, FieldMessageFactory, Location, Request } from '../base';
 import { SanitizersImpl, ValidationChain, ValidatorsImpl } from '../chain';
 import { Optional } from '../context';
 import { ResultWithContext } from '../chain/context-runner-impl';
@@ -18,7 +12,7 @@ type BaseValidatorSchemaOptions = {
    * The error message if there's a validation error,
    * or a function for creating an error message dynamically.
    */
-  errorMessage?: DynamicMessageCreator | any;
+  errorMessage?: FieldMessageFactory | any;
 
   /**
    * Whether the validation should be reversed.
@@ -88,7 +82,7 @@ type BaseParamSchema = {
    * The general error message in case a validator doesn't specify one,
    * or a function for creating the error message dynamically.
    */
-  errorMessage?: DynamicMessageCreator | any;
+  errorMessage?: FieldMessageFactory | any;
 
   /**
    * Whether this field should be considered optional

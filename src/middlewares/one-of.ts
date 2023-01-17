@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { ContextRunnerImpl, ValidationChain } from '../chain';
-import { InternalRequest, Middleware, Request } from '../base';
+import { AlternativeMessageFactory, InternalRequest, Middleware, Request } from '../base';
 import { ContextBuilder } from '../context-builder';
 import { ContextItem } from '../context-items';
 import { Result } from '../validation-result';
@@ -8,14 +8,12 @@ import { Result } from '../validation-result';
 // A dummy context item that gets added to surrogate contexts just to make them run
 const dummyItem: ContextItem = { async run() {} };
 
-export type OneOfCustomMessageBuilder = (options: { req: Request }) => any;
-
 export type OneOfErrorType = 'grouped' | 'leastErroredOnly' | 'flat';
 
 // Not used in this file, just for third party users.
 export type OneOfOptions =
   | {
-      message?: OneOfCustomMessageBuilder;
+      message?: AlternativeMessageFactory;
       errorType?: OneOfErrorType;
     }
   | {
@@ -37,7 +35,7 @@ export type OneOfOptions =
  */
 export function oneOf(
   chains: (ValidationChain | ValidationChain[])[],
-  options?: { message?: OneOfCustomMessageBuilder; errorType?: OneOfErrorType },
+  options?: { message?: AlternativeMessageFactory; errorType?: OneOfErrorType },
 ): Middleware & { run: (req: Request) => Promise<Result> };
 
 /**
