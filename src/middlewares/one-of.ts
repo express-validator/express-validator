@@ -1,9 +1,8 @@
 import * as _ from 'lodash';
-import { ContextRunnerImpl, ValidationChain } from '../chain';
+import { ContextRunner, ContextRunnerImpl, ResultWithContext, ValidationChain } from '../chain';
 import { AlternativeMessageFactory, InternalRequest, Middleware, Request } from '../base';
 import { ContextBuilder } from '../context-builder';
 import { ContextItem } from '../context-items';
-import { Result } from '../validation-result';
 
 // A dummy context item that gets added to surrogate contexts just to make them run
 const dummyItem: ContextItem = { async run() {} };
@@ -36,7 +35,7 @@ export type OneOfOptions =
 export function oneOf(
   chains: (ValidationChain | ValidationChain[])[],
   options?: { message?: AlternativeMessageFactory; errorType?: OneOfErrorType },
-): Middleware & { run: (req: Request) => Promise<Result> };
+): Middleware & ContextRunner;
 
 /**
  * Creates a middleware that will ensure that at least one of the given validation chains
@@ -53,13 +52,13 @@ export function oneOf(
 export function oneOf(
   chains: (ValidationChain | ValidationChain[])[],
   options?: { message?: any; errorType?: OneOfErrorType },
-): Middleware & { run: (req: Request) => Promise<Result> };
+): Middleware & ContextRunner;
 
 export function oneOf(
   chains: (ValidationChain | ValidationChain[])[],
   options: { message?: any; errorType?: OneOfErrorType } = {},
-): Middleware & { run: (req: Request) => Promise<Result> } {
-  let result: Result;
+): Middleware & ContextRunner {
+  let result: ResultWithContext;
   const middleware = async (req: InternalRequest, _res: any, next: (err?: any) => void) => {
     const surrogateContext = new ContextBuilder().addItem(dummyItem).build();
 
@@ -123,7 +122,7 @@ export function oneOf(
   };
 
   const run = async (req: Request) => {
-    return new Promise<Result>((resolve, reject) => {
+    return new Promise<ResultWithContext>((resolve, reject) => {
       middleware(req, {}, (e?: any) => {
         e ? reject(e) : resolve(result);
       });

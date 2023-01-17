@@ -4,9 +4,9 @@ import { Context, ReadonlyContext } from '../context';
 import { ContextBuilder } from '../context-builder';
 import { SelectFields, selectFields as baseSelectFields } from '../select-fields';
 import { Result } from '../validation-result';
-import { ContextRunner } from './context-runner';
+import { ContextRunner, ResultWithContext } from './context-runner';
 
-export class ResultWithContext extends Result {
+export class ResultWithContextImpl extends Result implements ResultWithContext {
   constructor(readonly context: ReadonlyContext) {
     super(error => error, context.errors);
   }
@@ -70,6 +70,6 @@ export class ContextRunnerImpl implements ContextRunner {
       internalReq[contextsKey] = (internalReq[contextsKey] || []).concat(context);
     }
 
-    return new ResultWithContext(context);
+    return new ResultWithContextImpl(context);
   }
 }
