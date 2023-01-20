@@ -21,7 +21,6 @@ beforeEach(() => {
       path: 'foo',
       originalPath: 'foo',
       value: 123,
-      originalValue: 123,
     },
   ]);
   jest.spyOn(context, 'setData');

@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { InternalRequest, Request, ValidationHalt, contextsKey } from '../base';
 import { Context, ReadonlyContext } from '../context';
 import { ContextBuilder } from '../context-builder';
-import { SelectFields, selectFields as baseSelectFields } from '../select-fields';
+import { SelectFields, selectFields as baseSelectFields } from '../field-selection';
 import { Result } from '../validation-result';
 import { ContextRunner, ResultWithContext } from './context-runner';
 
