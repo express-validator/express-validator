@@ -3,7 +3,8 @@
     "start": "docusaurus start",
     "build": "docusaurus build",
     "publish-gh-pages": "docusaurus deploy",
-    "serve": "docusaurus serve"
+    "serve": "docusaurus serve",
+    "version": "docusaurus docs:version"
   },
   "devDependencies": {
     "docusaurus": "^1.0.15"

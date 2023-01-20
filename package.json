@@ -37,8 +37,7 @@
     "prepublishOnly": "tsc",
     "postpublish": "npm run docs:publish",
     "test": "jest",
-    "lint": "eslint --ignore-path .gitignore 'src/**/*.ts' && prettier -c .",
-    "version": "npm run docs:version -- $npm_package_version && npm run docs:build && git add -A website"
+    "lint": "eslint --ignore-path .gitignore 'src/**/*.ts' && prettier -c ."
   },
   "engines": {
     "node": ">= 8.0.0"
