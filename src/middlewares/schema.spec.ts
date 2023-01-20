@@ -109,7 +109,7 @@ describe('on each field', () => {
 
     expect(results[0].context.errors).toHaveLength(1);
     expect(results[1].context.getData()).toContainEqual(
-      expect.objectContaining({ path: 'bar', value: 'a', originalValue: 'baz' }),
+      expect.objectContaining({ path: 'bar', value: 'a' }),
     );
   });
 

@@ -118,7 +118,6 @@ describe('#toArray()', () => {
         path: 'foo',
         originalPath: 'foo',
         value: '',
-        originalValue: '',
       },
     ]);
 
@@ -161,7 +160,6 @@ describe('#toLowerCase()', () => {
         path: 'foo',
         originalPath: 'foo',
         value: '',
-        originalValue: '',
       },
     ]);
 
@@ -205,7 +203,6 @@ describe('#toUpperCase()', () => {
         path: 'foo',
         originalPath: 'foo',
         value: '',
-        originalValue: '',
       },
     ]);
 
@@ -249,7 +246,6 @@ describe('#default()', () => {
         path: 'foo',
         originalPath: 'foo',
         value: '',
-        originalValue: '',
       },
     ]);
 
@@ -293,7 +289,6 @@ describe('#replace()', () => {
         path: 'foo',
         originalPath: 'foo',
         value: '',
-        originalValue: '',
       },
     ]);
 
@@ -328,7 +323,6 @@ describe('#replace()', () => {
         path: 'foo',
         originalPath: 'foo',
         value: '',
-        originalValue: '',
       },
     ]);
 
@@ -366,7 +360,6 @@ describe('#replace()', () => {
         path: 'foo',
         originalPath: 'foo',
         value: '',
-        originalValue: '',
       },
     ]);
 
