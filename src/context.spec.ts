@@ -1,4 +1,4 @@
-import { FieldInstance, FieldValidationError, Meta } from './base';
+import { FieldInstance, FieldValidationError, Meta, UnknownFieldInstance } from './base';
 import { Context } from './context';
 import { ContextBuilder } from './context-builder';
 
@@ -12,14 +12,12 @@ beforeEach(() => {
       location: 'body',
       originalPath: 'foo',
       path: 'foo',
-      originalValue: 123,
       value: 123,
     },
     {
       location: 'params',
       originalPath: 'bar.baz',
       path: 'bar.baz',
-      originalValue: 'false',
       value: false,
     },
   ];
@@ -149,6 +147,63 @@ describe('#addError()', () => {
       expect(message).toHaveBeenCalledWith([nestedError], { req });
       expect(context.errors).toHaveLength(1);
       expect(context.errors[0].msg).toBe(123);
+    });
+  });
+
+  describe('for type unknown_fields', () => {
+    const req = {};
+    const unknownField: UnknownFieldInstance = {
+      path: 'fruit',
+      value: 'banana',
+      location: 'cookies',
+    };
+
+    it('pushes an error with unknown fields', () => {
+      context.addError({
+        type: 'unknown_fields',
+        req,
+        fields: [unknownField],
+      });
+
+      expect(context.errors).toHaveLength(1);
+      expect(context.errors[0]).toMatchObject({
+        type: 'unknown_fields',
+        fields: [unknownField],
+      });
+    });
+
+    it('pushes an error with default error message', () => {
+      context.addError({
+        type: 'unknown_fields',
+        req,
+        fields: [unknownField],
+      });
+
+      expect(context.errors[0].msg).toBe('Invalid value');
+    });
+
+    it('pushes an error with argument message', () => {
+      context.addError({
+        type: 'unknown_fields',
+        req,
+        message: 'oh noes',
+        fields: [unknownField],
+      });
+
+      expect(context.errors[0].msg).toBe('oh noes');
+    });
+
+    it('pushes an error with the message function return', () => {
+      const message = jest.fn(() => 'keep trying');
+      context.addError({
+        type: 'unknown_fields',
+        req,
+        message,
+        fields: [unknownField],
+      });
+
+      expect(context.errors[0].msg).toBe('keep trying');
+      expect(message).toHaveBeenCalledWith([unknownField], { req });
     });
   });
 

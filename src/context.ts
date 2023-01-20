@@ -5,6 +5,7 @@ import {
   Location,
   Meta,
   Request,
+  UnknownFieldInstance,
   ValidationError,
 } from './base';
 import { ContextItem } from './context-items';
@@ -36,6 +37,12 @@ type AddErrorOptions =
       message?: any;
       value: any;
       meta: Meta;
+    }
+  | {
+      type: 'unknown_fields';
+      req: Request;
+      message?: any;
+      fields: UnknownFieldInstance[];
     }
   | {
       type: 'alternative';
@@ -118,6 +125,14 @@ export class Context {
           msg: typeof msg === 'function' ? msg(opts.value, opts.meta) : msg,
           path: opts.meta?.path,
           location: opts.meta?.location,
+        };
+        break;
+
+      case 'unknown_fields':
+        error = {
+          type: 'unknown_fields',
+          msg: typeof msg === 'function' ? msg(opts.fields, { req: opts.req }) : msg,
+          fields: opts.fields,
         };
         break;
 

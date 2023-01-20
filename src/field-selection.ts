@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { FieldInstance, Location, Request } from './base';
+import { FieldInstance, Location, Request, UnknownFieldInstance } from './base';
 
 export type SelectFields = (
   req: Request,
@@ -38,7 +38,6 @@ function expandField(req: Request, field: string, location: Location): FieldInst
       path,
       originalPath,
       value,
-      originalValue: value,
     };
   });
 }
@@ -72,6 +71,106 @@ function expandPath(object: any, path: string | string[], accumulator: string[])
     const reconstructedPath = reconstructFieldPath(segments);
     accumulator.push(reconstructedPath);
   }
+}
+
+type Tree = { [K: string]: Tree };
+export const selectUnknownFields = (
+  req: Request,
+  knownFields: string[],
+  locations: Location[],
+): UnknownFieldInstance[] => {
+  const tree: Tree = {};
+  knownFields.map(field => {
+    const segments = field === '' ? [''] : _.toPath(field);
+    pathToTree(segments, tree);
+  });
+
+  const instances: UnknownFieldInstance[] = [];
+  for (const location of locations) {
+    if (req[location] != null) {
+      instances.push(...findUnknownFields(location, req[location], tree));
+    }
+  }
+
+  return instances;
+};
+
+function pathToTree(segments: string[], tree: Tree) {
+  // Will either create or merge into existing branch for the current path segment
+  const branch: Tree = tree[segments[0]] || (tree[segments[0]] = {});
+  if (segments.length > 1) {
+    pathToTree(segments.slice(1), branch);
+  } else {
+    // Leaf value.
+    branch[''] = {};
+  }
+}
+
+/**
+ * Performs a depth-first search for unknown fields in `value`.
+ * The path to the unknown fields will be pushed to the `unknownFields` argument.
+ *
+ * Known fields must be passed via `tree`. A field won't be considered unknown if:
+ * - its branch is validated as a whole; that is, it contains an empty string key (e.g `{ ['']: {} }`); OR
+ * - its path is individually validated; OR
+ * - it's covered by a wildcard (`*`).
+ *
+ * @returns the list of unknown fields
+ */
+function findUnknownFields(
+  location: Location,
+  value: any,
+  tree: Tree,
+  treePath: string[] = [],
+  unknownFields: UnknownFieldInstance[] = [],
+): UnknownFieldInstance[] {
+  if (tree['']) {
+    // The rest of the tree from here is covered by some validation chain
+    // For example, when the current treePath is `['foo', 'bar']` but `foo` is known
+    return unknownFields;
+  }
+
+  if (typeof value !== 'object') {
+    if (!treePath.length) {
+      // This is most likely a req.body that isn't an object (e.g. `req.body = 'bla'`),
+      // and wasn't validated either.
+      unknownFields.push({
+        path: '',
+        value,
+        location,
+      });
+    }
+    return unknownFields;
+  }
+
+  const wildcardBranch = tree['*'];
+  for (const key of Object.keys(value)) {
+    const keyBranch = tree[key];
+    const path = treePath.concat([key]);
+    if (!keyBranch && !wildcardBranch) {
+      // No trees cover this path, so it's an unknown one.
+      unknownFields.push({
+        path: reconstructFieldPath(path),
+        value: value[key],
+        location,
+      });
+      continue;
+    }
+
+    const keyUnknowns = keyBranch ? findUnknownFields(location, value[key], keyBranch, path) : [];
+    const wildcardUnknowns = wildcardBranch
+      ? findUnknownFields(location, value[key], wildcardBranch, path)
+      : [];
+
+    // If either branch contains only known fields, then don't mark the fields not covered by the
+    // other branch to the list of unknown ones.
+    // For example, `foo` is more comprehensive than `foo.*.bar`.
+    if ((!keyBranch || keyUnknowns.length) && (!wildcardBranch || wildcardUnknowns.length)) {
+      unknownFields.push(...keyUnknowns, ...wildcardUnknowns);
+    }
+  }
+
+  return unknownFields;
 }
 
 /**

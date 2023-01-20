@@ -1,4 +1,4 @@
-import { reconstructFieldPath, selectFields } from './select-fields';
+import { reconstructFieldPath, selectFields, selectUnknownFields } from './field-selection';
 
 describe('selectFields()', () => {
   it('selects single field from single location', () => {
@@ -11,7 +11,6 @@ describe('selectFields()', () => {
       path: 'foo',
       originalPath: 'foo',
       value: 'bar',
-      originalValue: 'bar',
     });
   });
 
@@ -245,6 +244,120 @@ describe('selectFields()', () => {
   });
 });
 
+describe('selectUnknownFields()', () => {
+  it('selects top-level unknown fields', () => {
+    const req = { body: { foo: 1, bar: 2, baz: 3 } };
+    const instances = selectUnknownFields(req, ['foo', 'baz'], ['body']);
+    expect(instances).toHaveLength(1);
+    expect(instances[0]).toMatchObject({
+      path: 'bar',
+      value: 2,
+      location: 'body',
+    });
+  });
+
+  it('selects nested unknown fields', () => {
+    const req = { body: { foo: { bar: 'hi', baz: 'hey' } } };
+    const instances = selectUnknownFields(req, ['foo.bar'], ['body']);
+    expect(instances).toHaveLength(1);
+    expect(instances[0]).toMatchObject({
+      path: 'foo.baz',
+      value: 'hey',
+      location: 'body',
+    });
+  });
+
+  it('selects nested unknown fields under an array', () => {
+    const req = { body: { foo: ['bar', 'baz'] } };
+    const instances = selectUnknownFields(req, ['foo[0]'], ['body']);
+    expect(instances).toHaveLength(1);
+    expect(instances[0]).toMatchObject({
+      path: 'foo[1]',
+      value: 'baz',
+      location: 'body',
+    });
+  });
+
+  // This one seems controversial.
+  // The nested property wouldn't pass validation - unless it's optional, in which case it's fair to
+  // argue that 'foo' should be selected?
+  it('does not select parent when only nested field is known and not an object', () => {
+    const req = { body: { foo: 'bla' } };
+    const instances = selectUnknownFields(req, ['foo.bar'], ['body']);
+    expect(instances).toHaveLength(0);
+  });
+
+  it('does not select any fields at a wildcard level', () => {
+    const req = { body: { foo: 1, bar: 2 } };
+    const instances = selectUnknownFields(req, ['*'], ['body']);
+    expect(instances).toHaveLength(0);
+  });
+
+  it('selects unknown fields nested under a wildcard', () => {
+    const req = { body: { obj1: { foo: 1, bar: 2 }, obj2: { foo: 3, baz: 4 } } };
+    const instances = selectUnknownFields(req, ['*.foo'], ['body']);
+    expect(instances).toHaveLength(2);
+    expect(instances[0]).toMatchObject({
+      path: 'obj1.bar',
+      value: 2,
+      location: 'body',
+    });
+    expect(instances[1]).toMatchObject({
+      path: 'obj2.baz',
+      value: 4,
+      location: 'body',
+    });
+  });
+
+  it('does not select any fields nested under a known field', () => {
+    const req = { body: { obj1: { foo: 1, bar: 2 } } };
+    const instances = selectUnknownFields(req, ['obj1', 'obj.foo'], ['body']);
+    expect(instances).toHaveLength(0);
+  });
+
+  it('selects nothing if whole location is known', () => {
+    const req = { body: 'foobar' };
+    const instances = selectUnknownFields(req, [''], ['body']);
+    expect(instances).toHaveLength(0);
+  });
+
+  it('selects whole location if it is unknown and not an object', () => {
+    const req = { body: 'foobar' };
+    const instances = selectUnknownFields(req, ['foo'], ['body']);
+    expect(instances).toHaveLength(1);
+    expect(instances[0]).toMatchObject({
+      path: '',
+      value: 'foobar',
+      location: 'body',
+    });
+  });
+
+  it('selects only from passed locations', () => {
+    const req = { body: { foo: 1, bar: 2, baz: 3 } };
+    const instances = selectUnknownFields(req, ['foo', 'baz'], ['query']);
+    expect(instances).toHaveLength(0);
+  });
+
+  it('selects from multiple locations', () => {
+    const req = {
+      body: { foo: 1, bar: 2 },
+      query: { foo: 3, baz: 4 },
+    };
+    const instances = selectUnknownFields(req, ['foo'], ['body', 'query']);
+    expect(instances).toHaveLength(2);
+    expect(instances[0]).toMatchObject({
+      path: 'bar',
+      value: 2,
+      location: 'body',
+    });
+    expect(instances[1]).toMatchObject({
+      path: 'baz',
+      value: 4,
+      location: 'query',
+    });
+  });
+});
+
 describe('reconstructFieldPath()', () => {
   it.each([
     ['single text segment', ['foo'], 'foo'],
@@ -252,6 +365,7 @@ describe('reconstructFieldPath()', () => {
     ['trailing numeric segment', ['foo', '0'], 'foo[0]'],
     ['numeric segment between text segments', ['foo', '0', 'bar'], 'foo[0].bar'],
     ['numeric segment followed by numeric segment', ['foo', '0', '0'], 'foo[0][0]'],
+    ['text segment with a dot', ['foo', '.bar'], 'foo[".bar"]'],
     ['escaped star segment', ['foo', '\\*'], 'foo.*'],
   ])('%s', (_name, input, expected) => {
     expect(reconstructFieldPath(input)).toBe(expected);
