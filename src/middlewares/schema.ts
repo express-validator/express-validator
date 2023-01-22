@@ -107,8 +107,7 @@ type DefaultSchemaKeys = keyof BaseParamSchema | keyof ValidatorsSchema | keyof 
  */
 export type ParamSchema<T extends string = DefaultSchemaKeys> = BaseParamSchema &
   ValidatorsSchema &
-  SanitizersSchema &
-  {
+  SanitizersSchema & {
     [K in T]?: K extends keyof BaseParamSchema
       ? BaseParamSchema[K]
       : K extends keyof ValidatorsSchema
