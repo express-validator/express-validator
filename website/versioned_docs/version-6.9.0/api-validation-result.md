@@ -1,7 +1,6 @@
 ---
-id: version-6.9.0-validation-result-api
+id: validation-result-api
 title: validationResult()
-original_id: validation-result-api
 ---
 
 These methods are all available via `require('express-validator')`.

@@ -1,7 +1,6 @@
 ---
-id: version-6.10.0-check-api
+id: check-api
 title: Validation middlewares
-original_id: check-api
 ---
 
 These methods are all available via `require('express-validator')`.
