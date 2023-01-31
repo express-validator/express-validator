@@ -9,6 +9,14 @@ import {
 import { ValidationChain } from './chain';
 import { MatchedDataOptions, matchedData } from './matched-data';
 import { check } from './middlewares/check';
+import {
+  DefaultSchemaKeys,
+  ExtensionSanitizerSchemaOptions,
+  ExtensionValidatorSchemaOptions,
+  ParamSchema,
+  RunnableValidationChains,
+  createCheckSchema,
+} from './middlewares/schema';
 import { ErrorFormatter, Result, validationResult } from './validation-result';
 
 type CustomValidatorsMap = Record<string, CustomValidator>;
@@ -42,6 +50,24 @@ export type ValidationChainWithExtensions<T extends string> = Middleware & {
   [K in T]: () => ValidationChainWithExtensions<T>;
 };
 
+/**
+ * Schema of validations/sanitizations for a field, including extension validators/sanitizers
+ */
+export type ParamSchemaWithExtensions<
+  V extends string,
+  S extends string,
+  T extends string = DefaultSchemaKeys,
+> = {
+  [K in keyof ParamSchema<T> | V | S]?: K extends V
+    ? ExtensionValidatorSchemaOptions
+    : K extends S
+    ? ExtensionSanitizerSchemaOptions
+    : K extends keyof ParamSchema<T>
+    ? ParamSchema<T>[K]
+    : // Should never happen.
+      never;
+};
+
 /* eslint-disable no-use-before-define */
 /**
  * Type of a validation chain created by a custom ExpressValidator instance.
@@ -63,6 +89,16 @@ export type CustomValidationChain<T extends ExpressValidator<any, any, any>> =
     ? ValidationChainWithExtensions<Extract<keyof V | keyof S, string>>
     : never;
 
+/**
+ * Mapping from field name to a validations/sanitizations schema, including extensions from an
+ * ExpressValidator instance.
+ */
+export type CustomSchema<
+  T extends ExpressValidator<any, any, any>,
+  K extends string = DefaultSchemaKeys,
+> = T extends ExpressValidator<infer V, infer S, any>
+  ? Record<string, ParamSchemaWithExtensions<Extract<keyof V, string>, Extract<keyof S, string>, K>>
+  : never;
 /* eslint-enable no-use-before-define */
 
 export class ExpressValidator<
@@ -70,27 +106,31 @@ export class ExpressValidator<
   S extends CustomSanitizersMap = {},
   E = ValidationError,
 > {
-  private readonly validators: [keyof V, CustomValidator][];
-  private readonly sanitizers: [keyof S, CustomSanitizer][];
+  private readonly validatorEntries: [keyof V, CustomValidator][];
+  private readonly sanitizerEntries: [keyof S, CustomSanitizer][];
 
-  constructor(validators?: V, sanitizers?: S, private readonly options?: CustomOptions<E>) {
-    this.validators = Object.entries(validators || {});
-    this.sanitizers = Object.entries(sanitizers || {});
+  constructor(
+    private readonly validators?: V,
+    private readonly sanitizers?: S,
+    private readonly options?: CustomOptions<E>,
+  ) {
+    this.validatorEntries = Object.entries(validators || {});
+    this.sanitizerEntries = Object.entries(sanitizers || {});
   }
 
   private createChain(
-    locations: Location[],
     fields: string | string[] = '',
+    locations: Location[] = [],
     message?: any,
   ): CustomValidationChain<this> {
     const middleware = check(fields, locations, message) as CustomValidationChain<this>;
 
     const boundValidators = Object.fromEntries(
-      this.validators.map(([name, fn]) => [name, () => middleware.custom(fn)]),
+      this.validatorEntries.map(([name, fn]) => [name, () => middleware.custom(fn)]),
     ) as Record<keyof V, () => CustomValidationChain<this>>;
 
     const boundSanitizers = Object.fromEntries(
-      this.sanitizers.map(([name, fn]) => [name, () => middleware.customSanitizer(fn)]),
+      this.sanitizerEntries.map(([name, fn]) => [name, () => middleware.customSanitizer(fn)]),
     ) as Record<keyof S, () => CustomValidationChain<this>>;
 
     return Object.assign(middleware, boundValidators, boundSanitizers);
@@ -100,7 +140,7 @@ export class ExpressValidator<
     locations: Location[],
   ): ((fields?: string | string[], message?: any) => CustomValidationChain<this>) => {
     return (fields?: string | string[], message?: any) =>
-      this.createChain(locations, fields, message);
+      this.createChain(fields, locations, message);
   };
 
   /**
@@ -143,6 +183,23 @@ export class ExpressValidator<
    * Same as {@link ExpressValidator.check}, but only validates in `req.query`.
    */
   readonly query = this.buildCheckFunction(['query']);
+
+  /**
+   * Creates an express middleware with validations for multiple fields at once in the form of
+   * a schema object.
+   *
+   * @param schema the schema to validate.
+   * @param defaultLocations which locations to validate in each field. Defaults to every location.
+   */
+  // NOTE: This method references its own type, so the type cast is necessary.
+  readonly checkSchema = createCheckSchema(
+    (...args) => this.createChain(...args),
+    Object.keys(this.validators || {}) as Extract<keyof V, string>[],
+    Object.keys(this.sanitizers || {}) as Extract<keyof S, string>[],
+  ) as <T extends string = DefaultSchemaKeys>(
+    schema: CustomSchema<this, T>,
+    locations?: Location[],
+  ) => RunnableValidationChains<CustomValidationChain<this>>;
 
   /**
    * Extracts the validation errors of an express request using the default error formatter of this

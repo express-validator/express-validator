@@ -57,6 +57,53 @@ describe('ExpressValidator', () => {
     });
   });
 
+  describe('#checkSchema()', () => {
+    it('creates a schema with the extension methods', async () => {
+      const { checkSchema } = createInstance();
+      const custom = jest.fn();
+      const req = {};
+
+      const chains = checkSchema({
+        domain: {
+          isAllowedDomain: true,
+          isCustom: { custom },
+          removeEmailAttribute: true,
+        },
+      });
+
+      expect(chains[0].isAllowedDomain()).toBe(chains[0]);
+      expect(chains[0].removeEmailAttribute()).toBe(chains[0]);
+
+      await chains.run(req);
+      expect(isAllowedDomain).toHaveBeenCalled();
+      expect(removeEmailAttribute).toHaveBeenCalled();
+      expect(custom).toHaveBeenCalled();
+    });
+
+    it('does not treat extension methods as inline custom validators/sanitizers', async () => {
+      const { checkSchema } = createInstance();
+      const custom = jest.fn();
+      const customSanitizer = jest.fn();
+      const req = {};
+
+      const chains = checkSchema({
+        domain: {
+          // @ts-expect-error
+          isAllowedDomain: { custom },
+          // @ts-expect-error
+          removeEmailAttribute: { customSanitizer },
+        },
+      });
+
+      await chains.run(req);
+      // Should still run the instance implementation, instead of the inline ones
+      expect(isAllowedDomain).toHaveBeenCalled();
+      expect(removeEmailAttribute).toHaveBeenCalled();
+      expect(custom).not.toHaveBeenCalled();
+      expect(customSanitizer).not.toHaveBeenCalled();
+    });
+  });
+
   describe('#validationResult()', () => {
     it('uses no error formatter by default', async () => {
       const req = {};

@@ -47,6 +47,8 @@ type CustomValidatorSchemaOptions = BaseValidatorSchemaOptions & {
   custom: CustomValidator;
 };
 
+export type ExtensionValidatorSchemaOptions = true | BaseValidatorSchemaOptions;
+
 export type ValidatorsSchema = {
   [K in keyof Validators<any>]?: ValidatorSchemaOptions<K>;
 };
@@ -66,6 +68,8 @@ type CustomSanitizerSchemaOptions = {
    */
   customSanitizer: CustomSanitizer;
 };
+
+export type ExtensionSanitizerSchemaOptions = true;
 
 export type SanitizersSchema = {
   [K in keyof Sanitizers<any>]?: SanitizerSchemaOptions<K>;
@@ -94,7 +98,10 @@ type BaseParamSchema = {
       };
 };
 
-type DefaultSchemaKeys = keyof BaseParamSchema | keyof ValidatorsSchema | keyof SanitizersSchema;
+export type DefaultSchemaKeys =
+  | keyof BaseParamSchema
+  | keyof ValidatorsSchema
+  | keyof SanitizersSchema;
 
 /**
  * Defines a schema of validations/sanitizations for a field
@@ -116,8 +123,148 @@ export type ParamSchema<T extends string = DefaultSchemaKeys> = BaseParamSchema 
  */
 export type Schema<T extends string = DefaultSchemaKeys> = Record<string, ParamSchema<T>>;
 
+type ValidationChainLike = {
+  [K in keyof ValidationChain]: ValidationChain[K] extends (...args: infer A) => ValidationChain
+    ? (...args: A) => any
+    : ValidationChain[K];
+};
+
+/**
+ * Shortcut type for the return of a {@link checkSchema()}-like function.
+ */
+export type RunnableValidationChains<C extends ValidationChainLike> = C[] & {
+  run(req: Request): Promise<ResultWithContext[]>;
+};
+
 const validLocations: Location[] = ['body', 'cookies', 'headers', 'params', 'query'];
 const protectedNames = ['errorMessage', 'in', 'optional'];
+
+/**
+ * Factory for a {@link checkSchema()} function which can have extension validators and sanitizers.
+ *
+ * @see {@link checkSchema()}
+ */
+export function createCheckSchema<C extends ValidationChainLike>(
+  createChain: (fields?: string | string[], locations?: Location[], errorMessage?: any) => C,
+  extraValidators: (keyof C)[] = [],
+  extraSanitizers: (keyof C)[] = [],
+): <T extends string = DefaultSchemaKeys>(
+  schema: Schema<T>,
+  defaultLocations?: Location[],
+) => RunnableValidationChains<C> {
+  /** Type guard for an object entry for a standard validator. */
+  function isStandardValidator(
+    entry: [string, any],
+  ): entry is [keyof Validators<any>, ValidatorSchemaOptions<any>] {
+    return (
+      (entry[0] in ValidatorsImpl.prototype || (extraValidators as string[]).includes(entry[0])) &&
+      entry[1]
+    );
+  }
+
+  /** Type guard for an object entry for a standard sanitizer. */
+  function isStandardSanitizer(
+    entry: [string, any],
+  ): entry is [keyof Sanitizers<any>, SanitizerSchemaOptions<any>] {
+    return (
+      (entry[0] in SanitizersImpl.prototype || (extraSanitizers as string[]).includes(entry[0])) &&
+      entry[1]
+    );
+  }
+
+  /** Type guard for an object entry for a custom validator. */
+  function isCustomValidator(
+    entry: [string, any],
+  ): entry is [string, CustomValidatorSchemaOptions] {
+    return (
+      !isStandardValidator(entry) &&
+      !isStandardSanitizer(entry) &&
+      typeof entry[1] === 'object' &&
+      entry[1] &&
+      typeof entry[1].custom === 'function'
+    );
+  }
+
+  /** Type guard for an object entry for a custom sanitizer. */
+  function isCustomSanitizer(
+    entry: [string, any],
+  ): entry is [string, CustomSanitizerSchemaOptions] {
+    return (
+      !isStandardValidator(entry) &&
+      !isStandardSanitizer(entry) &&
+      typeof entry[1] === 'object' &&
+      entry[1] &&
+      typeof entry[1].customSanitizer === 'function'
+    );
+  }
+
+  return (schema, defaultLocations = validLocations) => {
+    const chains = Object.keys(schema).map(field => {
+      const config = schema[field];
+      const chain = createChain(
+        field,
+        ensureLocations(config, defaultLocations),
+        config.errorMessage,
+      );
+
+      // optional doesn't matter where it happens in the chain
+      if (config.optional) {
+        chain.optional(config.optional === true ? true : config.optional.options);
+      }
+
+      for (const entry of Object.entries(config)) {
+        if (protectedNames.includes(entry[0])) {
+          continue;
+        }
+
+        if (
+          !isStandardValidator(entry) &&
+          !isStandardSanitizer(entry) &&
+          !isCustomValidator(entry) &&
+          !isCustomSanitizer(entry)
+        ) {
+          console.warn(
+            `express-validator: schema of "${field}" has unknown validator/sanitizer "${entry[0]}"`,
+          );
+          continue;
+        }
+
+        // For validators, stuff that must come _before_ the validator itself in the chain.
+        if ((isStandardValidator(entry) || isCustomValidator(entry)) && entry[1] !== true) {
+          const [, validatorConfig] = entry;
+          validatorConfig.if && chain.if(validatorConfig.if);
+          validatorConfig.negated && chain.not();
+        }
+
+        if (isStandardValidator(entry) || isStandardSanitizer(entry)) {
+          const options = entry[1] ? (entry[1] === true ? [] : _.castArray(entry[1].options)) : [];
+          (chain[entry[0]] as any)(...options);
+        }
+        if (isCustomValidator(entry)) {
+          chain.custom(entry[1].custom);
+        }
+        if (isCustomSanitizer(entry)) {
+          chain.customSanitizer(entry[1].customSanitizer);
+        }
+
+        // For validators, stuff that must come _after_ the validator itself in the chain.
+        if ((isStandardValidator(entry) || isCustomValidator(entry)) && entry[1] !== true) {
+          const [, validatorConfig] = entry;
+          validatorConfig.bail && chain.bail();
+          validatorConfig.errorMessage && chain.withMessage(validatorConfig.errorMessage);
+        }
+      }
+
+      return chain;
+    });
+
+    const run = async (req: Request) => {
+      return await Promise.all(chains.map(chain => chain.run(req)));
+    };
+
+    return Object.assign(chains, { run });
+  };
+}
 
 /**
  * Creates an express middleware with validations for multiple fields at once in the form of
@@ -127,109 +274,7 @@ const protectedNames = ['errorMessage', 'in', 'optional'];
  * @param defaultLocations
  * @returns
  */
-export function checkSchema<T extends string = DefaultSchemaKeys>(
-  schema: Schema<T>,
-  defaultLocations: Location[] = validLocations,
-): ValidationChain[] & {
-  run: (req: Request) => Promise<ResultWithContext[]>;
-} {
-  const chains = Object.keys(schema).map(field => {
-    const config = schema[field];
-    const chain = check(field, ensureLocations(config, defaultLocations), config.errorMessage);
-
-    // optional doesn't matter where it happens in the chain
-    if (config.optional) {
-      chain.optional(config.optional === true ? true : config.optional.options);
-    }
-
-    for (const entry of Object.entries(config)) {
-      if (protectedNames.includes(entry[0])) {
-        continue;
-      }
-
-      if (
-        !isStandardValidator(entry) &&
-        !isStandardSanitizer(entry) &&
-        !isCustomValidator(entry) &&
-        !isCustomSanitizer(entry)
-      ) {
-        console.warn(
-          `express-validator: schema of "${field}" has unknown validator/sanitizer "${entry[0]}"`,
-        );
-        continue;
-      }
-
-      // For validators, stuff that must come _before_ the validator itself in the chain.
-      if ((isStandardValidator(entry) || isCustomValidator(entry)) && entry[1] !== true) {
-        const [, validatorConfig] = entry;
-        validatorConfig.if && chain.if(validatorConfig.if);
-        validatorConfig.negated && chain.not();
-      }
-
-      if (isStandardValidator(entry) || isStandardSanitizer(entry)) {
-        const options = entry[1] ? (entry[1] === true ? [] : _.castArray(entry[1].options)) : [];
-        (chain[entry[0]] as any)(...options);
-      }
-      if (isCustomValidator(entry)) {
-        chain.custom(entry[1].custom);
-      }
-      if (isCustomSanitizer(entry)) {
-        chain.customSanitizer(entry[1].customSanitizer);
-      }
-
-      // For validators, stuff that must come _after_ the validator itself in the chain.
-      if ((isStandardValidator(entry) || isCustomValidator(entry)) && entry[1] !== true) {
-        const [, validatorConfig] = entry;
-        validatorConfig.bail && chain.bail();
-        validatorConfig.errorMessage && chain.withMessage(validatorConfig.errorMessage);
-      }
-    }
-
-    return chain;
-  });
-
-  const run = async (req: Request) => {
-    return await Promise.all(chains.map(chain => chain.run(req)));
-  };
-
-  return Object.assign(chains, { run });
-}
-
-/** Type guard for an object entry for a standard validator. */
-function isStandardValidator(
-  entry: [string, any],
-): entry is [keyof Validators<any>, ValidatorSchemaOptions<any>] {
-  return entry[0] in ValidatorsImpl.prototype && entry[1];
-}
-
-/** Type guard for an object entry for a standard sanitizer. */
-function isStandardSanitizer(
-  entry: [string, any],
-): entry is [keyof Sanitizers<any>, SanitizerSchemaOptions<any>] {
-  return entry[0] in SanitizersImpl.prototype && entry[1];
-}
-
-/** Type guard for an object entry for a custom validator. */
-function isCustomValidator(entry: [string, any]): entry is [string, CustomValidatorSchemaOptions] {
-  return (
-    !isStandardValidator(entry) &&
-    !isStandardSanitizer(entry) &&
-    typeof entry[1] === 'object' &&
-    entry[1] &&
-    typeof entry[1].custom === 'function'
-  );
-}
-
-/** Type guard for an object entry for a custom sanitizer. */
-function isCustomSanitizer(entry: [string, any]): entry is [string, CustomSanitizerSchemaOptions] {
-  return (
-    !isStandardValidator(entry) &&
-    !isStandardSanitizer(entry) &&
-    typeof entry[1] === 'object' &&
-    entry[1] &&
-    typeof entry[1].customSanitizer === 'function'
-  );
-}
+export const checkSchema = createCheckSchema(check);
 
 function ensureLocations(config: ParamSchema, defaults: Location[]) {
   // .filter(Boolean) is done because in can be undefined -- which is not going away from the type
