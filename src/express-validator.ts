@@ -10,6 +10,7 @@ import {
 import { ContextRunner, ValidationChain } from './chain';
 import { MatchedDataOptions, matchedData } from './matched-data';
 import { check } from './middlewares/check';
+import { checkExact } from './middlewares/exact';
 import { OneOfErrorType, OneOfOptions, oneOf } from './middlewares/one-of';
 import {
   DefaultSchemaKeys,
@@ -185,6 +186,15 @@ export class ExpressValidator<
    * Same as {@link ExpressValidator.check}, but only validates in `req.query`.
    */
   readonly query = this.buildCheckFunction(['query']);
+
+  /**
+   * Checks whether the request contains exactly only those fields that have been validated.
+   *
+   * This method is here for convenience; it does exactly the same as `checkExact`.
+   *
+   * @see {@link checkExact}
+   */
+  readonly checkExact = checkExact;
 
   /**
    * Creates an express middleware with validations for multiple fields at once in the form of

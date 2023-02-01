@@ -57,6 +57,17 @@ describe('ExpressValidator', () => {
     });
   });
 
+  describe('#checkExact()', () => {
+    it('works with custom chains', async () => {
+      const req = { query: { foo: 1 } };
+      const { query, checkExact } = createInstance();
+      const result = await checkExact(query('bar').isAllowedDomain()).run(req);
+      const errors = result.mapped();
+      expect(isAllowedDomain).toHaveBeenCalled();
+      expect(errors._unknown_fields).toBeDefined();
+    });
+  });
+
   describe('#checkSchema()', () => {
     it('creates a schema with the extension methods', async () => {
       const { checkSchema } = createInstance();
