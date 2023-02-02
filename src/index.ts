@@ -19,3 +19,4 @@ export { checkSchema, Schema, ParamSchema } from './middlewares/schema';
 
 export * from './matched-data';
 export * from './validation-result';
+export * from './express-validator';
