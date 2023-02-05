@@ -1,15 +1,9 @@
-import {
-  CustomSanitizer,
-  CustomValidator,
-  FieldValidationError,
-  Meta,
-  ValidationError,
-} from './base';
+import { AlternativeValidationError, FieldValidationError, Meta, ValidationError } from './base';
 import { ExpressValidator } from './express-validator';
 
 describe('ExpressValidator', () => {
-  let isAllowedDomain: CustomValidator;
-  let removeEmailAttribute: CustomSanitizer;
+  let isAllowedDomain: jest.Mock;
+  let removeEmailAttribute: jest.Mock;
   const createInstance = () => new ExpressValidator({ isAllowedDomain }, { removeEmailAttribute });
 
   beforeEach(() => {
@@ -65,6 +59,23 @@ describe('ExpressValidator', () => {
       const errors = result.mapped();
       expect(isAllowedDomain).toHaveBeenCalled();
       expect(errors._unknown_fields).toBeDefined();
+    });
+  });
+
+  describe('#oneOf()', () => {
+    it('can be used with custom chains', async () => {
+      const req = { query: { foo: 1 } };
+      const { check, oneOf } = createInstance();
+      isAllowedDomain.mockImplementation(() => {
+        throw new Error('wow');
+      });
+
+      const result = await oneOf([check('foo').isString(), check('foo').isAllowedDomain()], {
+        errorType: 'flat',
+      }).run(req);
+      const [error] = result.array();
+      const { nestedErrors } = error as AlternativeValidationError;
+      expect(nestedErrors[1]).toMatchObject({ msg: 'wow' });
     });
   });
 
@@ -140,6 +151,17 @@ describe('ExpressValidator', () => {
 
       const [error] = validationResult(req).array();
       expect(error).toBe('field: not exists');
+    });
+  });
+
+  describe('#matchedData()', () => {
+    it('can be used on custom chains', async () => {
+      const req = { query: { foo: 1 } };
+      const { check, matchedData } = createInstance();
+      await check('foo').isAllowedDomain().run(req);
+
+      const data = matchedData(req);
+      expect(data.foo).toBe(1);
     });
   });
 });
