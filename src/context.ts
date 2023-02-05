@@ -49,6 +49,12 @@ type AddErrorOptions =
       req: Request;
       message?: any;
       nestedErrors: FieldValidationError[];
+    }
+  | {
+      type: 'alternative_grouped';
+      req: Request;
+      message?: any;
+      nestedErrors: FieldValidationError[][];
     };
 export class Context {
   private readonly _errors: ValidationError[] = [];
@@ -139,6 +145,14 @@ export class Context {
       case 'alternative':
         error = {
           type: 'alternative',
+          msg: typeof msg === 'function' ? msg(opts.nestedErrors, { req: opts.req }) : msg,
+          nestedErrors: opts.nestedErrors,
+        };
+        break;
+
+      case 'alternative_grouped':
+        error = {
+          type: 'alternative_grouped',
           msg: typeof msg === 'function' ? msg(opts.nestedErrors, { req: opts.req }) : msg,
           nestedErrors: opts.nestedErrors,
         };
