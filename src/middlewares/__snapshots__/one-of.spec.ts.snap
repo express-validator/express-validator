@@ -15,7 +15,7 @@ Array [
         },
       ],
     ],
-    "type": "alternative",
+    "type": "alternative_grouped",
   },
 ]
 `;
@@ -69,7 +69,7 @@ Array [
         },
       ],
     ],
-    "type": "alternative",
+    "type": "alternative_grouped",
   },
 ]
 `;
@@ -123,7 +123,7 @@ Array [
         },
       ],
     ],
-    "type": "alternative",
+    "type": "alternative_grouped",
   },
 ]
 `;
@@ -152,7 +152,7 @@ Array [
         },
       ],
     ],
-    "type": "alternative",
+    "type": "alternative_grouped",
   },
 ]
 `;

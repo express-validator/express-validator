@@ -186,7 +186,7 @@ describe('should default to grouped errorType', () => {
     const context = getOneOfContext(req);
     expect(context.errors[0]).toEqual(
       expect.objectContaining({
-        type: 'alternative',
+        type: 'alternative_grouped',
         nestedErrors: [expect.anything(), expect.anything()],
       }),
     );
@@ -203,7 +203,7 @@ describe('should default to grouped errorType', () => {
     const context = getOneOfContext(req);
     expect(context.errors[0]).toEqual(
       expect.objectContaining({
-        type: 'alternative',
+        type: 'alternative_grouped',
         nestedErrors: [expect.anything(), expect.anything()],
       }),
     );
