@@ -120,6 +120,24 @@ export type AlternativeValidationError = {
   nestedErrors: FieldValidationError[];
 };
 
+export type GroupedAlternativeValidationError = {
+  /**
+   * Indicates that the error occurred because all alternatives (e.g. in `oneOf()`) were invalid,
+   * and the nested errors are grouped per alternative.
+   */
+  type: 'alternative_grouped';
+
+  /**
+   * The error message
+   */
+  msg: any;
+
+  /**
+   * The list of underlying validation errors returned by validation chains in `oneOf()`
+   */
+  nestedErrors: FieldValidationError[][];
+};
+
 /**
  * A validation error as reported by a middleware.
  * The properties available in the error object vary according to the type.
@@ -134,6 +152,7 @@ export type AlternativeValidationError = {
  */
 export type ValidationError =
   | AlternativeValidationError
+  | GroupedAlternativeValidationError
   | UnknownFieldsError
   | FieldValidationError;
 

@@ -85,10 +85,15 @@ export function oneOf(
       const success = allErrors.some(groupErrors => groupErrors.length === 0);
 
       if (!success) {
-        let error;
+        const message = options.message || 'Invalid value(s)';
         switch (options.errorType) {
           case 'flat':
-            error = _.flatMap(allErrors);
+            surrogateContext.addError({
+              type: 'alternative',
+              req,
+              message,
+              nestedErrors: _.flatMap(allErrors),
+            });
             break;
           case 'leastErroredOnly':
             let leastErroredIndex = 0;
@@ -97,20 +102,25 @@ export function oneOf(
                 leastErroredIndex = i;
               }
             }
-            error = allErrors[leastErroredIndex];
+            surrogateContext.addError({
+              type: 'alternative',
+              req,
+              message,
+              nestedErrors: allErrors[leastErroredIndex],
+            });
             break;
+
+          case 'grouped':
           default:
             // grouped
-            error = allErrors;
+            surrogateContext.addError({
+              type: 'alternative_grouped',
+              req,
+              message,
+              nestedErrors: allErrors,
+            });
+            break;
         }
-
-        // Only add an error to the context if no group of chains had success.
-        surrogateContext.addError({
-          type: 'alternative',
-          req,
-          message: options.message || 'Invalid value(s)',
-          nestedErrors: error,
-        });
       }
 
       // Final context running pass to ensure contexts are added and values are modified properly
