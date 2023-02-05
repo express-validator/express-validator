@@ -119,6 +119,13 @@ export class ExpressValidator<
   ) {
     this.validatorEntries = Object.entries(validators || {});
     this.sanitizerEntries = Object.entries(sanitizers || {});
+
+    // Can't use arrow function in the declaration of `buildCheckFunction` due to the following
+    // error which only happens when tests are run without Jest cache (so CI only):
+    //
+    //    'buildCheckFunction' implicitly has type 'any' because it does not have a type annotation
+    //    and is referenced directly or indirectly in its own initializer
+    this.buildCheckFunction = this.buildCheckFunction.bind(this);
   }
 
   private createChain(
@@ -139,12 +146,12 @@ export class ExpressValidator<
     return Object.assign(middleware, boundValidators, boundSanitizers);
   }
 
-  readonly buildCheckFunction = (
+  buildCheckFunction(
     locations: Location[],
-  ): ((fields?: string | string[], message?: any) => CustomValidationChain<this>) => {
+  ): (fields?: string | string[], message?: any) => CustomValidationChain<this> {
     return (fields?: string | string[], message?: any) =>
       this.createChain(fields, locations, message);
-  };
+  }
 
   /**
    * Creates a middleware/validation chain for one or more fields that may be located in
