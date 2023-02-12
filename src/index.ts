@@ -12,6 +12,7 @@ export {
 
 export { ValidationChain } from './chain';
 
+export * from './middlewares/exact';
 export * from './middlewares/one-of';
 export * from './middlewares/validation-chain-builders';
 
