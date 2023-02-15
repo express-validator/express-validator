@@ -23,6 +23,7 @@ export type AlphaLocale =
   | 'ar-YE'
   | 'az-AZ'
   | 'bg-BG'
+  | 'bn-BD'
   | 'cs-CZ'
   | 'da-DK'
   | 'de-DE'
@@ -45,6 +46,8 @@ export type AlphaLocale =
   | 'hu-HU'
   | 'id-ID'
   | 'it-IT'
+  | 'ja-JP'
+  | 'ko-KR'
   | 'ku-IQ'
   | 'nb-NO'
   | 'nl-NL'
@@ -53,6 +56,7 @@ export type AlphaLocale =
   | 'pt-BR'
   | 'pt-PT'
   | 'ru-RU'
+  | 'si-LK'
   | 'sk-SK'
   | 'sl-SI'
   | 'sr-RS'
@@ -84,6 +88,7 @@ export type AlphanumericLocale =
   | 'ar-YE'
   | 'az-AZ'
   | 'bg-BG'
+  | 'bn-BD'
   | 'cs-CZ'
   | 'da-DK'
   | 'de-DE'
@@ -107,6 +112,8 @@ export type AlphanumericLocale =
   | 'hu-HU'
   | 'it-IT'
   | 'id-ID'
+  | 'ja-JP'
+  | 'ko-KR'
   | 'ku-IQ'
   | 'nb-NO'
   | 'nl-BE'
@@ -116,6 +123,7 @@ export type AlphanumericLocale =
   | 'pt-BR'
   | 'pt-PT'
   | 'ru-RU'
+  | 'si-LK'
   | 'sk-SK'
   | 'sl-SI'
   | 'sr-RS'
@@ -133,6 +141,7 @@ export type MobilePhoneLocale =
   | 'ar-BH'
   | 'ar-DZ'
   | 'ar-EG'
+  | 'ar-EH'
   | 'ar-IQ'
   | 'ar-JO'
   | 'ar-KW'
@@ -144,6 +153,7 @@ export type MobilePhoneLocale =
   | 'ar-SA'
   | 'ar-SY'
   | 'ar-TN'
+  | 'ar-YE'
   | 'az-AZ'
   | 'be-BY'
   | 'bg-BG'
@@ -155,10 +165,15 @@ export type MobilePhoneLocale =
   | 'de-DE'
   | 'de-LU'
   | 'da-DK'
+  | 'dv-MV'
   | 'dz-BT'
+  | 'el-CY'
   | 'el-GR'
+  | 'en-AG'
+  | 'en-AI'
   | 'en-AU'
   | 'en-BM'
+  | 'en-BS'
   | 'en-BW'
   | 'en-CA'
   | 'en-GB'
@@ -169,18 +184,23 @@ export type MobilePhoneLocale =
   | 'en-HN'
   | 'en-IE'
   | 'en-IN'
+  | 'en-JM'
   | 'en-KE'
   | 'en-KI'
+  | 'en-KN'
+  | 'en-LS'
   | 'en-MT'
   | 'en-MU'
   | 'en-NA'
   | 'en-NG'
   | 'en-NZ'
+  | 'en-PG'
   | 'en-PH'
   | 'en-PK'
   | 'en-RW'
   | 'en-SG'
   | 'en-SL'
+  | 'en-SS'
   | 'en-TZ'
   | 'en-UG'
   | 'en-US'
@@ -196,7 +216,9 @@ export type MobilePhoneLocale =
   | 'es-DO'
   | 'es-EC'
   | 'es-ES'
+  | 'es-HN'
   | 'es-MX'
+  | 'es-NI'
   | 'es-PA'
   | 'es-PE'
   | 'es-PY'
@@ -204,12 +226,15 @@ export type MobilePhoneLocale =
   | 'es-UY'
   | 'es-VE'
   | 'et-EE'
+  | 'fa-AF'
   | 'fa-IR'
   | 'fi-FI'
   | 'fj-FJ'
   | 'fo-FO'
   | 'fr-BE'
   | 'fr-BF'
+  | 'fr-BJ'
+  | 'fr-CD'
   | 'fr-CH'
   | 'fr-CM'
   | 'fr-FR'
@@ -222,6 +247,7 @@ export type MobilePhoneLocale =
   | 'he-IL'
   | 'hu-HU'
   | 'id-ID'
+  | 'ir-IR'
   | 'it-CH'
   | 'it-IT'
   | 'it-SM'
@@ -229,11 +255,16 @@ export type MobilePhoneLocale =
   | 'ka-GE'
   | 'kk-KZ'
   | 'kl-GL'
+  | 'ky-KG'
   | 'lt-LT'
   | 'lv-LV'
+  | 'mg-MG'
+  | 'mn-MN'
   | 'ms-MY'
+  | 'my-MM'
   | 'mz-MZ'
   | 'nb-NO'
+  | 'nl-AW'
   | 'nl-BE'
   | 'nl-NL'
   | 'ne-NP'
@@ -242,6 +273,7 @@ export type MobilePhoneLocale =
   | 'pt-AO'
   | 'pt-BR'
   | 'pt-PT'
+  | 'ro-MD'
   | 'ro-RO'
   | 'ru-RU'
   | 'si-LK'
@@ -267,6 +299,7 @@ export type PostalCodeLocale =
   | 'AT'
   | 'AU'
   | 'AZ'
+  | 'BA'
   | 'BE'
   | 'BG'
   | 'BR'
@@ -349,6 +382,7 @@ export type IdentityCardLocale =
   | 'ES'
   | 'FI'
   | 'he-IL'
+  | 'hk-HK'
   | 'IN'
   | 'IT'
   | 'IR'
@@ -364,6 +398,7 @@ export type PassportCountryCode =
   | 'AR'
   | 'AT'
   | 'AU'
+  | 'AZ'
   | 'BE'
   | 'BG'
   | 'BY'
@@ -390,8 +425,11 @@ export type PassportCountryCode =
   | 'IR'
   | 'IS'
   | 'IT'
+  | 'JM'
   | 'JP'
   | 'KR'
+  | 'KZ'
+  | 'LI'
   | 'LT'
   | 'LU'
   | 'LV'
@@ -400,6 +438,9 @@ export type PassportCountryCode =
   | 'MY'
   | 'MZ'
   | 'NL'
+  | 'NZ'
+  | 'PH'
+  | 'PK'
   | 'PL'
   | 'PO'
   | 'PT'
@@ -408,6 +449,7 @@ export type PassportCountryCode =
   | 'SE'
   | 'SL'
   | 'SK'
+  | 'TH'
   | 'TR'
   | 'UA'
   | 'US';
@@ -416,10 +458,14 @@ export type IsLicensePlateLocale =
   | 'cs-CZ'
   | 'de-DE'
   | 'de-LI'
+  | 'en-NI'
+  | 'es-AR'
   | 'fi-FI'
+  | 'hu-HU'
   | 'pt-BR'
   | 'pt-PT'
   | 'sq-AL'
+  | 'sv-SE'
   | 'any';
 
 export type TaxIDLocale =
@@ -430,6 +476,7 @@ export type TaxIDLocale =
   | 'dk-DK'
   | 'el-CY'
   | 'el-GR'
+  | 'en-CA'
   | 'en-GB'
   | 'en-IE'
   | 'en-US'
@@ -456,7 +503,75 @@ export type TaxIDLocale =
   | 'sl-SI'
   | 'sv-SE';
 
-export type VATCountryCode = 'GB' | 'IT' | 'NL';
+export type VATCountryCode =
+  | 'GB'
+  | 'IT'
+  | 'NL'
+  | 'AT'
+  | 'BE'
+  | 'BG'
+  | 'HR'
+  | 'CY'
+  | 'CZ'
+  | 'DK'
+  | 'EE'
+  | 'FI'
+  | 'FR'
+  | 'DE'
+  | 'EL'
+  | 'HU'
+  | 'IE'
+  | 'LV'
+  | 'LT'
+  | 'LU'
+  | 'MT'
+  | 'PL'
+  | 'PT'
+  | 'RO'
+  | 'SK'
+  | 'SI'
+  | 'ES'
+  | 'SE'
+  | 'AL'
+  | 'MK'
+  | 'AU'
+  | 'BY'
+  | 'CA'
+  | 'IS'
+  | 'IN'
+  | 'ID'
+  | 'IL'
+  | 'KZ'
+  | 'NZ'
+  | 'NG'
+  | 'NO'
+  | 'PH'
+  | 'RU'
+  | 'SM'
+  | 'SA'
+  | 'RS'
+  | 'CH'
+  | 'TR'
+  | 'UA'
+  | 'UZ'
+  | 'AR'
+  | 'BO'
+  | 'BR'
+  | 'CL'
+  | 'CO'
+  | 'CR'
+  | 'EC'
+  | 'SV'
+  | 'GT'
+  | 'HN'
+  | 'MX'
+  | 'NI'
+  | 'PA'
+  | 'PY'
+  | 'PE'
+  | 'DO'
+  | 'UY'
+  | 'VE';
 
 export interface MinMaxOptions {
   min?: number;
@@ -480,6 +595,16 @@ export interface ContainsOptions {
   minOccurrences?: number;
 }
 
+/**
+ * defaults to
+ * {
+ *   comparisonDate: Date().toString()
+ * }
+ */
+export interface IsAfterOptions {
+  comparisonDate?: string;
+}
+
 export interface IsAlphaOptions {
   // TODO(v7): remove string[] support
   ignore?: string | string[] | RegExp;
@@ -487,6 +612,16 @@ export interface IsAlphaOptions {
 
 export interface IsAlphanumericOptions {
   ignore?: string | RegExp;
+}
+
+/**
+ * defaults to
+ * {
+ *  crockford: false
+ * }
+ */
+export interface IsBase32Options {
+  crockford?: boolean;
 }
 
 /**
@@ -509,6 +644,10 @@ export interface IsBase64Options {
 export interface IsBooleanOptions {
   strict?: boolean;
   loose?: boolean;
+}
+
+export interface IsCreditCard {
+  provider?: 'amex' | 'dinersclub' | 'discover' | 'jcb' | 'mastercard' | 'unionpay' | 'visa';
 }
 
 /**
@@ -576,6 +715,7 @@ export interface IsEmailOptions {
   domain_specific_validation?: boolean;
   blacklisted_chars?: string;
   host_blacklist?: string[];
+  host_whitelist?: string[];
 }
 
 /**
@@ -599,7 +739,8 @@ export interface IsFloatOptions extends MinMaxExtendedOptions {
  *    allow_underscores: false,
  *    allow_trailing_dot: false,
  *    allow_numeric_tld: false,
- *    allow_wildcard?: false
+ *    allow_wildcard: false,
+ *    ignore_max_length: false
  * }
  */
 export interface IsFQDNOptions {
@@ -608,6 +749,7 @@ export interface IsFQDNOptions {
   allow_trailing_dot?: boolean;
   allow_numeric_tld?: boolean;
   allow_wildcard?: boolean;
+  ignore_max_length?: boolean;
 }
 
 export interface IsIntOptions extends MinMaxExtendedOptions {
@@ -656,6 +798,10 @@ export interface IsISO8601Options {
   strictSeparator?: boolean;
 }
 
+export interface IsISBNOptions {
+  version?: '10' | '13';
+}
+
 /**
  * defaults to
  * {
@@ -686,6 +832,8 @@ export interface IsMACAddressOptions {
    */
   // TODO(v7): remove no_colons
   no_colons?: boolean;
+  // Specify if it should validate against EUI-48 or EUI-64. If omitted it will try both.
+  eui?: '48' | '64';
 }
 
 export interface IsMobilePhoneOptions {

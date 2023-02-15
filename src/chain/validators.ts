@@ -81,13 +81,14 @@ export interface Validators<Return> {
   contains(elem: any, options?: Options.ContainsOptions): Return;
   equals(comparison: string): Return;
   isAfter(date?: string): Return;
+  isAfter(options?: Options.IsAfterOptions): Return; // overload
   isAlpha(locale?: Options.AlphaLocale, options?: Options.IsAlphaOptions): Return;
   isAlphanumeric(
     locale?: Options.AlphanumericLocale,
     options?: Options.IsAlphanumericOptions,
   ): Return;
   isAscii(): Return;
-  isBase32(): Return;
+  isBase32(options?: Options.IsBase32Options): Return;
   isBase58(): Return;
   isBase64(options?: Options.IsBase64Options): Return;
   isBefore(date?: string): Return;
@@ -95,7 +96,7 @@ export interface Validators<Return> {
   isBoolean(options?: Options.IsBooleanOptions): Return;
   isBtcAddress(): Return;
   isByteLength(options: Options.MinMaxExtendedOptions): Return;
-  isCreditCard(): Return;
+  isCreditCard(options?: Options.IsCreditCard): Return;
   isCurrency(options?: Options.IsCurrencyOptions): Return;
   isDataURI(): Return;
   isDate(options?: Options.IsDateOptions): Return;
@@ -119,8 +120,10 @@ export interface Validators<Return> {
   isIP(version?: Options.IPVersion): Return;
   isIPRange(version?: Options.IPVersion): Return;
   isISBN(version?: number): Return;
+  isISBN(options?: Options.IsISBNOptions): Return; // overload
   isISSN(options?: Options.IsISSNOptions): Return;
   isISIN(): Return;
+  isISO6391(): Return;
   isISO8601(options?: Options.IsISO8601Options): Return;
   isISO31661Alpha2(): Return;
   isISO31661Alpha3(): Return;
@@ -135,6 +138,7 @@ export interface Validators<Return> {
   isLicensePlate(locale: Options.IsLicensePlateLocale): Return;
   isLocale(): Return;
   isLowercase(): Return;
+  isLuhnValid(): Return;
   isMagnetURI(): Return;
   isMACAddress(options?: Options.IsMACAddressOptions): Return;
   isMD5(): Return;
