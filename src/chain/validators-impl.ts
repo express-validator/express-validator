@@ -261,8 +261,8 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isLowercase() {
     return this.addStandardValidation(validator.isLowercase);
   }
-  isLuhnValid() {
-    return this.addStandardValidation(validator.isLuhnValid);
+  isLuhnNumber() {
+    return this.addStandardValidation(validator.isLuhnNumber);
   }
   isMagnetURI() {
     return this.addStandardValidation(validator.isMagnetURI);
@@ -323,6 +323,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   }
   isTaxID(locale: Options.TaxIDLocale) {
     return this.addStandardValidation(validator.isTaxID, locale);
+  }
+  isTime(options?: Options.IsTimeOptions) {
+    return this.addStandardValidation(validator.isTime, options);
   }
   isURL(options?: Options.IsURLOptions) {
     return this.addStandardValidation(validator.isURL, options);

@@ -98,7 +98,7 @@ declare module 'validator' {
   ): boolean;
   export function isLocale(str: string): boolean;
   export function isLowercase(str: string): boolean;
-  export function isLuhnValid(str: string): boolean;
+  export function isLuhnNumber(str: string): boolean;
   export function isMagnetURI(str: string): boolean;
   export function isMACAddress(
     str: string,
@@ -139,6 +139,7 @@ declare module 'validator' {
   ): boolean;
   export function isSurrogatePair(str: string): boolean;
   export function isTaxID(str: string, locale: import('../src/options').TaxIDLocale): boolean;
+  export function isTime(str: string, options?: import('../src/options').IsTimeOptions): boolean;
   export function isURL(str: string, options?: import('../src/options').IsURLOptions): boolean;
   export function isUUID(str: string, version?: import('../src/options').UUIDVersion): boolean;
   export function isUppercase(str: string): boolean;

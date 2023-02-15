@@ -138,7 +138,7 @@ export interface Validators<Return> {
   isLicensePlate(locale: Options.IsLicensePlateLocale): Return;
   isLocale(): Return;
   isLowercase(): Return;
-  isLuhnValid(): Return;
+  isLuhnNumber(): Return;
   isMagnetURI(): Return;
   isMACAddress(options?: Options.IsMACAddressOptions): Return;
   isMD5(): Return;
@@ -161,6 +161,7 @@ export interface Validators<Return> {
   isStrongPassword(options?: Options.IsStrongPasswordOptions): Return;
   isSurrogatePair(): Return;
   isTaxID(locale: Options.TaxIDLocale): Return;
+  isTime(options: Options.IsTimeOptions): Return;
   isURL(options?: Options.IsURLOptions): Return;
   isUUID(version?: Options.UUIDVersion): Return;
   isUppercase(): Return;

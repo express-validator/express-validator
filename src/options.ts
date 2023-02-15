@@ -920,6 +920,18 @@ export interface IsURLOptions {
   allow_query_components?: boolean;
 }
 
+/**
+ * defaults to
+ * {
+ *  hourFormat: 'hour24',
+ *  mode: 'default',
+ * };
+ */
+export interface IsTimeOptions {
+  hourFormat?: 'hour24' | 'hour12';
+  mode?: 'default' | 'withSeconds';
+}
+
 export interface NormalizeEmailOptions {
   all_lowercase?: boolean;
   gmail_lowercase?: boolean;
