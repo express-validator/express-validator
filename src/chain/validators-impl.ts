@@ -86,8 +86,8 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   equals(comparison: string) {
     return this.addStandardValidation(validator.equals, comparison);
   }
-  isAfter(date?: string) {
-    return this.addStandardValidation(validator.isAfter, date);
+  isAfter(dateOrOptions?: string | Options.IsAfterOptions) {
+    return this.addStandardValidation(validator.isAfter, dateOrOptions);
   }
   isAlpha(locale?: Options.AlphaLocale, options?: Options.IsAlphaOptions) {
     // TODO(v7): remove string[] support
@@ -100,8 +100,8 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isAscii() {
     return this.addStandardValidation(validator.isAscii);
   }
-  isBase32() {
-    return this.addStandardValidation(validator.isBase32);
+  isBase32(options?: Options.IsBase32Options) {
+    return this.addStandardValidation(validator.isBase32, options);
   }
   isBase58() {
     return this.addStandardValidation(validator.isBase58);
@@ -203,14 +203,17 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isIPRange(version?: Options.IPVersion) {
     return this.addStandardValidation(validator.isIPRange, version);
   }
-  isISBN(version?: number) {
-    return this.addStandardValidation(validator.isISBN, version);
+  isISBN(versionOrOptions?: number | Options.IsISBNOptions) {
+    return this.addStandardValidation(validator.isISBN, versionOrOptions);
   }
   isISSN(options?: Options.IsISSNOptions) {
     return this.addStandardValidation(validator.isISSN, options);
   }
   isISIN() {
     return this.addStandardValidation(validator.isISIN);
+  }
+  isISO6391() {
+    return this.addStandardValidation(validator.isISO6391);
   }
   isISO8601(options?: Options.IsISO8601Options) {
     return this.addStandardValidation(validator.isISO8601, options);
@@ -253,6 +256,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   }
   isLowercase() {
     return this.addStandardValidation(validator.isLowercase);
+  }
+  isLuhnNumber() {
+    return this.addStandardValidation(validator.isLuhnNumber);
   }
   isMagnetURI() {
     return this.addStandardValidation(validator.isMagnetURI);
@@ -313,6 +319,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   }
   isTaxID(locale: Options.TaxIDLocale) {
     return this.addStandardValidation(validator.isTaxID, locale);
+  }
+  isTime(options?: Options.IsTimeOptions) {
+    return this.addStandardValidation(validator.isTime, options);
   }
   isURL(options?: Options.IsURLOptions) {
     return this.addStandardValidation(validator.isURL, options);

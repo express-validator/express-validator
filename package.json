@@ -7,7 +7,7 @@
     "Gustavo Henke <guhenke@gmail.com>",
     "Federico Ciardi <fed.ciardi@gmail.com>"
   ],
-  "version": "6.14.3",
+  "version": "6.15.0",
   "homepage": "https://express-validator.github.io",
   "license": "MIT",
   "repository": {
@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "lodash": "^4.17.21",
-    "validator": "^13.7.0"
+    "validator": "^13.9.0"
   },
   "devDependencies": {
     "@docusaurus/core": "^2.2.0",
