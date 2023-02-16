@@ -86,8 +86,6 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   equals(comparison: string) {
     return this.addStandardValidation(validator.equals, comparison);
   }
-  isAfter(date?: string): Chain;
-  isAfter(options?: Options.IsAfterOptions): Chain;
   isAfter(dateOrOptions?: string | Options.IsAfterOptions) {
     return this.addStandardValidation(validator.isAfter, dateOrOptions);
   }
@@ -205,8 +203,6 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isIPRange(version?: Options.IPVersion) {
     return this.addStandardValidation(validator.isIPRange, version);
   }
-  isISBN(version?: number): Chain;
-  isISBN(options?: Options.IsISBNOptions): Chain;
   isISBN(versionOrOptions?: number | Options.IsISBNOptions) {
     return this.addStandardValidation(validator.isISBN, versionOrOptions);
   }

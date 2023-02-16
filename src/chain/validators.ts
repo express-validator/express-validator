@@ -80,8 +80,7 @@ export interface Validators<Return> {
   // validator's validators
   contains(elem: any, options?: Options.ContainsOptions): Return;
   equals(comparison: string): Return;
-  isAfter(date?: string): Return;
-  isAfter(options?: Options.IsAfterOptions): Return; // overload
+  isAfter(dateOrOptions?: string | Options.IsAfterOptions): Return;
   isAlpha(locale?: Options.AlphaLocale, options?: Options.IsAlphaOptions): Return;
   isAlphanumeric(
     locale?: Options.AlphanumericLocale,
@@ -119,8 +118,7 @@ export interface Validators<Return> {
   isIMEI(options?: Options.IsIMEIOptions): Return;
   isIP(version?: Options.IPVersion): Return;
   isIPRange(version?: Options.IPVersion): Return;
-  isISBN(version?: number): Return;
-  isISBN(options?: Options.IsISBNOptions): Return; // overload
+  isISBN(versionOrOptions?: number | Options.IsISBNOptions): Return;
   isISSN(options?: Options.IsISSNOptions): Return;
   isISIN(): Return;
   isISO6391(): Return;

@@ -5,8 +5,10 @@ declare module 'validator' {
     options?: import('../src/options').ContainsOptions,
   ): boolean;
   export function equals(str: string, comparison: string): boolean;
-  export function isAfter(str: string, date?: string): boolean;
-  export function isAfter(str: string, options?: import('../src/options').IsAfterOptions): boolean; // overload
+  export function isAfter(
+    str: string,
+    dateOrOptions?: string | import('../src/options').IsAfterOptions,
+  ): boolean;
   export function isAlpha(
     str: string,
     locale?: import('../src/options').AlphaLocale,
@@ -70,8 +72,10 @@ declare module 'validator' {
   export function isIMEI(str: string, options?: import('../src/options').IsIMEIOptions): boolean;
   export function isIP(str: string, version?: import('../src/options').IPVersion): boolean;
   export function isIPRange(str: string, version?: import('../src/options').IPVersion): boolean;
-  export function isISBN(str: string, version?: number): boolean;
-  export function isISBN(str: string, options?: import('../src/options').IsISBNOptions): boolean; // overload
+  export function isISBN(
+    str: string,
+    versionOrOptions?: number | import('../src/options').IsISBNOptions,
+  ): boolean;
   export function isISSN(str: string, options?: import('../src/options').IsISSNOptions): boolean;
   export function isISIN(str: string): boolean;
   export function isISO8601(
