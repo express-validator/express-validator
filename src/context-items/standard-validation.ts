@@ -15,6 +15,11 @@ export class StandardValidation implements ContextItem {
   async run(context: Context, value: any, meta: Meta) {
     const result = this.validator(toString(value), ...this.options);
     if (this.negated ? result : !result) {
+      // null values will always fail validation so we must
+      // check if our context allows nullable values
+      if (context.optional && context.optional.nullable && value == null) {
+        return;
+      }
       context.addError(this.message, value, meta);
     }
   }

@@ -116,14 +116,14 @@ describe('#getData()', () => {
     expect(context.getData({ requiredOnly: true })).toEqual([data[1]]);
   });
 
-  it('filters out undefineds and nulls when context optional with nullable = true', () => {
+  it('filters out undefineds and keeps nulls when context optional with nullable = true', () => {
     data[0].value = null;
     data[1].value = undefined;
 
     context = new ContextBuilder().setOptional({ checkFalsy: false, nullable: true }).build();
     context.addFieldInstances(data);
 
-    expect(context.getData({ requiredOnly: true })).toEqual([]);
+    expect(context.getData({ requiredOnly: true })).toEqual([data[0]]);
   });
 
   it('filters out falsies when context optional with checkFalsy = true', () => {

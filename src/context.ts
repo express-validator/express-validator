@@ -47,7 +47,7 @@ export class Context {
       options.requiredOnly && optional
         ? [
             (value: any) => value !== undefined,
-            (value: any) => (optional.nullable ? value != null : true),
+            (value: any) => (optional.nullable ? true : value != null),
             (value: any) => (optional.checkFalsy ? value : true),
           ]
         : [];

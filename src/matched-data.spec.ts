@@ -8,7 +8,7 @@ it('works if no validation or sanitization chains ran', () => {
 
 it('includes only valid, non-optional data by default', done => {
   const req = {
-    headers: { foo: 'bla', bar: '123' },
+    headers: { foo: 'bla', bar: '123', baz: null },
   };
 
   const middleware = check(['foo', 'bar', 'baz']).optional().isInt();
@@ -16,6 +16,23 @@ it('includes only valid, non-optional data by default', done => {
   middleware(req, {}, () => {
     expect(matchedData(req)).toEqual({
       bar: '123',
+    });
+
+    done();
+  });
+});
+
+it('includes only valid, including nullable data by default', done => {
+  const req = {
+    headers: { foo: 'bla', bar: '123', baz: null },
+  };
+
+  const middleware = check(['foo', 'bar', 'baz']).optional({ nullable: true }).isInt();
+
+  middleware(req, {}, () => {
+    expect(matchedData(req)).toEqual({
+      bar: '123',
+      baz: null,
     });
 
     done();
@@ -32,6 +49,22 @@ it('includes data that was validated with wildcards', done => {
     expect(matchedData(req)).toEqual({
       foo: [1, 2, 3],
       bar: { baz: { qux: 4 } },
+    });
+
+    done();
+  });
+});
+
+it('includes nullable optional', done => {
+  const req = {
+    headers: { foo: [1, 2, 3] },
+    query: { bar: null },
+  };
+
+  check(['foo.*', 'bar']).optional({ nullable: true }).isInt()(req, {}, () => {
+    expect(matchedData(req)).toEqual({
+      foo: [1, 2, 3],
+      bar: null,
     });
 
     done();
