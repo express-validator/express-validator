@@ -29,11 +29,20 @@ it('runs surrogate context created internally', done => {
   oneOf([check('bar'), check('baz')])(req, {}, () => {
     expect(spy).toHaveBeenCalledTimes(3);
     // Calls 1 and 2 asserted by previous test
-    expect(spy).toHaveBeenNthCalledWith(3, req);
+    expect(spy).toHaveBeenNthCalledWith(3, req, undefined);
 
     spy.mockRestore();
     done();
   });
+});
+
+it('runs in dry-run mode', async () => {
+  const req = {};
+  const spy = jest.spyOn(ContextRunnerImpl.prototype, 'run');
+  await oneOf([check('bar'), check('baz')]).run(req, { dryRun: true });
+  // Calls 1 and 2 asserted by previous test
+  expect(spy).toHaveBeenNthCalledWith(3, req, { dryRun: true });
+  spy.mockRestore();
 });
 
 it('passes unexpected errors down to other middlewares', done => {
