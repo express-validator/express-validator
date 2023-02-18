@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
-import { ContextRunner, ContextRunnerImpl, ResultWithContext, ValidationChain } from '../chain';
-import { AlternativeMessageFactory, InternalRequest, Middleware, Request } from '../base';
+import { ContextRunner, ContextRunnerImpl, ValidationChain } from '../chain';
+import { AlternativeMessageFactory, Middleware, Request } from '../base';
 import { ContextBuilder } from '../context-builder';
 import { ContextItem } from '../context-items';
 
@@ -58,8 +58,7 @@ export function oneOf(
   chains: (ValidationChain | ValidationChain[])[],
   options: { message?: any; errorType?: OneOfErrorType } = {},
 ): Middleware & ContextRunner {
-  let result: ResultWithContext;
-  const middleware = async (req: InternalRequest, _res: any, next: (err?: any) => void) => {
+  const run = async (req: Request, opts?: { dryRun?: boolean }) => {
     const surrogateContext = new ContextBuilder().addItem(dummyItem).build();
 
     // Run each group of chains in parallel, and within each group, run each chain in parallel too.
@@ -80,64 +79,52 @@ export function oneOf(
       return groupErrors;
     });
 
-    try {
-      const allErrors = await Promise.all(promises);
-      const success = allErrors.some(groupErrors => groupErrors.length === 0);
+    const allErrors = await Promise.all(promises);
+    const success = allErrors.some(groupErrors => groupErrors.length === 0);
 
-      if (!success) {
-        const message = options.message || 'Invalid value(s)';
-        switch (options.errorType) {
-          case 'flat':
-            surrogateContext.addError({
-              type: 'alternative',
-              req,
-              message,
-              nestedErrors: _.flatMap(allErrors),
-            });
-            break;
-          case 'leastErroredOnly':
-            let leastErroredIndex = 0;
-            for (let i = 1; i < allErrors.length; i++) {
-              if (allErrors[i].length < allErrors[leastErroredIndex].length) {
-                leastErroredIndex = i;
-              }
+    if (!success) {
+      const message = options.message || 'Invalid value(s)';
+      switch (options.errorType) {
+        case 'flat':
+          surrogateContext.addError({
+            type: 'alternative',
+            req,
+            message,
+            nestedErrors: _.flatMap(allErrors),
+          });
+          break;
+        case 'leastErroredOnly':
+          let leastErroredIndex = 0;
+          for (let i = 1; i < allErrors.length; i++) {
+            if (allErrors[i].length < allErrors[leastErroredIndex].length) {
+              leastErroredIndex = i;
             }
-            surrogateContext.addError({
-              type: 'alternative',
-              req,
-              message,
-              nestedErrors: allErrors[leastErroredIndex],
-            });
-            break;
+          }
+          surrogateContext.addError({
+            type: 'alternative',
+            req,
+            message,
+            nestedErrors: allErrors[leastErroredIndex],
+          });
+          break;
 
-          case 'grouped':
-          default:
-            // grouped
-            surrogateContext.addError({
-              type: 'alternative_grouped',
-              req,
-              message,
-              nestedErrors: allErrors,
-            });
-            break;
-        }
+        case 'grouped':
+        default:
+          // grouped
+          surrogateContext.addError({
+            type: 'alternative_grouped',
+            req,
+            message,
+            nestedErrors: allErrors,
+          });
+          break;
       }
-
-      // Final context running pass to ensure contexts are added and values are modified properly
-      result = await new ContextRunnerImpl(surrogateContext).run(req);
-      next();
-    } catch (e) {
-      next(e);
     }
+
+    // Final context running pass to ensure contexts are added and values are modified properly
+    return await new ContextRunnerImpl(surrogateContext).run(req, opts);
   };
 
-  const run = async (req: Request) => {
-    return new Promise<ResultWithContext>((resolve, reject) => {
-      middleware(req, {}, (e?: any) => {
-        e ? reject(e) : resolve(result);
-      });
-    });
-  };
-
+  const middleware: Middleware = (req, _res, next) => run(req).then(() => next(), next);
   return Object.assign(middleware, { run });
 }
