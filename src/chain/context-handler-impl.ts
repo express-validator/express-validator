@@ -9,7 +9,10 @@ import { ContextRunner } from './context-runner';
 export class ContextHandlerImpl<Chain> implements ContextHandler<Chain> {
   constructor(private readonly builder: ContextBuilder, private readonly chain: Chain) {}
 
-  bail() {
+  bail(opts?: { level?: 'chain' | 'request' }) {
+    if (opts?.level === 'request') {
+      this.builder.setRequestBail();
+    }
     this.builder.addItem(new Bail());
     return this.chain;
   }

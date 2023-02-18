@@ -23,6 +23,15 @@ export class ContextRunnerImpl implements ContextRunner {
       this.builderOrContext instanceof Context
         ? this.builderOrContext
         : this.builderOrContext.build();
+
+    const internalReq = req as InternalRequest;
+    const bail = internalReq[contextsKey]?.some(
+      context => context.bail && context.errors.length > 0,
+    );
+    if (bail) {
+      return new ResultWithContextImpl(context);
+    }
+
     const instances = this.selectFields(req, context.fields, context.locations);
     context.addFieldInstances(instances);
 
@@ -66,7 +75,6 @@ export class ContextRunnerImpl implements ContextRunner {
     }
 
     if (!options.dryRun) {
-      const internalReq = req as InternalRequest;
       internalReq[contextsKey] = (internalReq[contextsKey] || []).concat(context);
     }
 

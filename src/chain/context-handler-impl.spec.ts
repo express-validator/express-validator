@@ -10,6 +10,7 @@ let contextHandler: ContextHandler<any>;
 beforeEach(() => {
   builder = new ContextBuilder();
   jest.spyOn(builder, 'setOptional');
+  jest.spyOn(builder, 'setRequestBail');
   jest.spyOn(builder, 'addItem');
 
   contextHandler = new ContextHandlerImpl(builder, {});
@@ -19,6 +20,17 @@ describe('#bail()', () => {
   it('adds a Bail item', () => {
     contextHandler.bail();
     expect(builder.addItem).toHaveBeenCalledWith(new Bail());
+  });
+
+  it('does not sets request bail if level is unset or set to chain', () => {
+    contextHandler.bail({});
+    contextHandler.bail({ level: 'chain' });
+    expect(builder.setRequestBail).not.toHaveBeenCalled();
+  });
+
+  it('sets request bail if level is set to request', () => {
+    contextHandler.bail({ level: 'request' });
+    expect(builder.setRequestBail).toHaveBeenCalled();
   });
 });
 

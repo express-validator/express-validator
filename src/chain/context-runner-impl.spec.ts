@@ -113,6 +113,19 @@ it('runs items on the stack in order', async () => {
   return resultPromise;
 });
 
+it('does not run items if a previous context halts the whole request', async () => {
+  const context1 = new ContextBuilder().setRequestBail().build();
+  const context2 = new ContextBuilder().addItem({ run: jest.fn() }).build();
+
+  const req = {};
+  context1.addError({ type: 'field', value: 1, meta: { req, location: 'params', path: 'foo' } });
+
+  await new ContextRunnerImpl(context1, selectFields).run(req);
+  await new ContextRunnerImpl(context2, selectFields).run(req);
+
+  expect(context2.stack[0].run).not.toHaveBeenCalled();
+});
+
 it('stops running items on paths that got a validation halt', async () => {
   builder.addItem(
     {
