@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
+import { AlternativeMessageFactory, FieldValidationError, Middleware, Request } from '../base';
 import { ContextRunner, ContextRunnerImpl, ValidationChain } from '../chain';
-import { AlternativeMessageFactory, Middleware, Request } from '../base';
+import { ReadonlyContext } from '../context';
 import { ContextBuilder } from '../context-builder';
 import { ContextItem } from '../context-items';
 
@@ -61,12 +62,25 @@ export function oneOf(
   const run = async (req: Request, opts?: { dryRun?: boolean }) => {
     const surrogateContext = new ContextBuilder().addItem(dummyItem).build();
 
-    // Run each group of chains in parallel, and within each group, run each chain in parallel too.
+    // Run each group of chains in parallel
     const promises = chains.map(async chain => {
       const group = Array.isArray(chain) ? chain : [chain];
-      const results = await Promise.all(group.map(chain => chain.run(req, { dryRun: true })));
-      const contexts = results.map(result => result.context);
-      const groupErrors = _.flatMap(contexts, 'errors');
+      const contexts: ReadonlyContext[] = [];
+      const groupErrors: FieldValidationError[] = [];
+      for (const chain of group) {
+        const result = await chain.run(req, { dryRun: true });
+        const { context } = result;
+        contexts.push(context);
+
+        const fieldErrors = context.errors.filter(
+          (error): error is FieldValidationError => error.type === 'field',
+        );
+        groupErrors.push(...fieldErrors);
+
+        if (context.bail && !result.isEmpty()) {
+          break;
+        }
+      }
 
       // #536: The data from a chain within oneOf() can only be made available to e.g. matchedData()
       // if its entire group is valid.
