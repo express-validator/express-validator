@@ -1,6 +1,6 @@
 import { CustomValidator } from '../base';
 import { Optional } from '../context';
-import { ValidationChain } from './validation-chain';
+import { ContextRunner } from './context-runner';
 
 export interface ContextHandler<Chain> {
   /**
@@ -40,7 +40,7 @@ export interface ContextHandler<Chain> {
    *    .if(body('oldPassword').notEmpty())
    * @returns the current validation chain
    */
-  if(condition: CustomValidator | ValidationChain): Chain;
+  if(condition: CustomValidator | ContextRunner): Chain;
 
   /**
    * Marks the field(s) of the validation chain as optional.
