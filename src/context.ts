@@ -112,6 +112,13 @@ export class Context {
     if (!instance) {
       throw new Error('Attempt to rename field that did not pre-exist in context');
     }
+    const { originalPath } = instance;
+    if (this.fields.length !== 1) {
+      throw new Error('Attempt to rename multiple fields.');
+    }
+    if (/\.|\*/g.test(originalPath)) {
+      throw new Error('Attempt to rename a wildcard field');
+    }
     instance.path = newPath;
   }
 }

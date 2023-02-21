@@ -20,8 +20,8 @@ export class CustomValidation implements ContextItem {
         context.addError(this.message, value, meta);
       }
       // rename field if return type is string
-      if (typeof actualResult === "string") {
-          context.renameFieldInstance(actualResult, meta)
+      if (typeof actualResult === 'string') {
+        context.renameFieldInstance(actualResult, meta);
       }
     } catch (err) {
       if (this.negated) {
