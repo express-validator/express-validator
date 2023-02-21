@@ -51,4 +51,5 @@ export interface ContextHandler<Chain> {
    * @returns the current validation chain
    */
   optional(options?: Partial<Optional> | true): Chain;
+  rename(newPath: string): Chain;
 }

@@ -3,6 +3,7 @@ import { Optional } from '../context';
 import { ChainCondition, CustomCondition } from '../context-items';
 import { CustomValidator } from '../base';
 import { Bail } from '../context-items/bail';
+import { Rename } from '../context-items/rename';
 import { ContextHandler } from './context-handler';
 import { ValidationChain } from './validation-chain';
 
@@ -35,6 +36,11 @@ export class ContextHandlerImpl<Chain> implements ContextHandler<Chain> {
       });
     }
 
+    return this.chain;
+  }
+
+  rename(newPath: string) {
+    this.builder.addItem(new Rename(newPath));
     return this.chain;
   }
 }
