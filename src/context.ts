@@ -106,6 +106,14 @@ export class Context {
       });
     }
   }
+  renameFieldInstance(newPath: string, meta: Meta) {
+    const { path, location } = meta;
+    const instance = this.dataMap.get(getDataMapKey(path, location));
+    if (!instance) {
+      throw new Error('Attempt to rename field that did not pre-exist in context');
+    }
+    instance.path = newPath;
+  }
 }
 
 export type ReadonlyContext = Pick<
