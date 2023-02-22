@@ -87,23 +87,32 @@ export class Context {
     instance.value = value;
   }
 
-  addError(message: any, value: any, meta: Meta): void;
+  addError(message: any, value: any, meta: Meta, condition?: ContextItem): void;
   addError(message: any, nestedErrors: ValidationError[]): void;
-  addError(message: any, valueOrNestedErrors: any, meta?: Meta) {
+  addError(message: any, valueOrNestedErrors: any, meta?: Meta, condition?: ContextItem) {
     const msg = message || this.message || 'Invalid value';
+    let obj: ValidationError;
     if (meta) {
-      this._errors.push({
+      obj = {
         value: valueOrNestedErrors,
         msg: typeof msg === 'function' ? msg(valueOrNestedErrors, meta) : msg,
         param: meta.path,
         location: meta.location,
-      });
+      };
+      if (condition) {
+        Object.defineProperty(obj, 'condition', { value: condition });
+      }
+      this._errors.push(obj);
     } else {
-      this._errors.push({
+      obj = {
         msg,
         param: '_error',
         nestedErrors: valueOrNestedErrors,
-      });
+      };
+      if (condition) {
+        Object.defineProperty(obj, 'condition', { value: condition });
+      }
+      this._errors.push(obj);
     }
   }
 }

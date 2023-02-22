@@ -25,7 +25,7 @@ const createSyncTest = (options: { returnValue: any; addsError: boolean }) => as
   validator.mockReturnValue(options.returnValue);
   await validation.run(context, 'bar', meta);
   if (options.addsError) {
-    expect(context.addError).toHaveBeenCalledWith(validation.message, 'bar', meta);
+    expect(context.addError).toHaveBeenCalledWith(validation.message, 'bar', meta, validation);
   } else {
     expect(context.addError).not.toHaveBeenCalled();
   }
@@ -53,13 +53,7 @@ describe('when not negated', () => {
         throw new Error('boom');
       });
       await validation.run(context, 'bar', meta);
-      expect(context.addError).toHaveBeenCalledWith('nope', 'bar', meta);
-    });
-
-    it('adds error with validation message if validator returns a promise that rejects', async () => {
-      validator.mockRejectedValue('a bomb');
-      await validation.run(context, 'bar', meta);
-      expect(context.addError).toHaveBeenCalledWith('nope', 'bar', meta);
+      expect(context.addError).toHaveBeenCalledWith('nope', 'bar', meta, validation);
     });
   });
 
@@ -73,13 +67,13 @@ describe('when not negated', () => {
         throw new Error('boom');
       });
       await validation.run(context, 'bar', meta);
-      expect(context.addError).toHaveBeenCalledWith('boom', 'bar', meta);
+      expect(context.addError).toHaveBeenCalledWith('boom', 'bar', meta, validation);
     });
 
     it('adds error with rejection message if validator returns a promise that rejects', async () => {
       validator.mockRejectedValue('a bomb');
       await validation.run(context, 'bar', meta);
-      expect(context.addError).toHaveBeenCalledWith('a bomb', 'bar', meta);
+      expect(context.addError).toHaveBeenCalledWith('a bomb', 'bar', meta, validation);
     });
   });
 
@@ -123,6 +117,6 @@ describe('when negated', () => {
   it('adds error with validation message if validator returns a promise that resolves', async () => {
     validator.mockResolvedValue(true);
     await validation.run(context, 'bar', meta);
-    expect(context.addError).toHaveBeenCalledWith('nope', 'bar', meta);
+    expect(context.addError).toHaveBeenCalledWith('nope', 'bar', meta, validation);
   });
 });

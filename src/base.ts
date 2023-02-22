@@ -1,4 +1,5 @@
 import { ReadonlyContext } from './context';
+import { ContextItem } from './context-items';
 
 export interface Request {
   [k: string]: any;
@@ -82,6 +83,7 @@ export type ValidationError =
       // These are optional so places don't need to define them, but can reference them
       location?: undefined;
       value?: undefined;
+      condition?: ContextItem;
     }
   | {
       /**
@@ -105,6 +107,7 @@ export type ValidationError =
       msg: any;
       // This is optional so places don't need to define it, but can reference it
       nestedErrors?: unknown[];
+      condition?: ContextItem;
     };
 
 // Not using Symbol because of #813
