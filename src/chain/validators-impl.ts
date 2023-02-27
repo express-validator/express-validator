@@ -1,17 +1,17 @@
 import * as validator from 'validator';
 import { CustomValidator, StandardValidator } from '../base';
-import { CustomValidation, StandardValidation } from '../context-items';
+import { CustomValidation, RenameFieldContextItem, StandardValidation } from '../context-items';
 import { ContextBuilder } from '../context-builder';
 import * as Options from '../options';
 import { Validators } from './validators';
 
 export class ValidatorsImpl<Chain> implements Validators<Chain> {
-  private lastValidator: CustomValidation | StandardValidation;
+  private lastValidator: CustomValidation | RenameFieldContextItem | StandardValidation;
   private negateNext = false;
 
   constructor(private readonly builder: ContextBuilder, private readonly chain: Chain) {}
 
-  private addItem(item: CustomValidation | StandardValidation) {
+  private addItem(item: CustomValidation | RenameFieldContextItem | StandardValidation) {
     this.builder.addItem(item);
     this.lastValidator = item;
     // Reset this.negateNext so that next validation isn't negated too
@@ -34,6 +34,10 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   // custom validators
   custom(validator: CustomValidator) {
     return this.addItem(new CustomValidation(validator, this.negateNext));
+  }
+
+  rename(evaluator: CustomValidator) {
+    return this.addItem(new RenameFieldContextItem(evaluator, this.negateNext));
   }
 
   exists(options: { checkFalsy?: boolean; checkNull?: boolean } = {}) {

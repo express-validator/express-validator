@@ -37,6 +37,14 @@ export interface Validators<Return> {
   custom(validator: CustomValidator): Return;
 
   /**
+   * Adds a field rename functionality to the validation chain.
+   *
+   * @param evaluator the custom evaluator based on the `CustomValidator`
+   * @returns the current validation chain
+   */
+  rename(evaluator: CustomValidator): Return;
+
+  /**
    * Adds a validator to check that the fields exist in the request.
    * By default, this means that the value of the fields may not be `undefined`;
    * all other values are acceptable.

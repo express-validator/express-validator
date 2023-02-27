@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import { FieldInstance, Location, Meta, ValidationError } from './base';
 import { ContextItem } from './context-items';
+import { fieldRenameUtility } from './utils';
 
 function getDataMapKey(path: string, location: Location) {
   return `${location}:${path}`;
@@ -117,7 +118,8 @@ export class Context {
       throw new Error('Attempt to rename multiple fields.');
     }
     if (/\.|\*/g.test(originalPath)) {
-      throw new Error('Attempt to rename a wildcard field');
+      instance.path = fieldRenameUtility(newPath, instance);
+      return;
     }
     instance.path = newPath;
   }
