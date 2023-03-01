@@ -28,8 +28,7 @@ function expandField(req: Request, field: string, location: Location): FieldInst
   const originalPath = field;
   const pathToExpand = location === 'headers' ? field.toLowerCase() : field;
 
-  const paths: string[] = [];
-  expandPath(req[location], pathToExpand, paths);
+  const paths = expandPath(req[location], pathToExpand, []);
 
   return paths.map(path => {
     const value = path === '' ? req[location] : _.get(req[location], path);
@@ -42,35 +41,44 @@ function expandField(req: Request, field: string, location: Location): FieldInst
   });
 }
 
-function expandPath(object: any, path: string | string[], accumulator: string[]) {
+function expandPath(object: any, path: string | string[], currPath: readonly string[]): string[] {
   const segments = _.toPath(path);
-  const wildcardPos = segments.indexOf('*');
+  if (!segments.length) {
+    // no more paths to traverse
+    return [reconstructFieldPath(currPath)];
+  }
 
-  if (wildcardPos > -1) {
-    const subObject = wildcardPos === 0 ? object : _.get(object, segments.slice(0, wildcardPos));
+  const key = segments[0];
+  const rest = segments.slice(1);
 
-    if (!subObject || !_.isObjectLike(subObject)) {
-      return;
+  if (!_.isObjectLike(object)) {
+    if (key === '**' && !rest.length) {
+      // globstar leaves are always selected
+      return [reconstructFieldPath(currPath)];
     }
 
-    Object.keys(subObject)
-      .map(key =>
-        segments
-          // Before the *
-          .slice(0, wildcardPos)
-          // The part that the * matched
-          // #1205 - Escape a legit field "*" to avoid it from causing infinite recursion
-          .concat(key === '*' ? `\\${key}` : key)
-          // After the *
-          .concat(segments.slice(wildcardPos + 1)),
-      )
-      .forEach(subPath => {
-        expandPath(object, subPath, accumulator);
-      });
-  } else {
-    const reconstructedPath = reconstructFieldPath(segments);
-    accumulator.push(reconstructedPath);
+    // there still are paths to traverse, but value is a primitive, stop
+    return [];
   }
+
+  if (key === '*') {
+    return Object.keys(object).flatMap(key => expandPath(object[key], rest, currPath.concat(key)));
+  }
+  if (key === '**') {
+    return Object.keys(object).flatMap(key => {
+      const nextPath = currPath.concat(key);
+      const value = object[key];
+      const set = new Set([
+        // recursively find matching subpaths
+        ...expandPath(value, segments, nextPath),
+        // skip the first remaining segment, if it matches the current key
+        ...(rest[0] === key ? expandPath(value, rest.slice(1), nextPath) : []),
+      ]);
+      return [...set];
+    });
+  }
+
+  return expandPath(object[key], rest, currPath.concat(key));
 }
 
 type Tree = { [K: string]: Tree };
