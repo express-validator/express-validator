@@ -199,12 +199,49 @@ describe('on each field', () => {
     const { context } = await chain.run({ params: { foo: '' } });
     expect(context.errors).toHaveLength(1);
   });
+
+  it('use default config when specified', async () => {
+    const chain = checkSchema({
+      undef: {
+        default: {
+          options: 10,
+        },
+      },
+    })[0];
+
+    const req = { query: { undef: undefined }, body: {}, params: {}, headers: {}, cookies: {} };
+    const { context } = await chain.run(req);
+
+    expect(context.getData().every(instance => instance.value === 10)).toBe(true);
+    expect(req.query.undef).toBe(10);
+    expect((req as any).body.undef).toBe(10);
+    expect((req as any).headers.undef).toBe(10);
+    expect((req as any).params.undef).toBe(10);
+    expect((req as any).cookies.undef).toBe(10);
+  });
 });
 
-describe('on schema that contains fields with bail methods', () => {
-  it('stops validation chain with only one error', async () => {
+describe('when ParamSchema location not specified', () => {
+  it('should validate locations only in which the field can be found', async () => {
     const schema = checkSchema({
       foo: {
+        isInt: true,
+        toInt: true,
+      },
+    });
+    const { context } = await schema[0].run({
+      query: { foo: 'foo' },
+      params: { foo: 'true' },
+    });
+
+    expect(context.errors).toHaveLength(2);
+  });
+});
+describe('on schema that contains fields with bail methods', () => {
+  it('stops validation chain with only one error with specified location', async () => {
+    const schema = checkSchema({
+      foo: {
+        in: ['params'],
         exists: {
           bail: true,
         },
@@ -216,7 +253,57 @@ describe('on schema that contains fields with bail methods', () => {
       },
     });
 
-    const { context } = await schema[0].run({ params: {} });
+    const { context } = await schema[0].run({ query: {} });
+    expect(context.errors).toHaveLength(1);
+  });
+
+  it('stops validation chain if any validation fails with "exist" validator', async () => {
+    const allLocations = ['body', 'cookies', 'headers', 'params', 'query'];
+    const schema = checkSchema({
+      foo: {
+        exists: {
+          bail: true,
+          errorMessage: 'exists checking failed',
+        },
+        isLength: {
+          options: {
+            min: 5,
+          },
+        },
+      },
+    });
+
+    const { context } = await schema[0].run({ query: {} });
+    // when location is not specified, checking each location one by one,
+    // if the expected field does not show up at all in any location, then there will be 5 errors.
+    // finally bails.
+    expect(context.errors).toHaveLength(allLocations.length);
+    // context.errors should not contain any error from next validator -> isLength.
+    expect(context.errors.every(err => err.msg === 'exists checking failed')).toBe(true);
+  });
+
+  it('stops validation chain if any validation fails with sanitizer', async () => {
+    const schema = checkSchema({
+      foo: {
+        toInt: true,
+        isInt: {
+          bail: true,
+        },
+        isLength: {
+          options: {
+            min: 5,
+          },
+        },
+      },
+    });
+
+    const { context } = await schema[0].run({ query: { foo: 'true' } });
+    const {
+      errors: [firstError],
+    } = context;
+
+    // simply make sure it's sanitizer-result-caused error.
+    expect(firstError.value).toBe(NaN);
     expect(context.errors).toHaveLength(1);
   });
 
@@ -241,6 +328,7 @@ describe('on schema that contains fields with bail methods', () => {
   it('bails with message', async () => {
     const schema = checkSchema({
       foo: {
+        in: ['params'],
         exists: {
           bail: true,
           errorMessage: 'Value not exists',

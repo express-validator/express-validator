@@ -157,7 +157,7 @@ describe('#getData()', () => {
 
       context.addFieldInstances(data);
 
-      expect(context.getData()).toEqual([data[0]]);
+      expect(context.getData()).toEqual(data);
     });
 
     it('does not filter out second undefined when it contains a wildcard', () => {

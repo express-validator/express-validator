@@ -58,12 +58,12 @@ export class Context {
         const locations = _.uniqBy(instances, 'location');
 
         // #331 - When multiple locations are involved, all of them must pass the validation.
-        // If none of the locations contain the field, we at least include one for error reporting.
+        // checkSchema: If `in` option is not specified, try to check all locations by default.
         // #458, #531 - Wildcards are an exception though: they may yield 0..* instances with different
         // paths, so we may want to skip this filtering.
         if (instances.length > 1 && locations.length > 1 && !group.includes('*')) {
           const withValue = instances.filter(instance => instance.value !== undefined);
-          return withValue.length ? withValue : [instances[0]];
+          return withValue.length ? withValue : instances;
         }
 
         return instances;
