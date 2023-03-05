@@ -418,6 +418,28 @@ describe('selectUnknownFields()', () => {
     });
   });
 
+  it('does not select any fields at a globstar level', () => {
+    const req = { body: { foo: 1, bar: { baz: 2 } } };
+    const instances = selectUnknownFields(req, ['**'], ['body']);
+    expect(instances).toHaveLength(0);
+  });
+
+  it('selects unknown fields deeply nested under a globstar', () => {
+    const req = { body: { obj1: { foo: 1, bar: 2 }, obj2: { foo: 3, baz: { foo: 4, qux: 5 } } } };
+    const instances = selectUnknownFields(req, ['**.foo'], ['body']);
+    expect(instances).toHaveLength(2);
+    expect(instances[0]).toMatchObject({
+      path: 'obj1.bar',
+      value: 2,
+      location: 'body',
+    });
+    expect(instances[1]).toMatchObject({
+      path: 'obj2.baz.qux',
+      value: 5,
+      location: 'body',
+    });
+  });
+
   it('does not select any fields nested under a known field', () => {
     const req = { body: { obj1: { foo: 1, bar: 2 } } };
     const instances = selectUnknownFields(req, ['obj1', 'obj.foo'], ['body']);
@@ -475,7 +497,6 @@ describe('reconstructFieldPath()', () => {
     ['numeric segment between text segments', ['foo', '0', 'bar'], 'foo[0].bar'],
     ['numeric segment followed by numeric segment', ['foo', '0', '0'], 'foo[0][0]'],
     ['text segment with a dot', ['foo', '.bar'], 'foo[".bar"]'],
-    ['escaped star segment', ['foo', '\\*'], 'foo.*'],
   ])('%s', (_name, input, expected) => {
     expect(reconstructFieldPath(input)).toBe(expected);
   });

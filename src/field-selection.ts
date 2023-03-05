@@ -81,7 +81,7 @@ function expandPath(object: any, path: string | string[], currPath: readonly str
   return expandPath(object[key], rest, currPath.concat(key));
 }
 
-type Tree = { [K: string]: Tree };
+type Tree = { [K: string]: Tree | undefined };
 export const selectUnknownFields = (
   req: Request,
   knownFields: string[],
@@ -132,18 +132,20 @@ function findUnknownFields(
   treePath: string[] = [],
   unknownFields: UnknownFieldInstance[] = [],
 ): UnknownFieldInstance[] {
-  if (tree['']) {
+  const globstarBranch = tree['**'];
+  if (tree[''] || globstarBranch?.['']) {
     // The rest of the tree from here is covered by some validation chain
     // For example, when the current treePath is `['foo', 'bar']` but `foo` is known
     return unknownFields;
   }
 
   if (typeof value !== 'object') {
-    if (!treePath.length) {
-      // This is most likely a req.body that isn't an object (e.g. `req.body = 'bla'`),
-      // and wasn't validated either.
+    if (!treePath.length || globstarBranch) {
+      // This is either
+      // a. a req.body that isn't an object (e.g. `req.body = 'bla'`), and wasn't validated either
+      // b. a leaf value which wasn't the target of a globstar path, e.g. `foo.**.bar`
       unknownFields.push({
-        path: '',
+        path: reconstructFieldPath(treePath),
         value,
         location,
       });
@@ -155,7 +157,8 @@ function findUnknownFields(
   for (const key of Object.keys(value)) {
     const keyBranch = tree[key];
     const path = treePath.concat([key]);
-    if (!keyBranch && !wildcardBranch) {
+
+    if (!keyBranch && !wildcardBranch && !globstarBranch) {
       // No trees cover this path, so it's an unknown one.
       unknownFields.push({
         path: reconstructFieldPath(path),
@@ -170,11 +173,19 @@ function findUnknownFields(
       ? findUnknownFields(location, value[key], wildcardBranch, path)
       : [];
 
-    // If either branch contains only known fields, then don't mark the fields not covered by the
-    // other branch to the list of unknown ones.
+    const globstarUnknowns = globstarBranch
+      ? findUnknownFields(location, value[key], { ['**']: globstarBranch, ...globstarBranch }, path)
+      : [];
+
+    // If any of the tested branches contain only known fields, then don't mark the fields not covered
+    // by the other branches to the list of unknown ones.
     // For example, `foo` is more comprehensive than `foo.*.bar`.
-    if ((!keyBranch || keyUnknowns.length) && (!wildcardBranch || wildcardUnknowns.length)) {
-      unknownFields.push(...keyUnknowns, ...wildcardUnknowns);
+    if (
+      (!keyBranch || keyUnknowns.length) &&
+      (!wildcardBranch || wildcardUnknowns.length) &&
+      (!globstarBranch || globstarUnknowns.length)
+    ) {
+      unknownFields.push(...keyUnknowns, ...wildcardUnknowns, ...globstarUnknowns);
     }
   }
 
