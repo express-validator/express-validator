@@ -153,6 +153,18 @@ describe('selectFields()', () => {
     });
   });
 
+  it('selects inexistent properties', () => {
+    const instances = selectFields({}, ['foo.bar.baz'], ['cookies']);
+
+    expect(instances).toHaveLength(1);
+    expect(instances[0]).toEqual({
+      location: 'cookies',
+      path: 'foo.bar.baz',
+      originalPath: 'foo.bar.baz',
+      value: undefined,
+    });
+  });
+
   it('does not select properties of primitives', () => {
     const req = {
       body: { foo: 1 },

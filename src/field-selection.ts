@@ -51,7 +51,7 @@ function expandPath(object: any, path: string | string[], currPath: readonly str
   const key = segments[0];
   const rest = segments.slice(1);
 
-  if (!_.isObjectLike(object)) {
+  if (object != null && !_.isObjectLike(object)) {
     if (key === '**' && !rest.length) {
       // globstar leaves are always selected
       return [reconstructFieldPath(currPath)];
@@ -61,6 +61,8 @@ function expandPath(object: any, path: string | string[], currPath: readonly str
     return [];
   }
 
+  // Use a non-null value so that inexistent fields are still selected
+  object = object || {};
   if (key === '*') {
     return Object.keys(object).flatMap(key => expandPath(object[key], rest, currPath.concat(key)));
   }
