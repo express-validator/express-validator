@@ -153,6 +153,26 @@ describe('selectFields()', () => {
     });
   });
 
+  it('selects inexistent properties', () => {
+    const instances = selectFields({}, ['foo.bar.baz'], ['cookies']);
+
+    expect(instances).toHaveLength(1);
+    expect(instances[0]).toEqual({
+      location: 'cookies',
+      path: 'foo.bar.baz',
+      originalPath: 'foo.bar.baz',
+      value: undefined,
+    });
+  });
+
+  it('does not select properties of primitives', () => {
+    const req = {
+      body: { foo: 1 },
+    };
+    const instances = selectFields(req, ['foo.toFixed'], ['body']);
+    expect(instances).toHaveLength(0);
+  });
+
   it('deduplicates field instances', () => {
     const req = {
       body: {
@@ -218,7 +238,7 @@ describe('selectFields()', () => {
       });
     });
 
-    it('selects instance if its path is a wildcard', () => {
+    it('selects field if its path is a wildcard', () => {
       const req = {
         query: { '*': 'foo' },
       };
@@ -233,6 +253,27 @@ describe('selectFields()', () => {
       });
     });
 
+    it('selects matching fields under wildcard branch', () => {
+      const req = {
+        query: { foo: { bar: { a: true }, baz: { a: false, b: 1 } } },
+      };
+      const instances = selectFields(req, ['foo.*.a'], ['query']);
+
+      expect(instances).toHaveLength(2);
+      expect(instances[0]).toMatchObject({
+        location: 'query',
+        path: 'foo.bar.a',
+        originalPath: 'foo.*.a',
+        value: true,
+      });
+      expect(instances[1]).toMatchObject({
+        location: 'query',
+        path: 'foo.baz.a',
+        originalPath: 'foo.*.a',
+        value: false,
+      });
+    });
+
     it('selects nothing if wildcard position does not exist', () => {
       const req = {
         query: { foo: 'bar' },
@@ -240,6 +281,86 @@ describe('selectFields()', () => {
       const instances = selectFields(req, ['foo.*.baz'], ['query']);
 
       expect(instances).toHaveLength(0);
+    });
+  });
+
+  describe('globstar', () => {
+    it('selects all leaves that match a leaf globstar', () => {
+      const req = {
+        query: { foo: { a: { b: { c: 1 } }, d: { e: 2 } } },
+      };
+      const instances = selectFields(req, ['foo.**'], ['query']);
+
+      expect(instances).toHaveLength(2);
+      expect(instances[0]).toMatchObject({
+        location: 'query',
+        path: 'foo.a.b.c',
+        originalPath: 'foo.**',
+        value: 1,
+      });
+      expect(instances[1]).toMatchObject({
+        location: 'query',
+        path: 'foo.d.e',
+        originalPath: 'foo.**',
+        value: 2,
+      });
+    });
+
+    it('selects deeply nested matching fields under a globstar branch', () => {
+      const req = {
+        query: { foo: { a: { b: { bar: 1 } }, c: { bar: 2 } } },
+      };
+      const instances = selectFields(req, ['foo.**.bar'], ['query']);
+
+      expect(instances).toHaveLength(2);
+      expect(instances[0]).toMatchObject({
+        location: 'query',
+        path: 'foo.a.b.bar',
+        originalPath: 'foo.**.bar',
+        value: 1,
+      });
+      expect(instances[1]).toMatchObject({
+        location: 'query',
+        path: 'foo.c.bar',
+        originalPath: 'foo.**.bar',
+        value: 2,
+      });
+    });
+
+    it('selects branch and leaf when both match a globstar selector', () => {
+      const req = {
+        query: { foo: { foo: 1 } },
+      };
+      const instances = selectFields(req, ['**.foo'], ['query']);
+
+      expect(instances).toHaveLength(2);
+      expect(instances[0]).toMatchObject({
+        location: 'query',
+        path: 'foo.foo',
+        originalPath: '**.foo',
+        value: 1,
+      });
+      expect(instances[1]).toMatchObject({
+        location: 'query',
+        path: 'foo',
+        originalPath: '**.foo',
+        value: { foo: 1 },
+      });
+    });
+
+    it('selects field if its path is a globstar', () => {
+      const req = {
+        query: { '**': 'foo' },
+      };
+      const instances = selectFields(req, ['**'], ['query']);
+
+      expect(instances).toHaveLength(1);
+      expect(instances[0]).toMatchObject({
+        location: 'query',
+        path: '**',
+        originalPath: '**',
+        value: 'foo',
+      });
     });
   });
 });
@@ -309,6 +430,28 @@ describe('selectUnknownFields()', () => {
     });
   });
 
+  it('does not select any fields at a globstar level', () => {
+    const req = { body: { foo: 1, bar: { baz: 2 } } };
+    const instances = selectUnknownFields(req, ['**'], ['body']);
+    expect(instances).toHaveLength(0);
+  });
+
+  it('selects unknown fields deeply nested under a globstar', () => {
+    const req = { body: { obj1: { foo: 1, bar: 2 }, obj2: { foo: 3, baz: { foo: 4, qux: 5 } } } };
+    const instances = selectUnknownFields(req, ['**.foo'], ['body']);
+    expect(instances).toHaveLength(2);
+    expect(instances[0]).toMatchObject({
+      path: 'obj1.bar',
+      value: 2,
+      location: 'body',
+    });
+    expect(instances[1]).toMatchObject({
+      path: 'obj2.baz.qux',
+      value: 5,
+      location: 'body',
+    });
+  });
+
   it('does not select any fields nested under a known field', () => {
     const req = { body: { obj1: { foo: 1, bar: 2 } } };
     const instances = selectUnknownFields(req, ['obj1', 'obj.foo'], ['body']);
@@ -366,7 +509,6 @@ describe('reconstructFieldPath()', () => {
     ['numeric segment between text segments', ['foo', '0', 'bar'], 'foo[0].bar'],
     ['numeric segment followed by numeric segment', ['foo', '0', '0'], 'foo[0][0]'],
     ['text segment with a dot', ['foo', '.bar'], 'foo[".bar"]'],
-    ['escaped star segment', ['foo', '\\*'], 'foo.*'],
   ])('%s', (_name, input, expected) => {
     expect(reconstructFieldPath(input)).toBe(expected);
   });
