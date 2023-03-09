@@ -1,4 +1,4 @@
-import { CustomValidator } from '../base';
+import { CustomValidator, RenameEvaluator } from '../base';
 import { Optional } from '../context';
 import { ValidationChain } from './validation-chain';
 
@@ -51,4 +51,29 @@ export interface ContextHandler<Chain> {
    * @returns the current validation chain
    */
   optional(options?: Partial<Optional> | true): Chain;
+
+  /**
+   * Adds a field rename functionality to the validation chain.
+   * Only renames the field, if return value is `string`
+   *
+   * @param evaluator the custom evaluator
+   *
+   * @example
+   * check('username')
+   *    .isEmail()
+   *    .rename("email")
+   *    // If multiple conditions
+   *    .rename(function(value) {
+   *        if (isEmail(value)) {
+   *          return "email";
+   *        } else if (isPhone(value)) {
+   *          return "phone";
+   *        }
+   *        // return `undefined` or `null`, if no key is intended to be renamed.
+   *        return null;
+   *    })
+   *
+   * @returns the current validation chain
+   */
+  rename(evaluator: RenameEvaluator | string): Chain;
 }

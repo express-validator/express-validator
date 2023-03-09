@@ -1,28 +1,23 @@
-import { CustomValidator, Meta } from '../base';
+import { Meta, RenameEvaluator } from '../base';
 import { Context } from '../context';
 import { ContextItem } from './context-item';
 
 export class RenameFieldContextItem implements ContextItem {
-  message: any;
-
-  constructor(private readonly evaluator: CustomValidator, private readonly negated: boolean) {}
+  constructor(private readonly evaluator: RenameEvaluator | string) {}
 
   async run(context: Context, value: any, meta: Meta) {
     try {
+      // short circuit if the evaluator is string
+      if (typeof this.evaluator === 'string') {
+        return context.renameFieldInstance(this.evaluator, meta);
+      }
       const result = this.evaluator(value, meta);
       const actualResult = await result;
-      const isPromise = result && result.then;
-      const failed = this.negated ? actualResult : !actualResult;
 
-      // A promise that was resolved only adds an error if negated.
-      // Otherwise it always suceeds
-      if ((!isPromise && failed) || (isPromise && this.negated)) {
+      if (typeof actualResult !== 'string' || actualResult.length < 1) {
         return;
       }
-      // rename field if return type is string
-      if (typeof actualResult === 'string') {
-        context.renameFieldInstance(actualResult, meta);
-      }
+      context.renameFieldInstance(actualResult, meta);
     } catch (err) {}
   }
 }

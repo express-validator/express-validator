@@ -21,7 +21,7 @@ const createSyncTest = (options: { returnValue: any; isWildcard: boolean }) => a
       {
         location: 'body',
         path: 'bar.foo',
-        originalPath: 'foo.bar',
+        originalPath: 'bar.foo',
         value: 'Hello World!',
         originalValue: 123,
       },
@@ -31,7 +31,7 @@ const createSyncTest = (options: { returnValue: any; isWildcard: boolean }) => a
       {
         location: 'body',
         path: 'bar',
-        originalPath: 'foo',
+        originalPath: 'bar',
         value: 'Hello World!',
         originalValue: 123,
       },
@@ -58,8 +58,7 @@ describe('Rename wildcard paths', () => {
         originalValue: 123,
       },
     ]);
-    validation = new RenameFieldContextItem(validator, false);
-    validation.message = 'nope';
+    validation = new RenameFieldContextItem(validator);
   });
   it(
     'Renames the field foo.bar to bar.foo',
@@ -87,7 +86,7 @@ describe('Rename wildcard paths', () => {
       {
         location: 'body',
         path: 'foo[0].bar[0].child.new_field',
-        originalPath: 'bar.*.foo.end',
+        originalPath: 'foo.*.bar.*.child.new_field',
         value: 'Hello World!',
         originalValue: 123,
       },
@@ -114,8 +113,7 @@ describe('Rename non-wildcard fields', () => {
         originalValue: 123,
       },
     ]);
-    validation = new RenameFieldContextItem(validator, false);
-    validation.message = 'nope';
+    validation = new RenameFieldContextItem(validator);
   });
   it('Renames the field foo to bar', createSyncTest({ returnValue: 'bar', isWildcard: false }));
 });
