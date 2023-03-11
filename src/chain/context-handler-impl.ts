@@ -1,7 +1,7 @@
 import { ContextBuilder } from '../context-builder';
 import { Optional } from '../context';
-import { ChainCondition, CustomCondition } from '../context-items';
-import { CustomValidator } from '../base';
+import { ChainCondition, CustomCondition, RenameFieldContextItem } from '../context-items';
+import { CustomValidator, RenameEvaluator } from '../base';
 import { Bail } from '../context-items/bail';
 import { ContextHandler } from './context-handler';
 import { ValidationChain } from './validation-chain';
@@ -35,6 +35,11 @@ export class ContextHandlerImpl<Chain> implements ContextHandler<Chain> {
       });
     }
 
+    return this.chain;
+  }
+
+  rename(evaluator: RenameEvaluator) {
+    this.builder.addItem(new RenameFieldContextItem(evaluator));
     return this.chain;
   }
 }

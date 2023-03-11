@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import { FieldInstance, Location, Meta, ValidationError } from './base';
 import { ContextItem } from './context-items';
+import { fieldRenameUtility } from './utils';
 
 function getDataMapKey(path: string, location: Location) {
   return `${location}:${path}`;
@@ -78,6 +79,10 @@ export class Context {
     });
   }
 
+  removeFieldInstance(instance: FieldInstance) {
+    this.dataMap.delete(getDataMapKey(instance.path, instance.location));
+  }
+
   setData(path: string, value: any, location: Location) {
     const instance = this.dataMap.get(getDataMapKey(path, location));
     if (!instance) {
@@ -106,9 +111,31 @@ export class Context {
       });
     }
   }
+  renameFieldInstance(newPath: string, meta: Meta) {
+    const { path, location } = meta;
+    const newOriginalPath = newPath;
+    const instance = this.dataMap.get(getDataMapKey(path, location));
+    if (!instance) {
+      throw new Error('Attempt to rename field that did not pre-exist in context');
+    }
+    if (this.fields.length !== 1) {
+      throw new Error('Attempt to rename multiple fields.');
+    }
+    if (/\.|\*/g.test(newPath)) {
+      newPath = fieldRenameUtility(newPath, instance);
+    }
+    this.removeFieldInstance(instance);
+    this.addFieldInstances([
+      {
+        ...instance,
+        originalPath: newOriginalPath,
+        path: newPath,
+      },
+    ]);
+  }
 }
 
 export type ReadonlyContext = Pick<
   Context,
-  Exclude<keyof Context, 'setData' | 'addFieldInstances' | 'addError'>
+  Exclude<keyof Context, 'setData' | 'addFieldInstances' | 'removeFieldInstance' | 'addError'>
 >;

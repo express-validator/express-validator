@@ -46,6 +46,10 @@ export type Meta = {
  */
 export type CustomValidator = (input: any, meta: Meta) => any;
 export type StandardValidator = (input: string, ...options: any[]) => boolean;
+export type RenameEvaluator = (
+  input: any,
+  meta: Meta,
+) => string | Promise<string> | null | undefined;
 
 export type CustomSanitizer = (input: any, meta: Meta) => any;
 export type StandardSanitizer = (input: string, ...options: any[]) => any;
