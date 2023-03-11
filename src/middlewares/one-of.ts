@@ -4,6 +4,7 @@ import { ContextRunner, ContextRunnerImpl, ValidationChain } from '../chain';
 import { ReadonlyContext } from '../context';
 import { ContextBuilder } from '../context-builder';
 import { ContextItem } from '../context-items';
+import { runAllChains } from '../utils';
 
 // A dummy context item that gets added to surrogate contexts just to make them run
 const dummyItem: ContextItem = { async run() {} };
@@ -65,22 +66,24 @@ export function oneOf(
     // Run each group of chains in parallel
     const promises = chains.map(async chain => {
       const group = Array.isArray(chain) ? chain : [chain];
-      const contexts: ReadonlyContext[] = [];
-      const groupErrors: FieldValidationError[] = [];
-      for (const chain of group) {
-        const result = await chain.run(req, { dryRun: true });
-        const { context } = result;
-        contexts.push(context);
+      const results = await runAllChains(req, group, { dryRun: true });
+      const { contexts, groupErrors } = results.reduce(
+        ({ contexts, groupErrors }, result) => {
+          const { context } = result;
+          contexts.push(context);
 
-        const fieldErrors = context.errors.filter(
-          (error): error is FieldValidationError => error.type === 'field',
-        );
-        groupErrors.push(...fieldErrors);
+          const fieldErrors = context.errors.filter(
+            (error): error is FieldValidationError => error.type === 'field',
+          );
+          groupErrors.push(...fieldErrors);
 
-        if (context.bail && !result.isEmpty()) {
-          break;
-        }
-      }
+          return { contexts, groupErrors };
+        },
+        {
+          contexts: [] as ReadonlyContext[],
+          groupErrors: [] as FieldValidationError[],
+        },
+      );
 
       // #536: The data from a chain within oneOf() can only be made available to e.g. matchedData()
       // if its entire group is valid.
