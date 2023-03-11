@@ -10,6 +10,7 @@ import {
 import { ContextRunner, ResultWithContextImpl, ValidationChain } from '../chain';
 import { Context } from '../context';
 import { selectUnknownFields } from '../field-selection';
+import { runAllChains } from '../utils';
 
 type CheckExactOptions = {
   /**
@@ -79,8 +80,7 @@ export function checkExact(
     const internalReq = req as InternalRequest;
 
     const fieldsByLocation = new Map<Location, string[]>();
-    const promises = chainsArr.map(async chain => chain.run(req));
-    await Promise.all(promises);
+    await runAllChains(req, chainsArr);
 
     // The chains above will have added contexts to the request
     (internalReq[contextsKey] || []).forEach(context => {
