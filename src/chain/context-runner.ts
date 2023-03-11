@@ -2,7 +2,7 @@ import { Request, ValidationError } from '../base';
 import { ReadonlyContext } from '../context';
 import { Result } from '../validation-result';
 
-type ContextRunningOptions = {
+export type ContextRunningOptions = {
   /**
    * Defines whether errors and sanitization should be persisted to `req`.
    * @default false

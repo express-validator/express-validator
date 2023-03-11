@@ -69,6 +69,7 @@ export class Context {
     readonly locations: Location[],
     readonly stack: ReadonlyArray<ContextItem>,
     readonly optional: Optional,
+    readonly bail: boolean,
     readonly message?: any,
   ) {}
 
