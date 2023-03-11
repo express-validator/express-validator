@@ -1,10 +1,17 @@
 import * as _ from 'lodash';
+import { CustomSanitizer, CustomValidator, FieldMessageFactory, Location, Request } from '../base';
+import {
+  BailOptions,
+  SanitizersImpl,
+  ValidationChain,
+  ValidationChainLike,
+  ValidatorsImpl,
+} from '../chain';
+import { ResultWithContext } from '../chain/context-runner';
 import { Sanitizers } from '../chain/sanitizers';
 import { Validators } from '../chain/validators';
-import { CustomSanitizer, CustomValidator, FieldMessageFactory, Location, Request } from '../base';
-import { SanitizersImpl, ValidationChain, ValidatorsImpl } from '../chain';
 import { Optional } from '../context';
-import { ResultWithContext } from '../chain/context-runner';
+import { runAllChains } from '../utils';
 import { check } from './check';
 
 type BaseValidatorSchemaOptions = {
@@ -22,7 +29,7 @@ type BaseValidatorSchemaOptions = {
   /**
    * Whether the validation should bail after running this validator
    */
-  bail?: boolean;
+  bail?: boolean | BailOptions;
 
   /**
    * Specify a condition upon which this validator should run.
@@ -122,12 +129,6 @@ export type ParamSchema<T extends string = DefaultSchemaKeys> = BaseParamSchema 
  * Defines a mapping from field name to a validations/sanitizations schema.
  */
 export type Schema<T extends string = DefaultSchemaKeys> = Record<string, ParamSchema<T>>;
-
-type ValidationChainLike = {
-  [K in keyof ValidationChain]: ValidationChain[K] extends (...args: infer A) => ValidationChain
-    ? (...args: A) => any
-    : ValidationChain[K];
-};
 
 /**
  * Shortcut type for the return of a {@link checkSchema()}-like function.
@@ -250,7 +251,8 @@ export function createCheckSchema<C extends ValidationChainLike>(
         // For validators, stuff that must come _after_ the validator itself in the chain.
         if ((isStandardValidator(entry) || isCustomValidator(entry)) && entry[1] !== true) {
           const [, validatorConfig] = entry;
-          validatorConfig.bail && chain.bail();
+          validatorConfig.bail &&
+            chain.bail(validatorConfig.bail === true ? {} : validatorConfig.bail);
           validatorConfig.errorMessage && chain.withMessage(validatorConfig.errorMessage);
         }
       }
@@ -258,9 +260,7 @@ export function createCheckSchema<C extends ValidationChainLike>(
       return chain;
     });
 
-    const run = async (req: Request) => {
-      return await Promise.all(chains.map(chain => chain.run(req)));
-    };
+    const run = async (req: Request) => runAllChains(req, chains);
 
     return Object.assign(chains, { run });
   };

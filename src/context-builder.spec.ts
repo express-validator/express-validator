@@ -37,6 +37,16 @@ describe('#setOptional()', () => {
   });
 });
 
+describe('#setRequestBail()', () => {
+  it('builders a Context with the bail flag set', () => {
+    let context = builder.build();
+    expect(context.bail).toBe(false);
+
+    context = builder.setRequestBail().build();
+    expect(context.bail).toBe(true);
+  });
+});
+
 describe('#addItem()', () => {
   it('builds a Context with all the item pushed to the stack', () => {
     const item1: ContextItem = {

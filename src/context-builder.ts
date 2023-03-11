@@ -8,6 +8,7 @@ export class ContextBuilder {
   private locations: Location[] = [];
   private message: any;
   private optional: Optional = false;
+  private requestBail = false;
 
   setFields(fields: string[]) {
     this.fields = fields;
@@ -34,7 +35,19 @@ export class ContextBuilder {
     return this;
   }
 
+  setRequestBail() {
+    this.requestBail = true;
+    return this;
+  }
+
   build() {
-    return new Context(this.fields, this.locations, this.stack, this.optional, this.message);
+    return new Context(
+      this.fields,
+      this.locations,
+      this.stack,
+      this.optional,
+      this.requestBail,
+      this.message,
+    );
   }
 }

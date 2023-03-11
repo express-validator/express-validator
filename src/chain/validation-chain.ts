@@ -13,3 +13,14 @@ export interface ValidationChain
   (req: Request, res: any, next: (error?: any) => void): void;
   builder: ContextBuilder;
 }
+
+/**
+ * A copy of `ValidationChain` where methods that would return the chain itself can return any other
+ * value.
+ * Useful for typing functions which accept either standard or custom validation chains.
+ */
+export type ValidationChainLike = {
+  [K in keyof ValidationChain]: ValidationChain[K] extends (...args: infer A) => ValidationChain
+    ? (...args: A) => any
+    : ValidationChain[K];
+};
