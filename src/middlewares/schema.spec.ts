@@ -393,7 +393,7 @@ it('correctly pass falsy values to `options` property of methods', async () => {
   const schema = checkSchema({
     foo: {
       in: ['body'],
-      default: { options: 0 },
+      default: 0,
     },
   });
   await schema.run(req);

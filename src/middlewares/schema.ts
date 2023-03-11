@@ -143,7 +143,7 @@ export type RunnableValidationChains<C extends ValidationChainLike> = C[] & {
 };
 
 const validLocations: Location[] = ['body', 'cookies', 'headers', 'params', 'query'];
-const protectedNames = ['errorMessage', 'in', 'optional'];
+const protectedNames = ['errorMessage', 'in', 'optional', 'default'];
 
 /**
  * Factory for a {@link checkSchema()} function which can have extension validators and sanitizers.
@@ -213,9 +213,13 @@ export function createCheckSchema<C extends ValidationChainLike>(
         config.errorMessage,
       );
 
-      // optional doesn't matter where it happens in the chain
+      // optional and default can happen anywhere in the chain
       if (config.optional) {
         chain.optional(config.optional === true ? true : config.optional.options);
+      }
+
+      if (config.default !== undefined) {
+        chain.default(config.default);
       }
 
       for (const entry of Object.entries(config)) {
