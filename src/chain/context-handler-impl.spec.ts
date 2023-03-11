@@ -22,7 +22,7 @@ describe('#bail()', () => {
     expect(builder.addItem).toHaveBeenCalledWith(new Bail());
   });
 
-  it('does not sets request bail if level is unset or set to chain', () => {
+  it('does not set request bail if level is unset or set to chain', () => {
     contextHandler.bail({});
     contextHandler.bail({ level: 'chain' });
     expect(builder.setRequestBail).not.toHaveBeenCalled();
