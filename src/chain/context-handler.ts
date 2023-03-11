@@ -2,6 +2,19 @@ import { CustomValidator } from '../base';
 import { Optional } from '../context';
 import { ContextRunner } from './context-runner';
 
+export interface BailOptions {
+  /**
+   * Defines the level at which to stop running further validations:
+   * - When set to `chain`, further validations won't be run for this validation chain if there
+   *   are any errors.
+   * - When set to `request`, no further validations on the same request will be run either if
+   *   there are any errors.
+   *
+   * @default 'chain'
+   */
+  level?: 'chain' | 'request';
+}
+
 export interface ContextHandler<Chain> {
   /**
    * Stops running validations if any of the previous ones have failed.
@@ -23,18 +36,7 @@ export interface ContextHandler<Chain> {
    *
    * @returns the current validation chain
    */
-  bail(opts?: {
-    /**
-     * Defines the level at which to stop running further validations:
-     * - When set to `chain`, further validations won't be run for this validation chain if there
-     *   are any errors.
-     * - When set to `request`, no further validations on the same request will be run either if
-     *   there are any errors.
-     *
-     * @default 'chain'
-     */
-    level?: 'chain' | 'request';
-  }): Chain;
+  bail(opts?: BailOptions): Chain;
 
   /**
    * Adds a condition on whether the validation should continue on a field or not.

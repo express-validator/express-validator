@@ -352,6 +352,24 @@ describe('on schema that contains fields with bail methods', () => {
     const { context } = await schema[0].run({ params: { foo: 'notAnEmail' } });
     expect(context.errors).toHaveLength(1);
   });
+
+  it('support request-level bail methods', async () => {
+    const schema = checkSchema({
+      foo: {
+        isEmail: {
+          bail: { level: 'request' },
+        },
+      },
+      bar: {
+        isEmail: true,
+      },
+    });
+
+    const contexts = await schema.run({ params: { foo: 'notAnEmail' } });
+    // there's no second context, as the second chain wasn't run.
+    expect(contexts).toHaveLength(1);
+    expect(contexts[0].array()).toHaveLength(1);
+  });
 });
 
 it('run checkSchema imperatively', async () => {
