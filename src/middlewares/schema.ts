@@ -1,63 +1,83 @@
+import * as _ from 'lodash';
 import { Sanitizers } from '../chain/sanitizers';
 import { Validators } from '../chain/validators';
-import { CustomValidator, DynamicMessageCreator, Location, Request } from '../base';
-import { ValidationChain, ValidatorsImpl } from '../chain';
+import {
+  CustomSanitizer,
+  CustomValidator,
+  DynamicMessageCreator,
+  Location,
+  Request,
+} from '../base';
+import { SanitizersImpl, ValidationChain, ValidatorsImpl } from '../chain';
 import { Optional } from '../context';
 import { ResultWithContext } from '../chain/context-runner-impl';
 import { check } from './check';
 
+type BaseValidatorSchemaOptions = {
+  /**
+   * The error message if there's a validation error,
+   * or a function for creating an error message dynamically.
+   */
+  errorMessage?: DynamicMessageCreator | any;
+
+  /**
+   * Whether the validation should be reversed.
+   */
+  negated?: boolean;
+
+  /**
+   * Whether the validation should bail after running this validator
+   */
+  bail?: boolean;
+
+  /**
+   * Specify a condition upon which this validator should run.
+   * Can either be a validation chain, or a custom validator function.
+   */
+  if?: CustomValidator | ValidationChain;
+};
+
 type ValidatorSchemaOptions<K extends keyof Validators<any>> =
   | true
-  | {
+  | (BaseValidatorSchemaOptions & {
       /**
        * Options to pass to the validator.
-       * Not used with custom validators.
        */
       options?: Parameters<Validators<any>[K]> | Parameters<Validators<any>[K]>[0];
+    });
 
-      /**
-       * The error message if there's a validation error,
-       * or a function for creating an error message dynamically.
-       */
-      errorMessage?: DynamicMessageCreator | any;
+type CustomValidatorSchemaOptions = BaseValidatorSchemaOptions & {
+  /**
+   * The implementation of a custom validator.
+   */
+  custom: CustomValidator;
+};
 
-      /**
-       * Whether the validation should be reversed.
-       */
-      negated?: boolean;
-
-      /**
-       * Whether the validation should bail after running this validator
-       */
-      bail?: boolean;
-
-      /**
-       * Specify a condition upon which this validator should run.
-       * Can either be a validation chain, or a custom validator function.
-       */
-      if?: CustomValidator | ValidationChain;
-    };
-
-export type ValidatorsSchema = { [K in keyof Validators<any>]?: ValidatorSchemaOptions<K> };
+export type ValidatorsSchema = {
+  [K in keyof Validators<any>]?: ValidatorSchemaOptions<K>;
+};
 
 type SanitizerSchemaOptions<K extends keyof Sanitizers<any>> =
   | true
   | {
       /**
        * Options to pass to the sanitizer.
-       * Not used with custom sanitizers.
        */
       options?: Parameters<Sanitizers<any>[K]> | Parameters<Sanitizers<any>[K]>[0];
     };
 
-export type SanitizersSchema = { [K in keyof Sanitizers<any>]?: SanitizerSchemaOptions<K> };
+type CustomSanitizerSchemaOptions = {
+  /**
+   * The implementation of a custom sanitizer.
+   */
+  customSanitizer: CustomSanitizer;
+};
 
-type InternalParamSchema = ValidatorsSchema & SanitizersSchema;
+export type SanitizersSchema = {
+  [K in keyof Sanitizers<any>]?: SanitizerSchemaOptions<K>;
+};
 
-/**
- * Defines a schema of validations/sanitizations for a field
- */
-export type ParamSchema = InternalParamSchema & {
+type BaseParamSchema = {
   /**
    * Which request location(s) the field to validate is.
    * If unset, the field will be checked in every request location.
@@ -80,6 +100,23 @@ export type ParamSchema = InternalParamSchema & {
       };
 };
 
+type DefaultSchemaKeys = keyof BaseParamSchema | keyof ValidatorsSchema | keyof SanitizersSchema;
+
+/**
+ * Defines a schema of validations/sanitizations for a field
+ */
+export type ParamSchema<T extends string = DefaultSchemaKeys> = BaseParamSchema &
+  ValidatorsSchema &
+  SanitizersSchema & {
+    [K in T]?: K extends keyof BaseParamSchema
+      ? BaseParamSchema[K]
+      : K extends keyof ValidatorsSchema
+      ? ValidatorsSchema[K]
+      : K extends keyof SanitizersSchema
+      ? SanitizersSchema[K]
+      : CustomValidatorSchemaOptions | CustomSanitizerSchemaOptions;
+  };
+
 /**
  * @deprecated  Only here for v5 compatibility. Please use ParamSchema instead.
  */
@@ -88,7 +125,7 @@ export type ValidationParamSchema = ParamSchema;
 /**
  * Defines a mapping from field name to a validations/sanitizations schema.
  */
-export type Schema = Record<string, ParamSchema>;
+export type Schema<T extends string = DefaultSchemaKeys> = Record<string, ParamSchema<T>>;
 
 /**
  * @deprecated  Only here for v5 compatibility. Please use Schema instead.
@@ -96,7 +133,7 @@ export type Schema = Record<string, ParamSchema>;
 export type ValidationSchema = Schema;
 
 const validLocations: Location[] = ['body', 'cookies', 'headers', 'params', 'query'];
-const protectedNames = ['errorMessage', 'in'];
+const protectedNames = ['errorMessage', 'in', 'optional'];
 
 /**
  * Creates an express middleware with validations for multiple fields at once in the form of
@@ -106,8 +143,8 @@ const protectedNames = ['errorMessage', 'in'];
  * @param defaultLocations
  * @returns
  */
-export function checkSchema(
-  schema: Schema,
+export function checkSchema<T extends string = DefaultSchemaKeys>(
+  schema: Schema<T>,
   defaultLocations: Location[] = validLocations,
 ): ValidationChain[] & {
   run: (req: Request) => Promise<ResultWithContext[]>;
@@ -116,44 +153,53 @@ export function checkSchema(
     const config = schema[field];
     const chain = check(field, ensureLocations(config, defaultLocations), config.errorMessage);
 
-    Object.keys(config)
-      .filter((method: keyof ParamSchema): method is keyof InternalParamSchema => {
-        return config[method] && !protectedNames.includes(method);
-      })
-      .forEach(method => {
-        if (typeof chain[method] !== 'function') {
-          console.warn(
-            `express-validator: a validator/sanitizer with name ${method} does not exist`,
-          );
-          return;
-        }
+    // optional doesn't matter where it happens in the chain
+    if (config.optional) {
+      chain.optional(config.optional === true ? true : config.optional.options);
+    }
 
-        // Using "!" because typescript doesn't know it isn't undefined.
-        const methodCfg = config[method]!;
+    for (const entry of Object.entries(config)) {
+      if (protectedNames.includes(entry[0])) {
+        continue;
+      }
 
-        let options: any[] = methodCfg === true ? [] : methodCfg.options ?? [];
-        if (options != null && !Array.isArray(options)) {
-          options = [options];
-        }
+      if (
+        !isStandardValidator(entry) &&
+        !isStandardSanitizer(entry) &&
+        !isCustomValidator(entry) &&
+        !isCustomSanitizer(entry)
+      ) {
+        console.warn(
+          `express-validator: schema of "${field}" has unknown validator/sanitizer "${entry[0]}"`,
+        );
+        continue;
+      }
 
-        if (isValidatorOptions(method, methodCfg) && methodCfg.if) {
-          chain.if(methodCfg.if);
-        }
+      // For validators, stuff that must come _before_ the validator itself in the chain.
+      if ((isStandardValidator(entry) || isCustomValidator(entry)) && entry[1] !== true) {
+        const [, validatorConfig] = entry;
+        validatorConfig.if && chain.if(validatorConfig.if);
+        validatorConfig.negated && chain.not();
+      }
 
-        if (isValidatorOptions(method, methodCfg) && methodCfg.negated) {
-          chain.not();
-        }
+      if (isStandardValidator(entry) || isStandardSanitizer(entry)) {
+        const options = entry[1] ? (entry[1] === true ? [] : _.castArray(entry[1].options)) : [];
+        (chain[entry[0]] as any)(...options);
+      }
+      if (isCustomValidator(entry)) {
+        chain.custom(entry[1].custom);
+      }
+      if (isCustomSanitizer(entry)) {
+        chain.customSanitizer(entry[1].customSanitizer);
+      }
 
-        (chain[method] as any)(...options);
-
-        if (isValidatorOptions(method, methodCfg) && methodCfg.errorMessage) {
-          chain.withMessage(methodCfg.errorMessage);
-        }
-
-        if (isValidatorOptions(method, methodCfg) && methodCfg.bail) {
-          chain.bail();
-        }
-      });
+      // For validators, stuff that must come _after_ the validator itself in the chain.
+      if ((isStandardValidator(entry) || isCustomValidator(entry)) && entry[1] !== true) {
+        const [, validatorConfig] = entry;
+        validatorConfig.bail && chain.bail();
+        validatorConfig.errorMessage && chain.withMessage(validatorConfig.errorMessage);
+      }
+    }
 
     return chain;
   });
@@ -165,11 +211,40 @@ export function checkSchema(
   return Object.assign(chains, { run });
 }
 
-function isValidatorOptions(
-  method: string,
-  methodCfg: any,
-): methodCfg is Exclude<ValidatorSchemaOptions<any>, true> {
-  return methodCfg !== true && method in ValidatorsImpl.prototype;
+/** Type guard for an object entry for a standard validator. */
+function isStandardValidator(
+  entry: [string, any],
+): entry is [keyof Validators<any>, ValidatorSchemaOptions<any>] {
+  return entry[0] in ValidatorsImpl.prototype && entry[1];
+}
+
+/** Type guard for an object entry for a standard sanitizer. */
+function isStandardSanitizer(
+  entry: [string, any],
+): entry is [keyof Sanitizers<any>, SanitizerSchemaOptions<any>] {
+  return entry[0] in SanitizersImpl.prototype && entry[1];
+}
+
+/** Type guard for an object entry for a custom validator. */
+function isCustomValidator(entry: [string, any]): entry is [string, CustomValidatorSchemaOptions] {
+  return (
+    !isStandardValidator(entry) &&
+    !isStandardSanitizer(entry) &&
+    typeof entry[1] === 'object' &&
+    entry[1] &&
+    typeof entry[1].custom === 'function'
+  );
+}
+
+/** Type guard for an object entry for a custom sanitizer. */
+function isCustomSanitizer(entry: [string, any]): entry is [string, CustomSanitizerSchemaOptions] {
+  return (
+    !isStandardValidator(entry) &&
+    !isStandardSanitizer(entry) &&
+    typeof entry[1] === 'object' &&
+    entry[1] &&
+    typeof entry[1].customSanitizer === 'function'
+  );
 }
 
 function ensureLocations(config: ParamSchema, defaults: Location[]) {

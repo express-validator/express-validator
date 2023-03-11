@@ -12,7 +12,7 @@ Its syntax looks like this:
 ```js
 const { checkSchema, validationResult } = require('express-validator');
 app.put(
-  '/user/:id/password',
+  '/user/:id',
   checkSchema({
     id: {
       // The location of the field, can be one or more of body, cookies, headers, params or query.
@@ -23,25 +23,20 @@ app.put(
       // Sanitizers can go here as well
       toInt: true,
     },
-    myCustomField: {
-      // Custom validators
-      custom: {
-        options: (value, { req, location, path }) => {
-          return value + req.body.foo + location + path;
+    favoriteFruit: {
+      // Custom validators can have any name, and you can have as many as needed
+      isFruit: {
+        // Any properties supported by standard validators like e.g. isInt, isMobilePhone
+        // are supported by custom validators too
+        errorMessage: 'Not a fruit',
+        custom: (value, { req, location, path }) => {
+          return value === 'banana';
         },
       },
-      // and sanitizers
-      customSanitizer: {
-        options: (value, { req, location, path }) => {
-          let sanitizedValue;
-
-          if (req.body.foo && location && path) {
-            sanitizedValue = parseInt(value);
-          } else {
-            sanitizedValue = 0;
-          }
-
-          return sanitizedValue;
+      // ...and custom sanitizers! They can also have any name.
+      toRipeFruit: {
+        customSanitizer: (value, { req, location, path }) => {
+          return `${value} is ripe!`;
         },
       },
     },
@@ -69,7 +64,7 @@ app.put(
       },
     },
     // Support if functionality in schemas
-    someField: {
+    age: {
       isInt: {
         if: value => {
           return value !== '';
