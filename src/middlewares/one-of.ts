@@ -1,8 +1,10 @@
 import * as _ from 'lodash';
+import { AlternativeMessageFactory, FieldValidationError, Middleware, Request } from '../base';
 import { ContextRunner, ContextRunnerImpl, ValidationChain } from '../chain';
-import { AlternativeMessageFactory, Middleware, Request } from '../base';
+import { ReadonlyContext } from '../context';
 import { ContextBuilder } from '../context-builder';
 import { ContextItem } from '../context-items';
+import { runAllChains } from '../utils';
 
 // A dummy context item that gets added to surrogate contexts just to make them run
 const dummyItem: ContextItem = { async run() {} };
@@ -61,12 +63,27 @@ export function oneOf(
   const run = async (req: Request, opts?: { dryRun?: boolean }) => {
     const surrogateContext = new ContextBuilder().addItem(dummyItem).build();
 
-    // Run each group of chains in parallel, and within each group, run each chain in parallel too.
+    // Run each group of chains in parallel
     const promises = chains.map(async chain => {
       const group = Array.isArray(chain) ? chain : [chain];
-      const results = await Promise.all(group.map(chain => chain.run(req, { dryRun: true })));
-      const contexts = results.map(result => result.context);
-      const groupErrors = _.flatMap(contexts, 'errors');
+      const results = await runAllChains(req, group, { dryRun: true });
+      const { contexts, groupErrors } = results.reduce(
+        ({ contexts, groupErrors }, result) => {
+          const { context } = result;
+          contexts.push(context);
+
+          const fieldErrors = context.errors.filter(
+            (error): error is FieldValidationError => error.type === 'field',
+          );
+          groupErrors.push(...fieldErrors);
+
+          return { contexts, groupErrors };
+        },
+        {
+          contexts: [] as ReadonlyContext[],
+          groupErrors: [] as FieldValidationError[],
+        },
+      );
 
       // #536: The data from a chain within oneOf() can only be made available to e.g. matchedData()
       // if its entire group is valid.

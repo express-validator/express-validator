@@ -3,13 +3,16 @@ import { Optional } from '../context';
 import { ChainCondition, CustomCondition } from '../context-items';
 import { CustomValidator } from '../base';
 import { Bail } from '../context-items/bail';
-import { ContextHandler } from './context-handler';
+import { BailOptions, ContextHandler } from './context-handler';
 import { ContextRunner } from './context-runner';
 
 export class ContextHandlerImpl<Chain> implements ContextHandler<Chain> {
   constructor(private readonly builder: ContextBuilder, private readonly chain: Chain) {}
 
-  bail() {
+  bail(opts?: BailOptions) {
+    if (opts?.level === 'request') {
+      this.builder.setRequestBail();
+    }
     this.builder.addItem(new Bail());
     return this.chain;
   }

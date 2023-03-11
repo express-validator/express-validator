@@ -107,6 +107,21 @@ describe('with a list of chain groups', () => {
       done();
     });
   });
+
+  it('stops running chains in a group when one of them has errors and request-level bail', done => {
+    const req = {
+      cookies: { foo: true, bar: 'def', baz: 'qux' },
+    };
+
+    const custom = jest.fn();
+    oneOf([
+      [check('foo').isInt().bail({ level: 'request' }), check('bar').custom(custom)],
+      check('baz').isAlpha(),
+    ])(req, {}, () => {
+      expect(custom).not.toHaveBeenCalled();
+      done();
+    });
+  });
 });
 
 describe('error message', () => {
