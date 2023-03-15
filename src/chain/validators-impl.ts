@@ -62,7 +62,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
     return this.custom(
       value =>
         typeof value === 'object' &&
-        (options.strict ? value !== null && !Array.isArray(value) : true),
+        (options.strict == null || options.strict ? value !== null && !Array.isArray(value) : true),
     );
   }
 

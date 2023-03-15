@@ -289,6 +289,26 @@ describe('#isObject()', () => {
     expect(context.errors).toHaveLength(6);
   });
 
+  it('checks if context is object with options.strict not set', async () => {
+    validators.isObject({});
+    const context = builder.build();
+
+    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const isObject = context.stack[0];
+
+    await isObject.run(context, {}, meta);
+    await isObject.run(context, { foo: 'foo' }, meta);
+    expect(context.errors).toHaveLength(0);
+
+    await isObject.run(context, 'foo', meta);
+    await isObject.run(context, 5, meta);
+    await isObject.run(context, true, meta);
+    await isObject.run(context, null, meta);
+    await isObject.run(context, undefined, meta);
+    await isObject.run(context, ['foo'], meta);
+    expect(context.errors).toHaveLength(6);
+  });
+
   it('checks if context is object with strict = false', async () => {
     validators.isObject({ strict: false });
     const context = builder.build();
