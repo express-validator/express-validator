@@ -1,22 +1,22 @@
 {
-  "docs": {
-    "Introduction": ["index"],
-    "Features": [
-      "sanitization",
-      "custom-validators-sanitizers",
-      "custom-error-messages",
-      "wildcards",
-      "schema-validation",
-      "whole-body-validation",
-      "running-imperatively"
-    ],
-    "API": [
-      "check-api",
-      "validation-chain-api",
-      "sanitization-chain-api",
-      "matched-data-api",
-      "validation-result-api"
-    ],
-    "More": ["migration-v5-to-v6"]
-  }
+  "docs": [
+    {
+      "type": "doc",
+      "id": "index",
+      "label": "Introduction"
+    },
+    {
+      "type": "category",
+      "label": "Guides",
+      "items": ["guides/getting-started", "guides/field-selection"]
+    }
+  ],
+  "api": [
+    {
+      "type": "category",
+      "label": "Middlewares",
+      "items": ["api/check"]
+    },
+    "api/validation-result"
+  ]
 }

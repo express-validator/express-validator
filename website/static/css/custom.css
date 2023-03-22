@@ -76,3 +76,12 @@
 .navbar-search button:hover {
   background-color: var(--docsearch-searchbox-focus-background);
 }
+
+th {
+  text-align: left;
+}
+
+th:last-child {
+  /* Make the last column in tables always use up the remaining space */
+  width: 100%;
+}
