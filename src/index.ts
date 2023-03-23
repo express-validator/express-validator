@@ -5,8 +5,12 @@ export {
   CustomSanitizer,
   AlternativeMessageFactory,
   FieldMessageFactory,
+  GroupedAlternativeMessageFactory,
+  UnknownFieldMessageFactory,
   FieldValidationError,
   AlternativeValidationError,
+  GroupedAlternativeValidationError,
+  UnknownFieldsError,
   ValidationError,
 } from './base';
 
