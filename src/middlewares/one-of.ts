@@ -9,7 +9,7 @@ import { runAllChains } from '../utils';
 // A dummy context item that gets added to surrogate contexts just to make them run
 const dummyItem: ContextItem = { async run() {} };
 
-export type OneOfErrorType = 'grouped' | 'leastErroredOnly' | 'flat';
+export type OneOfErrorType = 'grouped' | 'least_errored' | 'flat';
 
 // Not used in this file, just for third party users.
 export type OneOfOptions =
@@ -26,8 +26,8 @@ export type OneOfOptions =
  * Creates a middleware that will ensure that at least one of the given validation chains
  * or validation chain groups are valid.
  *
- * If none are, a single error for a pseudo-field `_error` is added to the request,
- * with the errors of each chain made available under the `nestedErrors` property.
+ * If none are, a single `AlternativeValidationError` or `GroupedAlternativeValidationError`
+ * is added to the request, with the errors of each chain made available under the `nestedErrors` property.
  *
  * @param chains an array of validation chains to check if are valid.
  *               If any of the items of `chains` is an array of validation chains, then all of them
@@ -43,8 +43,8 @@ export function oneOf(
  * Creates a middleware that will ensure that at least one of the given validation chains
  * or validation chain groups are valid.
  *
- * If none are, a single error for a pseudo-field `_error` is added to the request,
- * with the errors of each chain made available under the `nestedErrors` property.
+ * If none are, a single `AlternativeValidationError` or `GroupedAlternativeValidationError`
+ * is added to the request, with the errors of each chain made available under the `nestedErrors` property.
  *
  * @param chains an array of validation chains to check if are valid.
  *               If any of the items of `chains` is an array of validation chains, then all of them
@@ -110,7 +110,7 @@ export function oneOf(
             nestedErrors: _.flatMap(allErrors),
           });
           break;
-        case 'leastErroredOnly':
+        case 'least_errored':
           let leastErroredIndex = 0;
           for (let i = 1; i < allErrors.length; i++) {
             if (allErrors[i].length < allErrors[leastErroredIndex].length) {

@@ -178,12 +178,12 @@ describe('should let the user to choose between multiple error types', () => {
     expect(context.errors).toMatchSnapshot();
   });
 
-  it('leastErroredOnly error type', done => {
+  it('least_errored error type', done => {
     const req: InternalRequest = {
       body: { foo: true, bar: 'bar' },
     };
     const options: OneOfOptions = {
-      errorType: 'leastErroredOnly',
+      errorType: 'least_errored',
     };
 
     oneOf(
