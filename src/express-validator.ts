@@ -2,6 +2,8 @@ import {
   AlternativeMessageFactory,
   CustomSanitizer,
   CustomValidator,
+  ErrorMessage,
+  FieldMessageFactory,
   Location,
   Middleware,
   Request,
@@ -148,9 +150,11 @@ export class ExpressValidator<
 
   buildCheckFunction(
     locations: Location[],
-  ): (fields?: string | string[], message?: any) => CustomValidationChain<this> {
-    return (fields?: string | string[], message?: any) =>
-      this.createChain(fields, locations, message);
+  ): (
+    fields?: string | string[],
+    message?: FieldMessageFactory | ErrorMessage,
+  ) => CustomValidationChain<this> {
+    return (fields, message) => this.createChain(fields, locations, message);
   }
 
   /**

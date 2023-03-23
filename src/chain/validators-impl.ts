@@ -1,5 +1,5 @@
 import * as validator from 'validator';
-import { CustomValidator, StandardValidator } from '../base';
+import { CustomValidator, ErrorMessage, FieldMessageFactory, StandardValidator } from '../base';
 import { CustomValidation, StandardValidation } from '../context-items';
 import { ContextBuilder } from '../context-builder';
 import * as Options from '../options';
@@ -26,7 +26,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
     return this.chain;
   }
 
-  withMessage(message: any) {
+  withMessage(message: FieldMessageFactory | ErrorMessage) {
     this.lastValidator.message = message;
     return this.chain;
   }

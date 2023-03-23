@@ -87,7 +87,7 @@ describe('#addError()', () => {
     });
   });
 
-  describe('for type nested', () => {
+  describe('for type alternative', () => {
     const req = {};
     const nestedError: FieldValidationError = {
       type: 'field',
@@ -138,13 +138,76 @@ describe('#addError()', () => {
     it('pushes an error with the message function return', () => {
       const message = jest.fn(() => 123);
       context.addError({
-        type: 'alternative',
+        type: 'alternative_grouped',
         req,
         message,
-        nestedErrors: [nestedError],
+        nestedErrors: [[nestedError]],
       });
 
-      expect(message).toHaveBeenCalledWith([nestedError], { req });
+      expect(message).toHaveBeenCalledWith([[nestedError]], { req });
+      expect(context.errors).toHaveLength(1);
+      expect(context.errors[0].msg).toBe(123);
+    });
+  });
+
+  describe('for type alternative_grouped', () => {
+    const req = {};
+    const nestedError: FieldValidationError = {
+      type: 'field',
+      value: 'foo',
+      path: 'bar',
+      location: 'body',
+      msg: 'Oh no',
+    };
+
+    it('pushes a request error with nested errors', () => {
+      context.addError({
+        type: 'alternative_grouped',
+        req,
+        nestedErrors: [[nestedError]],
+      });
+
+      expect(context.errors).toHaveLength(1);
+      expect(context.errors).toContainEqual({
+        type: 'alternative_grouped',
+        msg: 'Invalid value',
+        nestedErrors: [[nestedError]],
+      });
+    });
+
+    it('pushes an error with default error message', () => {
+      context.addError({
+        type: 'alternative_grouped',
+        req,
+        nestedErrors: [[nestedError]],
+      });
+
+      expect(context.errors).toHaveLength(1);
+      expect(context.errors[0].msg).toBe('Invalid value');
+    });
+
+    it('pushes an error with argument message', () => {
+      context.addError({
+        type: 'alternative_grouped',
+        req,
+        message: 'oh noes',
+        nestedErrors: [[nestedError]],
+      });
+
+      expect(context.errors).toHaveLength(1);
+      expect(context.errors[0].msg).toBe('oh noes');
+    });
+
+    it('pushes an error with the message function return', () => {
+      const message = jest.fn(() => 123);
+      context.addError({
+        type: 'alternative_grouped',
+        req,
+        message,
+        nestedErrors: [[nestedError]],
+      });
+
+      expect(message).toHaveBeenCalledWith([[nestedError]], { req });
       expect(context.errors).toHaveLength(1);
       expect(context.errors[0].msg).toBe(123);
     });

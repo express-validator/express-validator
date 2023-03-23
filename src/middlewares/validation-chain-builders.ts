@@ -1,4 +1,4 @@
-import { Location } from '../base';
+import { ErrorMessage, FieldMessageFactory, Location } from '../base';
 import { check as baseCheck } from './check';
 
 /**
@@ -8,7 +8,8 @@ import { check as baseCheck } from './check';
  *  const checkBodyAndQuery = buildCheckFunction(['body', 'query']);
  */
 export function buildCheckFunction(locations: Location[]) {
-  return (fields?: string | string[], message?: any) => baseCheck(fields, locations, message);
+  return (fields?: string | string[], message?: FieldMessageFactory | ErrorMessage) =>
+    baseCheck(fields, locations, message);
 }
 
 /**

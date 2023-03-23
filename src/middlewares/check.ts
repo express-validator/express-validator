@@ -1,3 +1,4 @@
+import { ErrorMessage, FieldMessageFactory, InternalRequest, Location } from '../base';
 import {
   ContextHandlerImpl,
   ContextRunnerImpl,
@@ -5,14 +6,13 @@ import {
   ValidationChain,
   ValidatorsImpl,
 } from '../chain';
-import { InternalRequest, Location } from '../base';
-import { bindAll } from '../utils';
 import { ContextBuilder } from '../context-builder';
+import { bindAll } from '../utils';
 
 export function check(
   fields: string | string[] = '',
   locations: Location[] = [],
-  message?: any,
+  message?: FieldMessageFactory | ErrorMessage,
 ): ValidationChain {
   const builder = new ContextBuilder()
     .setFields(Array.isArray(fields) ? fields : [fields])

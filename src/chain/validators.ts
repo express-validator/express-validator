@@ -1,4 +1,4 @@
-import { CustomValidator, FieldMessageFactory } from '../base';
+import { CustomValidator, ErrorMessage, FieldMessageFactory } from '../base';
 import * as Options from '../options';
 
 export interface Validators<Return> {
@@ -14,18 +14,11 @@ export interface Validators<Return> {
   /**
    * Sets the error message for the previous validator.
    *
-   * @param message a function for dynamically creating the error message based on the field value
+   * @param message the message, which can be any value, or a function for dynamically creating the
+   *                error message based on the field value
    * @returns the current validation chain
    */
-  withMessage(message: FieldMessageFactory): Return;
-
-  /**
-   * Sets the error message for the previous validator.
-   *
-   * @param message the error message
-   * @returns the current validation chain
-   */
-  withMessage(message: any): Return;
+  withMessage(message: FieldMessageFactory | ErrorMessage): Return;
 
   // custom validators
   /**
