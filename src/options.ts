@@ -252,6 +252,7 @@ export type MobilePhoneLocale =
   | 'it-IT'
   | 'it-SM'
   | 'ja-JP'
+  | 'ko-KR'
   | 'ka-GE'
   | 'kk-KZ'
   | 'kl-GL'
