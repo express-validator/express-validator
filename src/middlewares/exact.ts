@@ -86,7 +86,7 @@ export function checkExact(
       context.addError({
         type: 'unknown_fields',
         req,
-        message: opts?.message,
+        message: opts?.message || 'Unknown field(s)',
         fields: unknownFields,
       });
     }
