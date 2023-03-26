@@ -1,0 +1,17 @@
+.example {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  column-gap: 20px;
+}
+
+.exampleTitle {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+@media screen and (max-width: 996px) {
+  .example {
+    grid-template-columns: none;
+    grid-template-rows: auto;
+  }
+}

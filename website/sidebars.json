@@ -15,7 +15,7 @@
     {
       "type": "category",
       "label": "Middlewares",
-      "items": ["api/check"]
+      "items": ["api/check", "api/one-of"]
     },
     "api/validation-result"
   ]
