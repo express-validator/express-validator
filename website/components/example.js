@@ -5,6 +5,13 @@ export const SideBySideExample = ({ children }) => {
   return <div className={styles.example}>{children}</div>;
 };
 
+export const ExampleCell = ({ title, children }) => (
+  <div>
+    <strong className={styles.exampleTitle}>{title}</strong>
+    {children}
+  </div>
+);
+
 export function UsageExample({ children }) {
   return (
     <div>
