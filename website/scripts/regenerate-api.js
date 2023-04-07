@@ -127,5 +127,6 @@ function regenerateSource(input, output) {
     });
   });
 
-  fs.writeFileSync(output, outputEntries.join('\n\n'));
+  // Make sure to include trailing newline
+  fs.writeFileSync(output, outputEntries.join('\n\n') + '\n');
 }
