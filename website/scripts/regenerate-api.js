@@ -82,7 +82,12 @@ function regenerateSource(input, output) {
     }
 
     node.forEachChild(child => {
-      if (!ts.isMethodSignature(child) || !validator[child.name.text]) {
+      // Ignore methods called default only because that's coming from ES modules :)
+      if (
+        !ts.isMethodSignature(child) ||
+        child.name.text === 'default' ||
+        !validator[child.name.text]
+      ) {
         return;
       }
 

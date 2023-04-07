@@ -1,9 +1,3 @@
-#### `default()`
-
-```ts
-default(default_value: any): ValidationChain
-```
-
 #### `blacklist()`
 
 ```ts
