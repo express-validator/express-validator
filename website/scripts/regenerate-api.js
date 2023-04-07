@@ -6,6 +6,8 @@ const validator = require('validator');
 const ts = require('typescript');
 
 const generatedDocsPath = path.resolve(__dirname, '../../docs/api/validator');
+
+// Keep the following in sync with .github/workflows/docs.yml
 const optionsPath = path.resolve(__dirname, '../../src/options.ts');
 const validatorsPath = path.resolve(__dirname, '../../src/chain/validators.ts');
 const sanitizersPath = path.resolve(__dirname, '../../src/chain/sanitizers.ts');

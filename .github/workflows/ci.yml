@@ -17,6 +17,8 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           cache: npm
+      - name: Set up npm cache
+        uses: ./.github/actions/npm-cache
       - name: Install dependencies
         run: npm ci
       - name: Test
@@ -48,22 +50,9 @@ jobs:
         with:
           node-version: 16
           cache: npm
+      - name: Set up npm cache
+        uses: ./.github/actions/npm-cache
       - name: Install dependencies
         run: npm ci
       - name: Lint
         run: npm run lint
-
-  docs:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out
-        uses: actions/checkout@v2
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16
-          cache: npm
-      - name: Install dependencies
-        run: npm ci
-      - name: Build docs
-        run: npm run docs:build
