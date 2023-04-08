@@ -10,7 +10,7 @@ These methods are all available via `require('express-validator')`.
 - `field` _(optional)_: a string or an array of strings of field names to validate against.
 - `message` _(optional)_: an error message to use when failed validators don't specify a message. Defaults to `Invalid value`; see also [Dynamic Messages](feature-error-messages.md#dynamic-messages).
 
-> _Returns:_ a [Validation Chain](api-validation-chain.md)
+> _Returns:_ a [Validation Chain](api-validation-chain.md) and `{ builder: ContextBuilder }` that can be used to create third party libraries.
 
 Creates a validation chain for one or more fields. They may be located in any of the following request objects:
 
