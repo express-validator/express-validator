@@ -181,17 +181,17 @@ export class ExpressValidator<
   /**
    * Same as {@link ExpressValidator.check}, but only validates in `req.cookies`.
    */
-  readonly cookies = this.buildCheckFunction(['cookies']);
+  readonly cookie = this.buildCheckFunction(['cookies']);
 
   /**
    * Same as {@link ExpressValidator.check}, but only validates in `req.headers`.
    */
-  readonly headers = this.buildCheckFunction(['headers']);
+  readonly header = this.buildCheckFunction(['headers']);
 
   /**
    * Same as {@link ExpressValidator.check}, but only validates in `req.params`.
    */
-  readonly params = this.buildCheckFunction(['params']);
+  readonly param = this.buildCheckFunction(['params']);
 
   /**
    * Same as {@link ExpressValidator.check}, but only validates in `req.query`.

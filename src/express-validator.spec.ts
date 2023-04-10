@@ -14,9 +14,9 @@ describe('ExpressValidator', () => {
   describe.each([
     ['check', ['body', 'cookies', 'headers', 'params', 'query']],
     ['body', ['body']],
-    ['cookies', ['cookies']],
-    ['headers', ['headers']],
-    ['params', ['params']],
+    ['cookie', ['cookies']],
+    ['header', ['headers']],
+    ['param', ['params']],
     ['query', ['query']],
   ] as const)('#%s()', (method, locations) => {
     const foo = 'bar';
