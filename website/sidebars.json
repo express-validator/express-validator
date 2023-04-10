@@ -8,7 +8,7 @@
     {
       "type": "category",
       "label": "Guides",
-      "items": ["guides/getting-started", "guides/field-selection"]
+      "items": ["guides/getting-started", "guides/validation-chain", "guides/field-selection"]
     }
   ],
   "api": [
@@ -17,6 +17,7 @@
       "label": "Middlewares",
       "items": ["api/check", "api/check-exact", "api/check-schema", "api/one-of"]
     },
+    "api/validation-chain",
     "api/validation-result"
   ]
 }
