@@ -1,5 +1,4 @@
 import {
-  AlternativeMessageFactory,
   CustomSanitizer,
   CustomValidator,
   ErrorMessage,
@@ -13,7 +12,7 @@ import { ContextRunner, ValidationChain } from './chain';
 import { MatchedDataOptions, matchedData } from './matched-data';
 import { check } from './middlewares/check';
 import { checkExact } from './middlewares/exact';
-import { OneOfErrorType, OneOfOptions, oneOf } from './middlewares/one-of';
+import { OneOfOptions, oneOf } from './middlewares/one-of';
 import {
   DefaultSchemaKeys,
   ExtensionSanitizerSchemaOptions,
@@ -234,33 +233,11 @@ export class ExpressValidator<
    * @param chains an array of validation chains to check if are valid.
    *               If any of the items of `chains` is an array of validation chains, then all of them
    *               must be valid together for the request to be considered valid.
-   * @param options.message a function for creating a custom error message in case none of the chains are valid
    */
-  oneOf(
-    chains: (CustomValidationChain<this> | CustomValidationChain<this>[])[],
-    options?: { message?: AlternativeMessageFactory; errorType?: OneOfErrorType },
-  ): Middleware & ContextRunner;
-
-  /**
-   * Creates a middleware that will ensure that at least one of the given validation chains
-   * or validation chain groups are valid.
-   *
-   * If none are, a single error of type `alternative` is added to the request,
-   * with the errors of each chain made available under the `nestedErrors` property.
-   *
-   * @param chains an array of validation chains to check if are valid.
-   *               If any of the items of `chains` is an array of validation chains, then all of them
-   *               must be valid together for the request to be considered valid.
-   * @param options.message an error message to use in case none of the chains are valid
-   */
-  oneOf(
-    chains: (CustomValidationChain<this> | CustomValidationChain<this>[])[],
-    options?: { message?: any; errorType?: OneOfErrorType },
-  ): Middleware & ContextRunner;
   oneOf(
     chains: (CustomValidationChain<this> | CustomValidationChain<this>[])[],
     options?: OneOfOptions,
-  ) {
+  ): Middleware & ContextRunner {
     return oneOf(chains, options);
   }
 
