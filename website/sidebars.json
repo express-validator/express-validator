@@ -8,7 +8,12 @@
     {
       "type": "category",
       "label": "Guides",
-      "items": ["guides/getting-started", "guides/validation-chain", "guides/field-selection"]
+      "items": [
+        "guides/getting-started",
+        "guides/validation-chain",
+        "guides/field-selection",
+        "guides/customizing"
+      ]
     }
   ],
   "api": [
@@ -18,6 +23,7 @@
       "items": ["api/check", "api/check-exact", "api/check-schema", "api/one-of"]
     },
     "api/validation-chain",
+    "api/express-validator",
     "api/validation-result"
   ]
 }

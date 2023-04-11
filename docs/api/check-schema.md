@@ -7,7 +7,7 @@ import { SideBySideExample, ExampleCell } from '@site/components/example';
 
 # `checkSchema()`
 
-## `checkSchema()`
+## `checkSchema()` {#checkschema}
 
 ```ts
 checkSchema(schema: Schema, defaultLocations?: Location[]): ValidationChain[]

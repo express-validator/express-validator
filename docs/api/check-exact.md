@@ -7,7 +7,7 @@ import { SideBySideExample, UsageExample, ErrorExample } from '@site/components/
 
 # `checkExact()`
 
-## `checkExact()`
+## `checkExact()` {#checkexact}
 
 ```ts
 checkExact(
