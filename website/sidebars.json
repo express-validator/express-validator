@@ -24,6 +24,7 @@
     },
     "api/validation-chain",
     "api/express-validator",
+    "api/matched-data",
     "api/validation-result"
   ]
 }
