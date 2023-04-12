@@ -12,7 +12,8 @@
         "guides/getting-started",
         "guides/validation-chain",
         "guides/field-selection",
-        "guides/customizing"
+        "guides/customizing",
+        "guides/schema-validation"
       ]
     }
   ],
