@@ -47,7 +47,7 @@ const themeConfig = {
         position: 'left',
       },
       { type: 'doc', docId: 'index', label: 'Docs', position: 'right' },
-      { type: 'doc', docId: 'check-api', label: 'API', position: 'right' },
+      { type: 'docSidebar', sidebarId: 'api', label: 'API', position: 'right' },
       {
         href: REPO_URL,
         label: 'GitHub',

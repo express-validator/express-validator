@@ -12,17 +12,17 @@
       "whole-body-validation",
       "running-imperatively"
     ],
-    "API": [
-      "check-api",
-      "validation-chain-api",
-      "filter-api",
-      "sanitization-chain-api",
-      "matched-data-api",
-      "validation-result-api"
-    ],
     "More": [
       "faq",
       "migration-v5-to-v6"
     ]
-  }
+  },
+  "api": [
+    "check-api",
+    "validation-chain-api",
+    "filter-api",
+    "sanitization-chain-api",
+    "matched-data-api",
+    "validation-result-api"
+  ]
 }

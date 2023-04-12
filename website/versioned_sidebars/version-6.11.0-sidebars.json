@@ -12,17 +12,17 @@
       "version-6.11.0/whole-body-validation",
       "version-6.11.0/running-imperatively"
     ],
-    "API": [
-      "version-6.11.0/check-api",
-      "version-6.11.0/validation-chain-api",
-      "version-6.11.0/filter-api",
-      "version-6.11.0/sanitization-chain-api",
-      "version-6.11.0/matched-data-api",
-      "version-6.11.0/validation-result-api"
-    ],
     "More": [
       "version-6.11.0/faq",
       "version-6.11.0/migration-v5-to-v6"
     ]
-  }
+  },
+  "api": [
+    "version-6.11.0/check-api",
+    "version-6.11.0/validation-chain-api",
+    "version-6.11.0/filter-api",
+    "version-6.11.0/sanitization-chain-api",
+    "version-6.11.0/matched-data-api",
+    "version-6.11.0/validation-result-api"
+  ]
 }

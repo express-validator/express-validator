@@ -11,14 +11,14 @@
       "version-6.5.0/schema-validation",
       "version-6.5.0/whole-body-validation",
       "version-6.5.0/running-imperatively"
-    ],
-    "API": [
-      "version-6.5.0/check-api",
-      "version-6.5.0/validation-chain-api",
-      "version-6.5.0/filter-api",
-      "version-6.5.0/sanitization-chain-api",
-      "version-6.5.0/matched-data-api",
-      "version-6.5.0/validation-result-api"
     ]
-  }
+  },
+  "api": [
+    "version-6.5.0/check-api",
+    "version-6.5.0/validation-chain-api",
+    "version-6.5.0/filter-api",
+    "version-6.5.0/sanitization-chain-api",
+    "version-6.5.0/matched-data-api",
+    "version-6.5.0/validation-result-api"
+  ]
 }
