@@ -8,11 +8,16 @@
     {
       "type": "category",
       "label": "Guides",
+      "link": {
+        "type": "generated-index",
+        "title": "express-validator guides"
+      },
       "items": [
         "guides/getting-started",
         "guides/validation-chain",
         "guides/field-selection",
         "guides/customizing",
+        "guides/manually-running",
         "guides/schema-validation"
       ]
     }
@@ -26,6 +31,7 @@
     "api/validation-chain",
     "api/express-validator",
     "api/matched-data",
-    "api/validation-result"
+    "api/validation-result",
+    "api/misc"
   ]
 }

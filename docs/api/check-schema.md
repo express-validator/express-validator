@@ -10,7 +10,7 @@ import { SideBySideExample, ExampleCell } from '@site/components/example';
 ## `checkSchema()` {#checkschema}
 
 ```ts
-checkSchema(schema: Schema, defaultLocations?: Location[]): ValidationChain[]
+checkSchema(schema: Schema, defaultLocations?: Location[]): ValidationChain[] & ContextRunner
 ```
 
 Creates a list of [validation chains](./validation-chain.md) based on the provided [`schema`](#schema),
@@ -37,6 +37,31 @@ checkSchema(schema, ['body', 'query']);
 ```
 
 You can also fine tune the locations checked for each field by setting the [`in` property](#in), which takes precedence over the `defaultLocations` parameter.
+
+### Manually running `checkSchema()` {#manually-running}
+
+`checkSchema()` returns a middleware, which makes it ideal to pass to an express.js route.
+But since it also implements the [`ContextRunner`](./misc.md#contextrunner) interface,
+you can also run it manually, if you wish.
+
+```ts
+app.post('/signup', async (req, res) => {
+  const result = await checkSchema({
+    email: { isEmail: true },
+    pasword: { isLength: { options: { min: 8 } } },
+  }).run(req);
+
+  if (!result.isEmpty()) {
+    console.log('Failed validation');
+  }
+});
+```
+
+:::tip
+
+See the ["Manually running validations" guide](../guides/manually-running.md) to learn more.
+
+:::
 
 ## `Schema`
 

@@ -151,8 +151,8 @@ app.post(
 #### Manually running `checkExact()` {#example-manual}
 
 `checkExact()` returns a middleware, which makes it ideal to pass to an express.js route.
-But since its return is also a [`ContextRunner`](./context-runner.md), you can also run it manually,
-if you wish.
+But since it also implements the [`ContextRunner`](./misc.md#contextrunner) interface,
+you can also run it manually, if you wish.
 
 ```ts
 app.post(
@@ -167,6 +167,12 @@ app.post(
   },
 );
 ```
+
+:::tip
+
+See the ["Manually running validations" guide](../guides/manually-running.md) to learn more.
+
+:::
 
 ## `UnknownFieldMessageFactory`
 

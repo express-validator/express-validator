@@ -15,7 +15,7 @@ Validation chains are created by the [`check()` functions](./check.md), and they
 
 - as express.js route handlers, which will run the validation automatically;
 - as parameter of some of express-validator's other functions, like `oneOf()` or `checkExact()`;
-- standalone, where you have full control over when the validation runs and how.
+- [standalone, where you have full control over when the validation runs and how](../guides/manually-running.md).
 
 :::tip
 
@@ -268,7 +268,7 @@ if(condition: CustomValidator | ContextRunner): ValidationChain
 
 Adds a condition on whether the validation chain should continue running on a field or not.
 
-The condition may be either a [custom validator](#custom) or a [`ContextRunner` instance](./context-runner.md).
+The condition may be either a [custom validator](#custom) or a [`ContextRunner` instance](./misc.md#contextrunner).
 
 ```js
 body('newPassword')
