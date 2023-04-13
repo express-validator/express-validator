@@ -67,7 +67,7 @@ say hey when the person's name is not set.
 For example, going to [http://localhost:3000/hello](http://localhost:3000/hello) will print "Hello, undefined!".
 
 That's where express-validator comes in handy: let's add a **validator** that checks that the `person`
-query string cannot be empty.
+query string cannot be empty, with the intuitively named validator `notEmpty`:
 
 <Tabs groupId="lang">
 <TabItem value="js" label="JavaScript">
@@ -262,6 +262,67 @@ app.listen(3000);
 
 Now, if you restart the server and refresh the page, what you'll see is "Hello, &lt;b&gt;John&lt;/b&gt;!".
 Our example page is no longer vulnerable to XSS!
+
+## Accessing validated data
+
+This application is pretty simple, but as you start growing it, it might become quite repetitive to
+type `req.body.fieldName1`, `req.body.fieldName2`, and so on.
+
+To help with this, you can use [`matchedData()`](../api/matched-data.md), which automatically collects
+all data that express-validator has validated and/or sanitized:
+
+<Tabs groupId="lang">
+<TabItem value="js" label="JavaScript">
+
+```js title="index.js" showLineNumbers
+const express = require('express');
+// highlight-next-line
+const { query, matchedData, validationResult } = require('express-validator');
+const app = express();
+
+app.use(express.json());
+app.get('/hello', query('person').notEmpty().escape(), (req, res) => {
+  const result = validationResult(req);
+  if (result.isEmpty()) {
+    // highlight-next-line
+    const data = matchedData(req);
+    // highlight-next-line
+    return res.send(`Hello, ${data.person}!`);
+  }
+
+  res.send({ errors: result.array() });
+});
+
+app.listen(3000);
+```
+
+</TabItem>
+<TabItem value="ts" label="TypeScript">
+
+```ts title="index.ts" showLineNumbers
+import * as express from 'express';
+// highlight-next-line
+import { query, matchedData, validationResult } from 'express-validator';
+const app = express();
+
+app.use(express.json());
+app.get('/hello', query('person').notEmpty().escape(), (req, res) => {
+  const result = validationResult(req);
+  if (result.isEmpty()) {
+    // highlight-next-line
+    const data = matchedData(req);
+    // highlight-next-line
+    return res.send(`Hello, ${data.person}!`);
+  }
+
+  res.send({ errors: result.array() });
+});
+
+app.listen(3000);
+```
+
+</TabItem>
+</Tabs>
 
 ## What's next?
 

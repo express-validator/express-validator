@@ -5,12 +5,16 @@ export {
   CustomSanitizer,
   AlternativeMessageFactory,
   FieldMessageFactory,
+  GroupedAlternativeMessageFactory,
+  UnknownFieldMessageFactory,
   FieldValidationError,
   AlternativeValidationError,
+  GroupedAlternativeValidationError,
+  UnknownFieldsError,
   ValidationError,
 } from './base';
 
-export { ValidationChain } from './chain';
+export { ContextRunner, ValidationChain } from './chain';
 
 export * from './middlewares/exact';
 export * from './middlewares/one-of';

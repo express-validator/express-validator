@@ -1,4 +1,5 @@
 import {
+  ErrorMessage,
   InternalRequest,
   Location,
   Middleware,
@@ -18,6 +19,7 @@ type CheckExactOptions = {
    * @default ['body', 'params', 'query']
    */
   locations?: readonly Location[];
+  message?: UnknownFieldMessageFactory | ErrorMessage;
 };
 
 type CheckExactInput =
@@ -43,33 +45,7 @@ type CheckExactInput =
  */
 export function checkExact(
   chains?: CheckExactInput,
-  opts?: CheckExactOptions & { message?: UnknownFieldMessageFactory },
-): Middleware & ContextRunner;
-
-/**
- * Checks whether the request contains exactly only those fields that have been validated.
- *
- * Unknown fields, if found, will generate an error of type `unknown_fields`.
- *
- * @param chains either a single chain, an array of chains, or a mixed array of chains and array of chains.
- *               This means that all of the below are valid:
- * ```
- * checkExact(check('foo'))
- * checkExact([check('foo'), check('bar')])
- * checkExact([check('foo'), check('bar')])
- * checkExact(checkSchema({ ... }))
- * checkExact([checkSchema({ ... }), check('foo')])
- * ```
- * @param opts
- */
-export function checkExact(
-  chains?: CheckExactInput,
-  opts?: CheckExactOptions & { message?: any },
-): Middleware & ContextRunner;
-
-export function checkExact(
-  chains?: CheckExactInput,
-  opts?: CheckExactOptions & { message?: any },
+  opts?: CheckExactOptions,
 ): Middleware & ContextRunner {
   // Don't include all locations by default. Browsers will add cookies and headers that the user
   // might not want to validate, which would be a footgun.
@@ -110,7 +86,7 @@ export function checkExact(
       context.addError({
         type: 'unknown_fields',
         req,
-        message: opts?.message,
+        message: opts?.message || 'Unknown field(s)',
         fields: unknownFields,
       });
     }

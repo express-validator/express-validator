@@ -1,7 +1,8 @@
 import {
-  AlternativeMessageFactory,
   CustomSanitizer,
   CustomValidator,
+  ErrorMessage,
+  FieldMessageFactory,
   Location,
   Middleware,
   Request,
@@ -11,7 +12,7 @@ import { ContextRunner, ValidationChain } from './chain';
 import { MatchedDataOptions, matchedData } from './matched-data';
 import { check } from './middlewares/check';
 import { checkExact } from './middlewares/exact';
-import { OneOfErrorType, OneOfOptions, oneOf } from './middlewares/one-of';
+import { OneOfOptions, oneOf } from './middlewares/one-of';
 import {
   DefaultSchemaKeys,
   ExtensionSanitizerSchemaOptions,
@@ -148,9 +149,11 @@ export class ExpressValidator<
 
   buildCheckFunction(
     locations: Location[],
-  ): (fields?: string | string[], message?: any) => CustomValidationChain<this> {
-    return (fields?: string | string[], message?: any) =>
-      this.createChain(fields, locations, message);
+  ): (
+    fields?: string | string[],
+    message?: FieldMessageFactory | ErrorMessage,
+  ) => CustomValidationChain<this> {
+    return (fields, message) => this.createChain(fields, locations, message);
   }
 
   /**
@@ -177,17 +180,17 @@ export class ExpressValidator<
   /**
    * Same as {@link ExpressValidator.check}, but only validates in `req.cookies`.
    */
-  readonly cookies = this.buildCheckFunction(['cookies']);
+  readonly cookie = this.buildCheckFunction(['cookies']);
 
   /**
    * Same as {@link ExpressValidator.check}, but only validates in `req.headers`.
    */
-  readonly headers = this.buildCheckFunction(['headers']);
+  readonly header = this.buildCheckFunction(['headers']);
 
   /**
    * Same as {@link ExpressValidator.check}, but only validates in `req.params`.
    */
-  readonly params = this.buildCheckFunction(['params']);
+  readonly param = this.buildCheckFunction(['params']);
 
   /**
    * Same as {@link ExpressValidator.check}, but only validates in `req.query`.
@@ -230,33 +233,11 @@ export class ExpressValidator<
    * @param chains an array of validation chains to check if are valid.
    *               If any of the items of `chains` is an array of validation chains, then all of them
    *               must be valid together for the request to be considered valid.
-   * @param options.message a function for creating a custom error message in case none of the chains are valid
    */
-  oneOf(
-    chains: (CustomValidationChain<this> | CustomValidationChain<this>[])[],
-    options?: { message?: AlternativeMessageFactory; errorType?: OneOfErrorType },
-  ): Middleware & ContextRunner;
-
-  /**
-   * Creates a middleware that will ensure that at least one of the given validation chains
-   * or validation chain groups are valid.
-   *
-   * If none are, a single error of type `alternative` is added to the request,
-   * with the errors of each chain made available under the `nestedErrors` property.
-   *
-   * @param chains an array of validation chains to check if are valid.
-   *               If any of the items of `chains` is an array of validation chains, then all of them
-   *               must be valid together for the request to be considered valid.
-   * @param options.message an error message to use in case none of the chains are valid
-   */
-  oneOf(
-    chains: (CustomValidationChain<this> | CustomValidationChain<this>[])[],
-    options?: { message?: any; errorType?: OneOfErrorType },
-  ): Middleware & ContextRunner;
   oneOf(
     chains: (CustomValidationChain<this> | CustomValidationChain<this>[])[],
     options?: OneOfOptions,
-  ) {
+  ): Middleware & ContextRunner {
     return oneOf(chains, options);
   }
 

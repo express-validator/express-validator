@@ -19,6 +19,7 @@ it.each([
   expect(errors).toHaveLength(1);
   expect(errors[0]).toMatchObject({
     type: 'unknown_fields',
+    msg: 'Unknown field(s)',
     fields: [{ location: 'query', path: 'orange', value: 1 }],
   });
 });
@@ -31,6 +32,7 @@ it('finds unknown fields from previously ran chains', async () => {
   expect(errors).toHaveLength(1);
   expect(errors[0]).toMatchObject({
     type: 'unknown_fields',
+    msg: 'Unknown field(s)',
     fields: [{ location: 'query', path: 'apple', value: 'red' }],
   });
 });

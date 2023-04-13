@@ -74,7 +74,7 @@ Array [
 ]
 `;
 
-exports[`should let the user to choose between multiple error types leastErroredOnly error type 1`] = `
+exports[`should let the user to choose between multiple error types least_errored error type 1`] = `
 Array [
   Object {
     "msg": "Invalid value(s)",

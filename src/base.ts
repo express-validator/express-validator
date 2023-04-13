@@ -157,6 +157,12 @@ export type ValidationError =
   | FieldValidationError;
 
 /**
+ * An error message that's not a function, as these are treated as message factories
+ * by all validation middlewares.
+ */
+export type ErrorMessage = string | number | symbol | boolean | object | any[];
+
+/**
  * A function which creates an error message based on a field's value.
  *
  * @param input the field value
@@ -173,6 +179,18 @@ export type FieldMessageFactory = (value: any, meta: Meta) => any;
  */
 export type AlternativeMessageFactory = (
   nestedErrors: FieldValidationError[],
+  opts: { req: Request },
+) => any;
+
+/**
+ * A function which creates an error message based on a group of alternatives nested errors.
+ *
+ * @see `oneOf()`
+ * @param nestedErrors The errors from the invalid alternative groups.
+ * @param opts
+ */
+export type GroupedAlternativeMessageFactory = (
+  nestedErrors: FieldValidationError[][],
   opts: { req: Request },
 ) => any;
 

@@ -2,6 +2,7 @@
   "scripts": {
     "start": "docusaurus start",
     "build": "docusaurus build",
+    "regenerate-api": "node ./scripts/regenerate-api.js",
     "publish-gh-pages": "docusaurus deploy",
     "serve": "docusaurus serve",
     "version": "docusaurus docs:version"

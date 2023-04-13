@@ -1,5 +1,12 @@
 import * as _ from 'lodash';
-import { CustomSanitizer, CustomValidator, FieldMessageFactory, Location, Request } from '../base';
+import {
+  CustomSanitizer,
+  CustomValidator,
+  ErrorMessage,
+  FieldMessageFactory,
+  Location,
+  Request,
+} from '../base';
 import {
   BailOptions,
   SanitizersImpl,
@@ -19,7 +26,7 @@ type BaseValidatorSchemaOptions = {
    * The error message if there's a validation error,
    * or a function for creating an error message dynamically.
    */
-  errorMessage?: FieldMessageFactory | any;
+  errorMessage?: FieldMessageFactory | ErrorMessage;
 
   /**
    * Whether the validation should be reversed.

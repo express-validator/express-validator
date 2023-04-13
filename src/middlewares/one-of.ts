@@ -1,5 +1,12 @@
 import * as _ from 'lodash';
-import { AlternativeMessageFactory, FieldValidationError, Middleware, Request } from '../base';
+import {
+  AlternativeMessageFactory,
+  ErrorMessage,
+  FieldValidationError,
+  GroupedAlternativeMessageFactory,
+  Middleware,
+  Request,
+} from '../base';
 import { ContextRunner, ContextRunnerImpl, ValidationChain } from '../chain';
 import { ReadonlyContext } from '../context';
 import { ContextBuilder } from '../context-builder';
@@ -9,56 +16,38 @@ import { runAllChains } from '../utils';
 // A dummy context item that gets added to surrogate contexts just to make them run
 const dummyItem: ContextItem = { async run() {} };
 
-export type OneOfErrorType = 'grouped' | 'leastErroredOnly' | 'flat';
+export type OneOfErrorType = 'grouped' | 'least_errored' | 'flat';
 
-// Not used in this file, just for third party users.
 export type OneOfOptions =
   | {
-      message?: AlternativeMessageFactory;
-      errorType?: OneOfErrorType;
+      /**
+       * The error message to use in case none of the chains are valid.
+       */
+      message?: AlternativeMessageFactory | ErrorMessage;
+      errorType?: Exclude<OneOfErrorType, 'grouped'>;
     }
   | {
-      message?: any;
-      errorType?: OneOfErrorType;
+      /**
+       * The error message to use in case none of the chain groups are valid.
+       */
+      message?: GroupedAlternativeMessageFactory | ErrorMessage;
+      errorType?: 'grouped';
     };
 
 /**
  * Creates a middleware that will ensure that at least one of the given validation chains
  * or validation chain groups are valid.
  *
- * If none are, a single error for a pseudo-field `_error` is added to the request,
- * with the errors of each chain made available under the `nestedErrors` property.
+ * If none are, a single `AlternativeValidationError` or `GroupedAlternativeValidationError`
+ * is added to the request, with the errors of each chain made available under the `nestedErrors` property.
  *
  * @param chains an array of validation chains to check if are valid.
  *               If any of the items of `chains` is an array of validation chains, then all of them
  *               must be valid together for the request to be considered valid.
- * @param options.message a function for creating a custom error message in case none of the chains are valid
  */
 export function oneOf(
   chains: (ValidationChain | ValidationChain[])[],
-  options?: { message?: AlternativeMessageFactory; errorType?: OneOfErrorType },
-): Middleware & ContextRunner;
-
-/**
- * Creates a middleware that will ensure that at least one of the given validation chains
- * or validation chain groups are valid.
- *
- * If none are, a single error for a pseudo-field `_error` is added to the request,
- * with the errors of each chain made available under the `nestedErrors` property.
- *
- * @param chains an array of validation chains to check if are valid.
- *               If any of the items of `chains` is an array of validation chains, then all of them
- *               must be valid together for the request to be considered valid.
- * @param options.message an error message to use in case none of the chains are valid
- */
-export function oneOf(
-  chains: (ValidationChain | ValidationChain[])[],
-  options?: { message?: any; errorType?: OneOfErrorType },
-): Middleware & ContextRunner;
-
-export function oneOf(
-  chains: (ValidationChain | ValidationChain[])[],
-  options: { message?: any; errorType?: OneOfErrorType } = {},
+  options: OneOfOptions = {},
 ): Middleware & ContextRunner {
   const run = async (req: Request, opts?: { dryRun?: boolean }) => {
     const surrogateContext = new ContextBuilder().addItem(dummyItem).build();
@@ -110,7 +99,7 @@ export function oneOf(
             nestedErrors: _.flatMap(allErrors),
           });
           break;
-        case 'leastErroredOnly':
+        case 'least_errored':
           let leastErroredIndex = 0;
           for (let i = 1; i < allErrors.length; i++) {
             if (allErrors[i].length < allErrors[leastErroredIndex].length) {

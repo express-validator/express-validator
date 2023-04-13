@@ -29,6 +29,7 @@
     "clean": "git clean -Xf src",
     "docs:build": "npm --prefix ./website run build",
     "docs:publish": "USE_SSH=true DEPLOYMENT_BRANCH=master npm --prefix ./website run publish-gh-pages",
+    "docs:regenerate-api": "npm --prefix ./website run regenerate-api",
     "docs:serve": "npm --prefix ./website run serve",
     "docs:start": "npm --prefix ./website start",
     "docs:version": "npm --prefix ./website run version",

@@ -10,14 +10,14 @@
       "version-5.3.0/wildcards",
       "version-5.3.0/schema-validation",
       "version-5.3.0/whole-body-validation"
-    ],
-    "API": [
-      "version-5.3.0/check-api",
-      "version-5.3.0/filter-api",
-      "version-5.3.0/sanitization-chain-api",
-      "version-5.3.0/validation-chain-api",
-      "version-5.3.0/validation-result-api",
-      "version-5.3.0/legacy-api"
     ]
-  }
+  },
+  "api": [
+    "version-5.3.0/check-api",
+    "version-5.3.0/filter-api",
+    "version-5.3.0/sanitization-chain-api",
+    "version-5.3.0/validation-chain-api",
+    "version-5.3.0/validation-result-api",
+    "version-5.3.0/legacy-api"
+  ]
 }
