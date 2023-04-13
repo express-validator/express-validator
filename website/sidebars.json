@@ -20,6 +20,15 @@
         "guides/manually-running",
         "guides/schema-validation"
       ]
+    },
+    {
+      "type": "category",
+      "label": "Migrating",
+      "link": {
+        "type": "generated-index",
+        "title": "Migration guides"
+      },
+      "items": ["migration-v5-to-v6"]
     }
   ],
   "api": [
