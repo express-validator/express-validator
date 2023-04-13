@@ -260,6 +260,14 @@ app.get(
 );
 ```
 
+:::caution
+
+Functions such as [`oneOf()`](./one-of.md) and [`checkExact()`](./check-exact.md) can become slower
+when using request-level bail, since validation chains that would normally run in parallel need to
+run in sequence.
+
+:::
+
 ### `.if()`
 
 ```ts
