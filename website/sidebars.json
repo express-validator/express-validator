@@ -28,7 +28,7 @@
         "type": "generated-index",
         "title": "Migration guides"
       },
-      "items": ["migration-v5-to-v6"]
+      "items": ["migration-v5-to-v6", "migration-v6-to-v7"]
     }
   ],
   "api": [
