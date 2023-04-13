@@ -788,6 +788,7 @@ isMobilePhone(locale: MobilePhoneLocale | readonly Options.MobilePhoneLocale[], 
 - `'ka-GE'`
 - `'kk-KZ'`
 - `'kl-GL'`
+- `'ko-KR'`
 - `'ky-KG'`
 - `'lt-LT'`
 - `'lv-LV'`

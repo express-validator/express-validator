@@ -255,6 +255,7 @@ export type MobilePhoneLocale =
   | 'ka-GE'
   | 'kk-KZ'
   | 'kl-GL'
+  | 'ko-KR'
   | 'ky-KG'
   | 'lt-LT'
   | 'lv-LV'
