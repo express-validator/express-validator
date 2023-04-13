@@ -29,8 +29,8 @@ describe('#setMessage()', () => {
 
 describe('#setOptional()', () => {
   it('builds a Context with the given optional flag', () => {
-    let context = builder.setOptional({ checkFalsy: true, nullable: false }).build();
-    expect(context.optional).toEqual({ checkFalsy: true, nullable: false });
+    let context = builder.setOptional('falsy').build();
+    expect(context.optional).toEqual('falsy');
 
     context = builder.setOptional(false).build();
     expect(context.optional).toBe(false);

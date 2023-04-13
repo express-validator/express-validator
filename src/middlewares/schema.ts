@@ -9,6 +9,7 @@ import {
 } from '../base';
 import {
   BailOptions,
+  OptionalOptions,
   SanitizersImpl,
   ValidationChain,
   ValidationChainLike,
@@ -17,7 +18,6 @@ import {
 import { ResultWithContext } from '../chain/context-runner';
 import { Sanitizers } from '../chain/sanitizers';
 import { Validators } from '../chain/validators';
-import { Optional } from '../context';
 import { runAllChains } from '../utils';
 import { check } from './check';
 
@@ -108,7 +108,7 @@ type BaseParamSchema = {
   optional?:
     | true
     | {
-        options?: Partial<Optional>;
+        options?: OptionalOptions;
       };
 };
 

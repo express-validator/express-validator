@@ -295,16 +295,29 @@ check('weekday').not().isIn(['sunday', 'saturday']);
 ### `.optional()`
 
 ```ts
-optional(options?: { nullable?: boolean, checkFalsy?: boolean }): ValidationChain
+optional(options?: boolean | {
+  values?: 'undefined' | 'null' | 'falsy',
+  nullable?: boolean,
+  checkFalsy?: boolean,
+}): ValidationChain
 ```
 
-Marks the current validation chain as optional. An optional field skips validation, instead of failing validation.
+Marks the current validation chain as optional.
+An optional field skips validation depending on its value, instead of failing it.
 
-By default, only fields with `undefined` values are considered optional, but this behavior can be customized:
+Which values are considered optional depends on `options.values`.
+By default, it's set to `undefined`:
 
-- If `options.nullable` is set to `true`, then fields with `null` values are also considered optional.
-- If `options.checkFalsy` is set to `true`, then fields with falsy values (such as empty strings,
-  `0`, `false` and `null`) will also be considered optional.
+| `options.values` | Behavior                                                                              |
+| ---------------- | ------------------------------------------------------------------------------------- |
+| `undefined`      | `undefined` values are optional                                                       |
+| `null`           | `undefined` and `null` values are optional                                            |
+| `falsy`          | Falsy values (empty strings, `0`, `false`, `null` and `undefined` values are optional |
+
+`options.nullable` and `options.checkFalsy` are deprecated options.
+They are aliases to setting `options.values` to `null` or `falsy`.
+
+If `options` is `false`, then the field won't be optional.
 
 :::info
 

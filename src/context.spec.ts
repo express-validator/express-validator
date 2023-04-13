@@ -292,30 +292,30 @@ describe('#getData()', () => {
     expect(context.getData()).toEqual([data[0], data[1]]);
   });
 
-  it('filters out undefineds when context optional', () => {
+  it('filters out undefineds when context optional = undefined', () => {
     data[0].value = undefined;
-    context = new ContextBuilder().setOptional({ checkFalsy: false, nullable: false }).build();
+    context = new ContextBuilder().setOptional('undefined').build();
     context.addFieldInstances(data);
 
     expect(context.getData({ requiredOnly: true })).toEqual([data[1]]);
   });
 
-  it('filters out undefineds and nulls when context optional with nullable = true', () => {
+  it('filters out undefineds and nulls when context optional = null', () => {
     data[0].value = null;
     data[1].value = undefined;
 
-    context = new ContextBuilder().setOptional({ checkFalsy: false, nullable: true }).build();
+    context = new ContextBuilder().setOptional('null').build();
     context.addFieldInstances(data);
 
     expect(context.getData({ requiredOnly: true })).toEqual([]);
   });
 
-  it('filters out falsies when context optional with checkFalsy = true', () => {
+  it('filters out falsies when context optional = falsy', () => {
     data[0].value = null;
     data[1].value = undefined;
     data.push({ ...data[0], value: 0 }, { ...data[0], value: false }, { ...data[0], value: '' });
 
-    context = new ContextBuilder().setOptional({ checkFalsy: true, nullable: false }).build();
+    context = new ContextBuilder().setOptional('falsy').build();
     context.addFieldInstances(data);
 
     expect(context.getData({ requiredOnly: true })).toEqual([]);

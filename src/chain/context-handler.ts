@@ -15,6 +15,35 @@ export interface BailOptions {
   level?: 'chain' | 'request';
 }
 
+export interface OptionalOptions {
+  // NOTE: Keep this in sync with Optional docs
+  /**
+   * Defines which kind of value makes a field optional.
+   *
+   * - `undefined`: only `undefined` values; equivalent to `value === undefined`
+   * - `null`: only `undefined` and `null` values; equivalent to `value == null`
+   * - `falsy`: all falsy values; equivalent to `!value`
+   *
+   * @default 'undefined'
+   */
+  values?: Exclude<Optional, false>;
+
+  /**
+   * Whether a field whose value is `null` or `undefined` is to be considered optional.
+   * @default false
+   * @deprecated  Use `values` instead.
+   */
+  nullable?: boolean;
+
+  /**
+   * Whether a field whose value is falsy (that is, `0`, `false`, `null`, `undefined` or an empty
+   * string) is to be considered optional.
+   * @default false
+   * @deprecated  Use `values` instead.
+   */
+  checkFalsy?: boolean;
+}
+
 export interface ContextHandler<Chain> {
   /**
    * Stops running validations if any of the previous ones have failed.
@@ -63,5 +92,19 @@ export interface ContextHandler<Chain> {
    * @param options an object of options to customize the behavior of optional.
    * @returns the current validation chain
    */
-  optional(options?: Partial<Optional> | true): Chain;
+  optional(
+    options?:
+      | {
+          values?: Optional;
+          /**
+           * @deprecated use `values` instead
+           */
+          checkFalsy?: boolean;
+          /**
+           * @deprecated use `values` instead
+           */
+          nullable?: boolean;
+        }
+      | boolean,
+  ): Chain;
 }

@@ -14,22 +14,16 @@ function getDataMapKey(path: string, location: Location) {
   return `${location}:${path}`;
 }
 
-export type Optional =
-  | {
-      /**
-       * Whether a field whose value is `null` or `undefined` is to be considered optional.
-       * @default false
-       */
-      nullable: boolean;
-
-      /**
-       * Whether a field whose value is falsy (that is, `0`, `false`, `null`, `undefined` or an empty
-       * string) is to be considered optional.
-       * @default false
-       */
-      checkFalsy: boolean;
-    }
-  | false;
+// NOTE: Keep this in sync with OptionalOptions#values docs
+/**
+ * Defines which kind of value makes a field optional.
+ *
+ * - `undefined`: only `undefined` values; equivalent to `value === undefined`
+ * - `null`: only `undefined` and `null` values; equivalent to `value == null`
+ * - `falsy`: all falsy values; equivalent to `!value`
+ * - `false`: not optional.
+ */
+export type Optional = 'undefined' | 'null' | 'falsy' | false;
 
 type AddErrorOptions =
   | {
@@ -74,15 +68,13 @@ export class Context {
   ) {}
 
   getData(options: { requiredOnly: boolean } = { requiredOnly: false }) {
-    // Have to store this.optional in a const otherwise TS thinks the value could have changed
-    // when the functions below run
     const { optional } = this;
     const checks =
       options.requiredOnly && optional
         ? [
             (value: any) => value !== undefined,
-            (value: any) => (optional.nullable ? value != null : true),
-            (value: any) => (optional.checkFalsy ? value : true),
+            (value: any) => (optional === 'null' ? value != null : true),
+            (value: any) => (optional === 'falsy' ? value : true),
           ]
         : [];
 

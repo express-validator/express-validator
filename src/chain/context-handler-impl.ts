@@ -3,7 +3,7 @@ import { Optional } from '../context';
 import { ChainCondition, CustomCondition } from '../context-items';
 import { CustomValidator } from '../base';
 import { Bail } from '../context-items/bail';
-import { BailOptions, ContextHandler } from './context-handler';
+import { BailOptions, ContextHandler, OptionalOptions } from './context-handler';
 import { ContextRunner } from './context-runner';
 
 export class ContextHandlerImpl<Chain> implements ContextHandler<Chain> {
@@ -28,16 +28,21 @@ export class ContextHandlerImpl<Chain> implements ContextHandler<Chain> {
     return this.chain;
   }
 
-  optional(options: Optional | true = true) {
+  optional(options: OptionalOptions | boolean = true) {
+    let value: Optional;
     if (typeof options === 'boolean') {
-      this.builder.setOptional(options ? { checkFalsy: false, nullable: false } : false);
+      value = options ? 'undefined' : false;
     } else {
-      this.builder.setOptional({
-        checkFalsy: !!options.checkFalsy,
-        nullable: !!options.nullable,
-      });
+      value = options.values
+        ? options.values
+        : options.checkFalsy
+        ? 'falsy'
+        : options.nullable
+        ? 'null'
+        : 'undefined';
     }
 
+    this.builder.setOptional(value);
     return this.chain;
   }
 }

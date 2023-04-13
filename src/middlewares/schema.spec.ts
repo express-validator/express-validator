@@ -176,15 +176,8 @@ describe('on each field', () => {
       },
     });
 
-    expect(chainToContext(schema[0]).optional).toEqual({
-      checkFalsy: false,
-      nullable: false,
-    });
-
-    expect(chainToContext(schema[1]).optional).toEqual({
-      checkFalsy: true,
-      nullable: true,
-    });
+    expect(chainToContext(schema[0]).optional).toBe('undefined');
+    expect(chainToContext(schema[1]).optional).toBe('falsy');
   });
 
   it('can negate validators', async () => {
