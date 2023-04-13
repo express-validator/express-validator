@@ -64,7 +64,7 @@ type CustomValidatorSchemaOptions = BaseValidatorSchemaOptions & {
 export type ExtensionValidatorSchemaOptions = true | BaseValidatorSchemaOptions;
 
 export type ValidatorsSchema = {
-  [K in keyof Validators<any>]?: ValidatorSchemaOptions<K>;
+  [K in Exclude<keyof Validators<any>, 'not' | 'withMessage'>]?: ValidatorSchemaOptions<K>;
 };
 
 type SanitizerSchemaOptions<K extends keyof Sanitizers<any>> =
@@ -165,6 +165,8 @@ export function createCheckSchema<C extends ValidationChainLike>(
     entry: [string, any],
   ): entry is [keyof Validators<any>, ValidatorSchemaOptions<any>] {
     return (
+      // #664 - explicitly exclude properties which should be set per validator
+      !['not', 'withMessage'].includes(entry[0]) &&
       (entry[0] in ValidatorsImpl.prototype || (extraValidators as string[]).includes(entry[0])) &&
       entry[1]
     );
