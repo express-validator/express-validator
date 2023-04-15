@@ -59,6 +59,35 @@ app.post('/signup', body('email').custom(async value => {
 });
 ```
 
+### `.exists()`
+
+```ts
+exists(options?: {
+  values?: 'undefined' | 'null' | 'falsy',
+  checkNull?: boolean,
+  checkFalsy?: boolean
+}): ValidationChain
+```
+
+Adds a validator to check if the field exists.
+
+Which values are considered existent depends on `options.values`. By default, it's set to `undefined`:
+
+| `options.values` | Behavior                                                                             |
+| ---------------- | ------------------------------------------------------------------------------------ |
+| `undefined`      | `undefined` values don't exist                                                       |
+| `null`           | `undefined` and `null` values don't exist                                            |
+| `falsy`          | Falsy values (empty strings, `0`, `false`, `null` and `undefined` values don't exist |
+
+`options.checkNull` and `options.checkFalsy` are deprecated options.
+They are aliases to setting `options.values` to `null` and `falsy`, respectively.
+
+:::note
+
+Using `.exists()` is only necessary if you aren't adding any other validator or sanitizer.
+
+:::
+
 ### `.isArray()`
 
 ```ts

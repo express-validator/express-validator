@@ -3,7 +3,7 @@ import { CustomValidator, ErrorMessage, FieldMessageFactory, StandardValidator }
 import { CustomValidation, StandardValidation } from '../context-items';
 import { ContextBuilder } from '../context-builder';
 import * as Options from '../options';
-import { Validators } from './validators';
+import { ExistsOptions, Validators } from './validators';
 
 export class ValidatorsImpl<Chain> implements Validators<Chain> {
   private lastValidator: CustomValidation | StandardValidation;
@@ -36,11 +36,11 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
     return this.addItem(new CustomValidation(validator, this.negateNext));
   }
 
-  exists(options: { checkFalsy?: boolean; checkNull?: boolean } = {}) {
+  exists(options: ExistsOptions = {}) {
     let validator: CustomValidator;
-    if (options.checkFalsy) {
+    if (options.checkFalsy || options.values === 'falsy') {
       validator = value => !!value;
-    } else if (options.checkNull) {
+    } else if (options.checkNull || options.values === 'null') {
       validator = value => value != null;
     } else {
       validator = value => value !== undefined;

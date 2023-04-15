@@ -1,6 +1,33 @@
 import { CustomValidator, ErrorMessage, FieldMessageFactory } from '../base';
 import * as Options from '../options';
 
+export type ExistsOptions = {
+  /**
+   * Defines which kind of value makes a field _NOT_ exist.
+   *
+   * - `undefined`: only `undefined` values; equivalent to `value !== undefined`
+   * - `null`: only `undefined` and `null` values; equivalent to `value != null`
+   * - `falsy`: all falsy values; equivalent to `!!value`
+   *
+   * @default 'undefined'
+   */
+  values?: 'undefined' | 'null' | 'falsy';
+
+  /**
+   * Whether a field whose value is falsy should be considered non-existent.
+   * @default false
+   * @deprecated  Use `values` instead
+   */
+  checkFalsy?: boolean;
+
+  /**
+   * Whether a field whose value is `null` or `undefined` should be considered non-existent.
+   * @default false
+   * @deprecated  Use `values` instead
+   */
+  checkNull?: boolean;
+};
+
 export interface Validators<Return> {
   // validation manipulation
   /**
@@ -37,7 +64,7 @@ export interface Validators<Return> {
    * @param options
    * @returns the current validation chain
    */
-  exists(options?: { checkFalsy?: boolean; checkNull?: boolean }): Return;
+  exists(options?: ExistsOptions): Return;
 
   /**
    * Adds a validator to check if a value is an array.
