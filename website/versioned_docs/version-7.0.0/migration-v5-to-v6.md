@@ -15,7 +15,7 @@ Node 6 is no longer supported. You'll need to upgrade to Node 8 or newer.
 :::info
 
 These steps are only necessary if your project has been using the
-[legacy express-validator API](../website/versioned_docs/version-5.3.0/api-legacy.md).
+[legacy express-validator API](../version-5.3.0/api-legacy.md).
 
 If you are already using the [check APIs](./api/check.md), then you shouldn't need to do anything
 under this section.

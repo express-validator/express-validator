@@ -123,6 +123,29 @@ const siteConfig = {
       '@docusaurus/plugin-client-redirects',
       {
         fromExtensions: ['html'],
+        // All these redirects match pages that existed in the docs structure prior to v7.0.0.
+        // They are here in case they were linked to out in the wild, so that those links don't break
+        redirects: [
+          {
+            from: ['/docs/wildcards', '/docs/whole-body-validation'],
+            to: '/docs/guides/field-selection',
+          },
+          {
+            from: ['/docs/custom-validators-sanitizers', '/docs/custom-error-messages'],
+            to: '/docs/guides/customizing',
+          },
+          {
+            from: '/docs/running-imperatively',
+            to: '/docs/guides/manually-running',
+          },
+          { from: '/docs/check-api', to: '/docs/api/check' },
+          {
+            from: ['/docs/validation-chain-api', '/docs/sanitization-chain-api'],
+            to: '/docs/api/validation-chain',
+          },
+          { from: '/docs/matched-data-api', to: '/docs/api/matched-data' },
+          { from: '/docs/validation-result-api', to: '/docs/api/validation-result' },
+        ],
       },
     ],
   ],
