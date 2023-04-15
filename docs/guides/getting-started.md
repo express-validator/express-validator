@@ -328,3 +328,7 @@ app.listen(3000);
 
 These steps conclude the basic guide on getting started with express-validator.<br/>
 You might want to continue reading about the other available features:
+
+- Learn about [the validation chain](./validation-chain.md)
+- Master the [field selection](./field-selection.md)
+- Deeply [customize express-validator](./customizing.md)
