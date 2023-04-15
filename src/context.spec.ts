@@ -138,13 +138,13 @@ describe('#addError()', () => {
     it('pushes an error with the message function return', () => {
       const message = jest.fn(() => 123);
       context.addError({
-        type: 'alternative_grouped',
+        type: 'alternative',
         req,
         message,
-        nestedErrors: [[nestedError]],
+        nestedErrors: [nestedError],
       });
 
-      expect(message).toHaveBeenCalledWith([[nestedError]], { req });
+      expect(message).toHaveBeenCalledWith([nestedError], { req });
       expect(context.errors).toHaveLength(1);
       expect(context.errors[0].msg).toBe(123);
     });
