@@ -46,7 +46,7 @@ type BaseValidatorSchemaOptions = {
 };
 
 type ValidatorSchemaOptions<K extends keyof Validators<any>> =
-  | true
+  | boolean
   | (BaseValidatorSchemaOptions & {
       /**
        * Options to pass to the validator.
@@ -61,14 +61,14 @@ type CustomValidatorSchemaOptions = BaseValidatorSchemaOptions & {
   custom: CustomValidator;
 };
 
-export type ExtensionValidatorSchemaOptions = true | BaseValidatorSchemaOptions;
+export type ExtensionValidatorSchemaOptions = boolean | BaseValidatorSchemaOptions;
 
 export type ValidatorsSchema = {
   [K in Exclude<keyof Validators<any>, 'not' | 'withMessage'>]?: ValidatorSchemaOptions<K>;
 };
 
 type SanitizerSchemaOptions<K extends keyof Sanitizers<any>> =
-  | true
+  | boolean
   | {
       /**
        * Options to pass to the sanitizer.
@@ -106,7 +106,7 @@ type BaseParamSchema = {
    * Whether this field should be considered optional
    */
   optional?:
-    | true
+    | boolean
     | {
         options?: OptionalOptions;
       };
@@ -223,7 +223,7 @@ export function createCheckSchema<C extends ValidationChainLike>(
       }
 
       for (const entry of Object.entries(config)) {
-        if (protectedNames.includes(entry[0])) {
+        if (protectedNames.includes(entry[0]) || !entry[1]) {
           continue;
         }
 

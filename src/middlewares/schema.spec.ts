@@ -77,8 +77,6 @@ describe('on each field', () => {
       foo: {
         errorMessage: 'bla',
         isInt: true,
-        // @ts-expect-error
-        isBla: true,
         escape: true,
       },
     })[0];
@@ -86,7 +84,40 @@ describe('on each field', () => {
     expect(chainToContext(chain).stack).toHaveLength(2);
   });
 
-  it('does not add validators called not and withMessage', () => {
+  // #1223
+  it('does not warn and does not add disabled validators/sanitizers', () => {
+    const spy = jest.spyOn(console, 'warn');
+
+    const chain = checkSchema({
+      foo: {
+        isInt: false,
+        escape: false,
+      },
+    })[0];
+
+    expect(chainToContext(chain).stack).toHaveLength(0);
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
+
+  it('warns and does not add unknown validators/sanitizers', () => {
+    const spy = jest.spyOn(console, 'warn');
+
+    const chain = checkSchema({
+      foo: {
+        // @ts-expect-error
+        isBla: true,
+      },
+    })[0];
+
+    expect(chainToContext(chain).stack).toHaveLength(0);
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
+  });
+
+  it('warns and does not add validators called not and withMessage', () => {
+    const spy = jest.spyOn(console, 'warn');
+
     const chain = checkSchema({
       foo: {
         // @ts-expect-error
@@ -97,6 +128,8 @@ describe('on each field', () => {
     })[0];
 
     expect(chainToContext(chain).stack).toHaveLength(0);
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
   });
 
   it('adds with options', async () => {
