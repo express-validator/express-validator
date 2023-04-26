@@ -41,29 +41,29 @@ body(fields?: string | string[], message?: any): ValidationChain
 
 Same as [`check()`](#check), but only checking `req.body`.
 
-## `cookies()`
+## `cookie()`
 
 ```ts
-import { cookies } from 'express-validator';
-cookies(fields?: string | string[], message?: any): ValidationChain
+import { cookie } from 'express-validator';
+cookie(fields?: string | string[], message?: any): ValidationChain
 ```
 
 Same as [`check()`](#check), but only checking `req.cookies`.
 
-## `headers()`
+## `header()`
 
 ```ts
-import { headers } from 'express-validator';
-headers(fields?: string | string[], message?: any): ValidationChain
+import { header } from 'express-validator';
+header(fields?: string | string[], message?: any): ValidationChain
 ```
 
 Same as [`check()`](#check), but only checking `req.headers`.
 
-## `params()`
+## `param()`
 
 ```ts
-import { params } from 'express-validator';
-params(fields?: string | string[], message?: any): ValidationChain
+import { param } from 'express-validator';
+param(fields?: string | string[], message?: any): ValidationChain
 ```
 
 Same as [`check()`](#params), but only checking `req.params`.

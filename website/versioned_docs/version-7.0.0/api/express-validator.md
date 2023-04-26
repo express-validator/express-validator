@@ -25,10 +25,6 @@ new ExpressValidator(
 1. you can specify custom validators and/or custom sanitizers that are always available in validation chains;
 2. you can specify options that apply by default to some functions.
 
-<!-- `ExpressValidator` is a class which wraps the entire express-validator API.<br/>
-You can specify custom validators and/or custom sanitizers that are always available in validation
-chains, and you can also specify options that apply by default to some functions. -->
-
 `customValidators` and `customSanitizers` are objects from custom validator/sanitizer name to implementation.<br/>
 See examples in the [usage section](#usage), and see the ["Custom Validators and Sanitizers" guide](../guides/customizing.md#custom-validators-and-sanitizers)
 to learn more.
@@ -110,7 +106,7 @@ Same as [standalone `header()` function](./check.md#header), but returning a
 param(fields?: string | string[], message?: any): CustomValidationChain<T>
 ```
 
-Same as [standalone `check()` function](./check.md#check), but returning a
+Same as [standalone `param()` function](./check.md#param), but returning a
 [`CustomValidationChain`](#customvalidationchain) for that `ExpressValidator` instance.
 
 ### `.query()`
