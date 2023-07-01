@@ -30,7 +30,7 @@ const { validationResult, ValidationChain } = require('express-validator');
 // sequential processing, stops running validations chain if the previous one fails.
 const validate = validations => {
   return async (req, res, next) => {
-    for (let validation of validations) {
+    for (const validation of validations) {
       const result = await validation.run(req);
       if (result.errors.length) break;
     }
@@ -64,7 +64,7 @@ import { body, validationResult, ValidationChain } from 'express-validator';
 // sequential processing, stops running validations chain if the previous one fails.
 const validate = (validations: ValidationChain[]) => {
   return async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    for (let validation of validations) {
+    for (const validation of validations) {
       const result = await validation.run(req);
       if (result.errors.length) break;
     }
