@@ -39,7 +39,7 @@ The following types have been removed from express-validator and can be transpar
 | From                    | To            |
 | ----------------------- | ------------- |
 | `ValidationParamSchema` | `ParamSchema` |
-| `Validationchema`       | `Schema`      |
+| `ValidationSchema`       | `Schema`      |
 
 ## Validators
 
