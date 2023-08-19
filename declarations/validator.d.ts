@@ -58,13 +58,14 @@ declare module 'validator' {
   export function isEthereumAddress(str: string): boolean;
   export function isFQDN(str: string, options?: import('../src/options').IsFQDNOptions): boolean;
   export function isFloat(str: string, options?: import('../src/options').IsFloatOptions): boolean;
+  export function isFreightContainerID(str: string): boolean;
   export function isFullWidth(str: string): boolean;
   export function isHalfWidth(str: string): boolean;
   export function isHash(str: string, algorithm: import('../src/options').HashAlgorithm): boolean;
   export function isHexColor(str: string): boolean;
   export function isHexadecimal(str: string): boolean;
   export function isHSL(str: string): boolean;
-  export function isIBAN(str: string): boolean;
+  export function isIBAN(str: string, options?: import('../src/options').IsIBANOptions): boolean;
   export function isIdentityCard(
     str: string,
     locale?: import('../src/options').IdentityCardLocale,
@@ -87,6 +88,7 @@ declare module 'validator' {
   export function isISO4217(str: string): boolean;
   export function isISRC(str: string): boolean;
   export function isIn(str: string, values: readonly any[]): boolean;
+  export function isISO6346(str: string): boolean;
   export function isISO6391(str: string): boolean;
   export function isInt(str: string, options?: import('../src/options').IsIntOptions): boolean;
   export function isJSON(str: string, options?: import('../src/options').IsJSONOptions): boolean;
@@ -104,6 +106,10 @@ declare module 'validator' {
   export function isLowercase(str: string): boolean;
   export function isLuhnNumber(str: string): boolean;
   export function isMagnetURI(str: string): boolean;
+  export function isMailtoURI(
+    str: string,
+    options?: import('../src/options').IsEmailOptions,
+  ): boolean;
   export function isMACAddress(
     str: string,
     options: import('../src/options').IsMACAddressOptions,

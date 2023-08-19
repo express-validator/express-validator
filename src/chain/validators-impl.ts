@@ -170,6 +170,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isFloat(options?: Options.IsFloatOptions) {
     return this.addStandardValidation(validator.isFloat, options);
   }
+  isFreightContainerID() {
+    return this.addStandardValidation(validator.isFreightContainerID);
+  }
   isFullWidth() {
     return this.addStandardValidation(validator.isFullWidth);
   }
@@ -188,8 +191,8 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isHSL() {
     return this.addStandardValidation(validator.isHSL);
   }
-  isIBAN() {
-    return this.addStandardValidation(validator.isIBAN);
+  isIBAN(options?: Options.IsIBANOptions) {
+    return this.addStandardValidation(validator.isIBAN, options);
   }
   isIdentityCard(locale: Options.IdentityCardLocale) {
     return this.addStandardValidation(validator.isIdentityCard, locale);
@@ -211,6 +214,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   }
   isISIN() {
     return this.addStandardValidation(validator.isISIN);
+  }
+  isISO6346() {
+    return this.addStandardValidation(validator.isISO6346);
   }
   isISO6391() {
     return this.addStandardValidation(validator.isISO6391);
@@ -262,6 +268,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   }
   isMagnetURI() {
     return this.addStandardValidation(validator.isMagnetURI);
+  }
+  isMailtoURI(options?: Options.IsEmailOptions) {
+    return this.addStandardValidation(validator.isMailtoURI, options);
   }
   isMACAddress(options?: Options.IsMACAddressOptions) {
     return this.addStandardValidation(validator.isMACAddress, options);

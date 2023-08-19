@@ -76,6 +76,7 @@ isAlpha(locale?: AlphaLocale, options?: {
 - `'id-ID'`
 - `'it-IT'`
 - `'ja-JP'`
+- `'kk-KZ'`
 - `'ko-KR'`
 - `'ku-IQ'`
 - `'nb-NO'`
@@ -154,6 +155,7 @@ isAlphanumeric(locale?: AlphanumericLocale, options?: {
 - `'it-IT'`
 - `'id-ID'`
 - `'ja-JP'`
+- `'kk-KZ'`
 - `'ko-KR'`
 - `'ku-IQ'`
 - `'nb-NO'`
@@ -317,6 +319,7 @@ isEAN(): ValidationChain
 ```ts
 isEmail(options?: {
   allow_display_name?: boolean;
+  allow_underscores?: boolean;
   allow_utf8_local_part?: boolean;
   require_tld?: boolean;
   ignore_max_length?: boolean;
@@ -365,6 +368,12 @@ isFloat(options?: {
   gt?: number;
   locale?: AlphanumericLocale;
 }): ValidationChain
+```
+
+#### `isFreightContainerID()`
+
+```ts
+isFreightContainerID(): ValidationChain
 ```
 
 #### `isFullWidth()`
@@ -425,7 +434,10 @@ isHSL(): ValidationChain
 #### `isIBAN()`
 
 ```ts
-isIBAN(): ValidationChain
+isIBAN(options?: {
+  whitelist?: readonly IBANCode[];
+  blacklist?: readonly IBANCode[];
+}): ValidationChain
 ```
 
 #### `isIdentityCard()`
@@ -497,6 +509,12 @@ isISSN(options?: {
 
 ```ts
 isISIN(): ValidationChain
+```
+
+#### `isISO6346()`
+
+```ts
+isISO6346(): ValidationChain
 ```
 
 #### `isISO6391()`
@@ -635,6 +653,23 @@ isLuhnNumber(): ValidationChain
 isMagnetURI(): ValidationChain
 ```
 
+#### `isMailtoURI()`
+
+```ts
+isMailtoURI(options?: {
+  allow_display_name?: boolean;
+  allow_underscores?: boolean;
+  allow_utf8_local_part?: boolean;
+  require_tld?: boolean;
+  ignore_max_length?: boolean;
+  allow_ip_domain?: boolean;
+  domain_specific_validation?: boolean;
+  blacklisted_chars?: string;
+  host_blacklist?: string[];
+  host_whitelist?: string[];
+}): ValidationChain
+```
+
 #### `isMACAddress()`
 
 ```ts
@@ -684,6 +719,7 @@ isMobilePhone(locale: MobilePhoneLocale | readonly Options.MobilePhoneLocale[], 
 - `'ar-OM'`
 - `'ar-PS'`
 - `'ar-SA'`
+- `'ar-SD'`
 - `'ar-SY'`
 - `'ar-TN'`
 - `'ar-YE'`
@@ -768,6 +804,7 @@ isMobilePhone(locale: MobilePhoneLocale | readonly Options.MobilePhoneLocale[], 
 - `'fr-BF'`
 - `'fr-BJ'`
 - `'fr-CD'`
+- `'fr-CF'`
 - `'fr-CH'`
 - `'fr-CM'`
 - `'fr-FR'`
@@ -776,6 +813,7 @@ isMobilePhone(locale: MobilePhoneLocale | readonly Options.MobilePhoneLocale[], 
 - `'fr-MQ'`
 - `'fr-PF'`
 - `'fr-RE'`
+- `'fr-WF'`
 - `'ga-IE'`
 - `'he-IL'`
 - `'hu-HU'`
@@ -813,6 +851,7 @@ isMobilePhone(locale: MobilePhoneLocale | readonly Options.MobilePhoneLocale[], 
 - `'si-LK'`
 - `'sk-SK'`
 - `'sl-SI'`
+- `'so-SO'`
 - `'sq-AL'`
 - `'sr-RS'`
 - `'sv-SE'`
@@ -1186,6 +1225,7 @@ isVAT(countryCode: VATCountryCode): ValidationChain
 - `'BE'`
 - `'BG'`
 - `'HR'`
+- `'CU'`
 - `'CY'`
 - `'CZ'`
 - `'DK'`

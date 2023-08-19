@@ -47,6 +47,7 @@ export type AlphaLocale =
   | 'id-ID'
   | 'it-IT'
   | 'ja-JP'
+  | 'kk-KZ'
   | 'ko-KR'
   | 'ku-IQ'
   | 'nb-NO'
@@ -113,6 +114,7 @@ export type AlphanumericLocale =
   | 'it-IT'
   | 'id-ID'
   | 'ja-JP'
+  | 'kk-KZ'
   | 'ko-KR'
   | 'ku-IQ'
   | 'nb-NO'
@@ -151,6 +153,7 @@ export type MobilePhoneLocale =
   | 'ar-OM'
   | 'ar-PS'
   | 'ar-SA'
+  | 'ar-SD'
   | 'ar-SY'
   | 'ar-TN'
   | 'ar-YE'
@@ -235,6 +238,7 @@ export type MobilePhoneLocale =
   | 'fr-BF'
   | 'fr-BJ'
   | 'fr-CD'
+  | 'fr-CF'
   | 'fr-CH'
   | 'fr-CM'
   | 'fr-FR'
@@ -243,6 +247,7 @@ export type MobilePhoneLocale =
   | 'fr-MQ'
   | 'fr-PF'
   | 'fr-RE'
+  | 'fr-WF'
   | 'ga-IE'
   | 'he-IL'
   | 'hu-HU'
@@ -280,6 +285,7 @@ export type MobilePhoneLocale =
   | 'si-LK'
   | 'sk-SK'
   | 'sl-SI'
+  | 'so-SO'
   | 'sq-AL'
   | 'sr-RS'
   | 'sv-SE'
@@ -375,6 +381,91 @@ export type HashAlgorithm =
   | 'tiger192'
   | 'crc32'
   | 'crc32b';
+
+export type IBANCode =
+  | 'AD'
+  | 'AE'
+  | 'AL'
+  | 'AT'
+  | 'AZ'
+  | 'BA'
+  | 'BE'
+  | 'BG'
+  | 'BH'
+  | 'BR'
+  | 'BY'
+  | 'CH'
+  | 'CR'
+  | 'CY'
+  | 'CZ'
+  | 'DE'
+  | 'DK'
+  | 'DO'
+  | 'EE'
+  | 'EG'
+  | 'ES'
+  | 'FI'
+  | 'FO'
+  | 'FR'
+  | 'GB'
+  | 'GE'
+  | 'GI'
+  | 'GL'
+  | 'GR'
+  | 'GT'
+  | 'HR'
+  | 'HU'
+  | 'IE'
+  | 'IL'
+  | 'IQ'
+  | 'IR'
+  | 'IS'
+  | 'IT'
+  | 'JO'
+  | 'KW'
+  | 'KZ'
+  | 'LB'
+  | 'LC'
+  | 'LI'
+  | 'LT'
+  | 'LU'
+  | 'LV'
+  | 'MC'
+  | 'MD'
+  | 'ME'
+  | 'MK'
+  | 'MR'
+  | 'MT'
+  | 'MU'
+  | 'MZ'
+  | 'NL'
+  | 'NO'
+  | 'PK'
+  | 'PL'
+  | 'PS'
+  | 'PT'
+  | 'QA'
+  | 'RO'
+  | 'RS'
+  | 'SA'
+  | 'SC'
+  | 'SE'
+  | 'SI'
+  | 'SK'
+  | 'SM'
+  | 'SV'
+  | 'TL'
+  | 'TN'
+  | 'TR'
+  | 'UA'
+  | 'VA'
+  | 'VG'
+  | 'XK';
+
+export interface IsIBANOptions {
+  whitelist?: readonly IBANCode[];
+  blacklist?: readonly IBANCode[];
+}
 
 export type IdentityCardLocale =
   | 'any'
@@ -512,6 +603,7 @@ export type VATCountryCode =
   | 'BE'
   | 'BG'
   | 'HR'
+  | 'CU'
   | 'CY'
   | 'CZ'
   | 'DK'
@@ -587,7 +679,7 @@ export interface MinMaxExtendedOptions extends MinMaxOptions {
 /**
  * defaults to
  * {
- *  ignoreCase: false,
+ *  ignoreCase: false|
  *  minOccurrences: 1
  * }
  */
@@ -654,17 +746,17 @@ export interface IsCreditCard {
 /**
  * defaults to
  * {
- *   symbol: '$',
- *   require_symbol: false,
- *   allow_space_after_symbol: false,
- *   symbol_after_digits: false,
- *   allow_negatives: true,
- *   parens_for_negatives: false,
- *   negative_sign_before_digits: false,
- *   negative_sign_after_digits: false,
- *   allow_negative_sign_placeholder: false,
- *   thousands_separator: ',',
- *   decimal_separator: '.',
+ *   symbol: '$'|
+ *   require_symbol: false|
+ *   allow_space_after_symbol: false|
+ *   symbol_after_digits: false|
+ *   allow_negatives: true|
+ *   parens_for_negatives: false|
+ *   negative_sign_before_digits: false|
+ *   negative_sign_after_digits: false|
+ *   allow_negative_sign_placeholder: false|
+ *   thousands_separator: '|'|
+ *   decimal_separator: '.'|
  *   allow_space_after_digits: false
  * }
  */
@@ -689,8 +781,8 @@ export interface IsCurrencyOptions {
 /**
  * defaults to
  * {
- *    format: 'YYYY/MM/DD',
- *    delimiters: ['/', '-'],
+ *    format: 'YYYY/MM/DD'|
+ *    delimiters: ['/'| '-']|
  *    strictMode: false
  * }
  */
@@ -709,6 +801,7 @@ export interface IsDecimalOptions {
 
 export interface IsEmailOptions {
   allow_display_name?: boolean;
+  allow_underscores?: boolean;
   allow_utf8_local_part?: boolean;
   require_tld?: boolean;
   ignore_max_length?: boolean;
@@ -736,11 +829,11 @@ export interface IsFloatOptions extends MinMaxExtendedOptions {
 /**
  * defaults to
  * {
- *    require_tld: true,
- *    allow_underscores: false,
- *    allow_trailing_dot: false,
- *    allow_numeric_tld: false,
- *    allow_wildcard: false,
+ *    require_tld: true|
+ *    allow_underscores: false|
+ *    allow_trailing_dot: false|
+ *    allow_numeric_tld: false|
+ *    allow_wildcard: false|
  *    ignore_max_length: false
  * }
  */
@@ -790,7 +883,7 @@ export interface IsIMEIOptions {
 /**
  * defaults to
  * {
- *    strict: false,
+ *    strict: false|
  *    strictSeparator: false
  * }
  */
@@ -806,7 +899,7 @@ export interface IsISBNOptions {
 /**
  * defaults to
  * {
- *    case_sensitive: false,
+ *    case_sensitive: false|
  *    require_hyphen: false
  * }
  */
@@ -855,17 +948,17 @@ export interface IsNumericOptions {
 /**
  * defaults to
  * {
- *    minLength: 8,
- *    minLowercase: 1,
- *    minUppercase: 1,
- *    minNumbers: 1,
- *    minSymbols: 1,
- *    returnScore: false,
- *    pointsPerUnique: 1,
- *    pointsPerRepeat: 0.5,
- *    pointsForContainingLower: 10,
- *    pointsForContainingUpper: 10,
- *    pointsForContainingNumber: 10,
+ *    minLength: 8|
+ *    minLowercase: 1|
+ *    minUppercase: 1|
+ *    minNumbers: 1|
+ *    minSymbols: 1|
+ *    returnScore: false|
+ *    pointsPerUnique: 1|
+ *    pointsPerRepeat: 0.5|
+ *    pointsForContainingLower: 10|
+ *    pointsForContainingUpper: 10|
+ *    pointsForContainingNumber: 10|
  *    pointsForContainingSymbol: 10
  * }
  */
@@ -887,19 +980,19 @@ export interface IsStrongPasswordOptions {
 /**
  * defaults to
  * {
- *    protocols: ['http','https','ftp'],
- *    require_tld: true,
- *    require_protocol: false,
- *    require_host: true,
+ *    protocols: ['http'|'https'|'ftp']|
+ *    require_tld: true|
+ *    require_protocol: false|
+ *    require_host: true|
  *    require_port: false;
- *    require_valid_protocol: true,
- *    allow_underscores: false,
- *    host_whitelist: false,
- *    host_blacklist: false,
- *    allow_trailing_dot: false,
- *    allow_protocol_relative_urls: false,
- *    validate_length: true,
- *    allow_fragments: true,
+ *    require_valid_protocol: true|
+ *    allow_underscores: false|
+ *    host_whitelist: false|
+ *    host_blacklist: false|
+ *    allow_trailing_dot: false|
+ *    allow_protocol_relative_urls: false|
+ *    validate_length: true|
+ *    allow_fragments: true|
  *    allow_query_components: true
  * }
  */
@@ -924,8 +1017,8 @@ export interface IsURLOptions {
 /**
  * defaults to
  * {
- *  hourFormat: 'hour24',
- *  mode: 'default',
+ *  hourFormat: 'hour24'|
+ *  mode: 'default'|
  * };
  */
 export interface IsTimeOptions {

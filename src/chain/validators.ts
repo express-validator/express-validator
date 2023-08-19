@@ -127,13 +127,14 @@ export interface Validators<Return> {
   isEthereumAddress(): Return;
   isFQDN(options?: Options.IsFQDNOptions): Return;
   isFloat(options?: Options.IsFloatOptions): Return;
+  isFreightContainerID(): Return;
   isFullWidth(): Return;
   isHalfWidth(): Return;
   isHash(algorithm: Options.HashAlgorithm): Return;
   isHexColor(): Return;
   isHexadecimal(): Return;
   isHSL(): Return;
-  isIBAN(): Return;
+  isIBAN(options?: Options.IsIBANOptions): Return;
   isIdentityCard(locale?: Options.IdentityCardLocale): Return;
   isIMEI(options?: Options.IsIMEIOptions): Return;
   isIP(version?: Options.IPVersion): Return;
@@ -141,6 +142,7 @@ export interface Validators<Return> {
   isISBN(versionOrOptions?: number | Options.IsISBNOptions): Return;
   isISSN(options?: Options.IsISSNOptions): Return;
   isISIN(): Return;
+  isISO6346(): Return;
   isISO6391(): Return;
   isISO8601(options?: Options.IsISO8601Options): Return;
   isISO31661Alpha2(): Return;
@@ -158,6 +160,7 @@ export interface Validators<Return> {
   isLowercase(): Return;
   isLuhnNumber(): Return;
   isMagnetURI(): Return;
+  isMailtoURI(options?: Options.IsEmailOptions): Return;
   isMACAddress(options?: Options.IsMACAddressOptions): Return;
   isMD5(): Return;
   isMimeType(): Return;
