@@ -54,7 +54,7 @@ app.post('/signup', body('email').custom(async value => {
   if (existingUser) {
     throw new Error('E-mail already in use');
   }
-})), (req, res) => {
+}), (req, res) => {
   // Handle request
 });
 ```
