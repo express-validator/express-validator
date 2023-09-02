@@ -49,14 +49,18 @@ A common use case for `.custom()` is to verify that an e-mail address doesn't al
 If it does, return an error:
 
 ```ts
-app.post('/signup', body('email').custom(async value => {
-  const existingUser = await Users.findUserByEmail(value);
-  if (existingUser) {
-    throw new Error('E-mail already in use');
-  }
-}), (req, res) => {
-  // Handle request
-});
+app.post(
+  '/signup',
+  body('email').custom(async value => {
+    const existingUser = await Users.findUserByEmail(value);
+    if (existingUser) {
+      throw new Error('E-mail already in use');
+    }
+  }),
+  (req, res) => {
+    // Handle request
+  },
+);
 ```
 
 ### `.exists()`
