@@ -34,10 +34,10 @@ export type MatchedDataOptions = {
  * @param options
  * @returns an object of data that's been validated or sanitized in the passed request
  */
-export function matchedData(
+export function matchedData<T = Record<string, any>>(
   req: Request,
   options: Partial<MatchedDataOptions> = {},
-): Record<string, any> {
+): T {
   const internalReq: InternalRequest = req;
 
   const fieldExtractor = createFieldExtractor(options.includeOptionals !== true);
