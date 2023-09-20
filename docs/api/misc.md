@@ -76,3 +76,35 @@ type Location = 'body' | 'cookies' | 'headers' | 'params' | 'query';
 
 Represents one of the request locations: `req.body`, `req.cookies`, `req.headers`, `req.params` and
 `req.query`.
+
+### `matchedData`
+
+The [`matchedData`](./matched-data.md) function signature accepts passing a [Generic Type](https://www.typescriptlang.org/docs/handbook/2/generics.html) as the return type.
+
+The default type is `Record<string, any>`.
+
+```ts
+import { matchedData } from 'express-validator';
+
+app.post(
+  '/contact-us',
+  [
+    body('email').isEmail(),
+    body('message').notEmpty(),
+    body('phone').optional().isMobilePhone()
+  ],
+  (req, res) => {
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+      // handle validation errors
+      return res.send('Please fix the request');
+    }
+
+    const result = matchedData<{
+      email: string,
+      message: string, 
+      phone?: string,
+    }>(req);
+  },
+);
+```
