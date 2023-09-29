@@ -184,6 +184,7 @@ export interface Validators<Return> {
   isTaxID(locale: Options.TaxIDLocale): Return;
   isTime(options: Options.IsTimeOptions): Return;
   isURL(options?: Options.IsURLOptions): Return;
+  isULID(): Return;
   isUUID(version?: Options.UUIDVersion): Return;
   isUppercase(): Return;
   isVariableWidth(): Return;

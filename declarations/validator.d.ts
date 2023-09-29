@@ -151,6 +151,7 @@ declare module 'validator' {
   export function isTaxID(str: string, locale: import('../src/options').TaxIDLocale): boolean;
   export function isTime(str: string, options?: import('../src/options').IsTimeOptions): boolean;
   export function isURL(str: string, options?: import('../src/options').IsURLOptions): boolean;
+  export function isULID(str: string): boolean;
   export function isUUID(str: string, version?: import('../src/options').UUIDVersion): boolean;
   export function isUppercase(str: string): boolean;
   export function isVariableWidth(str: string): boolean;

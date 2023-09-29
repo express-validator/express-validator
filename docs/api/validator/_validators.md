@@ -1174,6 +1174,12 @@ isURL(options?: {
 }): ValidationChain
 ```
 
+#### `isULID()`
+
+```ts
+isULID(): ValidationChain
+```
+
 #### `isUUID()`
 
 ```ts
