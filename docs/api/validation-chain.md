@@ -143,6 +143,12 @@ This is analogous to a [`typeof value === 'string'` in pure JavaScript](https://
 notEmpty(): ValidationChain
 ```
 
+### `.isULID()`
+
+```ts
+isULID(): ValidationChain
+```
+
 Adds a validator to check that a value is a string that's not empty.
 This is analogous to `.not().isEmpty()`.
 
