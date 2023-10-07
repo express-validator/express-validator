@@ -70,6 +70,10 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
     return this.custom(value => typeof value === 'string');
   }
 
+  isULID() {
+    return this.matches(/^[0-7][0-9A-HJKMNP-TV-Z]{25}$/i);
+  }
+
   notEmpty(options?: Options.IsEmptyOptions) {
     this.not();
     return this.isEmpty(options);
@@ -334,9 +338,6 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   }
   isURL(options?: Options.IsURLOptions) {
     return this.addStandardValidation(validator.isURL, options);
-  }
-  isULID() {
-    return this.matches(/^[0-7][0-9A-HJKMNP-TV-Z]{25}$/i);
   }
   isUUID(version?: Options.UUIDVersion) {
     return this.addStandardValidation(validator.isUUID, version);
