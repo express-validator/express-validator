@@ -137,16 +137,18 @@ isString(): ValidationChain
 Adds a validator to check that a value is a string.
 This is analogous to a [`typeof value === 'string'` in pure JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof).
 
-### `.notEmpty()`
-
-```ts
-notEmpty(): ValidationChain
-```
-
 ### `.isULID()`
 
 ```ts
 isULID(): ValidationChain
+```
+
+Adds a validator to check that a value is an [ULID](https://github.com/ulid/spec).
+
+### `.notEmpty()`
+
+```ts
+notEmpty(): ValidationChain
 ```
 
 Adds a validator to check that a value is a string that's not empty.
