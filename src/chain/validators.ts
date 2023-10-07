@@ -90,6 +90,13 @@ export interface Validators<Return> {
   isString(): Return;
 
   /**
+   * Adds a validator to check if a value is a ULID.
+   *
+   * @returns the current validation chain
+   */
+  isULID(): Return;
+
+  /**
    * Adds a validator to check if a value is not empty; that is, a string with length of 1 or more.
    *
    * @param options
@@ -184,7 +191,6 @@ export interface Validators<Return> {
   isTaxID(locale: Options.TaxIDLocale): Return;
   isTime(options: Options.IsTimeOptions): Return;
   isURL(options?: Options.IsURLOptions): Return;
-  isULID(): Return;
   isUUID(version?: Options.UUIDVersion): Return;
   isUppercase(): Return;
   isVariableWidth(): Return;
