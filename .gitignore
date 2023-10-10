@@ -10,6 +10,7 @@ npm-debug.log*
 # Build artifacts
 /src/**/*.js
 /src/**/*.d.ts
+/lib/
 
 # Misc
 /coverage
