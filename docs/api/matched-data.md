@@ -105,11 +105,7 @@ import { matchedData } from 'express-validator';
 
 app.post(
   '/contact-us',
-  [
-    body('email').isEmail(),
-    body('message').notEmpty(),
-    body('phone').optional().isMobilePhone()
-  ],
+  [body('email').isEmail(), body('message').notEmpty(), body('phone').optional().isMobilePhone()],
   (req, res) => {
     const result = validationResult(req);
     if (!result.isEmpty()) {
@@ -118,9 +114,9 @@ app.post(
     }
 
     const result = matchedData<{
-      email: string,
-      message: string, 
-      phone?: string,
+      email: string;
+      message: string;
+      phone?: string;
     }>(req);
   },
 );
