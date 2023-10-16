@@ -96,7 +96,7 @@ app.post(
 
 ### Typescript usage
 
-The [`matchedData`](./matched-data.md) function signature accepts passing a [Generic Type](https://www.typescriptlang.org/docs/handbook/2/generics.html) as the return type.
+The `matchedData` function signature accepts passing a [Generic Type](https://www.typescriptlang.org/docs/handbook/2/generics.html) as the return type.
 
 The default type is `Record<string, any>`.
 
