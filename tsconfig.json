@@ -6,6 +6,7 @@
     "moduleResolution": "node",
     "target": "es2020",
     "lib": ["ES2020"],
+    "outDir": "lib",
     "charset": "utf-8",
     "pretty": true,
     "noImplicitAny": true,
@@ -14,5 +15,5 @@
     "noUnusedParameters": true,
     "strictNullChecks": true
   },
-  "exclude": ["node_modules", "coverage", "src/**/*.spec.ts"]
+  "exclude": ["node_modules", "coverage", "src/**/*.spec.ts", "lib"]
 }

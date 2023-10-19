@@ -14,19 +14,17 @@
     "type": "git",
     "url": "git://github.com/express-validator/express-validator.git"
   },
-  "main": "./src/index.js",
-  "types": "./src/index.d.ts",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "files": [
-    "src",
-    "!**/*.spec.ts",
-    "!**/*.ts",
-    "**/*.d.ts",
+    "lib",
+    "!src",
     "!website",
     "!docs"
   ],
   "scripts": {
     "build": "tsc",
-    "clean": "git clean -Xf src",
+    "clean": "git clean -Xf lib",
     "docs:build": "npm --prefix ./website run build",
     "docs:publish": "USE_SSH=true DEPLOYMENT_BRANCH=master npm --prefix ./website run publish-gh-pages",
     "docs:regenerate-api": "npm --prefix ./website run regenerate-api",
