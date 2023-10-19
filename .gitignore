@@ -8,6 +8,7 @@ npm-debug.log*
 *.iml
 
 # Build artifacts
+# TODO: remove /src/**/*{.js,.d.ts}
 /src/**/*.js
 /src/**/*.d.ts
 /lib/
