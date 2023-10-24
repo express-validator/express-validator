@@ -110,7 +110,7 @@ Its default is [`ValidationError`](#validationerror), which can be changed by us
 isEmpty(): boolean
 ```
 
-Returns whether the request contains validation errors, and thefore whether it's valid or not.
+Returns whether the request contains validation errors, and therefore whether it's valid or not.
 
 ### `.formatWith()`
 
