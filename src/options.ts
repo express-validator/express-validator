@@ -1012,6 +1012,9 @@ export interface IsURLOptions {
   validate_length?: boolean;
   allow_fragments?: boolean;
   allow_query_components?: boolean;
+  allow_numeric_tld?: boolean;
+  allow_wildcard?: boolean;
+  ignore_max_length?: boolean;
 }
 
 /**
