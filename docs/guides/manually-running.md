@@ -24,7 +24,7 @@ Check the examples below to understand how this method can help you:
 
 ```js
 const express = require('express');
-const { validationResult, ValidationChain } = require('express-validator');
+const { validationResult } = require('express-validator');
 // can be reused by many routes
 
 // sequential processing, stops running validations chain if the previous one fails.
@@ -58,11 +58,11 @@ app.post('/signup', validate([
 
 ```typescript
 import express from 'express';
-import { body, validationResult, ValidationChain } from 'express-validator';
+import { body, validationResult, ContextRunner } from 'express-validator';
 // can be reused by many routes
 
 // sequential processing, stops running validations chain if the previous one fails.
-const validate = (validations: ValidationChain[]) => {
+const validate = (validations: ContextRunner[]) => {
   return async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     for (const validation of validations) {
       const result = await validation.run(req);
