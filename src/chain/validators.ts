@@ -94,7 +94,7 @@ export interface Validators<Return> {
    *
    * @returns the current validation chain
    */
-  isULID(): Return;
+  isULID(): Return; // TODO: use validatorjs implementation when PR will be merged
 
   /**
    * Adds a validator to check if a value is not empty; that is, a string with length of 1 or more.
