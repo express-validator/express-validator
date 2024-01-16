@@ -391,7 +391,9 @@ describe('#isULID()', () => {
     const ret = validators.isULID();
 
     expect(ret).toBe(chain);
-    expect(builder.addItem).toHaveBeenCalledWith(new StandardValidation(validator.matches, false, ['^[0-7][0-9A-HJKMNP-TV-Z]{25}$', 'i']),);
+    expect(builder.addItem).toHaveBeenCalledWith(
+      new StandardValidation(validator.matches, false, ['^[0-7][0-9A-HJKMNP-TV-Z]{25}$', 'i']),
+    );
   });
 
   it('checks if context is not undefined by default', async () => {
