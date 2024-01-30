@@ -13,6 +13,7 @@
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noUnusedParameters": true,
+    "skipLibCheck": true,
     "strictNullChecks": true
   },
   "exclude": ["node_modules", "coverage", "src/**/*.spec.ts", "lib"]
