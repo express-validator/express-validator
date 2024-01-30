@@ -4,6 +4,7 @@
 # Build artifacts
 /src/**/*.js
 /src/**/*.d.ts
+/lib
 
 # Docs
 /website/.docusaurus
