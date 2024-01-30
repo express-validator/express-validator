@@ -8,7 +8,7 @@ jobs:
       # a more recent Node.js version
       fail-fast: false
       matrix:
-        node: [14, 16, 18]
+        node: [14, 16, 18, 20]
     steps:
       - name: Check out
         uses: actions/checkout@v3
@@ -21,6 +21,8 @@ jobs:
         uses: ./.github/actions/npm-cache
       - name: Install dependencies
         run: npm ci
+      - name: Build
+        run: npm run build
       - name: Test
         run: npm test
       - name: Submit coverage
