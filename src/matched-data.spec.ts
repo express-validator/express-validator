@@ -73,6 +73,25 @@ describe('when option includeOptionals is true', () => {
   });
 });
 
+describe('when option includeOptionals is ignoreUndefined ', () => {
+  it('returns object with optional data which is not undefined', done => {
+    const req = {
+      headers: { foo: '123', bar: null },
+    };
+
+    const middleware = check(['foo', 'bar', 'baz']).optional({ values: 'null' }).isInt();
+
+    middleware(req, {}, () => {
+      const data = matchedData(req, { includeOptionals: 'ignoreUndefined' });
+      expect(data).toHaveProperty('foo', '123');
+      expect(data).toHaveProperty('bar', null);
+      expect(data).not.toHaveProperty('baz');
+
+      done();
+    });
+  });
+});
+
 describe('when option onlyValidData is false', () => {
   it('returns object with invalid data', done => {
     const req = {

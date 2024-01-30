@@ -9,6 +9,7 @@ import {
   ValidationError,
 } from './base';
 import { ContextItem } from './context-items';
+import { IncludeOptionals } from './matched-data';
 
 function getDataMapKey(path: string, location: Location) {
   return `${location}:${path}`;
@@ -74,10 +75,10 @@ export class Context {
     readonly message?: any,
   ) {}
 
-  getData(options: { requiredOnly: boolean } = { requiredOnly: false }) {
+  getData(options: { includeOptionals: IncludeOptionals } = { includeOptionals: true }) {
     const { optional } = this;
     const checks =
-      options.requiredOnly && optional
+      !options.includeOptionals && optional
         ? [
             (value: any) => value !== undefined,
             (value: any) => (optional === 'null' ? value != null : true),
@@ -101,7 +102,13 @@ export class Context {
 
         return instances;
       })
-      .filter(instance => checks.every(check => check(instance.value)))
+      .filter(instance => {
+        if (options.includeOptionals === 'ignoreUndefined') {
+          return checks.every(check => check(instance.value)) && instance.value !== undefined
+        } else {
+          return checks.every(check => check(instance.value))
+        }
+      })
       .valueOf();
   }
 
