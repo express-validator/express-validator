@@ -104,9 +104,9 @@ export class Context {
       })
       .filter(instance => {
         if (options.includeOptionals === 'ignoreUndefined') {
-          return checks.every(check => check(instance.value)) && instance.value !== undefined
+          return checks.every(check => check(instance.value)) && instance.value !== undefined;
         } else {
-          return checks.every(check => check(instance.value))
+          return checks.every(check => check(instance.value));
         }
       })
       .valueOf();
