@@ -66,7 +66,7 @@ const validate = (validations: ContextRunner[]) => {
   return async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     for (const validation of validations) {
       const result = await validation.run(req);
-      if (result.errors.length) break;
+      if (!result.isEmpty()) break;
     }
 
     const errors = validationResult(req);
