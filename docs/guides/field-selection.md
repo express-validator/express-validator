@@ -40,7 +40,7 @@ The following table represents what each path would select in the above object:
 | Path                          | Selected value                        |
 | ----------------------------- | ------------------------------------- |
 | `name`                        | `"John McExpress"`                    |
-| `address.work.country`        | `"express-validator land"`            |
+| `addresses.work.country`        | `"express-validator land"`            |
 | `siblings`                    | `[{ "name": "Maria von Validator" }]` |
 | `siblings[0]`                 | `{ "name": "Maria von Validator" }`   |
 | `siblings[0].name`            | `"Maria von Validator"`               |
