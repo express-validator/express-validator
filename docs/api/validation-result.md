@@ -121,8 +121,7 @@ formatWith<T>(formatter: ErrorFormatter<T>): Result<T>
 Rewraps the validation state in a new `Result` object that uses `formatter` as its [error formatter](#errorformatter).
 
 <details>
-<summary>💭 Why does this method return a new Result?
-</summary>
+<summary>💭 Why does this method return a new Result?</summary>
 
 If you've read through other pages of this documentation, you might be asking yourself why can't
 `.formatWith()` mutate itself, like validation chains do?

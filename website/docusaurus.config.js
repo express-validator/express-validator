@@ -75,7 +75,7 @@ const themeConfig = {
           },
           {
             label: 'API Reference',
-            to: 'docs/check-api',
+            to: 'docs/api/check',
           },
         ],
       },

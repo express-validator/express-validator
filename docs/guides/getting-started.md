@@ -203,7 +203,7 @@ This is a better scenario, but it can still be improved. Let's continue.
 While the user can no longer send empty person names, it can still inject HTML into your page!
 This is known as the [Cross-Site Scripting vulnerability (XSS)](https://en.wikipedia.org/wiki/Cross-site_scripting).
 
-Let's see how it works. Go to [<Interpolate values={{ query: '<b>John</b>' }}>http://localhost:3000/hello?person={query}</Interpolate>](http://localhost:3000/hello?person=%3Cb%3EJohn%3C/b%3E),
+Let's see how it works. Go to [<Interpolate values={{ query: '<b>John</b>' }}>{'http://localhost:3000/hello?person={query}'}</Interpolate>](http://localhost:3000/hello?person=%3Cb%3EJohn%3C/b%3E),
 and you should see "Hello, <b>John</b>!".
 
 While this example is fine, an attacker could change the `person` query string to a `<script>` tag
