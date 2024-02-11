@@ -95,7 +95,7 @@ app.post(
 ## Custom sanitizers
 
 Custom sanitizers can be implemented by using the method `.customSanitizer()`, no matter if
-the [validation chain one](api-validation-chain.md#customsanitizersanitizer) or
+the [validation chain one](api-validation-chain.md) or
 the [sanitization chain one](api-sanitization-chain.md#customsanitizersanitizer).  
 Just like with the validators, you specify the sanitizer function, which _must_ be synchronous at the
 moment.

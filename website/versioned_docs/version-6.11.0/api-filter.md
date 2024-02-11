@@ -15,7 +15,7 @@ These methods are all available via `require('express-validator')`.
 
 > _Returns:_ a [Sanitization Chain](api-sanitization-chain.md)
 
-> [Prefer using `check()` instead](api-check.md#checkfields-message). This function has been deprecated.
+> [Prefer using `check()` instead](api-check.md#checkfield-message). This function has been deprecated.
 
 Creates a sanitization chain for one or more fields. They may be located in any of the following request objects:
 

@@ -129,7 +129,7 @@ The condition can be either:
 
 > _Note:_ async functions must return a resolved or rejected `Promise` because `truthy` or `falsy` values won't stop the chain ([#1028](https://github.com/express-validator/express-validator/issues/1028#issuecomment-830561518)).
 
-- A validation chain [created through `check()` or similar functions](api-check.md#check-field-message).
+- A validation chain [created through `check()` or similar functions](api-check.md#checkfield-message).
 
   If running that chain would produce errors, then the validation chain will stop.
 

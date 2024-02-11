@@ -58,7 +58,7 @@ app.post('/user', [
 
 ### Field Level
 Messages can be specified at the field level by using the second parameter of the
-[validation middlewares](api-check.md#check-field-message).
+[validation middlewares](api-check.md#checkfield-message).
 
 These messages are used as fallbacks when a validator doesn't specify its own message:
 
