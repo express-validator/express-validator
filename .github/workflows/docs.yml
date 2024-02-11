@@ -4,6 +4,8 @@ on:
     paths:
       - 'docs/**'
       - 'website/**'
+      - package.json
+      - package-lock.json
       # Keep the following in sync with website/scripts/regenerate-api.js
       - src/options.ts
       - src/chain/validators.ts
@@ -12,6 +14,8 @@ on:
     paths:
       - 'docs/**'
       - 'website/**'
+      - package.json
+      - package-lock.json
       # Keep the following in sync with website/scripts/regenerate-api.js
       - src/options.ts
       - src/chain/validators.ts
