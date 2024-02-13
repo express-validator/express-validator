@@ -90,6 +90,13 @@ export interface Validators<Return> {
   isString(): Return;
 
   /**
+   * Adds a validator to check if a value is a ULID.
+   *
+   * @returns the current validation chain
+   */
+  isULID(): Return; // TODO: use validatorjs implementation when PR will be merged
+
+  /**
    * Adds a validator to check if a value is not empty; that is, a string with length of 1 or more.
    *
    * @param options
