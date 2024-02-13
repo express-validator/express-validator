@@ -26,7 +26,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 16
+          node-version: 18
           cache: npm
       - name: Set up npm cache
         uses: ./.github/actions/npm-cache
