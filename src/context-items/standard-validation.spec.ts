@@ -45,13 +45,11 @@ it('calls the validator with the stringified value of non-array field', async ()
   expect(validator).toHaveBeenCalledWith('hey');
 });
 
-it('calls the validator for each item in array field', async () => {
+it('calls the validator with the stringified array value if an array is passed', async () => {
   toString.mockImplementation(val => `hey${val}`);
   await validation.run(context, [1, 42], meta);
-  expect(toString).toHaveBeenNthCalledWith(1, 1);
-  expect(validator).toHaveBeenNthCalledWith(1, 'hey1');
-  expect(toString).toHaveBeenNthCalledWith(2, 42);
-  expect(validator).toHaveBeenNthCalledWith(2, 'hey42');
+  expect(toString).toHaveBeenNthCalledWith(1, [1, 42]);
+  expect(validator).toHaveBeenNthCalledWith(1, 'hey1,42');
 });
 
 it('calls the validator with the value and options', async () => {

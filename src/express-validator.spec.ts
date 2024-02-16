@@ -183,4 +183,19 @@ describe('High level tests', () => {
     const result = await body('foo.*.nop').exists().run(req);
     expect(result.isEmpty()).toEqual(true);
   });
+  it('should error array if no wildcard is used', async () => {
+    const req = { body: { foo: ['a', 'b', 'd', 'c'] } };
+    const result = await body('foo').isIn(['a', 'd', 'b', 'c']).run(req);
+    expect(result.isEmpty()).toEqual(false);
+  });
+  it('should not error array if wildcard is used', async () => {
+    const req = { body: { foo: ['a', 'b', 'd', 'c'] } };
+    const result = await body('foo.*').isIn(['a', 'd', 'b', 'c']).run(req);
+    expect(result.isEmpty()).toEqual(true);
+  });
+  it('should error if only the first item matches', async () => {
+    const req = { body: { foo: ['a', 'b', 'd', 'c'] } };
+    const result = await body('foo').equals('a').run(req);
+    expect(result.array().length).toEqual(1);
+  });
 });
