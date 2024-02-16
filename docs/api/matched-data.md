@@ -61,7 +61,11 @@ you can set `options.includeOptionals` to `ignoreUndefined`.
 ```ts
 app.post(
   '/contact-us',
-  [body('email').isEmail(), body('message').notEmpty(), body('phone').optional({ values: 'null' }).isMobilePhone()],
+  [
+    body('email').isEmail(),
+    body('message').notEmpty(),
+    body('phone').optional({ values: 'null' }).isMobilePhone(),
+  ],
   (req, res) => {
     const data = matchedData(req, { includeOptionals: 'ignoreUndefined' });
     // If phone is set as null:
