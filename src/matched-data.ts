@@ -1,20 +1,11 @@
 import * as _ from 'lodash';
 import { FieldInstance, InternalRequest, Location, Request, contextsKey } from './base';
-import { Context } from './context';
+import { Context, IncludeOptionals } from './context';
 
 interface FieldInstanceBag {
   instance: FieldInstance;
   context: Context;
 }
-
-/**
- * Defines if includes optional data or not.
- *
- * - false: not include optional data
- * - true: include optional data
- * - `ignoreUndefined`: include optional data which is not undefined like null, falsy values
- */
-export type IncludeOptionals = boolean | 'ignoreUndefined';
 
 export type MatchedDataOptions = {
   /**

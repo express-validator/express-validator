@@ -55,6 +55,21 @@ app.post(
 );
 ```
 
+If you want to return optional values which aren't `undefined` like `null` and `falsy` values,
+you can set `options.includeOptionals` to `ignoreUndefined`.
+
+```ts
+app.post(
+  '/contact-us',
+  [body('email').isEmail(), body('message').notEmpty(), body('phone').optional({ values: 'null' }).isMobilePhone()],
+  (req, res) => {
+    const data = matchedData(req, { includeOptionals: 'ignoreUndefined' });
+    // If phone is set as null:
+    // => { email: 'foo@bar.com', message: 'Hi hello', phone: null }
+  },
+);
+```
+
 :::tip
 
 See the [documentation on `.optional()`](./validation-chain.md#optional) to learn more.

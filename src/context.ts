@@ -9,7 +9,6 @@ import {
   ValidationError,
 } from './base';
 import { ContextItem } from './context-items';
-import { IncludeOptionals } from './matched-data';
 
 function getDataMapKey(path: string, location: Location) {
   return `${location}:${path}`;
@@ -25,6 +24,15 @@ function getDataMapKey(path: string, location: Location) {
  * - `false`: not optional.
  */
 export type Optional = 'undefined' | 'null' | 'falsy' | false;
+
+/**
+ * Defines if includes optional data or not.
+ *
+ * - false: do not include optional data
+ * - true: include optional data
+ * - `ignoreUndefined`: include optional data except for undefined values
+ */
+export type IncludeOptionals = boolean | 'ignoreUndefined';
 
 type AddErrorOptions =
   | {
@@ -77,6 +85,8 @@ export class Context {
             (value: any) => (optional === 'null' ? value != null : true),
             (value: any) => (optional === 'falsy' ? value : true),
           ]
+        : options.includeOptionals === 'ignoreUndefined'
+        ? [(value: any) => value !== undefined]
         : [];
 
     return _([...this.dataMap.values()])
@@ -95,13 +105,7 @@ export class Context {
 
         return instances;
       })
-      .filter(instance => {
-        if (options.includeOptionals === 'ignoreUndefined') {
-          return checks.every(check => check(instance.value)) && instance.value !== undefined;
-        } else {
-          return checks.every(check => check(instance.value));
-        }
-      })
+      .filter(instance => checks.every(check => check(instance.value)))
       .valueOf();
   }
 
