@@ -161,7 +161,7 @@ describe('selectFields()', () => {
   });
 
   it('selects inexistent properties', () => {
-    const instances = selectFields({ cookies: { } }, ['foo.bar.baz'], ['cookies']);
+    const instances = selectFields({ cookies: {} }, ['foo.bar.baz'], ['cookies']);
 
     expect(instances).toHaveLength(1);
     expect(instances[0]).toEqual({

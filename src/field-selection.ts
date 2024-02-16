@@ -57,11 +57,11 @@ function expandPath(object: any, path: string | string[], currPath: readonly str
         // globstar leaves are always selected
         return [reconstructFieldPath(currPath)];
       }
-      return []
+      return [];
     }
-    if (key === "*") {
+    if (key === '*') {
       // wildcard position does not exist
-      return []
+      return [];
     }
     // value is a primitive, there are still still paths to traverse that will be likely undefined, we return the entire path
     return [reconstructFieldPath([...currPath, ...segments])];
