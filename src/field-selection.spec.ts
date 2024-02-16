@@ -19,14 +19,16 @@ describe('selectFields()', () => {
     const instances = selectFields(req, ['foo', 'baz'], ['cookies']);
 
     expect(instances).toHaveLength(2);
-    expect(instances[0]).toMatchObject({
+    expect(instances[0]).toEqual({
       location: 'cookies',
       path: 'foo',
+      originalPath: 'foo',
       value: 'bar',
     });
-    expect(instances[1]).toMatchObject({
+    expect(instances[1]).toEqual({
       location: 'cookies',
       path: 'baz',
+      originalPath: 'baz',
       value: 'qux',
     });
   });
@@ -113,13 +115,18 @@ describe('selectFields()', () => {
     const req = {
       query: { foo: ['bar', 'baz'] },
     };
-    const instances = selectFields(req, ['foo[1]'], ['query']);
+    const instances = selectFields(req, ['foo[1]', 'foo[2]'], ['query']);
 
-    expect(instances).toHaveLength(1);
+    expect(instances).toHaveLength(2);
     expect(instances[0]).toMatchObject({
       location: 'query',
       path: 'foo[1]',
       value: 'baz',
+    });
+    expect(instances[1]).toMatchObject({
+      location: 'query',
+      path: 'foo[2]',
+      value: undefined,
     });
   });
 
@@ -154,7 +161,7 @@ describe('selectFields()', () => {
   });
 
   it('selects inexistent properties', () => {
-    const instances = selectFields({}, ['foo.bar.baz'], ['cookies']);
+    const instances = selectFields({ cookies: { } }, ['foo.bar.baz'], ['cookies']);
 
     expect(instances).toHaveLength(1);
     expect(instances[0]).toEqual({
@@ -165,14 +172,24 @@ describe('selectFields()', () => {
     });
   });
 
-  it('does not select properties of primitives', () => {
+  it('selects properties of primitives', () => {
     const req = {
       body: { foo: 1 },
     };
-    const instances = selectFields(req, ['foo.toFixed'], ['body']);
-    expect(instances).toHaveLength(0);
-  });
+    const instances = selectFields(req, ['foo.toFixed', 'foo.nop'], ['body']);
 
+    expect(instances).toHaveLength(2);
+    expect(instances[0]).toMatchObject({
+      location: 'body',
+      path: 'foo.toFixed',
+      value: expect.any(Function),
+    });
+    expect(instances[1]).toMatchObject({
+      location: 'body',
+      path: 'foo.nop',
+      value: undefined,
+    });
+  });
   it('deduplicates field instances', () => {
     const req = {
       body: {
