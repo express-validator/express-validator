@@ -41,7 +41,9 @@ export function matchedData<T extends object = Record<string, any>>(
   const internalReq: InternalRequest = req;
   const { includeOptionals = false, onlyValidData, locations } = options;
 
-  const fieldExtractor = createFieldExtractor(includeOptionals);
+  const fieldExtractor = createFieldExtractor(
+    typeof includeOptionals === 'boolean' ? !includeOptionals : includeOptionals,
+  );
   const validityFilter = createValidityFilter(onlyValidData);
   const locationFilter = createLocationFilter(locations);
 
@@ -53,9 +55,9 @@ export function matchedData<T extends object = Record<string, any>>(
     .reduce((state, instance) => _.set(state, instance.path, instance.value), {} as T);
 }
 
-function createFieldExtractor(includeOptionals: IncludeOptionals) {
+function createFieldExtractor(removeOptionals: IncludeOptionals) {
   return (context: Context) => {
-    const instances = context.getData({ includeOptionals: includeOptionals });
+    const instances = context.getData({ requiredOnly: removeOptionals });
     return instances.map((instance): FieldInstanceBag => ({ instance, context }));
   };
 }

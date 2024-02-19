@@ -434,7 +434,7 @@ describe('#getData()', () => {
     context = new ContextBuilder().setOptional('undefined').build();
     context.addFieldInstances(data);
 
-    expect(context.getData({ includeOptionals: false })).toEqual([data[1]]);
+    expect(context.getData({ requiredOnly: true })).toEqual([data[1]]);
   });
 
   it('filters out undefineds and nulls when context optional = null', () => {
@@ -444,7 +444,7 @@ describe('#getData()', () => {
     context = new ContextBuilder().setOptional('null').build();
     context.addFieldInstances(data);
 
-    expect(context.getData({ includeOptionals: false })).toEqual([]);
+    expect(context.getData({ requiredOnly: true })).toEqual([]);
   });
 
   it('filters out undefineds only when includeOptionals is ignoreUndefined', () => {
@@ -454,7 +454,7 @@ describe('#getData()', () => {
     context = new ContextBuilder().setOptional('null').build();
     context.addFieldInstances(data);
 
-    expect(context.getData({ includeOptionals: 'ignoreUndefined' })).toEqual([data[0]]);
+    expect(context.getData({ requiredOnly: 'ignoreUndefined' })).toEqual([data[0]]);
   });
 
   it('filters out falsies when context optional = falsy', () => {
@@ -465,7 +465,7 @@ describe('#getData()', () => {
     context = new ContextBuilder().setOptional('falsy').build();
     context.addFieldInstances(data);
 
-    expect(context.getData({ includeOptionals: false })).toEqual([]);
+    expect(context.getData({ requiredOnly: true })).toEqual([]);
   });
 
   describe('when same path occurs multiple times', () => {

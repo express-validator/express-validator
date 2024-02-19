@@ -83,16 +83,16 @@ export class Context {
     readonly message?: any,
   ) {}
 
-  getData(options: { includeOptionals: IncludeOptionals } = { includeOptionals: true }) {
+  getData(options: { requiredOnly: IncludeOptionals } = { requiredOnly: false }) {
     const { optional } = this;
     const checks =
-      !options.includeOptionals && optional
+      options.requiredOnly === true && optional
         ? [
             (value: any) => value !== undefined,
             (value: any) => (optional === 'null' ? value != null : true),
             (value: any) => (optional === 'falsy' ? value : true),
           ]
-        : options.includeOptionals === 'ignoreUndefined'
+        : options.requiredOnly === 'ignoreUndefined'
         ? [(value: any) => value !== undefined]
         : [];
 
