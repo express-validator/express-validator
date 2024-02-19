@@ -64,7 +64,7 @@ it('runs items on the stack with required data', async () => {
   const { context } = await contextRunner.run(req);
 
   context.stack.forEach((item, i) => {
-    expect(getDataSpy).toHaveBeenNthCalledWith(i + 1, { includeOptionals: false });
+    expect(getDataSpy).toHaveBeenNthCalledWith(i + 1, { requiredOnly: true });
     expect(item.run).toHaveBeenCalledTimes(instances.length);
 
     instances.forEach((instance, j) => {
