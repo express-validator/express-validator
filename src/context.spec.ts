@@ -447,7 +447,7 @@ describe('#getData()', () => {
     expect(context.getData({ requiredOnly: true })).toEqual([]);
   });
 
-  it('filters out undefineds only when includeOptionals is ignoreUndefined', () => {
+  it('includes null values when `ignoreUndefined` is used', () => {
     data[0].value = null;
     data[1].value = undefined;
 
