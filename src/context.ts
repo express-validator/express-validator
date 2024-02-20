@@ -30,9 +30,9 @@ export type Optional = 'undefined' | 'null' | 'falsy' | false;
  *
  * - false: do not include optional data
  * - true: include optional data
- * - `ignoreUndefined`: include optional data except for undefined values
+ * - `discardUndefined`: include optional data except for undefined values
  */
-export type IncludeOptionals = boolean | 'ignoreUndefined';
+export type IncludeOptionals = boolean | 'discardUndefined';
 
 export type AddErrorOptions =
   | {
@@ -83,16 +83,28 @@ export class Context {
     readonly message?: any,
   ) {}
 
-  getData(options: { requiredOnly: IncludeOptionals } = { requiredOnly: false }) {
+  // TODO(8.0.0): remove requiredOnly
+  getData(
+    options: {
+      /**
+       * It is ignored if `includeOptionals` is specified
+       * @deprecated use `includeOptionals` instead
+       */
+      requiredOnly?: boolean;
+      includeOptionals?: IncludeOptionals;
+    } = { requiredOnly: false },
+  ) {
     const { optional } = this;
+    const includeOptionals: IncludeOptionals =
+      options.includeOptionals !== undefined ? options.includeOptionals : !options.requiredOnly;
     const checks =
-      options.requiredOnly === true && optional
+      !includeOptionals && optional
         ? [
             (value: any) => value !== undefined,
             (value: any) => (optional === 'null' ? value != null : true),
             (value: any) => (optional === 'falsy' ? value : true),
           ]
-        : options.requiredOnly === 'ignoreUndefined'
+        : includeOptionals === 'discardUndefined' && optional
         ? [(value: any) => value !== undefined]
         : [];
 

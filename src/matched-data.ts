@@ -55,9 +55,7 @@ export function matchedData<T extends object = Record<string, any>>(
 
 function createFieldExtractor(includeOptionals: IncludeOptionals) {
   return (context: Context) => {
-    const instances = context.getData({
-      requiredOnly: typeof includeOptionals === 'boolean' ? !includeOptionals : includeOptionals,
-    });
+    const instances = context.getData({ includeOptionals });
     return instances.map((instance): FieldInstanceBag => ({ instance, context }));
   };
 }
