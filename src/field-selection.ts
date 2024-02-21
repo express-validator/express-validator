@@ -135,7 +135,7 @@ function findUnknownFields(
   unknownFields: UnknownFieldInstance[] = [],
 ): UnknownFieldInstance[] {
   const globstarBranch = tree['**'];
-  if (tree[''] || globstarBranch?.['']) {
+  if (globstarBranch?.[''] || (tree[''] && Object.keys(tree).length === 1)) {
     // The rest of the tree from here is covered by some validation chain
     // For example, when the current treePath is `['foo', 'bar']` but `foo` is known
     return unknownFields;
