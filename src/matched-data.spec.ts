@@ -76,7 +76,7 @@ describe('when option includeOptionals is true', () => {
 describe('when option includeOptionals is discardUndefined ', () => {
   it('returns object with optional data that is not undefined', done => {
     const req = {
-      headers: { foo: '123', bar: null, 'boo': false },
+      headers: { foo: '123', bar: null, boo: false },
     };
 
     const middleware = check(['foo', 'bar', 'baz', 'boo']).optional({ values: 'null' }).isInt();
@@ -93,7 +93,7 @@ describe('when option includeOptionals is discardUndefined ', () => {
 
   it('returns object including null, falsy and invalid values when `onlyValidData` is set to false', done => {
     const req = {
-      headers: { foo: '123', bar: null, 'boo': false },
+      headers: { foo: '123', bar: null, boo: false },
     };
 
     const middleware = check(['foo', 'bar', 'baz', 'boo']).optional({ values: 'null' }).isInt();
