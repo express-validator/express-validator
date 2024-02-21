@@ -9,7 +9,7 @@ title: matchedData
 ```ts
 import { matchedData } from 'express-validator';
 matchedData(req, options?: {
-  includeOptionals?: boolean,
+  includeOptionals?: boolean | 'discardUndefined',
   onlyValidData?: boolean,
   locations?: Location[],
 })
