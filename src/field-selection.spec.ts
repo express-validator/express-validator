@@ -431,7 +431,15 @@ describe('selectUnknownFields()', () => {
   });
 
   it('selects unknown fields nested under a checked wildcard', () => {
-    const req = { body: { obj: { nestedobj1: { foo: true, bar: 123, boom: { foo: true } }, nestedobj2: { foo: true, baz: true } }, arr: [{ foo: 'a' }, { foo: 'a', bar: true }] } };
+    const req = {
+      body: {
+        obj: {
+          nestedobj1: { foo: true, bar: 123, boom: { foo: true } },
+          nestedobj2: { foo: true, baz: true },
+        },
+        arr: [{ foo: 'a' }, { foo: 'a', bar: true }],
+      },
+    };
     // arr and obj are checked
     const instances = selectUnknownFields(req, ['obj', 'obj.*.foo', 'arr', 'arr.*.foo'], ['body']);
     expect(instances).toHaveLength(4);
@@ -456,7 +464,6 @@ describe('selectUnknownFields()', () => {
       location: 'body',
     });
   });
-
 
   it('selects unknown fields when there are muliple wildcards', () => {
     const req = {
