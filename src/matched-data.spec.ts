@@ -76,15 +76,16 @@ describe('when option includeOptionals is true', () => {
 describe('when option includeOptionals is discardUndefined ', () => {
   it('returns object with optional data which is not undefined', done => {
     const req = {
-      headers: { foo: '123', bar: null },
+      headers: { foo: '123', bar: null, 'boo': false },
     };
 
-    const middleware = check(['foo', 'bar', 'baz']).optional({ values: 'null' }).isInt();
+    const middleware = check(['foo', 'bar', 'baz', 'boo']).optional({ values: 'null' }).isInt();
 
     middleware(req, {}, () => {
       const data = matchedData(req, { includeOptionals: 'discardUndefined' });
       expect(data).toHaveProperty('foo', '123');
       expect(data).toHaveProperty('bar', null);
+      expect(data).toHaveProperty('boo', false);
       expect(data).not.toHaveProperty('baz');
 
       done();
