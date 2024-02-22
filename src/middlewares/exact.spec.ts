@@ -117,4 +117,3 @@ it('works when multiple instances of oneOf are matched', async () => {
   const result = await checkExact().run(req);
   expect(result.context.errors).toHaveLength(0);
 });
-
