@@ -10,11 +10,7 @@ import {
 import { ContextRunner, ContextRunnerImpl, ValidationChain } from '../chain';
 import { ReadonlyContext } from '../context';
 import { ContextBuilder } from '../context-builder';
-import { ContextItem } from '../context-items';
 import { runAllChains } from '../utils';
-
-// A dummy context item that gets added to surrogate contexts just to make them run
-const dummyItem: ContextItem = { async run() {} };
 
 export type OneOfErrorType = 'grouped' | 'least_errored' | 'flat';
 
@@ -50,7 +46,7 @@ export function oneOf(
   options: OneOfOptions = {},
 ): Middleware & ContextRunner {
   const run = async (req: Request, opts?: { dryRun?: boolean }) => {
-    const surrogateContext = new ContextBuilder().addItem(dummyItem).build();
+    const surrogateContextBuilder = new ContextBuilder();
 
     // Run each group of chains in parallel
     const promises = chains.map(async chain => {
@@ -77,16 +73,22 @@ export function oneOf(
       // #536: The data from a chain within oneOf() can only be made available to e.g. matchedData()
       // if its entire group is valid.
       if (!groupErrors.length) {
-        contexts.forEach(context => {
-          surrogateContext.addFieldInstances(context.getData());
-        });
+        surrogateContextBuilder.pushSubcontext(...contexts);
       }
 
       return groupErrors;
     });
 
     const allErrors = await Promise.all(promises);
-    const success = allErrors.some(groupErrors => groupErrors.length === 0);
+
+    const surrogateContext = surrogateContextBuilder.build();
+    // fieldInstances are used in matchedData
+    for (const context of surrogateContext.subcontexts) {
+      surrogateContext.addFieldInstances(context.getData());
+    }
+
+    const successfulChain = allErrors.find(groupErrors => groupErrors.length === 0);
+    const success = successfulChain !== undefined;
 
     if (!success) {
       const message = options.message || 'Invalid value(s)';
