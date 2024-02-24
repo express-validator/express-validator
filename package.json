@@ -34,7 +34,8 @@
     "prepublishOnly": "tsc",
     "postpublish": "npm run docs:publish",
     "test": "jest",
-    "lint": "eslint --ignore-path .gitignore 'src/**/*.ts' && prettier -c ."
+    "lint": "eslint --ignore-path .gitignore 'src/**/*.ts' && prettier -c .",
+    "prettier": "prettier -w ."
   },
   "engines": {
     "node": ">= 8.0.0"
