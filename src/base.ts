@@ -146,7 +146,7 @@ export type GroupedAlternativeValidationError = {
  *  if (error.type === 'alternative') {
  *    console.log(`There are ${error.nestedErrors.length} errors under this alternative list`);
  *  } else if (error.type === 'field') {
- *    console.log(`There's an error with field ${error.path) in the request ${error.location}`);
+ *    console.log(`There's an error with field ${error.path} in the request ${error.location}`);
  *  }
  *
  */
