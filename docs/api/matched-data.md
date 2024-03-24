@@ -9,7 +9,7 @@ title: matchedData
 ```ts
 import { matchedData } from 'express-validator';
 matchedData(req, options?: {
-  includeOptionals?: boolean,
+  includeOptionals?: boolean | 'discardUndefined',
   onlyValidData?: boolean,
   locations?: Location[],
 })
@@ -51,6 +51,25 @@ app.post(
     const data = matchedData(req, { includeOptionals: true });
     // If phone isn't set:
     // => { email: 'foo@bar.com', message: 'Hi hello', phone: undefined }
+  },
+);
+```
+
+If you want to return optional values which aren't `undefined` like `null` and `falsy` values,
+you can set `options.includeOptionals` to `discardUndefined`.
+
+```ts
+app.post(
+  '/contact-us',
+  [
+    body('email').isEmail(),
+    body('message').notEmpty(),
+    body('phone').optional({ values: 'null' }).isMobilePhone(),
+  ],
+  (req, res) => {
+    const data = matchedData(req, { includeOptionals: 'discardUndefined' });
+    // If phone is set as null:
+    // => { email: 'foo@bar.com', message: 'Hi hello', phone: null }
   },
 );
 ```
