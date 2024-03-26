@@ -59,17 +59,25 @@ export function checkExact(
     await runAllChains(req, chainsArr);
 
     // The chains above will have added contexts to the request
-    (internalReq[contextsKey] || []).forEach(context => {
-      context.locations.forEach(location => {
-        if (!locations.includes(location)) {
-          return;
+    (internalReq[contextsKey] || [])
+      .flatMap(context => {
+        // TODO: This does not work for nested oneOf
+        if (context.subcontexts.length > 0) {
+          return context.subcontexts;
         }
+        return context;
+      })
+      .forEach(context => {
+        context.locations.forEach(location => {
+          if (!locations.includes(location)) {
+            return;
+          }
 
-        const locationFields = fieldsByLocation.get(location) || [];
-        locationFields.push(...context.fields);
-        fieldsByLocation.set(location, locationFields);
+          const locationFields = fieldsByLocation.get(location) || [];
+          locationFields.push(...context.fields);
+          fieldsByLocation.set(location, locationFields);
+        });
       });
-    });
 
     // when none of the chains matched anything, then everything is unknown.
     if (!fieldsByLocation.size) {
@@ -81,7 +89,7 @@ export function checkExact(
       unknownFields = unknownFields.concat(selectUnknownFields(req, fields, [location]));
     }
 
-    const context = new Context([], [], [], false, false);
+    const context = new Context([], [], [], [], false, false);
     if (unknownFields.length) {
       context.addError({
         type: 'unknown_fields',

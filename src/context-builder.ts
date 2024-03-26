@@ -1,5 +1,5 @@
 import { ContextItem } from './context-items';
-import { Context, Optional } from './context';
+import { Context, Optional, ReadonlyContext } from './context';
 import { Location } from './base';
 
 export class ContextBuilder {
@@ -9,6 +9,8 @@ export class ContextBuilder {
   private message: any;
   private optional: Optional = false;
   private requestBail = false;
+  // used to store oneOf contexts
+  private subcontexts: ReadonlyContext[] = [];
 
   setFields(fields: string[]) {
     this.fields = fields;
@@ -40,10 +42,16 @@ export class ContextBuilder {
     return this;
   }
 
+  pushSubcontext(...contexts: ReadonlyContext[]) {
+    this.subcontexts.push(...contexts);
+    return this;
+  }
+
   build() {
     return new Context(
       this.fields,
       this.locations,
+      this.subcontexts,
       this.stack,
       this.optional,
       this.requestBail,

@@ -1,6 +1,7 @@
 import { checkExact } from './exact';
 import { checkSchema } from './schema';
 import { check } from './validation-chain-builders';
+import { oneOf } from './one-of';
 
 it.each([
   ['single chain', check('banana')],
@@ -86,4 +87,33 @@ it('works as a middleware', done => {
   checkExact([])(req, {}, () => {
     done();
   });
+});
+
+it('works when used along with oneOf', async () => {
+  const req = {
+    body: {
+      recognized: 'A',
+      unrecognized: 'B',
+    },
+  };
+
+  await check('recognized').isString().run(req);
+  await oneOf([check('unrecognized').isString(), check('unrecognizedOther').isString()]).run(req);
+  const result = await checkExact().run(req);
+  expect(result.context.errors).toHaveLength(0);
+});
+
+it('works when multiple instances of oneOf are matched', async () => {
+  const req = {
+    body: {
+      recognized: 'A',
+      unrecognized: 'B',
+      unrecognizedOther: 'C',
+    },
+  };
+
+  await check('recognized').isString().run(req);
+  await oneOf([check('unrecognized').isString(), check('unrecognizedOther').isString()]).run(req);
+  const result = await checkExact().run(req);
+  expect(result.context.errors).toHaveLength(0);
 });

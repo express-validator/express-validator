@@ -61,6 +61,8 @@ export class Context {
   constructor(
     readonly fields: string[],
     readonly locations: Location[],
+    // eslint-disable-next-line no-use-before-define
+    readonly subcontexts: ReadonlyContext[],
     readonly stack: ReadonlyArray<ContextItem>,
     readonly optional: Optional,
     readonly bail: boolean,
