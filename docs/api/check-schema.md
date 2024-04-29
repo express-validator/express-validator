@@ -21,7 +21,7 @@ app.post(
   '/signup',
   checkSchema({
     email: { isEmail: true },
-    pasword: { isLength: { options: { min: 8 } } },
+    password: { isLength: { options: { min: 8 } } },
   }),
   (req, res) => {
     // Handle request
@@ -48,7 +48,7 @@ you can also run it manually, if you wish.
 app.post('/signup', async (req, res) => {
   const result = await checkSchema({
     email: { isEmail: true },
-    pasword: { isLength: { options: { min: 8 } } },
+    password: { isLength: { options: { min: 8 } } },
   }).run(req);
 
   if (!result.isEmpty()) {
