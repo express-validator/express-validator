@@ -996,17 +996,14 @@ export interface IsStrongPasswordOptions {
  *    allow_query_components: true
  * }
  */
-export interface IsURLOptions {
+export interface IsURLOptions extends IsFQDNOptions {
   protocols?: URLProtocol[];
-  require_tld?: boolean;
   require_protocol?: boolean;
   require_host?: boolean;
   require_port?: boolean;
   require_valid_protocol?: boolean;
-  allow_underscores?: boolean;
   host_whitelist?: (string | RegExp)[];
   host_blacklist?: (string | RegExp)[];
-  allow_trailing_dot?: boolean;
   allow_protocol_relative_urls?: boolean;
   disallow_auth?: boolean;
   validate_length?: boolean;
