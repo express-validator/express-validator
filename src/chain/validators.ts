@@ -107,6 +107,7 @@ export interface Validators<Return> {
   // validator's validators
   contains(elem: any, options?: Options.ContainsOptions): Return;
   equals(comparison: string): Return;
+  isAbaRouting(): Return;
   isAfter(dateOrOptions?: string | Options.IsAfterOptions): Return;
   isAlpha(locale?: Options.AlphaLocale, options?: Options.IsAlphaOptions): Return;
   isAlphanumeric(

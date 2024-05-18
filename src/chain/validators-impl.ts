@@ -90,6 +90,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   equals(comparison: string) {
     return this.addStandardValidation(validator.equals, comparison);
   }
+  isAbaRouting() {
+    return this.addStandardValidation(validator.isAbaRouting);
+  }
   isAfter(dateOrOptions?: string | Options.IsAfterOptions) {
     return this.addStandardValidation(validator.isAfter, dateOrOptions);
   }

@@ -5,6 +5,7 @@ declare module 'validator' {
     options?: import('../src/options').ContainsOptions,
   ): boolean;
   export function equals(str: string, comparison: string): boolean;
+  export function isAbaRouting(str: string): boolean;
   export function isAfter(
     str: string,
     dateOrOptions?: string | import('../src/options').IsAfterOptions,
