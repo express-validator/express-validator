@@ -55,6 +55,20 @@ it('does not include valid data from invalid oneOf() chain group', done => {
   });
 });
 
+it('includes all of the valid data from oneOf groups', done => {
+  const req = {
+    query: { foo: 'foo', bar: 123 },
+  };
+
+  oneOf([[check('foo').equals('foo')], [check('bar').isInt()]])(req, {}, () => {
+    expect(matchedData(req)).toEqual({
+      foo: 'foo',
+      bar: 123,
+    });
+    done();
+  });
+});
+
 describe('when option includeOptionals is true', () => {
   it('returns object with optional data', done => {
     const req = {
