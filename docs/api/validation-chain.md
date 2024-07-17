@@ -387,6 +387,74 @@ body('json_string').optional().isLength({ max: 100 }).isJSON().
 
 :::
 
+### `.hide()`
+
+```ts
+hide(fieldName: string, hiddenValue?: string): ValidationChain
+```
+
+Hide field's value in the returning errors of validationResult() method.
+The value might be confidential information (such as api key), so we replace its value.
+
+**Parameters:**
+
+| Name            | Description                                                                     |
+| --------------- | ------------------------------------------------------------------------------- |
+| `fieldName` | the field name which you want to hide, such as query parameter or cookie name and so on. |
+| `hiddenValue` | String to be replaced with field's value, if it's not given, by default, '********'. |
+
+:::info
+
+For example, we can implement custom api_key(in query parameter) validator, like below.
+
+```ts
+query('api_key', 'api_key is invalid.')
+  .custom(async (api_key) => {
+      const validity = await check_api_key(api_key);
+      return new Promise((resolve, reject) => { validity? resolve(validity): reject() }); })
+    })
+```
+
+Without, calling hide() method, if api_key is invalid,
+In the returning errors of validationResult() function,
+api_key query parameter is exposed.
+
+```ts
+{
+  "type": "field",
+  "value": "api key is exposed",
+  "msg": "api_key is invalid, please check that it is revoked.",
+  "path": "api_key",
+  "location": "query"
+}
+```
+
+However, api_key query parameter is hidden by calling hide() method, like below.
+
+```ts
+query('api_key', 'api_key is invalid.')
+  .custom(async (api_key) => {
+      const validity = await check_api_key(api_key);
+      return new Promise((resolve, reject) => { validity? resolve(validity): reject() }); })
+    })
+  .hide('api_key'),
+```
+
+The value of api_key query parameter is masked with '********'.
+As a result, it is not exposed.
+
+```ts
+{
+  "type": "field",
+  "value": "********",
+  "msg": "api_key is invalid, please check that it is revoked.",
+  "path": "api_key",
+  "location": "query"
+}
+```
+
+:::
+
 ### `.withMessage()`
 
 ```ts

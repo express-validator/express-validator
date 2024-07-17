@@ -81,7 +81,7 @@ export function checkExact(
       unknownFields = unknownFields.concat(selectUnknownFields(req, fields, [location]));
     }
 
-    const context = new Context([], [], [], false, false);
+    const context = new Context([], [], [], false, false, {});
     if (unknownFields.length) {
       context.addError({
         type: 'unknown_fields',

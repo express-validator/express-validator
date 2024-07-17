@@ -107,4 +107,17 @@ export interface ContextHandler<Chain> {
         }
       | boolean,
   ): Chain;
+
+  /**
+   * Hide field's value in the returning errors of validationResult() method.
+   *
+   * The value might be confidential information (such as api key), so we replace its value.
+   *
+   * @param fieldName the field name which you want to hide, such as query parameter or cookie name and so on
+   * @param hiddenValue? String to be replaced with field's value
+   * - if it's not given, by default, '********'.
+   *
+   * @returns the current validation chain
+   */
+  hide(fieldName: string, hiddenValue?: string): Chain;
 }
