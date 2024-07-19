@@ -12,6 +12,7 @@ beforeEach(() => {
   jest.spyOn(builder, 'setOptional');
   jest.spyOn(builder, 'setRequestBail');
   jest.spyOn(builder, 'addItem');
+  jest.spyOn(builder, 'setHiddenValue');
 
   contextHandler = new ContextHandlerImpl(builder, {});
 });
@@ -72,5 +73,16 @@ describe('#optional()', () => {
 
     contextHandler.optional(false);
     expect(builder.setOptional).toHaveBeenNthCalledWith(3, false);
+  });
+});
+
+describe('#hide()', () => {
+  it('hide() is not called, yet.', () => {
+    expect(builder.setHiddenValue).not.toHaveBeenCalled();
+  });
+
+  it('hide() is called.', () => {
+    contextHandler.hide('hidden_value')
+    expect(builder.setHiddenValue).toHaveBeenCalled();
   });
 });

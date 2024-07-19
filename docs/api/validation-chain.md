@@ -390,7 +390,7 @@ body('json_string').optional().isLength({ max: 100 }).isJSON().
 ### `.hide()`
 
 ```ts
-hide(fieldName: string, hiddenValue?: string): ValidationChain
+hide(hiddenValue?: string): ValidationChain
 ```
 
 Hide field's value in the returning errors of validationResult() method.
@@ -400,7 +400,6 @@ The value might be confidential information (such as api key), so we replace its
 
 | Name            | Description                                                                     |
 | --------------- | ------------------------------------------------------------------------------- |
-| `fieldName` | the field name which you want to hide, such as query parameter or cookie name and so on. |
 | `hiddenValue` | String to be replaced with field's value, if it's not given, by default, '********'. |
 
 :::info
@@ -437,7 +436,7 @@ query('api_key', 'api_key is invalid.')
       const validity = await check_api_key(api_key);
       return new Promise((resolve, reject) => { validity? resolve(validity): reject() }); })
     })
-  .hide('api_key'),
+  .hide(),
 ```
 
 The value of api_key query parameter is masked with '********'.

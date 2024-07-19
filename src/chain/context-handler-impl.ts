@@ -46,8 +46,8 @@ export class ContextHandlerImpl<Chain> implements ContextHandler<Chain> {
     return this.chain;
   }
 
-  hide(fieldName: string, hiddenValue: string = '********') {
-    this.builder.hide(fieldName, hiddenValue)
+  hide(hiddenValue: string = '********') {
+    this.builder.setHiddenValue(hiddenValue)
     return this.chain;
   }
 }

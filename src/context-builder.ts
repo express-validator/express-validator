@@ -1,4 +1,4 @@
-import { ContextItem, Dictionary } from './context-items';
+import { ContextItem } from './context-items';
 import { Context, Optional } from './context';
 import { Location } from './base';
 
@@ -9,7 +9,7 @@ export class ContextBuilder {
   private message: any;
   private optional: Optional = false;
   private requestBail = false;
-  private fieldNames: Dictionary<string, string> = {}
+  private hiddenValue: string = ''
 
   setFields(fields: string[]) {
     this.fields = fields;
@@ -41,8 +41,8 @@ export class ContextBuilder {
     return this;
   }
 
-  hide(fieldName: string, hiddenValue: string) {
-    this.fieldNames[fieldName] = hiddenValue
+  setHiddenValue(hiddenValue: string) {
+    this.hiddenValue = hiddenValue
     return this;
   }
 
@@ -53,7 +53,7 @@ export class ContextBuilder {
       this.stack,
       this.optional,
       this.requestBail,
-      this.fieldNames,
+      this.hiddenValue,
       this.message,
     );
   }

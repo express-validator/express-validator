@@ -8,7 +8,7 @@ import {
   UnknownFieldInstance,
   ValidationError,
 } from './base';
-import { ContextItem, Dictionary } from './context-items';
+import { ContextItem } from './context-items';
 
 function getDataMapKey(path: string, location: Location) {
   return `${location}:${path}`;
@@ -65,7 +65,7 @@ export class Context {
     readonly stack: ReadonlyArray<ContextItem>,
     readonly optional: Optional,
     readonly bail: boolean,
-    readonly fieldNames: Dictionary<string, string>,
+    readonly hiddenValue: string,
     readonly message?: any,
   ) {}
 
@@ -122,7 +122,7 @@ export class Context {
       case 'field':
         error = {
           type: 'field',
-          value: Object.keys(this.fieldNames).includes(opts.meta?.path) ? this.fieldNames[opts.meta?.path] : opts.value,
+          value: this.hiddenValue != '' ? this.hiddenValue : opts.value,
           msg: typeof msg === 'function' ? msg(opts.value, opts.meta) : msg,
           path: opts.meta?.path,
           location: opts.meta?.location,
