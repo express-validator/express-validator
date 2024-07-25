@@ -9,7 +9,8 @@ export class ContextBuilder {
   private message: any;
   private optional: Optional = false;
   private requestBail = false;
-  private hiddenValue: string = ''
+  private hidden: boolean = false;
+  private hiddenValue: string = '';
 
   setFields(fields: string[]) {
     this.fields = fields;
@@ -41,8 +42,9 @@ export class ContextBuilder {
     return this;
   }
 
-  setHiddenValue(hiddenValue: string) {
-    this.hiddenValue = hiddenValue
+  setHiddenValue(hidden: boolean, hiddenValue: string) {
+    this.hidden = hidden;
+    this.hiddenValue = hiddenValue;
     return this;
   }
 
@@ -53,6 +55,7 @@ export class ContextBuilder {
       this.stack,
       this.optional,
       this.requestBail,
+      this.hidden,
       this.hiddenValue,
       this.message,
     );

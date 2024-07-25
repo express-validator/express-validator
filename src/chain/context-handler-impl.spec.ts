@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { ContextBuilder } from '../context-builder';
 import { ChainCondition, CustomCondition } from '../context-items';
 import { check } from '../middlewares/check';
@@ -82,7 +83,7 @@ describe('#hide()', () => {
   });
 
   it('hide() is called.', () => {
-    contextHandler.hide('hidden_value')
+    contextHandler.hide('hidden_value');
     expect(builder.setHiddenValue).toHaveBeenCalled();
   });
 });

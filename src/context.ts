@@ -65,6 +65,7 @@ export class Context {
     readonly stack: ReadonlyArray<ContextItem>,
     readonly optional: Optional,
     readonly bail: boolean,
+    readonly hidden: boolean,
     readonly hiddenValue: string,
     readonly message?: any,
   ) {}
@@ -122,11 +123,19 @@ export class Context {
       case 'field':
         error = {
           type: 'field',
-          value: this.hiddenValue != '' ? this.hiddenValue : opts.value,
+          value: opts.value,
           msg: typeof msg === 'function' ? msg(opts.value, opts.meta) : msg,
           path: opts.meta?.path,
           location: opts.meta?.location,
         };
+
+        if (this.hidden) {
+          if (this.hiddenValue === '') {
+            delete error.value;
+          } else {
+            error.value = this.hiddenValue;
+          }
+        }
         break;
 
       case 'unknown_fields':

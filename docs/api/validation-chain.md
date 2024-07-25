@@ -394,13 +394,13 @@ hide(hiddenValue?: string): ValidationChain
 ```
 
 Hide field's value in the returning errors of validationResult() method.
-The value might be confidential information (such as api key), so we replace its value.
+If the value is confidential information (such as api key),
+please call this method to prevent exposing it.
+If hiddenValue is not given, value property itself is removed.
 
-**Parameters:**
-
-| Name            | Description                                                                     |
-| --------------- | ------------------------------------------------------------------------------- |
-| `hiddenValue` | String to be replaced with field's value, if it's not given, by default, '********'. |
+| Name          | Description                               |
+| ------------- | ----------------------------------------- |
+| `hiddenValue` | String to be replaced with field's value. |
 
 :::info
 
@@ -409,9 +409,9 @@ For example, we can implement custom api_key(in query parameter) validator, like
 ```ts
 query('api_key', 'api_key is invalid.')
   .custom(async (api_key) => {
-      const validity = await check_api_key(api_key);
-      return new Promise((resolve, reject) => { validity? resolve(validity): reject() }); })
-    })
+    const validity = await check_api_key(api_key);
+    return new Promise((resolve, reject) => { validity? resolve(validity): reject() }); })
+  });
 ```
 
 Without, calling hide() method, if api_key is invalid,
@@ -436,16 +436,37 @@ query('api_key', 'api_key is invalid.')
       const validity = await check_api_key(api_key);
       return new Promise((resolve, reject) => { validity? resolve(validity): reject() }); })
     })
-  .hide(),
+  .hide();
 ```
 
-The value of api_key query parameter is masked with '********'.
-As a result, it is not exposed.
+The value of api_key query parameter is hidden by calling hide().
 
 ```ts
 {
   "type": "field",
-  "value": "********",
+  "msg": "api_key is invalid, please check that it is revoked.",
+  "path": "api_key",
+  "location": "query"
+}
+```
+
+Also, if you give the string('BLOCK EXPOSING API_KEY') for replacement with value.
+
+```ts
+query('api_key', 'api_key is invalid.')
+  .custom(async (api_key) => {
+      const validity = await check_api_key(api_key);
+      return new Promise((resolve, reject) => { validity? resolve(validity): reject() }); })
+    })
+  .hide('BLOCK EXPOSING API_KEY');
+```
+
+The value is replaced with "BLOCK EXPOSING API_KEY".
+
+```ts
+{
+  "type": "field",
+  "value": "BLOCK EXPOSING API_KEY",
   "msg": "api_key is invalid, please check that it is revoked.",
   "path": "api_key",
   "location": "query"
