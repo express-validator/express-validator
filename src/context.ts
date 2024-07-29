@@ -25,7 +25,7 @@ function getDataMapKey(path: string, location: Location) {
  */
 export type Optional = 'undefined' | 'null' | 'falsy' | false;
 
-type AddErrorOptions =
+export type AddErrorOptions =
   | {
       type: 'field';
       message?: any;
