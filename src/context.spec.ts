@@ -1,5 +1,5 @@
 import { FieldInstance, FieldValidationError, Meta, UnknownFieldInstance } from './base';
-import { AddErrorOptions, Context } from './context';
+import { Context } from './context';
 import { ContextBuilder } from './context-builder';
 
 let context: Context;
@@ -85,6 +85,41 @@ describe('#addError()', () => {
         location: 'headers',
       });
     });
+
+    it('keeps the error value when visibility = visible', () => {
+      context = new ContextBuilder().setHidden(false).build();
+      context.addError({ type: 'field', message: 'bad', value: 'foo', meta });
+      expect(context.errors[0]).toEqual({
+        type: 'field',
+        value: 'foo',
+        msg: 'bad',
+        path: 'bar',
+        location: 'headers',
+      });
+    });
+
+    it('removes the error value when visibility = hidden', () => {
+      context = new ContextBuilder().setHidden(true).build();
+      context.addError({ type: 'field', message: 'bad', value: 'foo', meta });
+      expect(context.errors[0]).toEqual({
+        type: 'field',
+        msg: 'bad',
+        path: 'bar',
+        location: 'headers',
+      });
+    });
+
+    it('sets the redacted value when visibility = redacted', () => {
+      context = new ContextBuilder().setHidden(true, '*****').build();
+      context.addError({ type: 'field', message: 'bad', value: 'foo', meta });
+      expect(context.errors[0]).toEqual({
+        type: 'field',
+        value: '*****',
+        msg: 'bad',
+        path: 'bar',
+        location: 'headers',
+      });
+    });
   });
 
   describe('for type alternative', () => {
@@ -148,6 +183,46 @@ describe('#addError()', () => {
       expect(context.errors).toHaveLength(1);
       expect(context.errors[0].msg).toBe(123);
     });
+
+    it('keeps the value of nested errors when visibility = visible', () => {
+      context = new ContextBuilder().setHidden(false).build();
+      context.addError({ type: 'alternative', req, message: 'bad', nestedErrors: [nestedError] });
+      expect(context.errors[0]).toEqual({
+        type: 'alternative',
+        msg: 'bad',
+        nestedErrors: [nestedError],
+      });
+    });
+
+    it('removes the value of nested error when visibility = hidden', () => {
+      context = new ContextBuilder().setHidden(true).build();
+      context.addError({ type: 'alternative', req, message: 'bad', nestedErrors: [nestedError] });
+      expect(context.errors[0]).toEqual({
+        type: 'alternative',
+        msg: 'bad',
+        nestedErrors: [
+          {
+            ...nestedError,
+            value: undefined,
+          },
+        ],
+      });
+    });
+
+    it('sets the redacted value to nested errors when visibility = redacted', () => {
+      context = new ContextBuilder().setHidden(true, '*****').build();
+      context.addError({ type: 'alternative', req, message: 'bad', nestedErrors: [nestedError] });
+      expect(context.errors[0]).toEqual({
+        type: 'alternative',
+        msg: 'bad',
+        nestedErrors: [
+          {
+            ...nestedError,
+            value: '*****',
+          },
+        ],
+      });
+    });
   });
 
   describe('for type alternative_grouped', () => {
@@ -210,6 +285,65 @@ describe('#addError()', () => {
       expect(message).toHaveBeenCalledWith([[nestedError]], { req });
       expect(context.errors).toHaveLength(1);
       expect(context.errors[0].msg).toBe(123);
+    });
+
+    it('keeps the value of nested errors when visibility = visible', () => {
+      context = new ContextBuilder().setHidden(false).build();
+      context.addError({
+        type: 'alternative_grouped',
+        req,
+        message: 'bad',
+        nestedErrors: [[nestedError]],
+      });
+      expect(context.errors[0]).toEqual({
+        type: 'alternative_grouped',
+        msg: 'bad',
+        nestedErrors: [[nestedError]],
+      });
+    });
+
+    it('removes the value of nested error when visibility = hidden', () => {
+      context = new ContextBuilder().setHidden(true).build();
+      context.addError({
+        type: 'alternative_grouped',
+        req,
+        message: 'bad',
+        nestedErrors: [[nestedError]],
+      });
+      expect(context.errors[0]).toEqual({
+        type: 'alternative_grouped',
+        msg: 'bad',
+        nestedErrors: [
+          [
+            {
+              ...nestedError,
+              value: undefined,
+            },
+          ],
+        ],
+      });
+    });
+
+    it('sets the redacted value to nested errors when visibility = redacted', () => {
+      context = new ContextBuilder().setHidden(true, '*****').build();
+      context.addError({
+        type: 'alternative_grouped',
+        req,
+        message: 'bad',
+        nestedErrors: [[nestedError]],
+      });
+      expect(context.errors[0]).toEqual({
+        type: 'alternative_grouped',
+        msg: 'bad',
+        nestedErrors: [
+          [
+            {
+              ...nestedError,
+              value: '*****',
+            },
+          ],
+        ],
+      });
     });
   });
 
@@ -374,51 +508,5 @@ describe('#setData()', () => {
     };
 
     expect(bomb).toThrowError();
-  });
-});
-
-describe('#hide()', () => {
-  const meta: Meta = {
-    path: 'bar',
-    location: 'headers',
-    req: {},
-  };
-
-  const error: AddErrorOptions = {
-    type: 'field',
-    value: 'my value',
-    meta: meta,
-  };
-
-  it('calling hide() without hiddenValue', () => {
-    const myContextBuilder = new ContextBuilder();
-    myContextBuilder.setHiddenValue(true, '');
-    const myContext = myContextBuilder.build();
-
-    myContext.addError(error);
-
-    expect(myContext.errors).toHaveLength(1);
-    expect(myContext.errors).toEqual([
-      { location: 'headers', msg: 'Invalid value', path: 'bar', type: 'field' },
-    ]);
-  });
-
-  it('calling hide() with hiddenValue', () => {
-    const myContextBuilder = new ContextBuilder();
-    myContextBuilder.setHiddenValue(true, '[DO NOT EXPOSE]');
-    const myContext = myContextBuilder.build();
-
-    myContext.addError(error);
-
-    expect(myContext.errors).toHaveLength(1);
-    expect(myContext.errors).toEqual([
-      {
-        location: 'headers',
-        msg: 'Invalid value',
-        path: 'bar',
-        type: 'field',
-        value: '[DO NOT EXPOSE]',
-      },
-    ]);
   });
 });

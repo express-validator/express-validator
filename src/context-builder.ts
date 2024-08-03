@@ -1,5 +1,5 @@
 import { ContextItem } from './context-items';
-import { Context, Optional } from './context';
+import { Context, Optional, ValueVisibility } from './context';
 import { Location } from './base';
 
 export class ContextBuilder {
@@ -9,8 +9,7 @@ export class ContextBuilder {
   private message: any;
   private optional: Optional = false;
   private requestBail = false;
-  private hidden: boolean = false;
-  private hiddenValue: string = '';
+  private visibility: ValueVisibility = { type: 'visible' };
 
   setFields(fields: string[]) {
     this.fields = fields;
@@ -42,9 +41,13 @@ export class ContextBuilder {
     return this;
   }
 
-  setHiddenValue(hidden: boolean, hiddenValue: string) {
-    this.hidden = hidden;
-    this.hiddenValue = hiddenValue;
+  setHidden(hidden: boolean, hiddenValue?: string) {
+    if (hidden) {
+      this.visibility =
+        hiddenValue !== undefined ? { type: 'redacted', value: hiddenValue } : { type: 'hidden' };
+    } else {
+      this.visibility = { type: 'visible' };
+    }
     return this;
   }
 
@@ -55,8 +58,7 @@ export class ContextBuilder {
       this.stack,
       this.optional,
       this.requestBail,
-      this.hidden,
-      this.hiddenValue,
+      this.visibility,
       this.message,
     );
   }

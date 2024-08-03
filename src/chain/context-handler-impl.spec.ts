@@ -1,4 +1,3 @@
-import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { ContextBuilder } from '../context-builder';
 import { ChainCondition, CustomCondition } from '../context-items';
 import { check } from '../middlewares/check';
@@ -13,7 +12,7 @@ beforeEach(() => {
   jest.spyOn(builder, 'setOptional');
   jest.spyOn(builder, 'setRequestBail');
   jest.spyOn(builder, 'addItem');
-  jest.spyOn(builder, 'setHiddenValue');
+  jest.spyOn(builder, 'setHidden');
 
   contextHandler = new ContextHandlerImpl(builder, {});
 });
@@ -78,12 +77,13 @@ describe('#optional()', () => {
 });
 
 describe('#hide()', () => {
-  it('hide() is not called, yet.', () => {
-    expect(builder.setHiddenValue).not.toHaveBeenCalled();
+  it('sets the hidden flag to true with no hidden value', () => {
+    contextHandler.hide();
+    expect(builder.setHidden).toHaveBeenCalledWith(true, undefined);
   });
 
-  it('hide() is called.', () => {
+  it('sets the hidden flag to true with a hidden value', () => {
     contextHandler.hide('hidden_value');
-    expect(builder.setHiddenValue).toHaveBeenCalled();
+    expect(builder.setHidden).toHaveBeenCalledWith(true, 'hidden_value');
   });
 });

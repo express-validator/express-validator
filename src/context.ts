@@ -51,6 +51,11 @@ export type AddErrorOptions =
       nestedErrors: FieldValidationError[][];
     };
 
+export type ValueVisibility =
+  | { type: 'visible' }
+  | { type: 'hidden' }
+  | { type: 'redacted'; value: string };
+
 export class Context {
   private readonly _errors: ValidationError[] = [];
   get errors(): ReadonlyArray<ValidationError> {
@@ -65,8 +70,7 @@ export class Context {
     readonly stack: ReadonlyArray<ContextItem>,
     readonly optional: Optional,
     readonly bail: boolean,
-    readonly hidden: boolean,
-    readonly hiddenValue: string,
+    readonly visibility: ValueVisibility = { type: 'visible' },
     readonly message?: any,
   ) {}
 
@@ -121,21 +125,13 @@ export class Context {
     let error: ValidationError;
     switch (opts.type) {
       case 'field':
-        error = {
+        error = this.updateVisibility({
           type: 'field',
           value: opts.value,
           msg: typeof msg === 'function' ? msg(opts.value, opts.meta) : msg,
           path: opts.meta?.path,
           location: opts.meta?.location,
-        };
-
-        if (this.hidden) {
-          if (this.hiddenValue === '') {
-            delete error.value;
-          } else {
-            error.value = this.hiddenValue;
-          }
-        }
+        });
         break;
 
       case 'unknown_fields':
@@ -150,7 +146,7 @@ export class Context {
         error = {
           type: 'alternative',
           msg: typeof msg === 'function' ? msg(opts.nestedErrors, { req: opts.req }) : msg,
-          nestedErrors: opts.nestedErrors,
+          nestedErrors: opts.nestedErrors.map(error => this.updateVisibility(error)),
         };
         break;
 
@@ -158,7 +154,7 @@ export class Context {
         error = {
           type: 'alternative_grouped',
           msg: typeof msg === 'function' ? msg(opts.nestedErrors, { req: opts.req }) : msg,
-          nestedErrors: opts.nestedErrors,
+          nestedErrors: opts.nestedErrors.map(errors => errors.map(error => this.updateVisibility(error))),
         };
         break;
 
@@ -167,6 +163,25 @@ export class Context {
     }
 
     this._errors.push(error);
+  }
+
+  private updateVisibility(error: FieldValidationError): FieldValidationError {
+    switch (this.visibility.type) {
+      case 'hidden':
+        error = { ...error };
+        delete error.value;
+        return error;
+
+      case 'redacted':
+        return {
+          ...error,
+          value: this.visibility.value,
+        };
+
+      case 'visible':
+      default:
+        return error;
+    }
   }
 }
 
