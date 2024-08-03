@@ -1,5 +1,5 @@
 import { FieldInstance, FieldValidationError, Meta, UnknownFieldInstance } from './base';
-import { Context, AddErrorOptions } from './context';
+import { AddErrorOptions, Context } from './context';
 import { ContextBuilder } from './context-builder';
 
 let context: Context;
@@ -387,7 +387,7 @@ describe('#hide()', () => {
   const error: AddErrorOptions = {
     type: 'field',
     value: 'my value',
-    meta: meta
+    meta: meta,
   };
 
   it('calling hide() without hiddenValue', () => {
@@ -395,11 +395,11 @@ describe('#hide()', () => {
     myContextBuilder.setHiddenValue(true, '');
     const myContext = myContextBuilder.build();
 
-    myContext.addError(error)
+    myContext.addError(error);
 
     expect(myContext.errors).toHaveLength(1);
     expect(myContext.errors).toEqual([
-      {"location": "headers", "msg": "Invalid value", "path": "bar", "type": "field"}
+      { location: 'headers', msg: 'Invalid value', path: 'bar', type: 'field' },
     ]);
   });
 
@@ -408,11 +408,17 @@ describe('#hide()', () => {
     myContextBuilder.setHiddenValue(true, '[DO NOT EXPOSE]');
     const myContext = myContextBuilder.build();
 
-    myContext.addError(error)
+    myContext.addError(error);
 
     expect(myContext.errors).toHaveLength(1);
     expect(myContext.errors).toEqual([
-      {"location": "headers", "msg": "Invalid value", "path": "bar", "type": "field", "value": "[DO NOT EXPOSE]"}
+      {
+        location: 'headers',
+        msg: 'Invalid value',
+        path: 'bar',
+        type: 'field',
+        value: '[DO NOT EXPOSE]',
+      },
     ]);
   });
 });
