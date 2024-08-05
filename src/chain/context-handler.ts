@@ -109,7 +109,7 @@ export interface ContextHandler<Chain> {
   ): Chain;
 
   /**
-   * Hide field's value in the returning errors of validationResult() method.
+   * Hide the field's value in errors returned by `validationResult()`.
    *
    * The value might be confidential information (such as api key), so we replace its value.
    *
