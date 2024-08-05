@@ -393,7 +393,7 @@ body('json_string').optional().isLength({ max: 100 }).isJSON().
 hide(hiddenValue?: string): ValidationChain
 ```
 
-Hide field's value in the returning errors of validationResult() method.
+Hide the field's value in errors returned by [`validationResult()`](./validation-result.md).
 If the value is confidential information (such as api key),
 please call this method to prevent exposing it.
 If hiddenValue is not given, value property itself is removed.
