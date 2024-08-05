@@ -76,7 +76,7 @@ export type FieldValidationError = {
   path: string;
 
   /**
-   * The value of the field, if hide() is called, value is hidden
+   * The value of the field. It might be unset if the value is hidden.
    */
   value?: any;
 
