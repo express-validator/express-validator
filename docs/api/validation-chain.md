@@ -396,7 +396,7 @@ hide(hiddenValue?: string): ValidationChain
 Hide the field's value in errors returned by [`validationResult()`](./validation-result.md).
 If the value is confidential information (such as api key),
 you might want to call this method to prevent exposing it.
-If hiddenValue is not given, value property itself is removed.
+If `hiddenValue` is set, it's set as the value in the errors for this field.
 
 | Name          | Description                               |
 | ------------- | ----------------------------------------- |
