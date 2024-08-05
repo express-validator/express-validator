@@ -114,8 +114,8 @@ export interface ContextHandler<Chain> {
    * If the value is confidential information (such as api key),
    * you might want to call this method to prevent exposing it.
    *
-   * @param hiddenValue? String to be replaced with field's value
-   * - if it's not given, by default, '********'.
+   * @param hiddenValue? String to replace the field's value with.
+   *   If it's not set, the field value is removed from errors.
    *
    * @returns the current validation chain
    */
