@@ -404,73 +404,12 @@ If `hiddenValue` is set, it's set as the value in the errors for this field.
 
 :::info
 
-For example, we can implement custom api_key(in query parameter) validator, like below.
-
 ```ts
-query('api_key', 'api_key is invalid.')
-  .custom(async (api_key) => {
-    const validity = await check_api_key(api_key);
-    return new Promise((resolve, reject) => { validity? resolve(validity): reject() }); })
-  });
-```
+// Omits the value in the errors
+query('api_key').custom(isValidKey).hide();
 
-Without, calling hide() method, if api_key is invalid,
-In the returning errors of validationResult() function,
-api_key query parameter is exposed.
-
-```ts
-{
-  "type": "field",
-  "value": "api key is exposed",
-  "msg": "api_key is invalid, please check that it is revoked.",
-  "path": "api_key",
-  "location": "query"
-}
-```
-
-However, api_key query parameter is hidden by calling hide() method, like below.
-
-```ts
-query('api_key', 'api_key is invalid.')
-  .custom(async (api_key) => {
-      const validity = await check_api_key(api_key);
-      return new Promise((resolve, reject) => { validity? resolve(validity): reject() }); })
-    })
-  .hide();
-```
-
-The value of api_key query parameter is hidden by calling hide().
-
-```ts
-{
-  "type": "field",
-  "msg": "api_key is invalid, please check that it is revoked.",
-  "path": "api_key",
-  "location": "query"
-}
-```
-
-Also, if you give the string('BLOCK EXPOSING API_KEY') for replacement with value.
-
-```ts
-query('api_key', 'api_key is invalid.')
-  .custom(async (api_key) => {
-      const validity = await check_api_key(api_key);
-      return new Promise((resolve, reject) => { validity? resolve(validity): reject() }); })
-    })
-  .hide('BLOCK EXPOSING API_KEY');
-```
-
-The value is replaced with "BLOCK EXPOSING API_KEY".
-
-```ts
-{
-  "type": "field",
-  "value": "BLOCK EXPOSING API_KEY",
-  "msg": "api_key is invalid, please check that it is revoked.",
-  "path": "api_key",
-  "location": "query"
-}
+// Replaces the value in the errors with '*****'
+query('api_key').custom(isValidKey).hide('*****');
 ```
 
 :::
