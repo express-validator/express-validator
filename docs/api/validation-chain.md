@@ -400,7 +400,7 @@ If `hiddenValue` is set, it's set as the value in the errors for this field.
 
 | Name          | Description                               |
 | ------------- | ----------------------------------------- |
-| `hiddenValue` | String to be replaced with field's value. |
+| `hiddenValue` | String to replace field's value with. |
 
 :::info
 
