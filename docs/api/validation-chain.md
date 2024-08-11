@@ -32,7 +32,7 @@ import { ValidationChain } from 'express-validator';
 ### `.custom()`
 
 ```ts
-custom(validator: (value, { req, location, path }) => any): ValidationChain
+custom(validator: (value, { req, location, path, pathValues }) => any): ValidationChain
 ```
 
 Adds a custom validator function to the chain.
@@ -57,6 +57,29 @@ app.post(
       throw new Error('E-mail already in use');
     }
   }),
+  (req, res) => {
+    // Handle request
+  },
+);
+```
+
+If the field was selected using wildcards or globstars, you can access the values they matched by
+using the `pathValues` property.
+This is useful if you want to use some other property of the same object in your validation:
+
+```ts
+app.post(
+  '/purchase',
+  [
+    body('products.*.quantity').custom((quantity, { req, pathValues }) => {
+      const index = Number(pathValues[0]);
+      const { id } = req.body.products[index];
+
+      if (getProductStock(id) < quantity) {
+        throw new Error(`There's not enough of product ${id} in stock`);
+      }
+    }),
+  ],
   (req, res) => {
     // Handle request
   },
@@ -169,7 +192,7 @@ Please check the documentation on standard validators [here](../guides/validatio
 ### `.customSanitizer()`
 
 ```ts
-customSanitizer(sanitizer: (value, { req, location, path }) => any): ValidationChain
+customSanitizer(sanitizer: (value, { req, location, path, pathValues }) => any): ValidationChain
 ```
 
 Adds a custom sanitizer function to the chain.
