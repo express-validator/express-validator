@@ -398,11 +398,9 @@ If the value is confidential information (such as api key),
 you might want to call this method to prevent exposing it.
 If `hiddenValue` is set, it's set as the value in the errors for this field.
 
-| Name          | Description                               |
-| ------------- | ----------------------------------------- |
+| Name          | Description                           |
+| ------------- | ------------------------------------- |
 | `hiddenValue` | String to replace field's value with. |
-
-:::info
 
 ```ts
 // Omits the value in the errors
@@ -411,8 +409,6 @@ query('api_key').custom(isValidKey).hide();
 // Replaces the value in the errors with '*****'
 query('api_key').custom(isValidKey).hide('*****');
 ```
-
-:::
 
 ### `.withMessage()`
 

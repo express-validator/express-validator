@@ -154,7 +154,9 @@ export class Context {
         error = {
           type: 'alternative_grouped',
           msg: typeof msg === 'function' ? msg(opts.nestedErrors, { req: opts.req }) : msg,
-          nestedErrors: opts.nestedErrors.map(errors => errors.map(error => this.updateVisibility(error))),
+          nestedErrors: opts.nestedErrors.map(errors =>
+            errors.map(error => this.updateVisibility(error)),
+          ),
         };
         break;
 
