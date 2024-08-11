@@ -68,18 +68,29 @@ function expandPath(
   const rest = segments.slice(1);
 
   if (object != null && !_.isObjectLike(object)) {
-    if (key === '**' && !rest.length) {
-      // globstar leaves are always selected
-      return [
-        {
-          path: reconstructFieldPath(currPath),
-          values: currValues,
-        },
-      ];
+    if (key === '**') {
+      if (!rest.length) {
+        // globstar leaves are always selected
+        return [
+          {
+            path: reconstructFieldPath(currPath),
+            values: currValues,
+          },
+        ];
+      }
+      return [];
     }
-
-    // there still are paths to traverse, but value is a primitive, stop
-    return [];
+    if (key === '*') {
+      // wildcard position does not exist
+      return [];
+    }
+    // value is a primitive, paths being traversed from here might be in their prototype, return the entire path
+    return [
+      {
+        path: reconstructFieldPath([...currPath, ...segments]),
+        values: currValues,
+      },
+    ];
   }
 
   // Use a non-null value so that inexistent fields are still selected
