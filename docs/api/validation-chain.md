@@ -32,7 +32,7 @@ import { ValidationChain } from 'express-validator';
 ### `.custom()`
 
 ```ts
-custom(validator: (value, { req, location, path }) => any): ValidationChain
+custom(validator: (value, { req, location, path, pathValues }) => any): ValidationChain
 ```
 
 Adds a custom validator function to the chain.
@@ -57,6 +57,29 @@ app.post(
       throw new Error('E-mail already in use');
     }
   }),
+  (req, res) => {
+    // Handle request
+  },
+);
+```
+
+If the field was selected using [wildcards or globstars](../guides/field-selection.md#advanced-features),
+you can access the values they matched by using the `pathValues` property.
+This is useful if you want to use some other property of the same object in your validation:
+
+```ts
+app.post(
+  '/purchase',
+  [
+    body('products.*.quantity').custom((quantity, { req, pathValues }) => {
+      const index = Number(pathValues[0]);
+      const { id } = req.body.products[index];
+
+      if (getProductStock(id) < quantity) {
+        throw new Error(`There's not enough of product ${id} in stock`);
+      }
+    }),
+  ],
   (req, res) => {
     // Handle request
   },
@@ -169,7 +192,7 @@ Please check the documentation on standard validators [here](../guides/validatio
 ### `.customSanitizer()`
 
 ```ts
-customSanitizer(sanitizer: (value, { req, location, path }) => any): ValidationChain
+customSanitizer(sanitizer: (value, { req, location, path, pathValues }) => any): ValidationChain
 ```
 
 Adds a custom sanitizer function to the chain.
@@ -386,6 +409,29 @@ body('json_string').optional().isLength({ max: 100 }).isJSON().
 ```
 
 :::
+
+### `.hide()`
+
+```ts
+hide(hiddenValue?: string): ValidationChain
+```
+
+Hide the field's value in errors returned by [`validationResult()`](./validation-result.md).
+If the value is confidential information (such as api key),
+you might want to call this method to prevent exposing it.
+If `hiddenValue` is set, it's set as the value in the errors for this field.
+
+| Name          | Description                           |
+| ------------- | ------------------------------------- |
+| `hiddenValue` | String to replace field's value with. |
+
+```ts
+// Omits the value in the errors
+query('api_key').custom(isValidKey).hide();
+
+// Replaces the value in the errors with '*****'
+query('api_key').custom(isValidKey).hide('*****');
+```
 
 ### `.withMessage()`
 

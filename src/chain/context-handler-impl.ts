@@ -45,4 +45,9 @@ export class ContextHandlerImpl<Chain> implements ContextHandler<Chain> {
     this.builder.setOptional(value);
     return this.chain;
   }
+
+  hide(hiddenValue?: string) {
+    this.builder.setHidden(true, hiddenValue);
+    return this.chain;
+  }
 }

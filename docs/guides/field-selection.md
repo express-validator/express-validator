@@ -40,7 +40,7 @@ The following table represents what each path would select in the above object:
 | Path                          | Selected value                        |
 | ----------------------------- | ------------------------------------- |
 | `name`                        | `"John McExpress"`                    |
-| `address.work.country`        | `"express-validator land"`            |
+| `addresses.work.country`      | `"express-validator land"`            |
 | `siblings`                    | `[{ "name": "Maria von Validator" }]` |
 | `siblings[0]`                 | `{ "name": "Maria von Validator" }`   |
 | `siblings[0].name`            | `"Maria von Validator"`               |
@@ -117,7 +117,7 @@ app.post(
 
 Globstars extend [wildcards](#wildcards) to an infinitely deep level.  
 They can be used when you have an unknown level of nested fields, and want to validate/sanitize all
-them the same way.
+of them the same way.
 
 For example, imagine that your endpoint handles the update of a company's organizational chart.  
 The structure is recursive, so it looks roughly like this:

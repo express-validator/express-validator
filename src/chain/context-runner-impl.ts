@@ -50,6 +50,7 @@ export class ContextRunnerImpl implements ContextRunner {
             req,
             location,
             path,
+            pathValues: instance.pathValues,
           });
 
           // An instance is mutable, so if an item changed its value, there's no need to call getData again

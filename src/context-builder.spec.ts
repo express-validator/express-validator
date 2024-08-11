@@ -47,6 +47,26 @@ describe('#setRequestBail()', () => {
   });
 });
 
+describe('#setHidden()', () => {
+  it('builds a Context with the visibility set to visible', () => {
+    let context = builder.build();
+    expect(context.visibility).toEqual({ type: 'visible' });
+
+    context = builder.setHidden(true).setHidden(false).build();
+    expect(context.visibility).toEqual({ type: 'visible' });
+  });
+
+  it('builds a Context with the visibility set to hidden', () => {
+    const context = builder.setHidden(true).build();
+    expect(context.visibility).toEqual({ type: 'hidden' });
+  });
+
+  it('builds a Context with the visibility set to redacted', () => {
+    const context = builder.setHidden(true, 'hidden_value').build();
+    expect(context.visibility).toEqual({ type: 'redacted', value: 'hidden_value' });
+  });
+});
+
 describe('#addItem()', () => {
   it('builds a Context with all the item pushed to the stack', () => {
     const item1: ContextItem = {

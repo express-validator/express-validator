@@ -1,5 +1,5 @@
 export type URLProtocol = 'http' | 'https' | 'ftp' | string;
-export type UUIDVersion = 1 | 2 | 3 | 4 | 5 | '1' | '2' | '3' | '4' | '5' | 'all';
+export type UUIDVersion = 1 | 2 | 3 | 4 | 5 | 7 | '1' | '2' | '3' | '4' | '5' | '7' | 'all';
 export type IPVersion = 4 | 6;
 
 export type AlphaLocale =
@@ -37,6 +37,7 @@ export type AlphaLocale =
   | 'en-ZA'
   | 'en-ZM'
   | 'es-ES'
+  | 'eo'
   | 'fa-AF'
   | 'fa-IR'
   | 'fi-FI'
@@ -103,6 +104,7 @@ export type AlphanumericLocale =
   | 'en-ZA'
   | 'en-ZM'
   | 'es-ES'
+  | 'eo'
   | 'fa-AF'
   | 'fa-IR'
   | 'fi-FI'
@@ -194,6 +196,7 @@ export type MobilePhoneLocale =
   | 'en-LS'
   | 'en-MT'
   | 'en-MU'
+  | 'en-MW'
   | 'en-NA'
   | 'en-NG'
   | 'en-NZ'
@@ -401,6 +404,7 @@ export type IBANCode =
   | 'DE'
   | 'DK'
   | 'DO'
+  | 'DZ'
   | 'EE'
   | 'EG'
   | 'ES'
@@ -544,13 +548,15 @@ export type PassportCountryCode =
   | 'TH'
   | 'TR'
   | 'UA'
-  | 'US';
+  | 'US'
+  | 'ZA';
 
 export type IsLicensePlateLocale =
   | 'cs-CZ'
   | 'de-DE'
   | 'de-LI'
   | 'en-NI'
+  | 'en-PK'
   | 'es-AR'
   | 'fi-FI'
   | 'hu-HU'
@@ -572,6 +578,7 @@ export type TaxIDLocale =
   | 'en-GB'
   | 'en-IE'
   | 'en-US'
+  | 'es-AR'
   | 'es-ES'
   | 'et-EE'
   | 'fi-FI'
@@ -593,7 +600,8 @@ export type TaxIDLocale =
   | 'ro-RO'
   | 'sk-SK'
   | 'sl-SI'
-  | 'sv-SE';
+  | 'sv-SE'
+  | 'uk-UA';
 
 export type VATCountryCode =
   | 'GB'
@@ -996,17 +1004,14 @@ export interface IsStrongPasswordOptions {
  *    allow_query_components: true
  * }
  */
-export interface IsURLOptions {
+export interface IsURLOptions extends IsFQDNOptions {
   protocols?: URLProtocol[];
-  require_tld?: boolean;
   require_protocol?: boolean;
   require_host?: boolean;
   require_port?: boolean;
   require_valid_protocol?: boolean;
-  allow_underscores?: boolean;
   host_whitelist?: (string | RegExp)[];
   host_blacklist?: (string | RegExp)[];
-  allow_trailing_dot?: boolean;
   allow_protocol_relative_urls?: boolean;
   disallow_auth?: boolean;
   validate_length?: boolean;

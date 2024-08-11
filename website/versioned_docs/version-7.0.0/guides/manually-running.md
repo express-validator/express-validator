@@ -25,22 +25,19 @@ Check the examples below to understand how this method can help you:
 ```js
 const express = require('express');
 const { validationResult } = require('express-validator');
-// can be reused by many routes
 
-// sequential processing, stops running validations chain if the previous one fails.
+// can be reused by many routes
 const validate = validations => {
   return async (req, res, next) => {
-    for (let validation of validations) {
+    // sequential processing, stops running validations chain if one fails.
+    for (const validation of validations) {
       const result = await validation.run(req);
-      if (result.errors.length) break;
+      if (!result.isEmpty()) {
+        return res.status(400).json({ errors: result.array() });
+      }
     }
 
-    const errors = validationResult(req);
-    if (errors.isEmpty()) {
-      return next();
-    }
-
-    res.status(400).json({ errors: errors.array() });
+    next();
   };
 };
 
@@ -59,22 +56,19 @@ app.post('/signup', validate([
 ```typescript
 import express from 'express';
 import { body, validationResult, ContextRunner } from 'express-validator';
-// can be reused by many routes
 
-// sequential processing, stops running validations chain if the previous one fails.
+// can be reused by many routes
 const validate = (validations: ContextRunner[]) => {
   return async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    for (let validation of validations) {
+    // sequential processing, stops running validations chain if one fails.
+    for (const validation of validations) {
       const result = await validation.run(req);
-      if (result.errors.length) break;
+      if (!result.isEmpty()) {
+        return res.status(400).json({ errors: result.array() });
+      }
     }
 
-    const errors = validationResult(req);
-    if (errors.isEmpty()) {
-      return next();
-    }
-
-    res.status(400).json({ errors: errors.array() });
+    next();
   };
 };
 

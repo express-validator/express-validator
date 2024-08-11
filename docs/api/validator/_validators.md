@@ -13,6 +13,12 @@ contains(elem: any, options?: {
 equals(comparison: string): ValidationChain
 ```
 
+#### `isAbaRouting()`
+
+```ts
+isAbaRouting(): ValidationChain
+```
+
 #### `isAfter()`
 
 ```ts
@@ -66,6 +72,7 @@ isAlpha(locale?: AlphaLocale, options?: {
 - `'en-ZA'`
 - `'en-ZM'`
 - `'es-ES'`
+- `'eo'`
 - `'fa-AF'`
 - `'fa-IR'`
 - `'fi-FI'`
@@ -144,6 +151,7 @@ isAlphanumeric(locale?: AlphanumericLocale, options?: {
 - `'en-ZA'`
 - `'en-ZM'`
 - `'es-ES'`
+- `'eo'`
 - `'fa-AF'`
 - `'fa-IR'`
 - `'fi-FI'`
@@ -618,6 +626,7 @@ isLicensePlate(locale: IsLicensePlateLocale): ValidationChain
 - `'de-DE'`
 - `'de-LI'`
 - `'en-NI'`
+- `'en-PK'`
 - `'es-AR'`
 - `'fi-FI'`
 - `'hu-HU'`
@@ -760,6 +769,7 @@ isMobilePhone(locale: MobilePhoneLocale | readonly Options.MobilePhoneLocale[], 
 - `'en-LS'`
 - `'en-MT'`
 - `'en-MU'`
+- `'en-MW'`
 - `'en-NA'`
 - `'en-NG'`
 - `'en-NZ'`
@@ -963,6 +973,7 @@ isPassportNumber(countryCode?: PassportCountryCode): ValidationChain
 - `'TR'`
 - `'UA'`
 - `'US'`
+- `'ZA'`
 
 </details>
 
@@ -1118,6 +1129,7 @@ isTaxID(locale: TaxIDLocale): ValidationChain
 - `'en-GB'`
 - `'en-IE'`
 - `'en-US'`
+- `'es-AR'`
 - `'es-ES'`
 - `'et-EE'`
 - `'fi-FI'`
@@ -1140,6 +1152,7 @@ isTaxID(locale: TaxIDLocale): ValidationChain
 - `'sk-SK'`
 - `'sl-SI'`
 - `'sv-SE'`
+- `'uk-UA'`
 
 </details>
 
@@ -1156,16 +1169,19 @@ isTime(options: {
 
 ```ts
 isURL(options?: {
-  protocols?: URLProtocol[];
   require_tld?: boolean;
+  allow_underscores?: boolean;
+  allow_trailing_dot?: boolean;
+  allow_numeric_tld?: boolean;
+  allow_wildcard?: boolean;
+  ignore_max_length?: boolean;
+  protocols?: URLProtocol[];
   require_protocol?: boolean;
   require_host?: boolean;
   require_port?: boolean;
   require_valid_protocol?: boolean;
-  allow_underscores?: boolean;
   host_whitelist?: (string | RegExp)[];
   host_blacklist?: (string | RegExp)[];
-  allow_trailing_dot?: boolean;
   allow_protocol_relative_urls?: boolean;
   disallow_auth?: boolean;
   validate_length?: boolean;
@@ -1188,11 +1204,13 @@ isUUID(version?: UUIDVersion): ValidationChain
 - `3`
 - `4`
 - `5`
+- `7`
 - `'1'`
 - `'2'`
 - `'3'`
 - `'4'`
 - `'5'`
+- `'7'`
 - `'all'`
 
 </details>

@@ -44,7 +44,7 @@ describe('ExpressValidator', () => {
 
       await chain.run(req);
       locations.forEach(location => {
-        const meta: Meta = { req, location, path: 'foo' };
+        const meta: Meta = { req, location, path: 'foo', pathValues: [] };
         expect(isAllowedDomain).toHaveBeenCalledWith(foo, meta);
         expect(removeEmailAttribute).toHaveBeenCalledWith(foo, meta);
       });

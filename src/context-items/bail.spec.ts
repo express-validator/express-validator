@@ -17,6 +17,7 @@ it('throws a validation halt if the context has errors', () => {
       req: {},
       location: 'body',
       path: 'bar',
+      pathValues: [],
     },
   });
 

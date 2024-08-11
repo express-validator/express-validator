@@ -10,6 +10,7 @@ const meta: Meta = {
   req: { cookies: { foo: 'bar' } },
   location: 'cookies',
   path: 'foo',
+  pathValues: [],
 };
 
 beforeEach(() => {

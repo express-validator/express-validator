@@ -11,6 +11,7 @@ const meta: Meta = {
   req: { cookies: { foo: 'bar' } },
   location: 'cookies',
   path: 'foo',
+  pathValues: [],
 };
 
 beforeEach(() => {
@@ -19,6 +20,7 @@ beforeEach(() => {
     {
       location: 'cookies',
       path: 'foo',
+      pathValues: [],
       originalPath: 'foo',
       value: 123,
     },

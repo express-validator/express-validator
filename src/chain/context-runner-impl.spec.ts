@@ -12,8 +12,8 @@ let selectFields: jest.Mock;
 let contextRunner: ContextRunnerImpl;
 
 const instances: FieldInstance[] = [
-  { location: 'query', path: 'foo', originalPath: 'foo', value: 123 },
-  { location: 'query', path: 'bar', originalPath: 'bar', value: 456 },
+  { location: 'query', path: 'foo', originalPath: 'foo', pathValues: [], value: 123 },
+  { location: 'query', path: 'bar', originalPath: 'bar', pathValues: ['1'], value: 456 },
 ];
 
 // Used in value persistence tests
@@ -72,6 +72,7 @@ it('runs items on the stack with required data', async () => {
         req,
         location: instance.location,
         path: instance.path,
+        pathValues: instance.pathValues,
       });
     });
   });
@@ -118,7 +119,11 @@ it('does not run items if a previous context halts the whole request', async () 
   const context2 = new ContextBuilder().addItem({ run: jest.fn() }).build();
 
   const req = {};
-  context1.addError({ type: 'field', value: 1, meta: { req, location: 'params', path: 'foo' } });
+  context1.addError({
+    type: 'field',
+    value: 1,
+    meta: { req, location: 'params', path: 'foo', pathValues: [] },
+  });
 
   await new ContextRunnerImpl(context1, selectFields).run(req);
   await new ContextRunnerImpl(context2, selectFields).run(req);
@@ -145,6 +150,7 @@ it('stops running items on paths that got a validation halt', async () => {
     req,
     location: instances[1].location,
     path: instances[1].path,
+    pathValues: instances[1].pathValues,
   });
 });
 

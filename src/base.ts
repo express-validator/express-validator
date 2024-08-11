@@ -34,6 +34,17 @@ export type Meta = {
    * const meta = { req, location: 'body', path: 'foo.bar' }; // req.body.foo.bar
    */
   path: string;
+
+  /**
+   * Values from wildcards/globstars used when selecting fields for validation.
+   *
+   * @example
+   * body('products.*.price').custom((value, { req, pathValues }) => {
+   *  const index = pathValues[0];
+   *  const productName = req.body.products[index].name;
+   * });
+   */
+  pathValues: readonly (string | string[])[];
 };
 
 /**
@@ -53,11 +64,15 @@ export type StandardSanitizer = (input: string, ...options: any[]) => any;
 export interface FieldInstance {
   path: string;
   originalPath: string;
+  pathValues: readonly (string | string[])[];
   location: Location;
   value: any;
 }
 
-export type UnknownFieldInstance = Omit<FieldInstance, 'originalPath'>;
+// pathValues is omitted as it doesn't make sense when a globstar is involved:
+// With known fields `**.foo` and request `{ obj: { foo: 1, bar: 2 } }`,
+// the globstar matches the whole field path every time.
+export type UnknownFieldInstance = Omit<FieldInstance, 'originalPath' | 'pathValues'>;
 
 export type FieldValidationError = {
   /**
@@ -76,9 +91,9 @@ export type FieldValidationError = {
   path: string;
 
   /**
-   * The value of the field
+   * The value of the field. It might be unset if the value is hidden.
    */
-  value: any;
+  value?: any;
 
   /**
    * The error message
@@ -146,7 +161,7 @@ export type GroupedAlternativeValidationError = {
  *  if (error.type === 'alternative') {
  *    console.log(`There are ${error.nestedErrors.length} errors under this alternative list`);
  *  } else if (error.type === 'field') {
- *    console.log(`There's an error with field ${error.path) in the request ${error.location}`);
+ *    console.log(`There's an error with field ${error.path} in the request ${error.location}`);
  *  }
  *
  */
