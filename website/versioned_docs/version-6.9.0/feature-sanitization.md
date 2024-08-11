@@ -1,7 +1,6 @@
 ---
-id: version-6.9.0-sanitization
+id: sanitization
 title: Sanitization
-original_id: sanitization
 ---
 
 Sometimes, receiving input in a HTTP request isn't only about making sure that

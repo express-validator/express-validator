@@ -5,7 +5,11 @@ declare module 'validator' {
     options?: import('../src/options').ContainsOptions,
   ): boolean;
   export function equals(str: string, comparison: string): boolean;
-  export function isAfter(str: string, date?: string): boolean;
+  export function isAbaRouting(str: string): boolean;
+  export function isAfter(
+    str: string,
+    dateOrOptions?: string | import('../src/options').IsAfterOptions,
+  ): boolean;
   export function isAlpha(
     str: string,
     locale?: import('../src/options').AlphaLocale,
@@ -17,7 +21,10 @@ declare module 'validator' {
     options?: import('../src/options').IsAlphanumericOptions,
   ): boolean;
   export function isAscii(str: string): boolean;
-  export function isBase32(str: string): boolean;
+  export function isBase32(
+    str: string,
+    options?: import('../src/options').IsBase32Options,
+  ): boolean;
   export function isBase58(str: string): boolean;
   export function isBase64(
     str: string,
@@ -52,13 +59,14 @@ declare module 'validator' {
   export function isEthereumAddress(str: string): boolean;
   export function isFQDN(str: string, options?: import('../src/options').IsFQDNOptions): boolean;
   export function isFloat(str: string, options?: import('../src/options').IsFloatOptions): boolean;
+  export function isFreightContainerID(str: string): boolean;
   export function isFullWidth(str: string): boolean;
   export function isHalfWidth(str: string): boolean;
   export function isHash(str: string, algorithm: import('../src/options').HashAlgorithm): boolean;
   export function isHexColor(str: string): boolean;
   export function isHexadecimal(str: string): boolean;
   export function isHSL(str: string): boolean;
-  export function isIBAN(str: string): boolean;
+  export function isIBAN(str: string, options?: import('../src/options').IsIBANOptions): boolean;
   export function isIdentityCard(
     str: string,
     locale?: import('../src/options').IdentityCardLocale,
@@ -66,7 +74,10 @@ declare module 'validator' {
   export function isIMEI(str: string, options?: import('../src/options').IsIMEIOptions): boolean;
   export function isIP(str: string, version?: import('../src/options').IPVersion): boolean;
   export function isIPRange(str: string, version?: import('../src/options').IPVersion): boolean;
-  export function isISBN(str: string, version?: number): boolean;
+  export function isISBN(
+    str: string,
+    versionOrOptions?: number | import('../src/options').IsISBNOptions,
+  ): boolean;
   export function isISSN(str: string, options?: import('../src/options').IsISSNOptions): boolean;
   export function isISIN(str: string): boolean;
   export function isISO8601(
@@ -78,6 +89,8 @@ declare module 'validator' {
   export function isISO4217(str: string): boolean;
   export function isISRC(str: string): boolean;
   export function isIn(str: string, values: readonly any[]): boolean;
+  export function isISO6346(str: string): boolean;
+  export function isISO6391(str: string): boolean;
   export function isInt(str: string, options?: import('../src/options').IsIntOptions): boolean;
   export function isJSON(str: string, options?: import('../src/options').IsJSONOptions): boolean;
   export function isJWT(str: string): boolean;
@@ -92,7 +105,12 @@ declare module 'validator' {
   ): boolean;
   export function isLocale(str: string): boolean;
   export function isLowercase(str: string): boolean;
+  export function isLuhnNumber(str: string): boolean;
   export function isMagnetURI(str: string): boolean;
+  export function isMailtoURI(
+    str: string,
+    options?: import('../src/options').IsEmailOptions,
+  ): boolean;
   export function isMACAddress(
     str: string,
     options: import('../src/options').IsMACAddressOptions,
@@ -132,6 +150,7 @@ declare module 'validator' {
   ): boolean;
   export function isSurrogatePair(str: string): boolean;
   export function isTaxID(str: string, locale: import('../src/options').TaxIDLocale): boolean;
+  export function isTime(str: string, options?: import('../src/options').IsTimeOptions): boolean;
   export function isURL(str: string, options?: import('../src/options').IsURLOptions): boolean;
   export function isUUID(str: string, version?: import('../src/options').UUIDVersion): boolean;
   export function isUppercase(str: string): boolean;

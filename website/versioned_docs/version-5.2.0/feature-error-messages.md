@@ -1,7 +1,6 @@
 ---
-id: version-5.2.0-custom-error-messages
+id: custom-error-messages
 title: Custom Error Messages
-original_id: custom-error-messages
 ---
 
 express-validator's default error message is a simple `Invalid value`.  
@@ -59,7 +58,7 @@ app.post('/user', [
 
 ### Field Level
 Messages can be specified at the field level by using the second parameter of the
-[validation chain creators](api-check.md#check-field-message).
+[validation chain creators](api-check.md#checkfield-message).
 
 Theses messages are used as fall backs when a validator doesn't specify its own message:
 

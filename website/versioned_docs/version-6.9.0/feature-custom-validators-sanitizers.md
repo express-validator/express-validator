@@ -1,7 +1,6 @@
 ---
-id: version-6.9.0-custom-validators-sanitizers
+id: custom-validators-sanitizers
 title: Custom validators/sanitizers
-original_id: custom-validators-sanitizers
 ---
 
 Although express-validator offers plenty of handy validators and sanitizers through its underlying
@@ -64,7 +63,7 @@ app.post(
 ## Custom sanitizers
 
 Custom sanitizers can be implemented by using the method `.customSanitizer()`, no matter if
-the [validation chain one](api-validation-chain.md#customsanitizersanitizer) or
+the [validation chain one](api-validation-chain.md) or
 the [sanitization chain one](api-sanitization-chain.md#customsanitizersanitizer).  
 Just like with the validators, you specify the sanitizer function, which _must_ be synchronous at the
 moment.

@@ -34,10 +34,10 @@ export type MatchedDataOptions = {
  * @param options
  * @returns an object of data that's been validated or sanitized in the passed request
  */
-export function matchedData(
+export function matchedData<T extends object = Record<string, any>>(
   req: Request,
   options: Partial<MatchedDataOptions> = {},
-): Record<string, any> {
+): T {
   const internalReq: InternalRequest = req;
 
   const fieldExtractor = createFieldExtractor(options.includeOptionals !== true);
@@ -49,8 +49,7 @@ export function matchedData(
     .filter(validityFilter)
     .map(field => field.instance)
     .filter(locationFilter)
-    .reduce((state, instance) => _.set(state, instance.path, instance.value), {})
-    .valueOf();
+    .reduce((state, instance) => _.set(state, instance.path, instance.value), {} as T);
 }
 
 function createFieldExtractor(removeOptionals: boolean) {
@@ -66,7 +65,9 @@ function createValidityFilter(onlyValidData = true) {
     : (field: FieldInstanceBag) => {
         const hasError = field.context.errors.some(
           error =>
-            error.location === field.instance.location && error.param === field.instance.path,
+            error.type === 'field' &&
+            error.location === field.instance.location &&
+            error.path === field.instance.path,
         );
 
         return !hasError;

@@ -77,12 +77,59 @@ describe('on each field', () => {
       foo: {
         errorMessage: 'bla',
         isInt: true,
-        isBla: true,
         escape: true,
-      } as any, // as any because of JS consumers doing the wrong thing
+      },
     })[0];
 
     expect(chainToContext(chain).stack).toHaveLength(2);
+  });
+
+  // #1223
+  it('does not warn and does not add disabled validators/sanitizers', () => {
+    const spy = jest.spyOn(console, 'warn');
+
+    const chain = checkSchema({
+      foo: {
+        isInt: false,
+        escape: false,
+      },
+    })[0];
+
+    expect(chainToContext(chain).stack).toHaveLength(0);
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
+
+  it('warns and does not add unknown validators/sanitizers', () => {
+    const spy = jest.spyOn(console, 'warn');
+
+    const chain = checkSchema({
+      foo: {
+        // @ts-expect-error
+        isBla: true,
+      },
+    })[0];
+
+    expect(chainToContext(chain).stack).toHaveLength(0);
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
+  });
+
+  it('warns and does not add validators called not and withMessage', () => {
+    const spy = jest.spyOn(console, 'warn');
+
+    const chain = checkSchema({
+      foo: {
+        // @ts-expect-error
+        withMessage: 'bla',
+        // @ts-expect-error
+        not: true,
+      },
+    })[0];
+
+    expect(chainToContext(chain).stack).toHaveLength(0);
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
   });
 
   it('adds with options', async () => {
@@ -109,7 +156,7 @@ describe('on each field', () => {
 
     expect(results[0].context.errors).toHaveLength(1);
     expect(results[1].context.getData()).toContainEqual(
-      expect.objectContaining({ path: 'bar', value: 'a', originalValue: 'baz' }),
+      expect.objectContaining({ path: 'bar', value: 'a' }),
     );
   });
 
@@ -176,15 +223,8 @@ describe('on each field', () => {
       },
     });
 
-    expect(chainToContext(schema[0]).optional).toEqual({
-      checkFalsy: false,
-      nullable: false,
-    });
-
-    expect(chainToContext(schema[1]).optional).toEqual({
-      checkFalsy: true,
-      nullable: true,
-    });
+    expect(chainToContext(schema[0]).optional).toBe('undefined');
+    expect(chainToContext(schema[1]).optional).toBe('falsy');
   });
 
   it('can negate validators', async () => {
@@ -198,6 +238,80 @@ describe('on each field', () => {
 
     const { context } = await chain.run({ params: { foo: '' } });
     expect(context.errors).toHaveLength(1);
+  });
+
+  it('can set custom validators with random names', async () => {
+    const validator1 = jest.fn();
+    const validator2 = jest.fn();
+    const schema = checkSchema({
+      foo: {
+        isFoo: { custom: validator1 },
+        replace: {
+          options: ['foo', 'bar'],
+        },
+        isBar: { custom: validator2 },
+      },
+    });
+    await schema.run({
+      body: { foo: 'foo' },
+    });
+    expect(validator1).toHaveBeenCalledWith('foo', expect.objectContaining({}));
+    expect(validator2).toHaveBeenCalledWith('bar', expect.objectContaining({}));
+  });
+
+  it('does not run a custom validator specified under a standard validator/sanitizer name', async () => {
+    const validator = jest.fn();
+    const schema = checkSchema({
+      foo: {
+        isInt: {
+          // @ts-expect-error
+          custom: validator,
+        },
+        toInt: {
+          // @ts-expect-error
+          custom: validator,
+        },
+      },
+    });
+    await schema.run({});
+    expect(validator).not.toHaveBeenCalled();
+  });
+
+  it('can set custom sanitizers with random names', async () => {
+    const sanitizer1 = jest.fn(() => 'foo');
+    const sanitizer2 = jest.fn(() => 'baz');
+    const schema = checkSchema({
+      foo: {
+        toFoo: { customSanitizer: sanitizer1 },
+        replace: {
+          options: ['foo', 'bar'],
+        },
+        toBaz: { customSanitizer: sanitizer2 },
+      },
+    });
+    await schema.run({
+      body: { foo: 1 },
+    });
+    expect(sanitizer1).toHaveBeenCalledWith(1, expect.objectContaining({}));
+    expect(sanitizer2).toHaveBeenCalledWith('bar', expect.objectContaining({}));
+  });
+
+  it('does not run a custom sanitizer specified under a standard validator/sanitizer name', async () => {
+    const sanitizer = jest.fn();
+    const schema = checkSchema({
+      foo: {
+        isInt: {
+          // @ts-expect-error
+          customSanitizer: sanitizer,
+        },
+        toInt: {
+          // @ts-expect-error
+          customSanitizer: sanitizer,
+        },
+      },
+    });
+    await schema.run({});
+    expect(sanitizer).not.toHaveBeenCalled();
   });
 });
 
@@ -277,6 +391,24 @@ describe('on schema that contains fields with bail methods', () => {
 
     const { context } = await schema[0].run({ params: { foo: 'notAnEmail' } });
     expect(context.errors).toHaveLength(1);
+  });
+
+  it('support request-level bail methods', async () => {
+    const schema = checkSchema({
+      foo: {
+        isEmail: {
+          bail: { level: 'request' },
+        },
+      },
+      bar: {
+        isEmail: true,
+      },
+    });
+
+    const contexts = await schema.run({ params: { foo: 'notAnEmail' } });
+    // there's no second context, as the second chain wasn't run.
+    expect(contexts).toHaveLength(1);
+    expect(contexts[0].array()).toHaveLength(1);
   });
 });
 

@@ -1,0 +1,54 @@
+{
+  "docs": [
+    {
+      "type": "doc",
+      "id": "index",
+      "label": "Introduction"
+    },
+    {
+      "type": "category",
+      "label": "Guides",
+      "link": {
+        "type": "generated-index",
+        "title": "express-validator guides"
+      },
+      "items": [
+        "guides/getting-started",
+        "guides/validation-chain",
+        "guides/field-selection",
+        "guides/customizing",
+        "guides/manually-running",
+        "guides/schema-validation"
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Migrating",
+      "link": {
+        "type": "generated-index",
+        "title": "Migration guides"
+      },
+      "items": [
+        "migration-v5-to-v6",
+        "migration-v6-to-v7"
+      ]
+    }
+  ],
+  "api": [
+    {
+      "type": "category",
+      "label": "Middlewares",
+      "items": [
+        "api/check",
+        "api/check-exact",
+        "api/check-schema",
+        "api/one-of"
+      ]
+    },
+    "api/validation-chain",
+    "api/express-validator",
+    "api/matched-data",
+    "api/validation-result",
+    "api/misc"
+  ]
+}

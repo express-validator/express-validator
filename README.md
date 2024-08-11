@@ -1,7 +1,7 @@
 # express-validator
 
 [![npm version](https://img.shields.io/npm/v/express-validator.svg)](https://www.npmjs.com/package/express-validator)
-[![Build Status](https://img.shields.io/travis/express-validator/express-validator.svg)](http://travis-ci.org/express-validator/express-validator)
+[![Build status](https://github.com/express-validator/express-validator/actions/workflows/ci.yml/badge.svg)](https://github.com/express-validator/express-validator/actions/workflows/ci.yml)
 [![Coverage Status](https://img.shields.io/coveralls/express-validator/express-validator.svg)](https://coveralls.io/github/express-validator/express-validator?branch=master)
 
 An [express.js](https://github.com/visionmedia/express) middleware for
@@ -18,7 +18,7 @@ An [express.js](https://github.com/visionmedia/express) middleware for
 npm install express-validator
 ```
 
-Also make sure that you have Node.js 8 or newer in order to use it.
+Also make sure that you have Node.js 14 or newer in order to use it.
 
 ## Documentation
 

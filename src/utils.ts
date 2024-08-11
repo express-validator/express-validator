@@ -1,3 +1,6 @@
+import { Request } from './base';
+import { ContextRunningOptions, ResultWithContext, ValidationChainLike } from './chain';
+
 export const bindAll = <T>(object: T): { [K in keyof T]: T[K] } => {
   const protoKeys = Object.getOwnPropertyNames(Object.getPrototypeOf(object)) as (keyof T)[];
   protoKeys.forEach(key => {
@@ -10,10 +13,8 @@ export const bindAll = <T>(object: T): { [K in keyof T]: T[K] } => {
   return object;
 };
 
-export function toString(value: any, deep = true): string {
-  if (Array.isArray(value) && value.length && deep) {
-    return toString(value[0], false);
-  } else if (value instanceof Date) {
+export function toString(value: any): string {
+  if (value instanceof Date) {
     return value.toISOString();
   } else if (value && typeof value === 'object' && value.toString) {
     if (typeof value.toString !== 'function') {
@@ -25,4 +26,35 @@ export function toString(value: any, deep = true): string {
   }
 
   return String(value);
+}
+
+/**
+ * Runs all validation chains, and returns their results.
+ *
+ * If one of them has a request-level bail set, the previous chains will be awaited on so that
+ * results are not skewed, which can be slow.
+ * If this same chain also contains errors, no further chains are run.
+ */
+export async function runAllChains(
+  req: Request,
+  chains: readonly ValidationChainLike[],
+  runOpts?: ContextRunningOptions,
+): Promise<ResultWithContext[]> {
+  const promises: Promise<ResultWithContext>[] = [];
+  for (const chain of chains) {
+    const bails = chain.builder.build().bail;
+    if (bails) {
+      await Promise.all(promises);
+    }
+
+    const resultPromise = chain.run(req, runOpts);
+    promises.push(resultPromise);
+    if (bails) {
+      const result = await resultPromise;
+      if (!result.isEmpty()) {
+        break;
+      }
+    }
+  }
+  return Promise.all(promises);
 }

@@ -1,28 +1,55 @@
 import * as _ from 'lodash';
-import { FieldInstance, Location, Meta, ValidationError } from './base';
+import {
+  FieldInstance,
+  FieldValidationError,
+  Location,
+  Meta,
+  Request,
+  UnknownFieldInstance,
+  ValidationError,
+} from './base';
 import { ContextItem } from './context-items';
 
 function getDataMapKey(path: string, location: Location) {
   return `${location}:${path}`;
 }
 
-export type Optional =
+// NOTE: Keep this in sync with OptionalOptions#values docs
+/**
+ * Defines which kind of value makes a field optional.
+ *
+ * - `undefined`: only `undefined` values; equivalent to `value === undefined`
+ * - `null`: only `undefined` and `null` values; equivalent to `value == null`
+ * - `falsy`: all falsy values; equivalent to `!value`
+ * - `false`: not optional.
+ */
+export type Optional = 'undefined' | 'null' | 'falsy' | false;
+
+type AddErrorOptions =
   | {
-      /**
-       * Whether a field whose value is `null` or `undefined` is to be considered optional.
-       * @default false
-       */
-      nullable: boolean;
-
-      /**
-       * Whether a field whose value is falsy (that is, `0`, `false`, `null`, `undefined` or an empty
-       * string) is to be considered optional.
-       * @default false
-       */
-      checkFalsy: boolean;
+      type: 'field';
+      message?: any;
+      value: any;
+      meta: Meta;
     }
-  | false;
-
+  | {
+      type: 'unknown_fields';
+      req: Request;
+      message?: any;
+      fields: UnknownFieldInstance[];
+    }
+  | {
+      type: 'alternative';
+      req: Request;
+      message?: any;
+      nestedErrors: FieldValidationError[];
+    }
+  | {
+      type: 'alternative_grouped';
+      req: Request;
+      message?: any;
+      nestedErrors: FieldValidationError[][];
+    };
 export class Context {
   private readonly _errors: ValidationError[] = [];
   get errors(): ReadonlyArray<ValidationError> {
@@ -36,19 +63,18 @@ export class Context {
     readonly locations: Location[],
     readonly stack: ReadonlyArray<ContextItem>,
     readonly optional: Optional,
+    readonly bail: boolean,
     readonly message?: any,
   ) {}
 
   getData(options: { requiredOnly: boolean } = { requiredOnly: false }) {
-    // Have to store this.optional in a const otherwise TS thinks the value could have changed
-    // when the functions below run
     const { optional } = this;
     const checks =
       options.requiredOnly && optional
         ? [
             (value: any) => value !== undefined,
-            (value: any) => (optional.nullable ? value != null : true),
-            (value: any) => (optional.checkFalsy ? value : true),
+            (value: any) => (optional === 'null' ? value != null : true),
+            (value: any) => (optional === 'falsy' ? value : true),
           ]
         : [];
 
@@ -87,24 +113,49 @@ export class Context {
     instance.value = value;
   }
 
-  addError(message: any, value: any, meta: Meta): void;
-  addError(message: any, nestedErrors: ValidationError[]): void;
-  addError(message: any, valueOrNestedErrors: any, meta?: Meta) {
-    const msg = message || this.message || 'Invalid value';
-    if (meta) {
-      this._errors.push({
-        value: valueOrNestedErrors,
-        msg: typeof msg === 'function' ? msg(valueOrNestedErrors, meta) : msg,
-        param: meta.path,
-        location: meta.location,
-      });
-    } else {
-      this._errors.push({
-        msg,
-        param: '_error',
-        nestedErrors: valueOrNestedErrors,
-      });
+  addError(opts: AddErrorOptions) {
+    const msg = opts.message || this.message || 'Invalid value';
+    let error: ValidationError;
+    switch (opts.type) {
+      case 'field':
+        error = {
+          type: 'field',
+          value: opts.value,
+          msg: typeof msg === 'function' ? msg(opts.value, opts.meta) : msg,
+          path: opts.meta?.path,
+          location: opts.meta?.location,
+        };
+        break;
+
+      case 'unknown_fields':
+        error = {
+          type: 'unknown_fields',
+          msg: typeof msg === 'function' ? msg(opts.fields, { req: opts.req }) : msg,
+          fields: opts.fields,
+        };
+        break;
+
+      case 'alternative':
+        error = {
+          type: 'alternative',
+          msg: typeof msg === 'function' ? msg(opts.nestedErrors, { req: opts.req }) : msg,
+          nestedErrors: opts.nestedErrors,
+        };
+        break;
+
+      case 'alternative_grouped':
+        error = {
+          type: 'alternative_grouped',
+          msg: typeof msg === 'function' ? msg(opts.nestedErrors, { req: opts.req }) : msg,
+          nestedErrors: opts.nestedErrors,
+        };
+        break;
+
+      default:
+        throw new Error(`Unhandled addError case`);
     }
+
+    this._errors.push(error);
   }
 }
 

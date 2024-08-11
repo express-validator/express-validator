@@ -12,8 +12,8 @@ let selectFields: jest.Mock;
 let contextRunner: ContextRunnerImpl;
 
 const instances: FieldInstance[] = [
-  { location: 'query', path: 'foo', originalPath: 'foo', value: 123, originalValue: 123 },
-  { location: 'query', path: 'bar', originalPath: 'bar', value: 456, originalValue: 456 },
+  { location: 'query', path: 'foo', originalPath: 'foo', value: 123 },
+  { location: 'query', path: 'bar', originalPath: 'bar', value: 456 },
 ];
 
 // Used in value persistence tests
@@ -40,7 +40,7 @@ afterEach(() => {
 it('returns Result for current context', async () => {
   builder.addItem({
     async run(context, value, meta) {
-      context.addError('some error', value, meta);
+      context.addError({ type: 'field', value, meta });
     },
   });
   const result = await contextRunner.run({});
@@ -113,6 +113,19 @@ it('runs items on the stack in order', async () => {
   return resultPromise;
 });
 
+it('does not run items if a previous context halts the whole request', async () => {
+  const context1 = new ContextBuilder().setRequestBail().build();
+  const context2 = new ContextBuilder().addItem({ run: jest.fn() }).build();
+
+  const req = {};
+  context1.addError({ type: 'field', value: 1, meta: { req, location: 'params', path: 'foo' } });
+
+  await new ContextRunnerImpl(context1, selectFields).run(req);
+  await new ContextRunnerImpl(context2, selectFields).run(req);
+
+  expect(context2.stack[0].run).not.toHaveBeenCalled();
+});
+
 it('stops running items on paths that got a validation halt', async () => {
   builder.addItem(
     {
@@ -168,9 +181,7 @@ describe('instance value persistence onto request', () => {
   });
 
   it('happens on request location, if path empty', async () => {
-    selectFields.mockReturnValue([
-      { location: 'query', path: '', originalPath: '', value: 123, originalValue: 123 },
-    ]);
+    selectFields.mockReturnValue([{ location: 'query', path: '', originalPath: '', value: 123 }]);
 
     const req = { query: {} };
     await contextRunner.run(req);
@@ -179,7 +190,7 @@ describe('instance value persistence onto request', () => {
 
   it('does not happen if value did not change', async () => {
     selectFields.mockReturnValue([
-      { location: 'query', path: 'foo', originalPath: 'foo', value: '123', originalValue: 123 },
+      { location: 'query', path: 'foo', originalPath: 'foo', value: '123' },
     ]);
     const req = { query: {} };
     await contextRunner.run(req);

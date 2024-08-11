@@ -1,7 +1,6 @@
 ---
-id: version-6.10.0-validation-chain-api
+id: validation-chain-api
 title: Validation Chain API
-original_id: validation-chain-api
 ---
 
 The validation chain is a middleware, and it _should_ be passed to an Express route handler.
@@ -128,7 +127,7 @@ The condition can be either:
   If it returns truthy or a promise that resolves, the validation chain will continue
   running. If it returns falsy, a promise that rejects or if it throws, the validation chain will stop.
 
-- A validation chain [created through `check()` or similar functions](api-check.md#check-field-message).
+- A validation chain [created through `check()` or similar functions](api-check.md#checkfield-message).
 
   If running that chain would produce errors, then the validation chain will stop.
 

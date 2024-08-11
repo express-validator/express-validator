@@ -29,11 +29,21 @@ describe('#setMessage()', () => {
 
 describe('#setOptional()', () => {
   it('builds a Context with the given optional flag', () => {
-    let context = builder.setOptional({ checkFalsy: true, nullable: false }).build();
-    expect(context.optional).toEqual({ checkFalsy: true, nullable: false });
+    let context = builder.setOptional('falsy').build();
+    expect(context.optional).toEqual('falsy');
 
     context = builder.setOptional(false).build();
     expect(context.optional).toBe(false);
+  });
+});
+
+describe('#setRequestBail()', () => {
+  it('builders a Context with the bail flag set', () => {
+    let context = builder.build();
+    expect(context.bail).toBe(false);
+
+    context = builder.setRequestBail().build();
+    expect(context.bail).toBe(true);
   });
 });
 

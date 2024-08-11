@@ -1,7 +1,6 @@
 ---
-id: version-5.3.0-validation-chain-api
+id: validation-chain-api
 title: Validation Chain API
-original_id: validation-chain-api
 ---
 
 Any of the validation and sanitization methods listed by [validator.js](https://github.com/chriso/validator.js) are made available in all validation chains created by express-validator, as long as we're supporting the most up-to-date validator version.  

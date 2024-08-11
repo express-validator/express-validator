@@ -289,6 +289,26 @@ describe('#isObject()', () => {
     expect(context.errors).toHaveLength(6);
   });
 
+  it('checks if context is object with options.strict not set', async () => {
+    validators.isObject({});
+    const context = builder.build();
+
+    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const isObject = context.stack[0];
+
+    await isObject.run(context, {}, meta);
+    await isObject.run(context, { foo: 'foo' }, meta);
+    expect(context.errors).toHaveLength(0);
+
+    await isObject.run(context, 'foo', meta);
+    await isObject.run(context, 5, meta);
+    await isObject.run(context, true, meta);
+    await isObject.run(context, null, meta);
+    await isObject.run(context, undefined, meta);
+    await isObject.run(context, ['foo'], meta);
+    expect(context.errors).toHaveLength(6);
+  });
+
   it('checks if context is object with strict = false', async () => {
     validators.isObject({ strict: false });
     const context = builder.build();
@@ -366,6 +386,54 @@ describe('#notEmpty()', () => {
   });
 });
 
+describe('#isULID()', () => {
+  it('adds standard validator to the context', () => {
+    const ret = validators.isULID();
+
+    expect(ret).toBe(chain);
+    expect(builder.addItem).toHaveBeenCalledWith(
+      new StandardValidation(validator.matches, false, ['^[0-7][0-9A-HJKMNP-TV-Z]{25}$', 'i']),
+    );
+  });
+
+  it('checks if context is not undefined by default', async () => {
+    validators.isULID();
+    const context = builder.build();
+
+    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const exists = context.stack[0];
+
+    const valid = [
+      '01HBGW8CWQ5Q6DTT7XP89VV4KT',
+      '01HBGW8CWR8MZQMBG6FA2QHMDD',
+      '01HBGW8CWS3MEEK12Y9G7SVW4V',
+      '01hbgw8cws1tq2njavy9amb0wx',
+      '01HBGW8cwS43H4jkQ0A4ZRJ7QV',
+    ];
+
+    const invalid = [
+      undefined,
+      null,
+      false,
+      0,
+      '',
+      '01HBGW-CWS3MEEK1#Y9G7SVW4V',
+      '91HBGW8CWS3MEEK12Y9G7SVW4V',
+      '81HBGW8CWS3MEEK12Y9G7SVW4V',
+      '934859',
+      '01HBGW8CWS3MEEK12Y9G7SVW4VXXX',
+      '01UBGW8IWS3MOEK12Y9G7SVW4V',
+      '01HBGW8CuS43H4JKQ0A4ZRJ7QV',
+    ];
+
+    for (const value of invalid.concat(valid)) {
+      await exists.run(context, value, meta);
+    }
+
+    expect(context.errors).toHaveLength(invalid.length);
+  });
+});
+
 describe('correctly merges validator.matches flags', () => {
   it('correctly uses modifiers and string', () => {
     validators.matches('baz', 'gi');
@@ -384,9 +452,10 @@ describe('correctly merges validator.matches flags', () => {
 
 describe('always correctly validates with validator.matches using the g flag', () => {
   const expectedErr = {
+    type: 'field',
     value: 'fo157115',
     msg: 'INVALID USER FORMAT',
-    param: 'user',
+    path: 'user',
     location: 'body',
   };
   [

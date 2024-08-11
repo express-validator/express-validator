@@ -1,0 +1,158 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`error message can be the return of a function 1`] = `
+Array [
+  Object {
+    "msg": "keep trying",
+    "nestedErrors": Array [
+      Array [
+        Object {
+          "location": "body",
+          "msg": "Invalid value",
+          "path": "foo",
+          "type": "field",
+          "value": true,
+        },
+      ],
+    ],
+    "type": "alternative_grouped",
+  },
+]
+`;
+
+exports[`should let the user to choose between multiple error types flat error type 1`] = `
+Array [
+  Object {
+    "msg": "Invalid value(s)",
+    "nestedErrors": Array [
+      Object {
+        "location": "body",
+        "msg": "Invalid value",
+        "path": "foo",
+        "type": "field",
+        "value": true,
+      },
+      Object {
+        "location": "body",
+        "msg": "Invalid value",
+        "path": "bar",
+        "type": "field",
+        "value": undefined,
+      },
+    ],
+    "type": "alternative",
+  },
+]
+`;
+
+exports[`should let the user to choose between multiple error types grouped error type 1`] = `
+Array [
+  Object {
+    "msg": "Invalid value(s)",
+    "nestedErrors": Array [
+      Array [
+        Object {
+          "location": "body",
+          "msg": "Invalid value",
+          "path": "foo",
+          "type": "field",
+          "value": true,
+        },
+      ],
+      Array [
+        Object {
+          "location": "body",
+          "msg": "Invalid value",
+          "path": "bar",
+          "type": "field",
+          "value": undefined,
+        },
+      ],
+    ],
+    "type": "alternative_grouped",
+  },
+]
+`;
+
+exports[`should let the user to choose between multiple error types least_errored error type 1`] = `
+Array [
+  Object {
+    "msg": "Invalid value(s)",
+    "nestedErrors": Array [
+      Object {
+        "location": "body",
+        "msg": "Invalid value",
+        "path": "foo",
+        "type": "field",
+        "value": true,
+      },
+    ],
+    "type": "alternative",
+  },
+]
+`;
+
+exports[`with a list of chain groups sets a single error for the _error key 1`] = `
+Array [
+  Object {
+    "msg": "Invalid value(s)",
+    "nestedErrors": Array [
+      Array [
+        Object {
+          "location": "cookies",
+          "msg": "Invalid value",
+          "path": "foo",
+          "type": "field",
+          "value": true,
+        },
+        Object {
+          "location": "cookies",
+          "msg": "Invalid value",
+          "path": "bar",
+          "type": "field",
+          "value": "def",
+        },
+      ],
+      Array [
+        Object {
+          "location": "cookies",
+          "msg": "Invalid value",
+          "path": "baz",
+          "type": "field",
+          "value": 123,
+        },
+      ],
+    ],
+    "type": "alternative_grouped",
+  },
+]
+`;
+
+exports[`with a list of chains sets a single error for the _error key 1`] = `
+Array [
+  Object {
+    "msg": "Invalid value(s)",
+    "nestedErrors": Array [
+      Array [
+        Object {
+          "location": "cookies",
+          "msg": "Invalid value",
+          "path": "foo",
+          "type": "field",
+          "value": true,
+        },
+      ],
+      Array [
+        Object {
+          "location": "cookies",
+          "msg": "Invalid value",
+          "path": "bar",
+          "type": "field",
+          "value": "def",
+        },
+      ],
+    ],
+    "type": "alternative_grouped",
+  },
+]
+`;

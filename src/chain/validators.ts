@@ -1,5 +1,32 @@
-import { CustomValidator, DynamicMessageCreator } from '../base';
+import { CustomValidator, ErrorMessage, FieldMessageFactory } from '../base';
 import * as Options from '../options';
+
+export type ExistsOptions = {
+  /**
+   * Defines which kind of value makes a field _NOT_ exist.
+   *
+   * - `undefined`: only `undefined` values; equivalent to `value !== undefined`
+   * - `null`: only `undefined` and `null` values; equivalent to `value != null`
+   * - `falsy`: all falsy values; equivalent to `!!value`
+   *
+   * @default 'undefined'
+   */
+  values?: 'undefined' | 'null' | 'falsy';
+
+  /**
+   * Whether a field whose value is falsy should be considered non-existent.
+   * @default false
+   * @deprecated  Use `values` instead
+   */
+  checkFalsy?: boolean;
+
+  /**
+   * Whether a field whose value is `null` or `undefined` should be considered non-existent.
+   * @default false
+   * @deprecated  Use `values` instead
+   */
+  checkNull?: boolean;
+};
 
 export interface Validators<Return> {
   // validation manipulation
@@ -14,18 +41,11 @@ export interface Validators<Return> {
   /**
    * Sets the error message for the previous validator.
    *
-   * @param message a function for dynamically creating the error message based on the field value
+   * @param message the message, which can be any value, or a function for dynamically creating the
+   *                error message based on the field value
    * @returns the current validation chain
    */
-  withMessage(message: DynamicMessageCreator): Return;
-
-  /**
-   * Sets the error message for the previous validator.
-   *
-   * @param message the error message
-   * @returns the current validation chain
-   */
-  withMessage(message: any): Return;
+  withMessage(message: FieldMessageFactory | ErrorMessage): Return;
 
   // custom validators
   /**
@@ -44,7 +64,7 @@ export interface Validators<Return> {
    * @param options
    * @returns the current validation chain
    */
-  exists(options?: { checkFalsy?: boolean; checkNull?: boolean }): Return;
+  exists(options?: ExistsOptions): Return;
 
   /**
    * Adds a validator to check if a value is an array.
@@ -70,6 +90,13 @@ export interface Validators<Return> {
   isString(): Return;
 
   /**
+   * Adds a validator to check if a value is a ULID.
+   *
+   * @returns the current validation chain
+   */
+  isULID(): Return; // TODO: use validatorjs implementation when PR will be merged
+
+  /**
    * Adds a validator to check if a value is not empty; that is, a string with length of 1 or more.
    *
    * @param options
@@ -80,14 +107,15 @@ export interface Validators<Return> {
   // validator's validators
   contains(elem: any, options?: Options.ContainsOptions): Return;
   equals(comparison: string): Return;
-  isAfter(date?: string): Return;
+  isAbaRouting(): Return;
+  isAfter(dateOrOptions?: string | Options.IsAfterOptions): Return;
   isAlpha(locale?: Options.AlphaLocale, options?: Options.IsAlphaOptions): Return;
   isAlphanumeric(
     locale?: Options.AlphanumericLocale,
     options?: Options.IsAlphanumericOptions,
   ): Return;
   isAscii(): Return;
-  isBase32(): Return;
+  isBase32(options?: Options.IsBase32Options): Return;
   isBase58(): Return;
   isBase64(options?: Options.IsBase64Options): Return;
   isBefore(date?: string): Return;
@@ -95,7 +123,7 @@ export interface Validators<Return> {
   isBoolean(options?: Options.IsBooleanOptions): Return;
   isBtcAddress(): Return;
   isByteLength(options: Options.MinMaxExtendedOptions): Return;
-  isCreditCard(): Return;
+  isCreditCard(options?: Options.IsCreditCard): Return;
   isCurrency(options?: Options.IsCurrencyOptions): Return;
   isDataURI(): Return;
   isDate(options?: Options.IsDateOptions): Return;
@@ -107,20 +135,23 @@ export interface Validators<Return> {
   isEthereumAddress(): Return;
   isFQDN(options?: Options.IsFQDNOptions): Return;
   isFloat(options?: Options.IsFloatOptions): Return;
+  isFreightContainerID(): Return;
   isFullWidth(): Return;
   isHalfWidth(): Return;
   isHash(algorithm: Options.HashAlgorithm): Return;
   isHexColor(): Return;
   isHexadecimal(): Return;
   isHSL(): Return;
-  isIBAN(): Return;
+  isIBAN(options?: Options.IsIBANOptions): Return;
   isIdentityCard(locale?: Options.IdentityCardLocale): Return;
   isIMEI(options?: Options.IsIMEIOptions): Return;
   isIP(version?: Options.IPVersion): Return;
   isIPRange(version?: Options.IPVersion): Return;
-  isISBN(version?: number): Return;
+  isISBN(versionOrOptions?: number | Options.IsISBNOptions): Return;
   isISSN(options?: Options.IsISSNOptions): Return;
   isISIN(): Return;
+  isISO6346(): Return;
+  isISO6391(): Return;
   isISO8601(options?: Options.IsISO8601Options): Return;
   isISO31661Alpha2(): Return;
   isISO31661Alpha3(): Return;
@@ -135,7 +166,9 @@ export interface Validators<Return> {
   isLicensePlate(locale: Options.IsLicensePlateLocale): Return;
   isLocale(): Return;
   isLowercase(): Return;
+  isLuhnNumber(): Return;
   isMagnetURI(): Return;
+  isMailtoURI(options?: Options.IsEmailOptions): Return;
   isMACAddress(options?: Options.IsMACAddressOptions): Return;
   isMD5(): Return;
   isMimeType(): Return;
@@ -157,6 +190,7 @@ export interface Validators<Return> {
   isStrongPassword(options?: Options.IsStrongPasswordOptions): Return;
   isSurrogatePair(): Return;
   isTaxID(locale: Options.TaxIDLocale): Return;
+  isTime(options: Options.IsTimeOptions): Return;
   isURL(options?: Options.IsURLOptions): Return;
   isUUID(version?: Options.UUIDVersion): Return;
   isUppercase(): Return;

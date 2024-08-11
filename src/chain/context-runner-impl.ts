@@ -2,11 +2,11 @@ import * as _ from 'lodash';
 import { InternalRequest, Request, ValidationHalt, contextsKey } from '../base';
 import { Context, ReadonlyContext } from '../context';
 import { ContextBuilder } from '../context-builder';
-import { SelectFields, selectFields as baseSelectFields } from '../select-fields';
+import { SelectFields, selectFields as baseSelectFields } from '../field-selection';
 import { Result } from '../validation-result';
-import { ContextRunner } from './context-runner';
+import { ContextRunner, ResultWithContext } from './context-runner';
 
-export class ResultWithContext extends Result {
+export class ResultWithContextImpl extends Result implements ResultWithContext {
   constructor(readonly context: ReadonlyContext) {
     super(error => error, context.errors);
   }
@@ -23,6 +23,15 @@ export class ContextRunnerImpl implements ContextRunner {
       this.builderOrContext instanceof Context
         ? this.builderOrContext
         : this.builderOrContext.build();
+
+    const internalReq = req as InternalRequest;
+    const bail = internalReq[contextsKey]?.some(
+      context => context.bail && context.errors.length > 0,
+    );
+    if (bail) {
+      return new ResultWithContextImpl(context);
+    }
+
     const instances = this.selectFields(req, context.fields, context.locations);
     context.addFieldInstances(instances);
 
@@ -66,10 +75,9 @@ export class ContextRunnerImpl implements ContextRunner {
     }
 
     if (!options.dryRun) {
-      const internalReq = req as InternalRequest;
       internalReq[contextsKey] = (internalReq[contextsKey] || []).concat(context);
     }
 
-    return new ResultWithContext(context);
+    return new ResultWithContextImpl(context);
   }
 }

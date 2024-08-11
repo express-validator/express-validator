@@ -4,12 +4,10 @@
 # Build artifacts
 /src/**/*.js
 /src/**/*.d.ts
-/check/**/*.js
-/check/**/*.d.ts
-/filter/**/*.js
-/filter/**/*.d.ts
+/lib
 
 # Docs
+/website/.docusaurus
 /website/build
 /website/versioned_docs
 /website/versioned_sidebars

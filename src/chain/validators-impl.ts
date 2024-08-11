@@ -1,9 +1,9 @@
 import * as validator from 'validator';
-import { CustomValidator, StandardValidator } from '../base';
+import { CustomValidator, ErrorMessage, FieldMessageFactory, StandardValidator } from '../base';
 import { CustomValidation, StandardValidation } from '../context-items';
 import { ContextBuilder } from '../context-builder';
 import * as Options from '../options';
-import { Validators } from './validators';
+import { ExistsOptions, Validators } from './validators';
 
 export class ValidatorsImpl<Chain> implements Validators<Chain> {
   private lastValidator: CustomValidation | StandardValidation;
@@ -26,7 +26,7 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
     return this.chain;
   }
 
-  withMessage(message: any) {
+  withMessage(message: FieldMessageFactory | ErrorMessage) {
     this.lastValidator.message = message;
     return this.chain;
   }
@@ -36,11 +36,11 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
     return this.addItem(new CustomValidation(validator, this.negateNext));
   }
 
-  exists(options: { checkFalsy?: boolean; checkNull?: boolean } = {}) {
+  exists(options: ExistsOptions = {}) {
     let validator: CustomValidator;
-    if (options.checkFalsy) {
+    if (options.checkFalsy || options.values === 'falsy') {
       validator = value => !!value;
-    } else if (options.checkNull) {
+    } else if (options.checkNull || options.values === 'null') {
       validator = value => value != null;
     } else {
       validator = value => value !== undefined;
@@ -62,12 +62,16 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
     return this.custom(
       value =>
         typeof value === 'object' &&
-        (options.strict ? value !== null && !Array.isArray(value) : true),
+        (options.strict == null || options.strict ? value !== null && !Array.isArray(value) : true),
     );
   }
 
   isString() {
     return this.custom(value => typeof value === 'string');
+  }
+
+  isULID() {
+    return this.matches(/^[0-7][0-9A-HJKMNP-TV-Z]{25}$/i);
   }
 
   notEmpty(options?: Options.IsEmptyOptions) {
@@ -86,8 +90,11 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   equals(comparison: string) {
     return this.addStandardValidation(validator.equals, comparison);
   }
-  isAfter(date?: string) {
-    return this.addStandardValidation(validator.isAfter, date);
+  isAbaRouting() {
+    return this.addStandardValidation(validator.isAbaRouting);
+  }
+  isAfter(dateOrOptions?: string | Options.IsAfterOptions) {
+    return this.addStandardValidation(validator.isAfter, dateOrOptions);
   }
   isAlpha(locale?: Options.AlphaLocale, options?: Options.IsAlphaOptions) {
     // TODO(v7): remove string[] support
@@ -100,8 +107,8 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isAscii() {
     return this.addStandardValidation(validator.isAscii);
   }
-  isBase32() {
-    return this.addStandardValidation(validator.isBase32);
+  isBase32(options?: Options.IsBase32Options) {
+    return this.addStandardValidation(validator.isBase32, options);
   }
   isBase58() {
     return this.addStandardValidation(validator.isBase58);
@@ -170,6 +177,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isFloat(options?: Options.IsFloatOptions) {
     return this.addStandardValidation(validator.isFloat, options);
   }
+  isFreightContainerID() {
+    return this.addStandardValidation(validator.isFreightContainerID);
+  }
   isFullWidth() {
     return this.addStandardValidation(validator.isFullWidth);
   }
@@ -188,8 +198,8 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isHSL() {
     return this.addStandardValidation(validator.isHSL);
   }
-  isIBAN() {
-    return this.addStandardValidation(validator.isIBAN);
+  isIBAN(options?: Options.IsIBANOptions) {
+    return this.addStandardValidation(validator.isIBAN, options);
   }
   isIdentityCard(locale: Options.IdentityCardLocale) {
     return this.addStandardValidation(validator.isIdentityCard, locale);
@@ -203,14 +213,20 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isIPRange(version?: Options.IPVersion) {
     return this.addStandardValidation(validator.isIPRange, version);
   }
-  isISBN(version?: number) {
-    return this.addStandardValidation(validator.isISBN, version);
+  isISBN(versionOrOptions?: number | Options.IsISBNOptions) {
+    return this.addStandardValidation(validator.isISBN, versionOrOptions);
   }
   isISSN(options?: Options.IsISSNOptions) {
     return this.addStandardValidation(validator.isISSN, options);
   }
   isISIN() {
     return this.addStandardValidation(validator.isISIN);
+  }
+  isISO6346() {
+    return this.addStandardValidation(validator.isISO6346);
+  }
+  isISO6391() {
+    return this.addStandardValidation(validator.isISO6391);
   }
   isISO8601(options?: Options.IsISO8601Options) {
     return this.addStandardValidation(validator.isISO8601, options);
@@ -254,8 +270,14 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isLowercase() {
     return this.addStandardValidation(validator.isLowercase);
   }
+  isLuhnNumber() {
+    return this.addStandardValidation(validator.isLuhnNumber);
+  }
   isMagnetURI() {
     return this.addStandardValidation(validator.isMagnetURI);
+  }
+  isMailtoURI(options?: Options.IsEmailOptions) {
+    return this.addStandardValidation(validator.isMailtoURI, options);
   }
   isMACAddress(options?: Options.IsMACAddressOptions) {
     return this.addStandardValidation(validator.isMACAddress, options);
@@ -313,6 +335,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   }
   isTaxID(locale: Options.TaxIDLocale) {
     return this.addStandardValidation(validator.isTaxID, locale);
+  }
+  isTime(options?: Options.IsTimeOptions) {
+    return this.addStandardValidation(validator.isTime, options);
   }
   isURL(options?: Options.IsURLOptions) {
     return this.addStandardValidation(validator.isURL, options);
