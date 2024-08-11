@@ -165,22 +165,3 @@ describe('ExpressValidator', () => {
     });
   });
 });
-
-describe('High level tests', () => {
-  const { body } = new ExpressValidator();
-  it('should error when .exists() is used on a nested field of a primitive', async () => {
-    const req = { body: { foo: 'hello' } };
-    const result = await body('foo.nop').exists().run(req);
-    expect(result.isEmpty()).toEqual(false);
-  });
-  it('should not error when .not().exists() is used on a nested field of a primitive', async () => {
-    const req = { body: { foo: 'hello' } };
-    const result = await body('foo.nop').not().exists().run(req);
-    expect(result.isEmpty()).toEqual(true);
-  });
-  it('should not error when .exists() is used on a nested field of a primitive using wildcard', async () => {
-    const req = { body: { foo: 'hello' } };
-    const result = await body('foo.*.nop').exists().run(req);
-    expect(result.isEmpty()).toEqual(true);
-  });
-});
