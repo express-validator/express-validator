@@ -180,7 +180,7 @@ describe('instance value persistence onto request', () => {
   });
 
   it('happens on instance path, if defined', async () => {
-    const req = { query: {} };
+    const req = { query: { foo: 123, bar: 456 } };
     await contextRunner.run(req);
     expect(req.query).toHaveProperty('foo', undefined);
     expect(req.query).toHaveProperty('bar', undefined);
@@ -195,9 +195,6 @@ describe('instance value persistence onto request', () => {
   });
 
   it('does not happen if value did not change', async () => {
-    selectFields.mockReturnValue([
-      { location: 'query', path: 'foo', originalPath: 'foo', value: '123' },
-    ]);
     const req = { query: {} };
     await contextRunner.run(req);
     expect(req.query).not.toHaveProperty('foo');
