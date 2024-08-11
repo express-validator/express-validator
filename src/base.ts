@@ -69,7 +69,10 @@ export interface FieldInstance {
   value: any;
 }
 
-export type UnknownFieldInstance = Omit<FieldInstance, 'originalPath'>;
+// pathValues is omitted as it doesn't make sense when a globstar is involved:
+// With known fields `**.foo` and request `{ obj: { foo: 1, bar: 2 } }`,
+// the globstar matches the whole field path every time.
+export type UnknownFieldInstance = Omit<FieldInstance, 'originalPath' | 'pathValues'>;
 
 export type FieldValidationError = {
   /**
