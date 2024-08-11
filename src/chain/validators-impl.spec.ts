@@ -75,7 +75,7 @@ describe('#exists()', () => {
     validators.exists();
     const context = builder.build();
 
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const meta: Meta = { req: {}, location: 'body', path: 'foo', pathValues: [] };
     const exists = context.stack[0];
 
     await exists.run(context, undefined, meta);
@@ -91,7 +91,7 @@ describe('#exists()', () => {
     validators.exists({ checkFalsy: true });
     const context = builder.build();
 
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const meta: Meta = { req: {}, location: 'body', path: 'foo', pathValues: [] };
     const exists = context.stack[0];
 
     await exists.run(context, undefined, meta);
@@ -108,7 +108,7 @@ describe('#exists()', () => {
     validators.exists({ checkNull: true });
     const context = builder.build();
 
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const meta: Meta = { req: {}, location: 'body', path: 'foo', pathValues: [] };
     const exists = context.stack[0];
 
     await exists.run(context, undefined, meta);
@@ -148,7 +148,7 @@ describe('default #isBoolean()', () => {
     validators.isBoolean();
     const context = builder.build();
 
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const meta: Meta = { req: {}, location: 'body', path: 'foo', pathValues: [] };
     const isBoolean = context.stack[0];
 
     await isBoolean.run(context, true, meta);
@@ -182,7 +182,7 @@ describe('strict #isBoolean()', () => {
     validators.isBoolean({ strict: true });
     const context = builder.build();
 
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const meta: Meta = { req: {}, location: 'body', path: 'foo', pathValues: [] };
     const isBoolean = context.stack[0];
 
     await isBoolean.run(context, true, meta);
@@ -213,7 +213,7 @@ describe('loose #isBoolean()', () => {
     validators.isBoolean({ loose: true });
     const context = builder.build();
 
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const meta: Meta = { req: {}, location: 'body', path: 'foo', pathValues: [] };
     const isBoolean = context.stack[0];
 
     await isBoolean.run(context, true, meta);
@@ -246,7 +246,7 @@ describe('#isString()', () => {
     validators.isString();
     const context = builder.build();
 
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const meta: Meta = { req: {}, location: 'body', path: 'foo', pathValues: [] };
     const isString = context.stack[0];
 
     await isString.run(context, 'foo', meta);
@@ -273,7 +273,7 @@ describe('#isObject()', () => {
     validators.isObject();
     const context = builder.build();
 
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const meta: Meta = { req: {}, location: 'body', path: 'foo', pathValues: [] };
     const isObject = context.stack[0];
 
     await isObject.run(context, {}, meta);
@@ -293,7 +293,7 @@ describe('#isObject()', () => {
     validators.isObject({});
     const context = builder.build();
 
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const meta: Meta = { req: {}, location: 'body', path: 'foo', pathValues: [] };
     const isObject = context.stack[0];
 
     await isObject.run(context, {}, meta);
@@ -313,7 +313,7 @@ describe('#isObject()', () => {
     validators.isObject({ strict: false });
     const context = builder.build();
 
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const meta: Meta = { req: {}, location: 'body', path: 'foo', pathValues: [] };
     const isObject = context.stack[0];
 
     await isObject.run(context, {}, meta);
@@ -342,7 +342,7 @@ describe('#isArray()', () => {
     validators.isArray();
     const context = builder.build();
 
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const meta: Meta = { req: {}, location: 'body', path: 'foo', pathValues: [] };
     const isArray = context.stack[0];
 
     await isArray.run(context, [], meta);
@@ -360,7 +360,7 @@ describe('#isArray()', () => {
     validators.isArray({ min: 2, max: 5 });
     const context = builder.build();
 
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const meta: Meta = { req: {}, location: 'body', path: 'foo', pathValues: [] };
     const isArray = context.stack[0];
 
     await isArray.run(context, [1, '2'], meta);
@@ -400,7 +400,7 @@ describe('#isULID()', () => {
     validators.isULID();
     const context = builder.build();
 
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const meta: Meta = { req: {}, location: 'body', path: 'foo', pathValues: [] };
     const exists = context.stack[0];
 
     const valid = [

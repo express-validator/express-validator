@@ -17,6 +17,7 @@ beforeEach(() => {
       req,
       location: 'params',
       path: 'id',
+      pathValues: [],
     });
 });
 

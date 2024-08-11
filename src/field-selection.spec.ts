@@ -10,6 +10,7 @@ describe('selectFields()', () => {
       location: 'cookies',
       path: 'foo',
       originalPath: 'foo',
+      pathValues: [],
       value: 'bar',
     });
   });
@@ -19,14 +20,18 @@ describe('selectFields()', () => {
     const instances = selectFields(req, ['foo', 'baz'], ['cookies']);
 
     expect(instances).toHaveLength(2);
-    expect(instances[0]).toMatchObject({
+    expect(instances[0]).toEqual({
       location: 'cookies',
       path: 'foo',
+      originalPath: 'foo',
+      pathValues: [],
       value: 'bar',
     });
-    expect(instances[1]).toMatchObject({
+    expect(instances[1]).toEqual({
       location: 'cookies',
       path: 'baz',
+      originalPath: 'baz',
+      pathValues: [],
       value: 'qux',
     });
   });
@@ -113,13 +118,18 @@ describe('selectFields()', () => {
     const req = {
       query: { foo: ['bar', 'baz'] },
     };
-    const instances = selectFields(req, ['foo[1]'], ['query']);
+    const instances = selectFields(req, ['foo[1]', 'foo[2]'], ['query']);
 
-    expect(instances).toHaveLength(1);
+    expect(instances).toHaveLength(2);
     expect(instances[0]).toMatchObject({
       location: 'query',
       path: 'foo[1]',
       value: 'baz',
+    });
+    expect(instances[1]).toMatchObject({
+      location: 'query',
+      path: 'foo[2]',
+      value: undefined,
     });
   });
 
@@ -154,25 +164,36 @@ describe('selectFields()', () => {
   });
 
   it('selects inexistent properties', () => {
-    const instances = selectFields({}, ['foo.bar.baz'], ['cookies']);
+    const instances = selectFields({ cookies: {} }, ['foo.bar.baz'], ['cookies']);
 
     expect(instances).toHaveLength(1);
     expect(instances[0]).toEqual({
       location: 'cookies',
       path: 'foo.bar.baz',
       originalPath: 'foo.bar.baz',
+      pathValues: [],
       value: undefined,
     });
   });
 
-  it('does not select properties of primitives', () => {
+  it('selects properties of primitives', () => {
     const req = {
       body: { foo: 1 },
     };
-    const instances = selectFields(req, ['foo.toFixed'], ['body']);
-    expect(instances).toHaveLength(0);
-  });
+    const instances = selectFields(req, ['foo.toFixed', 'foo.nop'], ['body']);
 
+    expect(instances).toHaveLength(2);
+    expect(instances[0]).toMatchObject({
+      location: 'body',
+      path: 'foo.toFixed',
+      value: expect.any(Function),
+    });
+    expect(instances[1]).toMatchObject({
+      location: 'body',
+      path: 'foo.nop',
+      value: undefined,
+    });
+  });
   it('deduplicates field instances', () => {
     const req = {
       body: {
@@ -207,12 +228,14 @@ describe('selectFields()', () => {
         location: 'query',
         path: 'foo[0]',
         originalPath: 'foo.*',
+        pathValues: ['0'],
         value: 'bar',
       });
       expect(instances[1]).toMatchObject({
         location: 'query',
         path: 'foo[1]',
         originalPath: 'foo.*',
+        pathValues: ['1'],
         value: 'baz',
       });
     });
@@ -228,12 +251,14 @@ describe('selectFields()', () => {
         location: 'body',
         path: '[0]',
         originalPath: '*',
+        pathValues: ['0'],
         value: 'bar',
       });
       expect(instances[1]).toMatchObject({
         location: 'body',
         path: '[1]',
         originalPath: '*',
+        pathValues: ['1'],
         value: 'baz',
       });
     });
@@ -249,6 +274,7 @@ describe('selectFields()', () => {
         location: 'query',
         path: '*',
         originalPath: '*',
+        pathValues: ['*'],
         value: 'foo',
       });
     });
@@ -264,13 +290,38 @@ describe('selectFields()', () => {
         location: 'query',
         path: 'foo.bar.a',
         originalPath: 'foo.*.a',
+        pathValues: ['bar'],
         value: true,
       });
       expect(instances[1]).toMatchObject({
         location: 'query',
         path: 'foo.baz.a',
         originalPath: 'foo.*.a',
+        pathValues: ['baz'],
         value: false,
+      });
+    });
+
+    it('selects fields matching multiple wildcards', () => {
+      const req = {
+        query: { foo: { bar: { a: true }, baz: { b: 1 } } },
+      };
+      const instances = selectFields(req, ['foo.*.*'], ['query']);
+
+      expect(instances).toHaveLength(2);
+      expect(instances[0]).toMatchObject({
+        location: 'query',
+        path: 'foo.bar.a',
+        originalPath: 'foo.*.*',
+        pathValues: ['bar', 'a'],
+        value: true,
+      });
+      expect(instances[1]).toMatchObject({
+        location: 'query',
+        path: 'foo.baz.b',
+        originalPath: 'foo.*.*',
+        pathValues: ['baz', 'b'],
+        value: 1,
       });
     });
 
@@ -296,12 +347,14 @@ describe('selectFields()', () => {
         location: 'query',
         path: 'foo.a.b.c',
         originalPath: 'foo.**',
+        pathValues: [['a', 'b', 'c']],
         value: 1,
       });
       expect(instances[1]).toMatchObject({
         location: 'query',
         path: 'foo.d.e',
         originalPath: 'foo.**',
+        pathValues: [['d', 'e']],
         value: 2,
       });
     });
@@ -317,12 +370,14 @@ describe('selectFields()', () => {
         location: 'query',
         path: 'foo.a.b.bar',
         originalPath: 'foo.**.bar',
+        pathValues: [['a', 'b']],
         value: 1,
       });
       expect(instances[1]).toMatchObject({
         location: 'query',
         path: 'foo.c.bar',
         originalPath: 'foo.**.bar',
+        pathValues: [['c']],
         value: 2,
       });
     });
@@ -338,12 +393,14 @@ describe('selectFields()', () => {
         location: 'query',
         path: 'foo.foo',
         originalPath: '**.foo',
+        pathValues: [['foo']],
         value: 1,
       });
       expect(instances[1]).toMatchObject({
         location: 'query',
         path: 'foo',
         originalPath: '**.foo',
+        pathValues: [],
         value: { foo: 1 },
       });
     });
@@ -359,6 +416,7 @@ describe('selectFields()', () => {
         location: 'query',
         path: '**',
         originalPath: '**',
+        pathValues: [['**']],
         value: 'foo',
       });
     });
