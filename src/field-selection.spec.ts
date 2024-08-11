@@ -24,12 +24,14 @@ describe('selectFields()', () => {
       location: 'cookies',
       path: 'foo',
       originalPath: 'foo',
+      pathValues: [],
       value: 'bar',
     });
     expect(instances[1]).toEqual({
       location: 'cookies',
       path: 'baz',
       originalPath: 'baz',
+      pathValues: [],
       value: 'qux',
     });
   });
