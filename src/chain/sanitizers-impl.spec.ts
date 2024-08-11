@@ -116,12 +116,13 @@ describe('#toArray()', () => {
       {
         location: 'body',
         path: 'foo',
+        pathValues: [],
         originalPath: 'foo',
         value: '',
       },
     ]);
 
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const meta: Meta = { req: {}, location: 'body', path: 'foo', pathValues: [] };
     const toArray = context.stack[0];
 
     await toArray.run(context, [], meta);
@@ -158,12 +159,13 @@ describe('#toLowerCase()', () => {
       {
         location: 'body',
         path: 'foo',
+        pathValues: [],
         originalPath: 'foo',
         value: '',
       },
     ]);
 
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const meta: Meta = { req: {}, location: 'body', path: 'foo', pathValues: [] };
     const toLowerCase = context.stack[0];
 
     await toLowerCase.run(context, '', meta);
@@ -201,12 +203,13 @@ describe('#toUpperCase()', () => {
       {
         location: 'body',
         path: 'foo',
+        pathValues: [],
         originalPath: 'foo',
         value: '',
       },
     ]);
 
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const meta: Meta = { req: {}, location: 'body', path: 'foo', pathValues: [] };
     const toUpperCase = context.stack[0];
 
     await toUpperCase.run(context, '', meta);
@@ -244,12 +247,13 @@ describe('#default()', () => {
       {
         location: 'body',
         path: 'foo',
+        pathValues: [],
         originalPath: 'foo',
         value: '',
       },
     ]);
 
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const meta: Meta = { req: {}, location: 'body', path: 'foo', pathValues: [] };
     const defaultSanitizer = context.stack[0];
 
     await defaultSanitizer.run(context, 'foo', meta);
@@ -287,12 +291,13 @@ describe('#replace()', () => {
       {
         location: 'body',
         path: 'foo',
+        pathValues: [],
         originalPath: 'foo',
         value: '',
       },
     ]);
 
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const meta: Meta = { req: {}, location: 'body', path: 'foo', pathValues: [] };
     const replace = context.stack[0];
 
     await replace.run(context, '', meta);
@@ -321,12 +326,13 @@ describe('#replace()', () => {
       {
         location: 'body',
         path: 'foo',
+        pathValues: [],
         originalPath: 'foo',
         value: '',
       },
     ]);
 
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const meta: Meta = { req: {}, location: 'body', path: 'foo', pathValues: [] };
     const replace = context.stack[0];
 
     await replace.run(context, 'foo', meta);
@@ -358,12 +364,13 @@ describe('#replace()', () => {
       {
         location: 'body',
         path: 'foo',
+        pathValues: [],
         originalPath: 'foo',
         value: '',
       },
     ]);
 
-    const meta: Meta = { req: {}, location: 'body', path: 'foo' };
+    const meta: Meta = { req: {}, location: 'body', path: 'foo', pathValues: [] };
     const replace = context.stack[0];
 
     await replace.run(context, 'foo', meta);

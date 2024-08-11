@@ -12,12 +12,14 @@ beforeEach(() => {
       location: 'body',
       originalPath: 'foo',
       path: 'foo',
+      pathValues: [],
       value: 123,
     },
     {
       location: 'params',
       originalPath: 'bar.baz',
       path: 'bar.baz',
+      pathValues: [],
       value: false,
     },
   ];
@@ -26,6 +28,7 @@ beforeEach(() => {
 describe('#addError()', () => {
   const meta: Meta = {
     path: 'bar',
+    pathValues: [],
     location: 'headers',
     req: {},
   };

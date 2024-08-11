@@ -30,22 +30,38 @@ function expandField(req: Request, field: string, location: Location): FieldInst
 
   const paths = expandPath(req[location], pathToExpand, []);
 
-  return paths.map(path => {
+  return paths.map(({ path, values }) => {
     const value = path === '' ? req[location] : _.get(req[location], path);
     return {
       location,
       path,
       originalPath,
+      pathValues: values,
       value,
     };
   });
 }
 
-function expandPath(object: any, path: string | string[], currPath: readonly string[]): string[] {
+type PathWithValues = {
+  path: string;
+  values: readonly (string | string[])[];
+};
+
+function expandPath(
+  object: any,
+  path: string | string[],
+  currPath: readonly string[],
+  currValues: readonly any[] = [],
+): PathWithValues[] {
   const segments = _.toPath(path);
   if (!segments.length) {
     // no more paths to traverse
-    return [reconstructFieldPath(currPath)];
+    return [
+      {
+        path: reconstructFieldPath(currPath),
+        values: currValues,
+      },
+    ];
   }
 
   const key = segments[0];
@@ -54,7 +70,12 @@ function expandPath(object: any, path: string | string[], currPath: readonly str
   if (object != null && !_.isObjectLike(object)) {
     if (key === '**' && !rest.length) {
       // globstar leaves are always selected
-      return [reconstructFieldPath(currPath)];
+      return [
+        {
+          path: reconstructFieldPath(currPath),
+          values: currValues,
+        },
+      ];
     }
 
     // there still are paths to traverse, but value is a primitive, stop
@@ -64,23 +85,27 @@ function expandPath(object: any, path: string | string[], currPath: readonly str
   // Use a non-null value so that inexistent fields are still selected
   object = object || {};
   if (key === '*') {
-    return Object.keys(object).flatMap(key => expandPath(object[key], rest, currPath.concat(key)));
+    return Object.keys(object).flatMap(key =>
+      expandPath(object[key], rest, currPath.concat(key), currValues.concat(key)),
+    );
   }
   if (key === '**') {
     return Object.keys(object).flatMap(key => {
       const nextPath = currPath.concat(key);
       const value = object[key];
-      const set = new Set([
-        // recursively find matching subpaths
-        ...expandPath(value, segments, nextPath),
+      // recursively find matching subpaths
+      const selectedPaths = expandPath(value, segments, nextPath, [key]).concat(
         // skip the first remaining segment, if it matches the current key
-        ...(rest[0] === key ? expandPath(value, rest.slice(1), nextPath) : []),
-      ]);
-      return [...set];
+        rest[0] === key ? expandPath(value, rest.slice(1), nextPath, []) : [],
+      );
+      return _.uniqBy(selectedPaths, ({ path }) => path).map(({ path, values }) => ({
+        path,
+        values: values.length ? [...currValues, values.flat()] : currValues,
+      }));
     });
   }
 
-  return expandPath(object[key], rest, currPath.concat(key));
+  return expandPath(object[key], rest, currPath.concat(key), currValues);
 }
 
 type Tree = { [K: string]: Tree | undefined };

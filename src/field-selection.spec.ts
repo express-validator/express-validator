@@ -10,6 +10,7 @@ describe('selectFields()', () => {
       location: 'cookies',
       path: 'foo',
       originalPath: 'foo',
+      pathValues: [],
       value: 'bar',
     });
   });
@@ -161,6 +162,7 @@ describe('selectFields()', () => {
       location: 'cookies',
       path: 'foo.bar.baz',
       originalPath: 'foo.bar.baz',
+      pathValues: [],
       value: undefined,
     });
   });
@@ -207,12 +209,14 @@ describe('selectFields()', () => {
         location: 'query',
         path: 'foo[0]',
         originalPath: 'foo.*',
+        pathValues: ['0'],
         value: 'bar',
       });
       expect(instances[1]).toMatchObject({
         location: 'query',
         path: 'foo[1]',
         originalPath: 'foo.*',
+        pathValues: ['1'],
         value: 'baz',
       });
     });
@@ -228,12 +232,14 @@ describe('selectFields()', () => {
         location: 'body',
         path: '[0]',
         originalPath: '*',
+        pathValues: ['0'],
         value: 'bar',
       });
       expect(instances[1]).toMatchObject({
         location: 'body',
         path: '[1]',
         originalPath: '*',
+        pathValues: ['1'],
         value: 'baz',
       });
     });
@@ -249,6 +255,7 @@ describe('selectFields()', () => {
         location: 'query',
         path: '*',
         originalPath: '*',
+        pathValues: ['*'],
         value: 'foo',
       });
     });
@@ -264,13 +271,38 @@ describe('selectFields()', () => {
         location: 'query',
         path: 'foo.bar.a',
         originalPath: 'foo.*.a',
+        pathValues: ['bar'],
         value: true,
       });
       expect(instances[1]).toMatchObject({
         location: 'query',
         path: 'foo.baz.a',
         originalPath: 'foo.*.a',
+        pathValues: ['baz'],
         value: false,
+      });
+    });
+
+    it('selects fields matching multiple wildcards', () => {
+      const req = {
+        query: { foo: { bar: { a: true }, baz: { b: 1 } } },
+      };
+      const instances = selectFields(req, ['foo.*.*'], ['query']);
+
+      expect(instances).toHaveLength(2);
+      expect(instances[0]).toMatchObject({
+        location: 'query',
+        path: 'foo.bar.a',
+        originalPath: 'foo.*.*',
+        pathValues: ['bar', 'a'],
+        value: true,
+      });
+      expect(instances[1]).toMatchObject({
+        location: 'query',
+        path: 'foo.baz.b',
+        originalPath: 'foo.*.*',
+        pathValues: ['baz', 'b'],
+        value: 1,
       });
     });
 
@@ -296,12 +328,14 @@ describe('selectFields()', () => {
         location: 'query',
         path: 'foo.a.b.c',
         originalPath: 'foo.**',
+        pathValues: [['a', 'b', 'c']],
         value: 1,
       });
       expect(instances[1]).toMatchObject({
         location: 'query',
         path: 'foo.d.e',
         originalPath: 'foo.**',
+        pathValues: [['d', 'e']],
         value: 2,
       });
     });
@@ -317,12 +351,14 @@ describe('selectFields()', () => {
         location: 'query',
         path: 'foo.a.b.bar',
         originalPath: 'foo.**.bar',
+        pathValues: [['a', 'b']],
         value: 1,
       });
       expect(instances[1]).toMatchObject({
         location: 'query',
         path: 'foo.c.bar',
         originalPath: 'foo.**.bar',
+        pathValues: [['c']],
         value: 2,
       });
     });
@@ -338,12 +374,14 @@ describe('selectFields()', () => {
         location: 'query',
         path: 'foo.foo',
         originalPath: '**.foo',
+        pathValues: [['foo']],
         value: 1,
       });
       expect(instances[1]).toMatchObject({
         location: 'query',
         path: 'foo',
         originalPath: '**.foo',
+        pathValues: [],
         value: { foo: 1 },
       });
     });
@@ -359,6 +397,7 @@ describe('selectFields()', () => {
         location: 'query',
         path: '**',
         originalPath: '**',
+        pathValues: [['**']],
         value: 'foo',
       });
     });
