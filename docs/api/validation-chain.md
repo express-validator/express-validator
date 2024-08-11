@@ -63,8 +63,8 @@ app.post(
 );
 ```
 
-If the field was selected using wildcards or globstars, you can access the values they matched by
-using the `pathValues` property.
+If the field was selected using [wildcards or globstars](../guides/field-selection.md#advanced-features),
+you can access the values they matched by using the `pathValues` property.
 This is useful if you want to use some other property of the same object in your validation:
 
 ```ts
