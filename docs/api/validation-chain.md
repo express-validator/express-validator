@@ -387,6 +387,29 @@ body('json_string').optional().isLength({ max: 100 }).isJSON().
 
 :::
 
+### `.hide()`
+
+```ts
+hide(hiddenValue?: string): ValidationChain
+```
+
+Hide the field's value in errors returned by [`validationResult()`](./validation-result.md).
+If the value is confidential information (such as api key),
+you might want to call this method to prevent exposing it.
+If `hiddenValue` is set, it's set as the value in the errors for this field.
+
+| Name          | Description                           |
+| ------------- | ------------------------------------- |
+| `hiddenValue` | String to replace field's value with. |
+
+```ts
+// Omits the value in the errors
+query('api_key').custom(isValidKey).hide();
+
+// Replaces the value in the errors with '*****'
+query('api_key').custom(isValidKey).hide('*****');
+```
+
 ### `.withMessage()`
 
 ```ts
