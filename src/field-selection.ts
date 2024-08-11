@@ -84,7 +84,7 @@ function expandPath(
       // wildcard position does not exist
       return [];
     }
-    // value is a primitive, there are still still paths to traverse that will be likely undefined, we return the entire path
+    // value is a primitive, paths being traversed from here might be in their prototype, return the entire path
     return [
       {
         path: reconstructFieldPath([...currPath, ...segments]),
