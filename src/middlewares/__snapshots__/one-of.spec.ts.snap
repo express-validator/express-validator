@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`error message can be the return of a function 1`] = `
-Array [
-  Object {
+[
+  {
     "msg": "keep trying",
-    "nestedErrors": Array [
-      Array [
-        Object {
+    "nestedErrors": [
+      [
+        {
           "location": "body",
           "msg": "Invalid value",
           "path": "foo",
@@ -21,18 +21,18 @@ Array [
 `;
 
 exports[`should let the user to choose between multiple error types flat error type 1`] = `
-Array [
-  Object {
+[
+  {
     "msg": "Invalid value(s)",
-    "nestedErrors": Array [
-      Object {
+    "nestedErrors": [
+      {
         "location": "body",
         "msg": "Invalid value",
         "path": "foo",
         "type": "field",
         "value": true,
       },
-      Object {
+      {
         "location": "body",
         "msg": "Invalid value",
         "path": "bar",
@@ -46,12 +46,12 @@ Array [
 `;
 
 exports[`should let the user to choose between multiple error types grouped error type 1`] = `
-Array [
-  Object {
+[
+  {
     "msg": "Invalid value(s)",
-    "nestedErrors": Array [
-      Array [
-        Object {
+    "nestedErrors": [
+      [
+        {
           "location": "body",
           "msg": "Invalid value",
           "path": "foo",
@@ -59,8 +59,8 @@ Array [
           "value": true,
         },
       ],
-      Array [
-        Object {
+      [
+        {
           "location": "body",
           "msg": "Invalid value",
           "path": "bar",
@@ -75,11 +75,11 @@ Array [
 `;
 
 exports[`should let the user to choose between multiple error types least_errored error type 1`] = `
-Array [
-  Object {
+[
+  {
     "msg": "Invalid value(s)",
-    "nestedErrors": Array [
-      Object {
+    "nestedErrors": [
+      {
         "location": "body",
         "msg": "Invalid value",
         "path": "foo",
@@ -93,19 +93,19 @@ Array [
 `;
 
 exports[`with a list of chain groups sets a single error for the _error key 1`] = `
-Array [
-  Object {
+[
+  {
     "msg": "Invalid value(s)",
-    "nestedErrors": Array [
-      Array [
-        Object {
+    "nestedErrors": [
+      [
+        {
           "location": "cookies",
           "msg": "Invalid value",
           "path": "foo",
           "type": "field",
           "value": true,
         },
-        Object {
+        {
           "location": "cookies",
           "msg": "Invalid value",
           "path": "bar",
@@ -113,8 +113,8 @@ Array [
           "value": "def",
         },
       ],
-      Array [
-        Object {
+      [
+        {
           "location": "cookies",
           "msg": "Invalid value",
           "path": "baz",
@@ -129,12 +129,12 @@ Array [
 `;
 
 exports[`with a list of chains sets a single error for the _error key 1`] = `
-Array [
-  Object {
+[
+  {
     "msg": "Invalid value(s)",
-    "nestedErrors": Array [
-      Array [
-        Object {
+    "nestedErrors": [
+      [
+        {
           "location": "cookies",
           "msg": "Invalid value",
           "path": "foo",
@@ -142,8 +142,8 @@ Array [
           "value": true,
         },
       ],
-      Array [
-        Object {
+      [
+        {
           "location": "cookies",
           "msg": "Invalid value",
           "path": "bar",
