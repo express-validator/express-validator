@@ -14,6 +14,7 @@ beforeEach(() => {
       req: {},
       location: 'cookies',
       path: 'foo',
+      pathValues: [],
     });
 });
 
@@ -25,6 +26,7 @@ it('runs the condition with the value and the meta', () => {
     req: {},
     location: 'cookies',
     path: 'foo',
+    pathValues: [],
   });
 });
 
