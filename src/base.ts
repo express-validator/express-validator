@@ -34,6 +34,17 @@ export type Meta = {
    * const meta = { req, location: 'body', path: 'foo.bar' }; // req.body.foo.bar
    */
   path: string;
+
+  /**
+   * Values from wildcards/globstars used when selecting fields for validation.
+   *
+   * @example
+   * body('products.*.price').custom((value, { req, pathValues }) => {
+   *  const index = pathValues[0];
+   *  const productName = req.body.products[index].name;
+   * });
+   */
+  pathValues: readonly (string | string[])[];
 };
 
 /**
@@ -53,6 +64,7 @@ export type StandardSanitizer = (input: string, ...options: any[]) => any;
 export interface FieldInstance {
   path: string;
   originalPath: string;
+  pathValues: readonly (string | string[])[];
   location: Location;
   value: any;
 }
