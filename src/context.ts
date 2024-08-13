@@ -104,7 +104,7 @@ export class Context {
             (value: any) => (optional === 'null' ? value != null : true),
             (value: any) => (optional === 'falsy' ? value : true),
           ]
-        : includeOptionals === 'discardUndefined' && optional
+        : includeOptionals === 'discardUndefined'
         ? [(value: any) => value !== undefined]
         : [];
 
