@@ -7,7 +7,6 @@
     "target": "es2020",
     "lib": ["ES2020"],
     "outDir": "lib",
-    "charset": "utf-8",
     "pretty": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
