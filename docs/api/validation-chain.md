@@ -225,6 +225,13 @@ app.post('/', body('username').default('foo'), (req, res, next) => {
 });
 ```
 
+:::note
+
+If using an object as the default value, it'll be deeply cloned, to avoid sharing references
+between requests.
+
+:::
+
 ### `.replace()`
 
 ```ts
@@ -241,6 +248,13 @@ app.post('/', body('username').replace(['bar', 'BAR'], 'foo'), (req, res, next) 
   console.log(req.body.username);
 });
 ```
+
+:::note
+
+If using an object as the replacement value, it'll be deeply cloned, to avoid sharing references
+between requests.
+
+:::
 
 ### `.toArray()`
 

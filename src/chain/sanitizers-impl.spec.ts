@@ -1,9 +1,10 @@
 import * as validator from 'validator';
 import { Sanitization } from '../context-items/sanitization';
-import { Meta } from '../base';
+import { Meta, Request } from '../base';
 import { ContextBuilder } from '../context-builder';
 import { Sanitizers } from './sanitizers';
 import { SanitizersImpl } from './sanitizers-impl';
+import { ContextRunnerImpl } from './context-runner-impl';
 
 let chain: any;
 let builder: ContextBuilder;
@@ -274,6 +275,21 @@ describe('#default()', () => {
     await defaultSanitizer.run(context, NaN, meta);
     expect(context.getData()[0].value).toEqual(5);
   });
+
+  it('sanitizes to clone of the default object', async () => {
+    sanitizers.default({});
+    builder.setFields(['foo']);
+    builder.setLocations(['body']);
+
+    const runner = new ContextRunnerImpl(builder);
+
+    const req1: Request = { body: {} };
+    await runner.run(req1);
+
+    const req2: Request = { body: {} };
+    await runner.run(req2);
+    expect(req2.body.foo).not.toBe(req1.body.foo);
+  });
 });
 
 describe('#replace()', () => {
@@ -381,5 +397,20 @@ describe('#replace()', () => {
 
     await replace.run(context, 100, meta);
     expect(context.getData()[0].value).toEqual(100);
+  });
+
+  it('sanitizes to clone of the replacement object', async () => {
+    sanitizers.replace(['bar'], {});
+    builder.setFields(['foo']);
+    builder.setLocations(['body']);
+
+    const runner = new ContextRunnerImpl(builder);
+
+    const req1: Request = { body: { foo: 'bar' } };
+    await runner.run(req1);
+
+    const req2: Request = { body: { foo: 'bar' } };
+    await runner.run(req2);
+    expect(req2.body.foo).not.toBe(req1.body.foo);
   });
 });

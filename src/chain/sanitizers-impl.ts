@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import * as validator from 'validator';
 import { CustomSanitizer, StandardSanitizer } from '../base';
 import { Sanitization } from '../context-items/sanitization';
@@ -15,14 +16,16 @@ export class SanitizersImpl<Chain> implements Sanitizers<Chain> {
   }
   default(default_value: any) {
     return this.customSanitizer(value =>
-      [undefined, null, NaN, ''].includes(value) ? default_value : value,
+      [undefined, null, NaN, ''].includes(value) ? _.cloneDeep(default_value) : value,
     );
   }
   replace(values_to_replace: any, new_value: any) {
     if (!Array.isArray(values_to_replace)) {
       values_to_replace = [values_to_replace];
     }
-    return this.customSanitizer(value => (values_to_replace.includes(value) ? new_value : value));
+    return this.customSanitizer(value =>
+      values_to_replace.includes(value) ? _.cloneDeep(new_value) : value,
+    );
   }
 
   // Standard sanitizers
