@@ -49,6 +49,27 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
     return this.custom(validator);
   }
 
+  allowed(allowedKey: string[], options: { strict: boolean } = { strict: false } ) {
+    return this.custom(value => {
+      if (!(typeof value === 'object' && (!options.strict || value !== null) && !Array.isArray(value))) {
+        return false;
+      }
+
+      const keys = Object.keys(value);
+
+      if (options.strict && (keys.length !== allowedKey.length)) {
+        return false;
+      }
+
+      for (let key of keys) {
+        if (!allowedKey.includes(key)) {
+          return false;
+        }
+      }
+      return true;
+    })
+  }
+
   isArray(options: { min?: number; max?: number } = {}) {
     return this.custom(
       value =>
