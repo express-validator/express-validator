@@ -386,6 +386,45 @@ describe('#notEmpty()', () => {
   });
 });
 
+describe('#allowed', () => {
+  it('adds negated allowed() validator to the context', async () => {
+    const ret = validators.allowed(["foo", "bar"]);
+    const strictRet = validators.allowed(["foo", "bar"], { strict: true });
+    const context = builder.build();
+
+    const meta: Meta = { req: {}, location: 'body', path: 'foo', pathValues: [] };
+
+    const allowed = context.stack[0];
+
+    expect(ret).toBe(chain);
+    expect(strictRet).toBe(chain);
+
+    await allowed.run(context, {foo: "12"}, meta);
+    await allowed.run(context, {bar: "12"}, meta);
+    await allowed.run(context, {bar: "12", foo: "1231"}, meta);
+    expect(context.errors).toHaveLength(0);
+
+    const strictAllowed = context.stack[1];
+
+    await strictAllowed.run(context, {foo: "12"}, meta);
+    await strictAllowed.run(context, {bar: "12"}, meta);
+    await strictAllowed.run(context, {bar: "12", foo: "1231"}, meta);
+    expect(context.errors).toHaveLength(2);
+
+    await strictAllowed.run(context, {h: "12", k: "123"}, meta);
+    await strictAllowed.run(context, undefined, meta);
+    await strictAllowed.run(context, null, meta);
+    await strictAllowed.run(context, [], meta);
+
+
+    await allowed.run(context, {h: "12", k: "123"}, meta);
+    await allowed.run(context, undefined, meta);
+    await allowed.run(context, null, meta);
+    await allowed.run(context, [], meta);
+    expect(context.errors).toHaveLength(10);
+  })
+})
+
 describe('#isULID()', () => {
   it('adds standard validator to the context', () => {
     const ret = validators.isULID();

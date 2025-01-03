@@ -75,6 +75,15 @@ export interface Validators<Return> {
   isArray(options?: { min?: number; max?: number }): Return;
 
   /**
+   * Adds a validator to check if a value is allowed
+   *
+   * @param keys
+   * @param options
+   * @returns the current validation chain
+   */
+  allowed(keys: string[], options?: { strict?: boolean }): Return;
+
+  /**
    * Adds a validator to check if a value is an object.
    *
    * @param options
