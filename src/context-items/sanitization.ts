@@ -31,7 +31,7 @@ export class Sanitization implements ContextItem {
       return (this.sanitizer as StandardSanitizer)(this.stringify(value), ...this.options);
     });
 
-    // We get only the first value of the array if the orginal value was wrapped.
+    // We get only the first value of the array if the original value was wrapped.
     context.setData(path, values !== value ? newValues[0] : newValues, location);
   }
 }

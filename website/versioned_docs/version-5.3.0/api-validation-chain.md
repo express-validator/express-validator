@@ -70,7 +70,7 @@ check('weekday').not().isIn(['sunday', 'saturday'])
 > *Returns:* the current validation chain instance
 
 Marks the current validation chain as optional.  
-This is useful to remove values that are not essential to your busines and that would cause validation failures in case they were not provided in the request.
+This is useful to remove values that are not essential to your business and that would cause validation failures in case they were not provided in the request.
 
 By default, fields with `undefined` values will be ignored from the validation.
 
