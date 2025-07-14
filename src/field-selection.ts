@@ -126,7 +126,7 @@ export const selectUnknownFields = (
   locations: Location[],
 ): UnknownFieldInstance[] => {
   const tree: Tree = {};
-  knownFields.map(field => {
+  knownFields.forEach(field => {
     const segments = field === '' ? [''] : _.toPath(field);
     pathToTree(segments, tree);
   });
