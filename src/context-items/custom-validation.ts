@@ -15,7 +15,7 @@ export class CustomValidation implements ContextItem {
       const failed = this.negated ? actualResult : !actualResult;
 
       // A promise that was resolved only adds an error if negated.
-      // Otherwise it always suceeds
+      // Otherwise it always succeeds
       if ((!isPromise && failed) || (isPromise && this.negated)) {
         context.addError({ type: 'field', message: this.message, value, meta });
       }

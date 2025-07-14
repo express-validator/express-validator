@@ -52,7 +52,7 @@ app.post('/recover-password', (req, res) => {
 By default, the validation and sanitization results are persisted back into `req`, which means that
 
 - calling `validationResult(req)` will include the results for this validation
-- a sanitized field wil be updated on the request, such as `body('message').trim()` will update `req.body.message`.
+- a sanitized field will be updated on the request, such as `body('message').trim()` will update `req.body.message`.
 
 This behavior can be changed by setting `options.dryRun` to `true`, which will simply run the validations
 and return the result.
