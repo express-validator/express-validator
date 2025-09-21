@@ -91,7 +91,7 @@ export function checkExact(
       });
     }
     internalReq[contextsKey] = internalReq[contextsKey] || [];
-    internalReq[contextsKey]!.push(context);
+    internalReq[contextsKey].push(context);
     return new ResultWithContextImpl(context);
   };
 
