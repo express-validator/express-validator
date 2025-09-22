@@ -11,7 +11,7 @@ export class CustomValidation implements ContextItem {
     try {
       const result = this.validator(value, meta);
       const actualResult = await result;
-      const isPromise = result && result.then;
+      const isPromise = result?.then;
       const failed = this.negated ? actualResult : !actualResult;
 
       // A promise that was resolved only adds an error if negated.

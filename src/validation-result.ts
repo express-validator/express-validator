@@ -45,7 +45,7 @@ export class Result<T = any> {
    * @param options.onlyFirstError whether only the first error of each
    */
   array(options?: ToArrayOptions): T[] {
-    return options && options.onlyFirstError
+    return options?.onlyFirstError
       ? Object.values(this.mapped())
       : this.errors.map(this.formatter);
   }
