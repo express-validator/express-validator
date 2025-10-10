@@ -488,6 +488,56 @@ describe('selectUnknownFields()', () => {
     });
   });
 
+  it('selects unknown fields nested under a checked wildcard', () => {
+    const req = {
+      body: {
+        obj: {
+          nestedobj1: { foo: true, bar: 123, boom: { foo: true } },
+          nestedobj2: { foo: true, baz: true },
+        },
+        arr: [{ foo: 'a' }, { foo: 'a', bar: true }],
+      },
+    };
+    // arr and obj are checked
+    const instances = selectUnknownFields(req, ['obj', 'obj.*.foo', 'arr', 'arr.*.foo'], ['body']);
+    expect(instances).toHaveLength(4);
+    expect(instances[0]).toMatchObject({
+      path: 'obj.nestedobj1.bar',
+      value: 123,
+      location: 'body',
+    });
+    expect(instances[1]).toMatchObject({
+      path: 'obj.nestedobj1.boom',
+      value: { foo: true },
+      location: 'body',
+    });
+    expect(instances[2]).toMatchObject({
+      path: 'obj.nestedobj2.baz',
+      value: true,
+      location: 'body',
+    });
+    expect(instances[3]).toMatchObject({
+      path: 'arr[1].bar',
+      value: true,
+      location: 'body',
+    });
+  });
+
+  it('selects unknown fields when there are muliple wildcards', () => {
+    const req = {
+      body: {
+        obj: {
+          nestedobj1: { foo: true, bar: 123, boom: { foo: true } },
+          nestedobj2: { foo: true, baz: true },
+        },
+        arr: [{ foo: 'a' }, { foo: 'a', bar: true }],
+      },
+    };
+    // arr and obj are checked
+    const instances = selectUnknownFields(req, ['obj', 'obj.*', 'arr', 'arr.*.*'], ['body']);
+    expect(instances).toHaveLength(0);
+  });
+
   it('does not select any fields at a globstar level', () => {
     const req = { body: { foo: 1, bar: { baz: 2 } } };
     const instances = selectUnknownFields(req, ['**'], ['body']);
@@ -512,7 +562,7 @@ describe('selectUnknownFields()', () => {
 
   it('does not select any fields nested under a known field', () => {
     const req = { body: { obj1: { foo: 1, bar: 2 } } };
-    const instances = selectUnknownFields(req, ['obj1', 'obj.foo'], ['body']);
+    const instances = selectUnknownFields(req, ['obj1'], ['body']);
     expect(instances).toHaveLength(0);
   });
 
