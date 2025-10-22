@@ -447,6 +447,16 @@ describe('#getData()', () => {
     expect(context.getData({ requiredOnly: true })).toEqual([]);
   });
 
+  it('includes null values when `discardUndefined` is used', () => {
+    data[0].value = null;
+    data[1].value = undefined;
+
+    context = new ContextBuilder().setOptional('null').build();
+    context.addFieldInstances(data);
+
+    expect(context.getData({ includeOptionals: 'discardUndefined' })).toEqual([data[0]]);
+  });
+
   it('filters out falsies when context optional = falsy', () => {
     data[0].value = null;
     data[1].value = undefined;

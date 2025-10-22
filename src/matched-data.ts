@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { FieldInstance, InternalRequest, Location, Request, contextsKey } from './base';
-import { Context } from './context';
+import { Context, IncludeOptionals } from './context';
 
 interface FieldInstanceBag {
   instance: FieldInstance;
@@ -12,7 +12,7 @@ export type MatchedDataOptions = {
    * Whether the value returned by `matchedData()` should include data deemed optional.
    * @default false
    */
-  includeOptionals: boolean;
+  includeOptionals: IncludeOptionals;
 
   /**
    * An array of locations in the request to extract the data from.
@@ -39,10 +39,11 @@ export function matchedData<T extends object = Record<string, any>>(
   options: Partial<MatchedDataOptions> = {},
 ): T {
   const internalReq: InternalRequest = req;
+  const { includeOptionals = false, onlyValidData, locations } = options;
 
-  const fieldExtractor = createFieldExtractor(options.includeOptionals !== true);
-  const validityFilter = createValidityFilter(options.onlyValidData);
-  const locationFilter = createLocationFilter(options.locations);
+  const fieldExtractor = createFieldExtractor(includeOptionals);
+  const validityFilter = createValidityFilter(onlyValidData);
+  const locationFilter = createLocationFilter(locations);
 
   return _(internalReq[contextsKey])
     .flatMap(fieldExtractor)
@@ -52,9 +53,9 @@ export function matchedData<T extends object = Record<string, any>>(
     .reduce((state, instance) => _.set(state, instance.path, instance.value), {} as T);
 }
 
-function createFieldExtractor(removeOptionals: boolean) {
+function createFieldExtractor(includeOptionals: IncludeOptionals) {
   return (context: Context) => {
-    const instances = context.getData({ requiredOnly: removeOptionals });
+    const instances = context.getData({ includeOptionals });
     return instances.map((instance): FieldInstanceBag => ({ instance, context }));
   };
 }
