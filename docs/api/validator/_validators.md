@@ -334,8 +334,8 @@ isEmail(options?: {
   allow_ip_domain?: boolean;
   domain_specific_validation?: boolean;
   blacklisted_chars?: string;
-  host_blacklist?: string[];
-  host_whitelist?: string[];
+  host_blacklist?: (string | RegExp)[];
+  host_whitelist?: (string | RegExp)[];
 }): ValidationChain
 ```
 
@@ -469,6 +469,7 @@ isIdentityCard(locale?: IdentityCardLocale): ValidationChain
 - `'IR'`
 - `'MZ'`
 - `'NO'`
+- `'PK'`
 - `'PL'`
 - `'TH'`
 - `'zh-CN'`
@@ -540,6 +541,12 @@ isISO8601(options?: {
 }): ValidationChain
 ```
 
+#### `isISO31661Numeric()`
+
+```ts
+isISO31661Numeric(): ValidationChain
+```
+
 #### `isISO31661Alpha2()`
 
 ```ts
@@ -556,6 +563,12 @@ isISO31661Alpha3(): ValidationChain
 
 ```ts
 isISO4217(): ValidationChain
+```
+
+#### `isISO15924()`
+
+```ts
+isISO15924(): ValidationChain
 ```
 
 #### `isISRC()`
@@ -627,6 +640,7 @@ isLicensePlate(locale: IsLicensePlateLocale): ValidationChain
 - `'de-LI'`
 - `'en-NI'`
 - `'en-PK'`
+- `'en-SG'`
 - `'es-AR'`
 - `'fi-FI'`
 - `'hu-HU'`
@@ -674,8 +688,8 @@ isMailtoURI(options?: {
   allow_ip_domain?: boolean;
   domain_specific_validation?: boolean;
   blacklisted_chars?: string;
-  host_blacklist?: string[];
-  host_whitelist?: string[];
+  host_blacklist?: (string | RegExp)[];
+  host_whitelist?: (string | RegExp)[];
 }): ValidationChain
 ```
 
@@ -795,6 +809,7 @@ isMobilePhone(locale: MobilePhoneLocale | readonly Options.MobilePhoneLocale[], 
 - `'es-DO'`
 - `'es-EC'`
 - `'es-ES'`
+- `'es-GT'`
 - `'es-HN'`
 - `'es-MX'`
 - `'es-NI'`
@@ -841,6 +856,7 @@ isMobilePhone(locale: MobilePhoneLocale | readonly Options.MobilePhoneLocale[], 
 - `'lt-LT'`
 - `'lv-LV'`
 - `'mg-MG'`
+- `'mk-MK'`
 - `'mn-MN'`
 - `'ms-MY'`
 - `'my-MM'`
@@ -998,6 +1014,7 @@ isPostalCode(locale: PostalCodeLocale): ValidationChain
 - `'AU'`
 - `'AZ'`
 - `'BA'`
+- `'BD'`
 - `'BE'`
 - `'BG'`
 - `'BR'`
@@ -1005,6 +1022,7 @@ isPostalCode(locale: PostalCodeLocale): ValidationChain
 - `'CA'`
 - `'CH'`
 - `'CN'`
+- `'CO'`
 - `'CZ'`
 - `'DE'`
 - `'DK'`
@@ -1040,6 +1058,7 @@ isPostalCode(locale: PostalCodeLocale): ValidationChain
 - `'NO'`
 - `'NP'`
 - `'NZ'`
+- `'PK'`
 - `'PL'`
 - `'PR'`
 - `'PT'`
@@ -1185,9 +1204,16 @@ isURL(options?: {
   allow_protocol_relative_urls?: boolean;
   disallow_auth?: boolean;
   validate_length?: boolean;
+  max_allowed_length?: number;
   allow_fragments?: boolean;
   allow_query_components?: boolean;
 }): ValidationChain
+```
+
+#### `isULID()`
+
+```ts
+isULID(): ValidationChain
 ```
 
 #### `isUUID()`
@@ -1212,6 +1238,7 @@ isUUID(version?: UUIDVersion): ValidationChain
 - `'5'`
 - `'7'`
 - `'all'`
+- `'loose'`
 
 </details>
 

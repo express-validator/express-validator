@@ -37,6 +37,7 @@ normalizeEmail(options?: {
   yahoo_remove_subaddress?: boolean;
   icloud_lowercase?: boolean;
   icloud_remove_subaddress?: boolean;
+  yandex_convert_yandexru?: boolean;
 }): ValidationChain
 ```
 
