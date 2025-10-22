@@ -15,5 +15,5 @@
     "skipLibCheck": true,
     "strictNullChecks": true
   },
-  "exclude": ["node_modules", "coverage", "src/**/*.spec.ts", "lib"]
+  "exclude": ["node_modules", "coverage", "lib"]
 }

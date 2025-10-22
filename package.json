@@ -18,6 +18,7 @@
   "types": "./lib/index.d.ts",
   "files": [
     "lib",
+    "!*.spec.{d.ts,js}",
     "!src",
     "!website",
     "!docs"
