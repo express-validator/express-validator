@@ -90,13 +90,6 @@ export interface Validators<Return> {
   isString(): Return;
 
   /**
-   * Adds a validator to check if a value is a ULID.
-   *
-   * @returns the current validation chain
-   */
-  isULID(): Return; // TODO: use validatorjs implementation when PR will be merged
-
-  /**
    * Adds a validator to check if a value is not empty; that is, a string with length of 1 or more.
    *
    * @param options
@@ -153,9 +146,11 @@ export interface Validators<Return> {
   isISO6346(): Return;
   isISO6391(): Return;
   isISO8601(options?: Options.IsISO8601Options): Return;
+  isISO31661Numeric(): Return;
   isISO31661Alpha2(): Return;
   isISO31661Alpha3(): Return;
   isISO4217(): Return;
+  isISO15924(): Return;
   isISRC(): Return;
   isIn(values: readonly any[]): Return;
   isInt(options?: Options.IsIntOptions): Return;
@@ -192,6 +187,7 @@ export interface Validators<Return> {
   isTaxID(locale: Options.TaxIDLocale): Return;
   isTime(options: Options.IsTimeOptions): Return;
   isURL(options?: Options.IsURLOptions): Return;
+  isULID(): Return;
   isUUID(version?: Options.UUIDVersion): Return;
   isUppercase(): Return;
   isVariableWidth(): Return;

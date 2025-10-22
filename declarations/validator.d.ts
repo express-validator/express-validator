@@ -30,7 +30,10 @@ declare module 'validator' {
     str: string,
     options?: import('../src/options').IsBase64Options,
   ): boolean;
-  export function isBefore(str: string, date?: string): boolean;
+  export function isBefore(
+    str: string,
+    options?: import('../src/options').IsBeforeOptions,
+  ): boolean;
   export function isBIC(str: string): boolean;
   export function isBoolean(
     str: string,
@@ -72,7 +75,10 @@ declare module 'validator' {
     locale?: import('../src/options').IdentityCardLocale,
   ): boolean;
   export function isIMEI(str: string, options?: import('../src/options').IsIMEIOptions): boolean;
-  export function isIP(str: string, version?: import('../src/options').IPVersion): boolean;
+  export function isIP(
+    str: string,
+    options?: import('../src/options').IPVersion | { version: import('../src/options').IPVersion },
+  ): boolean;
   export function isIPRange(str: string, version?: import('../src/options').IPVersion): boolean;
   export function isISBN(
     str: string,
@@ -84,9 +90,11 @@ declare module 'validator' {
     str: string,
     options?: import('../src/options').IsISO8601Options,
   ): boolean;
+  export function isISO31661Numeric(str: string): boolean;
   export function isISO31661Alpha2(str: string): boolean;
   export function isISO31661Alpha3(str: string): boolean;
   export function isISO4217(str: string): boolean;
+  export function isISO15924(str: string): boolean;
   export function isISRC(str: string): boolean;
   export function isIn(str: string, values: readonly any[]): boolean;
   export function isISO6346(str: string): boolean;
@@ -98,7 +106,7 @@ declare module 'validator' {
     str: string,
     options?: import('../src/options').IsLatLongOptions,
   ): boolean;
-  export function isLength(str: string, options: import('../src/options').MinMaxOptions): boolean;
+  export function isLength(str: string, options: import('../src/options').IsLengthOptions): boolean;
   export function isLicensePlate(
     str: string,
     locale: import('../src/options').IsLicensePlateLocale,
@@ -152,6 +160,7 @@ declare module 'validator' {
   export function isTaxID(str: string, locale: import('../src/options').TaxIDLocale): boolean;
   export function isTime(str: string, options?: import('../src/options').IsTimeOptions): boolean;
   export function isURL(str: string, options?: import('../src/options').IsURLOptions): boolean;
+  export function isULID(str: string): boolean;
   export function isUUID(str: string, version?: import('../src/options').UUIDVersion): boolean;
   export function isUppercase(str: string): boolean;
   export function isVariableWidth(str: string): boolean;

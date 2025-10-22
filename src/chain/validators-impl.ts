@@ -70,10 +70,6 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
     return this.custom(value => typeof value === 'string');
   }
 
-  isULID() {
-    return this.matches(/^[0-7][0-9A-HJKMNP-TV-Z]{25}$/i);
-  }
-
   notEmpty(options?: Options.IsEmptyOptions) {
     this.not();
     return this.isEmpty(options);
@@ -231,6 +227,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isISO8601(options?: Options.IsISO8601Options) {
     return this.addStandardValidation(validator.isISO8601, options);
   }
+  isISO31661Numeric() {
+    return this.addStandardValidation(validator.isISO31661Numeric);
+  }
   isISO31661Alpha2() {
     return this.addStandardValidation(validator.isISO31661Alpha2);
   }
@@ -239,6 +238,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   }
   isISO4217() {
     return this.addStandardValidation(validator.isISO4217);
+  }
+  isISO15924() {
+    return this.addStandardValidation(validator.isISO15924);
   }
   isISRC() {
     return this.addStandardValidation(validator.isISRC);
@@ -341,6 +343,9 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   }
   isURL(options?: Options.IsURLOptions) {
     return this.addStandardValidation(validator.isURL, options);
+  }
+  isULID() {
+    return this.addStandardValidation(validator.isULID);
   }
   isUUID(version?: Options.UUIDVersion) {
     return this.addStandardValidation(validator.isUUID, version);

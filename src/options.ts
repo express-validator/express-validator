@@ -1,5 +1,19 @@
 export type URLProtocol = 'http' | 'https' | 'ftp' | string;
-export type UUIDVersion = 1 | 2 | 3 | 4 | 5 | 7 | '1' | '2' | '3' | '4' | '5' | '7' | 'all';
+export type UUIDVersion =
+  | 1
+  | 2
+  | 3
+  | 4
+  | 5
+  | 7
+  | '1'
+  | '2'
+  | '3'
+  | '4'
+  | '5'
+  | '7'
+  | 'all'
+  | 'loose';
 export type IPVersion = 4 | 6;
 
 export type AlphaLocale =
@@ -222,6 +236,7 @@ export type MobilePhoneLocale =
   | 'es-DO'
   | 'es-EC'
   | 'es-ES'
+  | 'es-GT'
   | 'es-HN'
   | 'es-MX'
   | 'es-NI'
@@ -268,6 +283,7 @@ export type MobilePhoneLocale =
   | 'lt-LT'
   | 'lv-LV'
   | 'mg-MG'
+  | 'mk-MK'
   | 'mn-MN'
   | 'ms-MY'
   | 'my-MM'
@@ -310,6 +326,7 @@ export type PostalCodeLocale =
   | 'AU'
   | 'AZ'
   | 'BA'
+  | 'BD'
   | 'BE'
   | 'BG'
   | 'BR'
@@ -317,6 +334,7 @@ export type PostalCodeLocale =
   | 'CA'
   | 'CH'
   | 'CN'
+  | 'CO'
   | 'CZ'
   | 'DE'
   | 'DK'
@@ -352,6 +370,7 @@ export type PostalCodeLocale =
   | 'NO'
   | 'NP'
   | 'NZ'
+  | 'PK'
   | 'PL'
   | 'PR'
   | 'PT'
@@ -484,6 +503,7 @@ export type IdentityCardLocale =
   | 'IR'
   | 'MZ'
   | 'NO'
+  | 'PK'
   | 'PL'
   | 'TH'
   | 'zh-CN'
@@ -557,6 +577,7 @@ export type IsLicensePlateLocale =
   | 'de-LI'
   | 'en-NI'
   | 'en-PK'
+  | 'en-SG'
   | 'es-AR'
   | 'fi-FI'
   | 'hu-HU'
@@ -738,6 +759,16 @@ export interface IsBase64Options {
 /**
  * defaults to
  * {
+ *  comparisonDate: new Date().toString()
+ * }
+ */
+export interface IsBeforeOptions {
+  comparisonDate?: string;
+}
+
+/**
+ * defaults to
+ * {
  *  strict: false
  *  loose: false
  * }
@@ -745,6 +776,18 @@ export interface IsBase64Options {
 export interface IsBooleanOptions {
   strict?: boolean;
   loose?: boolean;
+}
+
+/**
+ * defaults to
+ * {
+ *  includePercentValues: true
+ *  allowSpaces: true
+ * }
+ */
+export interface IsRgbColorOptions {
+  includePercentValues?: boolean;
+  allowSpaces?: boolean;
 }
 
 export interface IsCreditCard {
@@ -816,8 +859,8 @@ export interface IsEmailOptions {
   allow_ip_domain?: boolean;
   domain_specific_validation?: boolean;
   blacklisted_chars?: string;
-  host_blacklist?: string[];
-  host_whitelist?: string[];
+  host_blacklist?: (string | RegExp)[];
+  host_whitelist?: (string | RegExp)[];
 }
 
 /**
@@ -876,6 +919,10 @@ export interface IsJSONOptions {
  */
 export interface IsLatLongOptions {
   checkDMS?: boolean;
+}
+
+export interface IsLengthOptions extends MinMaxOptions {
+  discreteLengths?: number[];
 }
 
 /**
@@ -1015,6 +1062,7 @@ export interface IsURLOptions extends IsFQDNOptions {
   allow_protocol_relative_urls?: boolean;
   disallow_auth?: boolean;
   validate_length?: boolean;
+  max_allowed_length?: number;
   allow_fragments?: boolean;
   allow_query_components?: boolean;
 }
@@ -1043,4 +1091,5 @@ export interface NormalizeEmailOptions {
   yahoo_remove_subaddress?: boolean;
   icloud_lowercase?: boolean;
   icloud_remove_subaddress?: boolean;
+  yandex_convert_yandexru?: boolean;
 }
