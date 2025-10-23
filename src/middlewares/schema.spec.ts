@@ -439,3 +439,42 @@ it('correctly pass falsy values to `options` property of methods', async () => {
   await schema.run(req);
   expect(req.body.foo).toEqual(0);
 });
+
+// Test for issue: optional parent with mandatory nested properties
+it('should pass when optional parent object is missing even if nested properties are mandatory', async () => {
+  const schema = checkSchema({
+    a: {
+      in: ['body'],
+      optional: true,
+      isObject: true,
+    },
+    'a.x': {
+      in: ['body'],
+      optional: false,
+      isInt: {
+        options: { min: 0 },
+        errorMessage: 'a.x must be a non-negative integer',
+      },
+    },
+  });
+
+  // Test 1: Empty object should pass (a is missing, so a.x validation should not run)
+  let results = await schema.run({ body: {} });
+  expect(results).toHaveLength(2);
+  // Both contexts should have no errors since a is missing
+  expect(results[0].array()).toHaveLength(0);
+  expect(results[1].array()).toHaveLength(0);
+
+  // Test 2: Object with missing nested property should fail
+  results = await schema.run({ body: { a: {} } });
+  // First context is for 'a', which passes (it's an object)
+  // Second context is for 'a.x', which should fail
+  const allErrors = results.flatMap(r => r.array());
+  const fieldErrors = allErrors.filter(e => e.type === 'field');
+  expect(fieldErrors.some((e: any) => e.path === 'a.x')).toBe(true);
+
+  // Test 3: Object with valid nested property should pass
+  results = await schema.run({ body: { a: { x: 1 } } });
+  const errors = results.flatMap(r => r.array());
+  expect(errors).toHaveLength(0);
+});
