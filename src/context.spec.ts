@@ -458,6 +458,26 @@ describe('#getData()', () => {
     expect(context.getData({ requiredOnly: true })).toEqual([]);
   });
 
+  it('filters out empty strings when context optional = empty', () => {
+    data[0].value = '';
+    data[1].value = 'non-empty';
+
+    context = new ContextBuilder().setOptional('empty').build();
+    context.addFieldInstances(data);
+
+    expect(context.getData({ requiredOnly: true })).toEqual([data[1]]);
+  });
+
+  it('does not filter out empty strings for non-string values when context optional = empty', () => {
+    data[0].value = 0;
+    data[1].value = false;
+
+    context = new ContextBuilder().setOptional('empty').build();
+    context.addFieldInstances(data);
+
+    expect(context.getData({ requiredOnly: true })).toEqual([data[0], data[1]]);
+  });
+
   describe('when same path occurs multiple times', () => {
     it('keeps only fields with value', () => {
       data = [
