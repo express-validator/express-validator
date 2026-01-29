@@ -1,6 +1,6 @@
+import { ContextBuilder } from './context-builder';
 import { FieldInstance, FieldValidationError, Meta, UnknownFieldInstance } from './base';
 import { Context } from './context';
-import { ContextBuilder } from './context-builder';
 
 let context: Context;
 let data: FieldInstance[];
