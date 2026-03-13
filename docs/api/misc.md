@@ -30,7 +30,7 @@ app.put(
 
 ```ts
 interface ContextRunner {
-  run(req: Request, options?: { dryRun: boolean }): Promise<Result>;
+  run(req: Request, options?: { dryRun?: boolean }): Promise<Result>;
 }
 ```
 
@@ -41,7 +41,7 @@ chain/middleware.
 
 ```ts
 import { check } from 'express-validator';
-app.post('/recover-password', (req, res) => {
+app.post('/recover-password', async (req, res) => {
   const result = await check('username').notEmpty().run(req);
   if (!result.isEmpty()) {
     return res.send('Something is wrong with the username.');
@@ -59,7 +59,7 @@ and return the result.
 
 ```ts
 import { check } from 'express-validator';
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
   const usernameResult = await check('username').notEmpty().run(req, { dryRun: true });
   const passwordResult = await check('password').notEmpty().run(req, { dryRun: false });
   const result = validationResult(req);
