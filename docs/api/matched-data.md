@@ -113,7 +113,7 @@ app.post(
       return res.send('Please fix the request');
     }
 
-    const result = matchedData<{
+    const data = matchedData<{
       email: string;
       message: string;
       phone?: string;
