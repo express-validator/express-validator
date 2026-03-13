@@ -123,8 +123,8 @@ oneOf(
 ### `least_errored` {#error-type-least-errored}
 
 Sets `oneOf()` to add a
-[`AlternativeValidationError` error](./validation-result.md#groupedalternativevalidationerror)
-when none of the validation chain groups are valid.  
+[`AlternativeValidationError` error](./validation-result.md#alternativevalidationerror)
+when none of the validation chain groups are valid.
 The error's `nestedErrors` property includes all errors from the validation chain group that had the
 least errors.
 
@@ -170,8 +170,8 @@ oneOf(
 ### `flat` {#error-type-flat}
 
 Sets `oneOf()` to add a
-[`AlternativeValidationError` error](./validation-result.md#groupedalternativevalidationerror)
-when none of the validation chain groups are valid.  
+[`AlternativeValidationError` error](./validation-result.md#alternativevalidationerror)
+when none of the validation chain groups are valid.
 The error's `nestedErrors` property is a list of all errors from every validation chains passed to
 `oneOf()`.
 
