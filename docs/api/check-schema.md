@@ -46,13 +46,15 @@ you can also run it manually, if you wish.
 
 ```ts
 app.post('/signup', async (req, res) => {
-  const result = await checkSchema({
+  const results = await checkSchema({
     email: { isEmail: true },
     password: { isLength: { options: { min: 8 } } },
   }).run(req);
 
-  if (!result.isEmpty()) {
-    console.log('Failed validation');
+  const hasErrors = results.some(result => !result.isEmpty());
+  if (hasErrors) {
+    const errors = results.flatMap(result => result.array());
+    return res.status(400).json({ errors });
   }
 });
 ```
