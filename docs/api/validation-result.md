@@ -263,7 +263,7 @@ Represents an error caused when all alternatives (e.g. in [`oneOf()`](./one-of.m
 ### `GroupedAlternativeValidationError`
 
 ```ts
-type AlternativeValidationError = {
+type GroupedAlternativeValidationError = {
   type: 'alternative_grouped';
   msg: any;
   nestedErrors: FieldValidationError[][];
