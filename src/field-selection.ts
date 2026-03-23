@@ -153,11 +153,36 @@ function pathToTree(segments: string[], tree: Tree) {
 }
 
 /**
+ * Returns true when a tree branch is "covered as a whole" — meaning all descendants
+ * are implicitly known and no further traversal is needed.
+ *
+ * A branch is covered as a whole only when it has the empty-string leaf (`''`) AND
+ * no more-specific sub-keys. When specific sub-keys co-exist with `''`, the sub-keys
+ * take precedence: only the listed sub-paths are known, and anything else is unknown.
+ *
+ * Example:
+ *   - `{ '': {} }` — fully covered, no specific sub-paths → returns true
+ *   - `{ '': {}, 'id': { '': {} } }` — has specific sub-key 'id' → returns false
+ *     so that only 'id' (and any other declared sub-keys) are treated as known
+ */
+function isCoveredAsWhole(tree: Tree): boolean {
+  if (!tree['']) {
+    return false;
+  }
+  // If there are specific sub-keys beyond '' and '**', they define constrained knowledge.
+  // In that case the '' marker only means "this field's value is validated" but
+  // does not imply all nested fields are implicitly known.
+  const hasSpecificSubKeys = Object.keys(tree).some(k => k !== '' && k !== '**');
+  return !hasSpecificSubKeys;
+}
+
+/**
  * Performs a depth-first search for unknown fields in `value`.
  * The path to the unknown fields will be pushed to the `unknownFields` argument.
  *
  * Known fields must be passed via `tree`. A field won't be considered unknown if:
- * - its branch is validated as a whole; that is, it contains an empty string key (e.g `{ ['']: {} }`); OR
+ * - its branch is validated as a whole; that is, it contains an empty string key (e.g `{ ['']: {} }`)
+ *   with no more-specific sub-keys; OR
  * - its path is individually validated; OR
  * - it's covered by a wildcard (`*`).
  *
@@ -171,7 +196,7 @@ function findUnknownFields(
   unknownFields: UnknownFieldInstance[] = [],
 ): UnknownFieldInstance[] {
   const globstarBranch = tree['**'];
-  if (tree[''] || globstarBranch?.['']) {
+  if (isCoveredAsWhole(tree) || globstarBranch?.['']) {
     // The rest of the tree from here is covered by some validation chain
     // For example, when the current treePath is `['foo', 'bar']` but `foo` is known
     return unknownFields;
