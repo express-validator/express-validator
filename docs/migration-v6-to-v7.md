@@ -91,13 +91,13 @@ const result = validationResult(req).formatWith(error => {
       return `Error on field ${error.path}`;
 
     case 'alternative':
-    case 'grouped_alternative':
+    case 'alternative_grouped':
       // this is an AlternativeValidationError or GroupedAlternativeValidationError
       console.log(error.nestedErrors);
       return error.msg;
 
     case 'unknown_fields':
-      // this is an UnknownFieldValidationError
+      // this is an UnknownFieldsError
       const fields = error.fields.map(field => field.path).join(', ');
       return `Unknown fields found, please remove them: ${fields}`;
 

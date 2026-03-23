@@ -175,7 +175,7 @@ const { ExpressValidator } = require('express-validator');
 
 const { query, validationResult } = new ExpressValidator({}, {}, {
   errorFormatter: error => error.msg,
-};
+});
 
 app.post('/hello', query('person').notEmpty(), (req, res) => {
   const result = validationResult(req);
@@ -197,7 +197,7 @@ import { Result, ExpressValidator } from 'express-validator';
 
 const { query, validationResult } = new ExpressValidator({}, {}, {
   errorFormatter: error => error.msg as string,
-};
+});
 
 app.post('/hello', query('person').notEmpty(), (req, res) => {
   const result: Result<string> = validationResult(req);

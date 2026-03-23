@@ -264,7 +264,7 @@ oneOf(
 ## `GroupedAlternativeMessageFactory`
 
 ```ts
-type AlternativeMessageFactory = (
+type GroupedAlternativeMessageFactory = (
   nestedErrors: FieldValidationError[][],
   options: { req: Request },
 ) => any;

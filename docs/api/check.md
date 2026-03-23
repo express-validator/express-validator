@@ -66,7 +66,7 @@ import { param } from 'express-validator';
 param(fields?: string | string[], message?: any): ValidationChain
 ```
 
-Same as [`check()`](#params), but only checking `req.params`.
+Same as [`check()`](#param), but only checking `req.params`.
 
 ## `query()`
 
