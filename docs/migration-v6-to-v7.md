@@ -41,20 +41,6 @@ The following types have been removed from express-validator and can be transpar
 | `ValidationParamSchema` | `ParamSchema` |
 | `ValidationSchema`      | `Schema`      |
 
-## Validators
-
-### `isObject()`
-
-The `strict` option, when unset, would default to `false`, meaning that arrays and `null` values would
-pass validation. The new default value is `true`.
-
-To maintain v6.x.x behavior, the following change is necessary:
-
-```diff
-- check('object').isObject()
-+ check('object').isObject({ strict: false })
-```
-
 ## Validation errors
 
 Validation errors used to be objects in the format `{ param, msg, value, location, nestedErrors }`,
