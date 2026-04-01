@@ -77,6 +77,7 @@ isAlpha(locale?: AlphaLocale, options?: {
 - `'fa-IR'`
 - `'fi-FI'`
 - `'fr-FR'`
+- `'gu-IN'`
 - `'he'`
 - `'hi-IN'`
 - `'hu-HU'`
@@ -84,11 +85,15 @@ isAlpha(locale?: AlphaLocale, options?: {
 - `'it-IT'`
 - `'ja-JP'`
 - `'kk-KZ'`
+- `'kn-IN'`
 - `'ko-KR'`
 - `'ku-IQ'`
+- `'ml-IN'`
 - `'nb-NO'`
 - `'nl-NL'`
 - `'nn-NO'`
+- `'or-IN'`
+- `'pa-IN'`
 - `'pl-PL'`
 - `'pt-BR'`
 - `'pt-PT'`
@@ -99,6 +104,8 @@ isAlpha(locale?: AlphaLocale, options?: {
 - `'sr-RS'`
 - `'sr-RS@latin'`
 - `'sv-SE'`
+- `'ta-IN'`
+- `'te-IN'`
 - `'th-TH'`
 - `'tr-TR'`
 - `'uk-UA'`
@@ -157,6 +164,7 @@ isAlphanumeric(locale?: AlphanumericLocale, options?: {
 - `'fi-FI'`
 - `'fr-FR'`
 - `'fr-BE'`
+- `'gu-IN'`
 - `'he'`
 - `'hi-IN'`
 - `'hu-HU'`
@@ -164,12 +172,16 @@ isAlphanumeric(locale?: AlphanumericLocale, options?: {
 - `'id-ID'`
 - `'ja-JP'`
 - `'kk-KZ'`
+- `'kn-IN'`
 - `'ko-KR'`
 - `'ku-IQ'`
+- `'ml-IN'`
 - `'nb-NO'`
 - `'nl-BE'`
 - `'nl-NL'`
 - `'nn-NO'`
+- `'or-IN'`
+- `'pa-IN'`
 - `'pl-PL'`
 - `'pt-BR'`
 - `'pt-PT'`
@@ -180,6 +192,8 @@ isAlphanumeric(locale?: AlphanumericLocale, options?: {
 - `'sr-RS'`
 - `'sr-RS@latin'`
 - `'sv-SE'`
+- `'ta-IN'`
+- `'te-IN'`
 - `'th-TH'`
 - `'tr-TR'`
 - `'uk-UA'`
@@ -740,6 +754,7 @@ isMobilePhone(locale: MobilePhoneLocale | readonly Options.MobilePhoneLocale[], 
 - `'ar-LY'`
 - `'ar-MA'`
 - `'ar-OM'`
+- `'ar-QA'`
 - `'ar-PS'`
 - `'ar-SA'`
 - `'ar-SD'`
