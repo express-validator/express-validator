@@ -41,7 +41,7 @@
     "node": ">= 8.0.0"
   },
   "dependencies": {
-    "lodash": "^4.17.21",
+    "lodash": "^4.18.1",
     "validator": "~13.15.23"
   },
   "devDependencies": {
