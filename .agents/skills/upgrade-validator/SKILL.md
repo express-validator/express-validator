@@ -1,9 +1,15 @@
 ---
 name: upgrade-validator
-description: Upgrades the npm `validator` dependency and syncs express-validator chain types, implementations, options, and `declarations/validator.d.ts` with validator.js releases. Use when the user says "upgrade validator", asks to bump the validator package, or is manually upgrading validatorjs/validator.js.
+description: Upgrades the npm `validator` dependency and syncs express-validator chain types, implementations, options, and `declarations/validator.d.ts` with validator.js releases. Express-validator intentionally pins `validator` to patch-only semver (see PR #1253) so minor bumps from validatorjs are not applied accidentally. Use when the user says "upgrade validator", asks to bump the validator package, or is manually upgrading validatorjs/validator.js.
 ---
 
 # upgrade-validator
+
+## Policy: why upgrades are manual
+
+This project **does not** float on arbitrary new minor lines of [validatorjs/validator.js](https://github.com/validatorjs/validator.js). As described in [express-validator#1253](https://github.com/express-validator/express-validator/pull/1253), the `validator` dependency is **pinned to patch** (e.g. `~x.y.z`) so a new **minor** from upstream cannot be pulled in implicitly and surface mistaken or unexpected breaking changes. Bumping `validator` is a **deliberate** maintainers’ task: run this workflow, sync types and chain APIs, test, and ship.
+
+After `npm install`, keep **`package.json`** consistent with that policy (typically `~<resolved-version>`, not a loose `^` on the major/minor line unless the project explicitly changes policy).
 
 ## Before you start
 
@@ -12,11 +18,13 @@ description: Upgrades the npm `validator` dependency and syncs express-validator
 
 ## 1. Upgrade the package
 
-From the repo root, install the latest `validator` and persist it to `package.json`:
+From the repo root, install the latest `validator` in-range and persist it to `package.json` / the lockfile:
 
 ```bash
 npm install validator@latest
 ```
+
+If `npm` rewrites the range to `^` and the project uses **patch-only** pinning per [#1253](https://github.com/express-validator/express-validator/pull/1253), change the dependency to `~<version>` to match the previous convention.
 
 ## 2. Map upstream changes to this codebase
 
