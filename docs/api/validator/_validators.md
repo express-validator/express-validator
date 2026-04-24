@@ -438,7 +438,9 @@ isHash(algorithm: HashAlgorithm): ValidationChain
 #### `isHexColor()`
 
 ```ts
-isHexColor(): ValidationChain
+isHexColor(options?: {
+  require_hashtag?: boolean;
+}): ValidationChain
 ```
 
 #### `isHexadecimal()`
@@ -564,13 +566,17 @@ isISO31661Numeric(): ValidationChain
 #### `isISO31661Alpha2()`
 
 ```ts
-isISO31661Alpha2(): ValidationChain
+isISO31661Alpha2(options?: {
+  userAssignedCodes?: string[];
+}): ValidationChain
 ```
 
 #### `isISO31661Alpha3()`
 
 ```ts
-isISO31661Alpha3(): ValidationChain
+isISO31661Alpha3(options?: {
+  userAssignedCodes?: string[];
+}): ValidationChain
 ```
 
 #### `isISO4217()`
@@ -614,6 +620,7 @@ isInt(options?: {
 ```ts
 isJSON(options?: {
   allow_primitives?: boolean;
+  allow_any_value?: boolean;
 }): ValidationChain
 ```
 
@@ -847,6 +854,7 @@ isMobilePhone(locale: MobilePhoneLocale | readonly Options.MobilePhoneLocale[], 
 - `'fr-CF'`
 - `'fr-CH'`
 - `'fr-CM'`
+- `'fr-DJ'`
 - `'fr-FR'`
 - `'fr-GF'`
 - `'fr-GP'`
@@ -1066,6 +1074,7 @@ isPostalCode(locale: PostalCodeLocale): ValidationChain
 - `'LT'`
 - `'LU'`
 - `'LV'`
+- `'MC'`
 - `'MT'`
 - `'MX'`
 - `'MY'`

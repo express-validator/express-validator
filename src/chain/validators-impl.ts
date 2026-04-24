@@ -185,8 +185,8 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isHash(algorithm: Options.HashAlgorithm) {
     return this.addStandardValidation(validator.isHash, algorithm);
   }
-  isHexColor() {
-    return this.addStandardValidation(validator.isHexColor);
+  isHexColor(options?: Options.IsHexColorOptions) {
+    return this.addStandardValidation(validator.isHexColor, options);
   }
   isHexadecimal() {
     return this.addStandardValidation(validator.isHexadecimal);
@@ -230,11 +230,11 @@ export class ValidatorsImpl<Chain> implements Validators<Chain> {
   isISO31661Numeric() {
     return this.addStandardValidation(validator.isISO31661Numeric);
   }
-  isISO31661Alpha2() {
-    return this.addStandardValidation(validator.isISO31661Alpha2);
+  isISO31661Alpha2(options?: Options.IsISO31661Alpha2Options) {
+    return this.addStandardValidation(validator.isISO31661Alpha2, options);
   }
-  isISO31661Alpha3() {
-    return this.addStandardValidation(validator.isISO31661Alpha3);
+  isISO31661Alpha3(options?: Options.IsISO31661Alpha3Options) {
+    return this.addStandardValidation(validator.isISO31661Alpha3, options);
   }
   isISO4217() {
     return this.addStandardValidation(validator.isISO4217);

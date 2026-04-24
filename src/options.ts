@@ -274,6 +274,7 @@ export type MobilePhoneLocale =
   | 'fr-CF'
   | 'fr-CH'
   | 'fr-CM'
+  | 'fr-DJ'
   | 'fr-FR'
   | 'fr-GF'
   | 'fr-GP'
@@ -378,6 +379,7 @@ export type PostalCodeLocale =
   | 'LT'
   | 'LU'
   | 'LV'
+  | 'MC'
   | 'MT'
   | 'MX'
   | 'MY'
@@ -912,6 +914,16 @@ export interface IsFQDNOptions {
   ignore_max_length?: boolean;
 }
 
+/**
+ * defaults to
+ * {
+ *   require_hashtag: false
+ * }
+ */
+export interface IsHexColorOptions {
+  require_hashtag?: boolean;
+}
+
 export interface IsIntOptions extends MinMaxExtendedOptions {
   allow_leading_zeroes?: boolean;
 }
@@ -919,11 +931,13 @@ export interface IsIntOptions extends MinMaxExtendedOptions {
 /**
  * defaults to
  * {
- *  allow_primitives: false
+ *  allow_primitives: false|
+ *  allow_any_value: false
  * }
  */
 export interface IsJSONOptions {
   allow_primitives?: boolean;
+  allow_any_value?: boolean;
 }
 
 /**
@@ -960,6 +974,14 @@ export interface IsIMEIOptions {
 export interface IsISO8601Options {
   strict?: boolean;
   strictSeparator?: boolean;
+}
+
+export interface IsISO31661Alpha2Options {
+  userAssignedCodes?: string[];
+}
+
+export interface IsISO31661Alpha3Options {
+  userAssignedCodes?: string[];
 }
 
 export interface IsISBNOptions {

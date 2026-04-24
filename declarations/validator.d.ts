@@ -66,7 +66,10 @@ declare module 'validator' {
   export function isFullWidth(str: string): boolean;
   export function isHalfWidth(str: string): boolean;
   export function isHash(str: string, algorithm: import('../src/options').HashAlgorithm): boolean;
-  export function isHexColor(str: string): boolean;
+  export function isHexColor(
+    str: string,
+    options?: import('../src/options').IsHexColorOptions,
+  ): boolean;
   export function isHexadecimal(str: string): boolean;
   export function isHSL(str: string): boolean;
   export function isIBAN(str: string, options?: import('../src/options').IsIBANOptions): boolean;
@@ -91,8 +94,14 @@ declare module 'validator' {
     options?: import('../src/options').IsISO8601Options,
   ): boolean;
   export function isISO31661Numeric(str: string): boolean;
-  export function isISO31661Alpha2(str: string): boolean;
-  export function isISO31661Alpha3(str: string): boolean;
+  export function isISO31661Alpha2(
+    str: string,
+    options?: import('../src/options').IsISO31661Alpha2Options,
+  ): boolean;
+  export function isISO31661Alpha3(
+    str: string,
+    options?: import('../src/options').IsISO31661Alpha3Options,
+  ): boolean;
   export function isISO4217(str: string): boolean;
   export function isISO15924(str: string): boolean;
   export function isISRC(str: string): boolean;

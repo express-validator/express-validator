@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "lodash": "^4.18.1",
-    "validator": "~13.15.23"
+    "validator": "~13.15.35"
   },
   "devDependencies": {
     "@docusaurus/core": "^3.1.0",
