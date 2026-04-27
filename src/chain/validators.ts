@@ -132,7 +132,7 @@ export interface Validators<Return> {
   isFullWidth(): Return;
   isHalfWidth(): Return;
   isHash(algorithm: Options.HashAlgorithm): Return;
-  isHexColor(): Return;
+  isHexColor(options?: Options.IsHexColorOptions): Return;
   isHexadecimal(): Return;
   isHSL(): Return;
   isIBAN(options?: Options.IsIBANOptions): Return;
@@ -147,8 +147,8 @@ export interface Validators<Return> {
   isISO6391(): Return;
   isISO8601(options?: Options.IsISO8601Options): Return;
   isISO31661Numeric(): Return;
-  isISO31661Alpha2(): Return;
-  isISO31661Alpha3(): Return;
+  isISO31661Alpha2(options?: Options.IsISO31661Alpha2Options): Return;
+  isISO31661Alpha3(options?: Options.IsISO31661Alpha3Options): Return;
   isISO4217(): Return;
   isISO15924(): Return;
   isISRC(): Return;
