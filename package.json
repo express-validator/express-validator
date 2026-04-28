@@ -38,7 +38,7 @@
     "lint": "eslint --ignore-path .gitignore 'src/**/*.ts' && prettier -c ."
   },
   "engines": {
-    "node": ">= 8.0.0"
+    "node": ">= 14.0.0"
   },
   "dependencies": {
     "lodash": "^4.18.1",
