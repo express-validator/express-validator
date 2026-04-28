@@ -157,16 +157,16 @@ describe('default #isBoolean()', () => {
     await isBoolean.run(context, 'false', meta);
     await isBoolean.run(context, 1, meta);
     await isBoolean.run(context, 0, meta);
-    // The two below are passing because we are using a StandardValidator which passes the value to `toString`
-    await isBoolean.run(context, [false], meta);
-    await isBoolean.run(context, ['true'], meta);
     expect(context.errors).toHaveLength(0);
 
+    // Arrays should now be rejected by type validators
+    await isBoolean.run(context, [false], meta);
+    await isBoolean.run(context, ['true'], meta);
     await isBoolean.run(context, 'no', meta);
     await isBoolean.run(context, 'True', meta);
     await isBoolean.run(context, 'False', meta);
     await isBoolean.run(context, 'yes', meta);
-    expect(context.errors).toHaveLength(4);
+    expect(context.errors).toHaveLength(6);
   });
 });
 
@@ -228,9 +228,10 @@ describe('loose #isBoolean()', () => {
     await isBoolean.run(context, 1, meta);
     await isBoolean.run(context, 0, meta);
 
+    // Arrays should now be rejected by type validators
     await isBoolean.run(context, [false], meta);
     await isBoolean.run(context, ['true'], meta);
-    expect(context.errors).toHaveLength(0);
+    expect(context.errors).toHaveLength(2);
   });
 });
 
