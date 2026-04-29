@@ -220,3 +220,55 @@ describe('with dryRun: true option', () => {
     expect(req.query).toHaveProperty('bar', 456);
   });
 });
+
+describe('with read-only req properties (Express 5 compat)', () => {
+    it('does not throw when req location property is read-only', async () => {
+          // Simulate Express 5 behavior: req.query is a read-only getter
+          const req: any = {};
+          Object.defineProperty(req, 'query', {
+                  get: () => ({ foo: 123, bar: 456 }),
+                  configurable: true,
+                });
+
+          builder.addItem(nullify);
+
+          // Should not throw even though req.query is read-only
+          await expect(contextRunner.run(req)).resolves.toBeDefined();
+        });
+
+    it('still validates fields even when req location property is read-only', async () => {
+          // Simulate Express 5 read-only req.query
+          const req: any = {};
+          Object.defineProperty(req, 'query', {
+                  get: () => ({ foo: 'invalid' }),
+                  configurable: true,
+                });
+
+          builder.addItem({
+                  async run(context, value, meta) {
+                            context.addError({ type: 'field', value, meta });
+                          },
+                });
+
+          const result = await contextRunner.run(req);
+          // Validation errors should still be collected
+          expect(result.context.errors.length).toBeGreaterThan(0);
+        });
+
+    it('rethrows non-TypeError exceptions from _.set', async () => {
+          // Simulate a property that throws a non-TypeError when set
+          const req: any = {};
+          Object.defineProperty(req, 'query', {
+                  get: () => ({ foo: 123 }),
+                  set() { throw new RangeError('unexpected'); },
+                  configurable: true,
+                });
+
+          // selectFields returns a top-level location instance (path: '') so _.set hits the setter
+          selectFields.mockReturnValue([{ location: 'query', path: '', originalPath: '', pathValues: [], value: 999 }]);
+
+          builder.addItem(nullify);
+
+          await expect(contextRunner.run(req)).rejects.toThrow(RangeError);
+        });
+  });
