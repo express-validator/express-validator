@@ -38,6 +38,26 @@ it('includes data that was validated with wildcards', done => {
   });
 });
 
+it('keeps wildcard-expanded bracket-notation keys from overwriting validated fields', done => {
+  const req = {
+    body: {
+      role: 'user',
+      '["role"]': 'admin',
+    },
+  };
+
+  check('role').isIn(['user', 'moderator'])(req, {}, () => {
+    check('*').isString()(req, {}, () => {
+      expect(matchedData(req)).toEqual({
+        role: 'user',
+        '["role"]': 'admin',
+      });
+
+      done();
+    });
+  });
+});
+
 it('does not include valid data from invalid oneOf() chain group', done => {
   const req = {
     query: { foo: 'foo', bar: 123, baz: 'baz' },

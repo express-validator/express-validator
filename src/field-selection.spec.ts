@@ -567,6 +567,9 @@ describe('reconstructFieldPath()', () => {
     ['numeric segment between text segments', ['foo', '0', 'bar'], 'foo[0].bar'],
     ['numeric segment followed by numeric segment', ['foo', '0', '0'], 'foo[0][0]'],
     ['text segment with a dot', ['foo', '.bar'], 'foo[".bar"]'],
+    ['text segment with brackets', ['foo', '["bar"]'], 'foo["[\\"bar\\"]"]'],
+    ['text segment with quotes', ['foo', 'bar"baz'], 'foo["bar\\"baz"]'],
+    ['text segment with backslashes', ['foo', 'bar\\baz'], 'foo["bar\\\\baz"]'],
   ])('%s', (_name, input, expected) => {
     expect(reconstructFieldPath(input)).toBe(expected);
   });

@@ -252,10 +252,9 @@ export function reconstructFieldPath(segments: readonly string[]): string {
     let part = '';
     segment = segment === '\\*' ? '*' : segment;
 
-    // TODO: Handle brackets?
-    if (segment.includes('.')) {
+    if (/[.[\]"\\]/.test(segment)) {
       // Special char key access
-      part = `["${segment}"]`;
+      part = `[${JSON.stringify(segment)}]`;
     } else if (/^\d+$/.test(segment)) {
       // Index access
       part = `[${segment}]`;
