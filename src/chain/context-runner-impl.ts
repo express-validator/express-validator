@@ -58,17 +58,21 @@ export class ContextRunnerImpl implements ContextRunner {
           // Avoids e.g. undefined values being set on the request if it didn't have the key initially.
           const reqValue = path !== '' ? _.get(req[location], path) : req[location];
           if (!options.dryRun && reqValue !== instance.value) {
-            try {
-              // Express 5 makes req.query read-only (a getter without a setter).
-              // Attempting to write to it throws a TypeError, which we silently ignore
-              // to maintain compatibility with both Express 4 and Express 5.
-              path !== '' ? _.set(req[location], path, newValue) : _.set(req, location, newValue);
-            } catch (e) {
-              if (!(e instanceof TypeError)) {
-                throw e;
-              }
-              // Silently ignore TypeError thrown by read-only properties (e.g. req.query in Express 5)
-            }
+                      // Express 5 makes req.query read-only (a getter without a setter).
+          // Override it with Object.defineProperty() to make it writable before setting.
+          // This approach is more explicit and avoids silently swallowing errors.
+          if (!Object.getOwnPropertyDescriptor(req, location)) {
+            // Only define the property if it doesn't have a descriptor
+            // (i.e., it's a getter-only property that we need to override)
+            Object.defineProperty(req, location, {
+              configurable: true,
+              enumerable: true,
+              writable: true,
+            });
+          }
+          path !== ''
+            ? _.set(req[location], path, newValue)
+            : _.set(req, location, newValue);
           }
         } catch (e) {
           if (e instanceof ValidationHalt) {
