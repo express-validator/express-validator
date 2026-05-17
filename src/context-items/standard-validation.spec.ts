@@ -84,3 +84,82 @@ describe('when negated', () => {
     createTest({ returnValue: false, addsError: false }),
   );
 });
+
+describe('array type rejection', () => {
+  it('rejects empty arrays for type validators', async () => {
+    // Create a mock function with isNumeric name
+    const isNumericValidator = jest.fn().mockReturnValue(true);
+    Object.defineProperty(isNumericValidator, 'name', { value: 'isNumeric' });
+
+    validation = new StandardValidation(isNumericValidator, false, [], toString);
+    validation.message = 'must be numeric';
+
+    await validation.run(context, [], meta);
+
+    expect(context.addError).toHaveBeenCalledWith({
+      type: 'field',
+      message: 'must be numeric',
+      value: [],
+      meta,
+    });
+  });
+
+  it('rejects non-empty arrays for type validators', async () => {
+    const isNumericValidator = jest.fn().mockReturnValue(true);
+    Object.defineProperty(isNumericValidator, 'name', { value: 'isNumeric' });
+
+    validation = new StandardValidation(isNumericValidator, false, [], toString);
+    validation.message = 'must be numeric';
+
+    await validation.run(context, [1, 2, 3], meta);
+
+    expect(context.addError).toHaveBeenCalledWith({
+      type: 'field',
+      message: 'must be numeric',
+      value: [1, 2, 3],
+      meta,
+    });
+  });
+
+  it('does not reject arrays for non-type validators', async () => {
+    const containsValidator = jest.fn().mockReturnValue(true);
+    Object.defineProperty(containsValidator, 'name', { value: 'contains' });
+
+    validation = new StandardValidation(containsValidator, false, [], toString);
+
+    await validation.run(context, [1, 2], meta);
+
+    // Should validate individual elements instead of rejecting the array
+    expect(containsValidator).toHaveBeenCalledTimes(2);
+    expect(context.addError).not.toHaveBeenCalled();
+  });
+
+  it('still processes scalar values normally for type validators', async () => {
+    const isNumericValidator = jest.fn().mockReturnValue(true);
+    Object.defineProperty(isNumericValidator, 'name', { value: 'isNumeric' });
+
+    validation = new StandardValidation(isNumericValidator, false, [], toString);
+
+    await validation.run(context, '123', meta);
+
+    expect(isNumericValidator).toHaveBeenCalledWith('123');
+    expect(context.addError).not.toHaveBeenCalled();
+  });
+
+  it('rejects arrays for isInt validator', async () => {
+    const isIntValidator = jest.fn().mockReturnValue(true);
+    Object.defineProperty(isIntValidator, 'name', { value: 'isInt' });
+
+    validation = new StandardValidation(isIntValidator, false, [], toString);
+    validation.message = 'must be integer';
+
+    await validation.run(context, [], meta);
+
+    expect(context.addError).toHaveBeenCalledWith({
+      type: 'field',
+      message: 'must be integer',
+      value: [],
+      meta,
+    });
+  });
+});
