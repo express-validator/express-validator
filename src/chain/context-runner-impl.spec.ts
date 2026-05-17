@@ -201,6 +201,18 @@ describe('instance value persistence onto request', () => {
   });
 });
 
+it('runs alwaysRun items with requiredOnly: false', async () => {
+  const alwaysRunItem: ContextItem = { run: jest.fn(), alwaysRun: true };
+  const normalItem: ContextItem = { run: jest.fn() };
+  builder.addItem(normalItem, alwaysRunItem);
+  getDataSpy.mockReturnValue(instances);
+
+  await contextRunner.run({});
+
+  expect(getDataSpy).toHaveBeenNthCalledWith(1, { requiredOnly: true });
+  expect(getDataSpy).toHaveBeenNthCalledWith(2, { requiredOnly: false });
+});
+
 describe('with dryRun: true option', () => {
   it('does not concat to req[contextsKey]', async () => {
     const req: InternalRequest = {};

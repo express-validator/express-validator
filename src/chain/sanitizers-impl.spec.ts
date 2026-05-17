@@ -234,11 +234,13 @@ describe('#toUpperCase()', () => {
 });
 
 describe('#default()', () => {
-  it('adds default() sanitizer to the context', () => {
+  it('adds default() sanitizer to the context with alwaysRun flag', () => {
     const ret = sanitizers.default(5);
 
     expect(ret).toBe(chain);
-    expect(builder.addItem).toHaveBeenCalledWith(new Sanitization(expect.any(Function), true));
+    expect(builder.addItem).toHaveBeenCalledWith(
+      new Sanitization(expect.any(Function), true, [], undefined, true),
+    );
   });
 
   it('sanitizes to default()', async () => {
