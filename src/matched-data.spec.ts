@@ -73,6 +73,43 @@ describe('when option includeOptionals is true', () => {
   });
 });
 
+describe('when option includeOptionals is discardUndefined ', () => {
+  it('returns object with optional data that is not undefined', done => {
+    const req = {
+      headers: { foo: '123', bar: null, boo: false },
+    };
+
+    const middleware = check(['foo', 'bar', 'baz', 'boo']).optional({ values: 'null' }).isInt();
+
+    middleware(req, {}, () => {
+      const data = matchedData(req, { includeOptionals: 'discardUndefined' });
+      expect(data).toHaveProperty('foo', '123');
+      expect(data).toHaveProperty('bar', null);
+      expect(data).not.toHaveProperty('baz');
+
+      done();
+    });
+  });
+
+  it('returns object including null, falsy and invalid values when `onlyValidData` is set to false', done => {
+    const req = {
+      headers: { foo: '123', bar: null, boo: false },
+    };
+
+    const middleware = check(['foo', 'bar', 'baz', 'boo']).optional({ values: 'null' }).isInt();
+
+    middleware(req, {}, () => {
+      const data = matchedData(req, { includeOptionals: 'discardUndefined', onlyValidData: false });
+      expect(data).toHaveProperty('foo', '123');
+      expect(data).toHaveProperty('bar', null);
+      expect(data).toHaveProperty('boo', false);
+      expect(data).not.toHaveProperty('baz');
+
+      done();
+    });
+  });
+});
+
 describe('when option onlyValidData is false', () => {
   it('returns object with invalid data', done => {
     const req = {
