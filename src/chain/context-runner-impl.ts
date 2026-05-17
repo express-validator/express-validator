@@ -25,6 +25,13 @@ export class ContextRunnerImpl implements ContextRunner {
         : this.builderOrContext.build();
 
     const internalReq = req as InternalRequest;
+    
+    // Store optional field information for nested field validation
+    const optionalFieldsKey = '__expressValidator_optionalFields';
+    if (!internalReq[optionalFieldsKey]) {
+      internalReq[optionalFieldsKey] = {};
+    }
+
     const bail = internalReq[contextsKey]?.some(
       context => context.bail && context.errors.length > 0,
     );
@@ -35,10 +42,46 @@ export class ContextRunnerImpl implements ContextRunner {
     const instances = this.selectFields(req, context.fields, context.locations);
     context.addFieldInstances(instances);
 
+    // Mark which fields in this context are optional so nested field validation can check
+    context.fields.forEach(field => {
+      if (context.optional) {
+        internalReq[optionalFieldsKey][field] = true;
+      }
+    });
+
     const haltedInstances = new Set<string>();
 
     for (const contextItem of context.stack) {
-      const promises = context.getData({ requiredOnly: true }).map(async instance => {
+      let instances = context.getData({ requiredOnly: true });
+      
+      // Filter out nested fields whose parent field is optional and missing from request
+      instances = instances.filter(instance => {
+        // If the field path contains a dot, it's a nested field
+        if (!instance.path.includes('.')) {
+          return true;
+        }
+
+        // Get all parent paths by removing segments from the right
+        const segments = _.toPath(instance.path);
+        for (let i = segments.length - 1; i > 0; i--) {
+          const parentPath = segments.slice(0, i).join('.');
+          
+          // Check if the parent field is marked as optional
+          if (internalReq[optionalFieldsKey]?.[parentPath]) {
+            // Get the value from the request to check if parent is actually present
+            const parentValue = _.get(req[instance.location], parentPath);
+            
+            // If parent is optional and missing/null/falsy, skip this nested field
+            if (parentValue === undefined || parentValue == null || !parentValue) {
+              return false;
+            }
+          }
+        }
+        
+        return true;
+      });
+
+      const promises = instances.map(async instance => {
         const { location, path } = instance;
         const instanceKey = `${location}:${path}`;
         if (haltedInstances.has(instanceKey)) {
