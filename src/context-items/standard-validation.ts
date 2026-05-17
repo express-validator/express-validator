@@ -16,7 +16,7 @@ export class StandardValidation implements ContextItem {
   ) {}
 
   async run(context: Context, value: any, meta: Meta) {
-    const values = Array.isArray(value) ? value : [value];
+    const values = Array.isArray(value) && value.length > 0 ? value : [value];
     values.forEach(value => {
       const result = this.validator(this.stringify(value), ...this.options);
       if (this.negated ? result : !result) {

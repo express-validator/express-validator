@@ -55,6 +55,20 @@ it('calls the validator for each item in array field', async () => {
   expect(validator).toHaveBeenNthCalledWith(2, 'hey42');
 });
 
+it('validates empty array as a single value instead of skipping validation', async () => {
+  toString.mockImplementation(val => `hey${val}`);
+  validator.mockReturnValue(false);
+  await validation.run(context, [], meta);
+  expect(toString).toHaveBeenCalledWith([]);
+  expect(validator).toHaveBeenCalledWith('hey');
+  expect(context.addError).toHaveBeenCalledWith({
+    type: 'field',
+    message: validation.message,
+    value: [],
+    meta,
+  });
+});
+
 it('calls the validator with the value and options', async () => {
   validation = new StandardValidation(validator, false, ['bar', true], toString);
   await validation.run(context, 'foo', meta);
