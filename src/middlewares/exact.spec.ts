@@ -1,6 +1,6 @@
+import { body, check } from './validation-chain-builders';
 import { checkExact } from './exact';
 import { checkSchema } from './schema';
-import { check } from './validation-chain-builders';
 
 it.each([
   ['single chain', check('banana')],
@@ -85,5 +85,69 @@ it('works as a middleware', done => {
   const req = {};
   checkExact([])(req, {}, () => {
     done();
+  });
+});
+
+describe('wildcard field validation', () => {
+  it('detects unknown nested fields when wildcard parent and specific sub-paths are both declared', async () => {
+    // body('*') validates each array element, body('*.id') and body('*.qty') declare specific sub-fields.
+    // A field like 'wrong' nested inside an array element should be flagged as unknown.
+    const req = {
+      body: [
+        { id: 1, qty: 100 },
+        { id: 2, wrong: 1, qty: 100 },
+      ],
+    };
+    const result = await checkExact([
+      body().isArray(),
+      body('*').isObject(),
+      body('*.id').isInt(),
+      body('*.qty').isInt(),
+    ]).run(req);
+    const errors = result.array();
+    expect(errors).toHaveLength(1);
+    expect(errors[0]).toMatchObject({
+      type: 'unknown_fields',
+      fields: [{ path: '[1].wrong', value: 1, location: 'body' }],
+    });
+  });
+
+  it('does not flag unknown fields when only wildcard parent is declared (no specific sub-paths)', async () => {
+    // When body('*') is used without any specific sub-paths, the wildcard fully covers all elements.
+    const req = {
+      body: [{ id: 1, qty: 100 }],
+    };
+    const result = await checkExact([body('*').isObject()]).run(req);
+    expect(result.isEmpty()).toBe(true);
+  });
+
+  it('detects unknown fields using checkSchema with wildcard paths', async () => {
+    const req = {
+      body: [
+        { id: 1, qty: 100 },
+        { id: 2, extra: 'bad', qty: 100 },
+      ],
+    };
+    const result = await checkExact(
+      checkSchema({
+        '*.id': { in: ['body'], isInt: true },
+        '*.qty': { in: ['body'], isInt: true },
+      }),
+    ).run(req);
+    const errors = result.array();
+    expect(errors).toHaveLength(1);
+    expect(errors[0]).toMatchObject({
+      type: 'unknown_fields',
+      fields: [{ path: '[1].extra', value: 'bad', location: 'body' }],
+    });
+  });
+
+  it('allows all array element fields when no sub-paths are declared for the wildcard', async () => {
+    // No sub-paths for '*': everything inside each element is implicitly covered.
+    const req = {
+      body: [{ id: 1, qty: 100, extra: 'any' }],
+    };
+    const result = await checkExact([body('*')]).run(req);
+    expect(result.isEmpty()).toBe(true);
   });
 });
