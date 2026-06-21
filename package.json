@@ -12,7 +12,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/express-validator/express-validator.git"
+    "url": "git+https://github.com/express-validator/express-validator.git"
   },
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
