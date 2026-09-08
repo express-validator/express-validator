@@ -488,6 +488,31 @@ describe('selectUnknownFields()', () => {
     });
   });
 
+  it('selects unknown fields when wildcard parent and specific sub-paths are both declared', () => {
+    // When '*' and '*.foo' are both in knownFields, the specific sub-path '*.foo' defines
+    // what is known under each wildcard element. Fields other than 'foo' should be unknown.
+    const req = { body: { obj1: { foo: 1, bar: 2 }, obj2: { foo: 3, baz: 4 } } };
+    const instances = selectUnknownFields(req, ['*', '*.foo'], ['body']);
+    expect(instances).toHaveLength(2);
+    expect(instances[0]).toMatchObject({
+      path: 'obj1.bar',
+      value: 2,
+      location: 'body',
+    });
+    expect(instances[1]).toMatchObject({
+      path: 'obj2.baz',
+      value: 4,
+      location: 'body',
+    });
+  });
+
+  it('does not select any fields when wildcard parent is declared without specific sub-paths', () => {
+    // When only '*' is in knownFields (no specific sub-paths), all element contents are implicitly known.
+    const req = { body: { foo: 1, bar: 2 } };
+    const instances = selectUnknownFields(req, ['*'], ['body']);
+    expect(instances).toHaveLength(0);
+  });
+
   it('does not select any fields at a globstar level', () => {
     const req = { body: { foo: 1, bar: { baz: 2 } } };
     const instances = selectUnknownFields(req, ['**'], ['body']);
