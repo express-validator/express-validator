@@ -38,7 +38,8 @@ export class ContextRunnerImpl implements ContextRunner {
     const haltedInstances = new Set<string>();
 
     for (const contextItem of context.stack) {
-      const promises = context.getData({ requiredOnly: true }).map(async instance => {
+      const requiredOnly = !contextItem.alwaysRun;
+      const promises = context.getData({ requiredOnly }).map(async instance => {
         const { location, path } = instance;
         const instanceKey = `${location}:${path}`;
         if (haltedInstances.has(instanceKey)) {
