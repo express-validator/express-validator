@@ -44,12 +44,21 @@ export function matchedData<T extends object = Record<string, any>>(
   const validityFilter = createValidityFilter(options.onlyValidData);
   const locationFilter = createLocationFilter(options.locations);
 
-  return _(internalReq[contextsKey])
+  const instances = _(internalReq[contextsKey])
     .flatMap(fieldExtractor)
     .filter(validityFilter)
     .map(field => field.instance)
     .filter(locationFilter)
-    .reduce((state, instance) => _.set(state, instance.path, instance.value), {} as T);
+    .value();
+
+  const shouldBeArray =
+    instances.length > 0 &&
+    instances.every(instance => /^\d+$/.test(_.toPath(instance.path)[0]));
+
+  return instances.reduce(
+    (state, instance) => _.set(state, instance.path, instance.value),
+    (shouldBeArray ? [] : {}) as T,
+  );
 }
 
 function createFieldExtractor(removeOptionals: boolean) {

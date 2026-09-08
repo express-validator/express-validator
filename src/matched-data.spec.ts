@@ -38,6 +38,20 @@ it('includes data that was validated with wildcards', done => {
   });
 });
 
+it('returns an array when body is an array validated with wildcards', done => {
+  const req = {
+    body: [{ name: 'John' }, { name: 'Jane' }],
+  };
+
+  check('*.name', ['body']).isString()(req, {}, () => {
+    const data = matchedData(req, { locations: ['body'] });
+    expect(Array.isArray(data)).toBe(true);
+    expect(data).toEqual([{ name: 'John' }, { name: 'Jane' }]);
+
+    done();
+  });
+});
+
 it('does not include valid data from invalid oneOf() chain group', done => {
   const req = {
     query: { foo: 'foo', bar: 123, baz: 'baz' },
