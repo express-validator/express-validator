@@ -1,6 +1,7 @@
-import { check } from './middlewares/validation-chain-builders';
+import { body, check } from './middlewares/validation-chain-builders';
 import { matchedData } from './matched-data';
 import { oneOf } from './middlewares/one-of';
+import { validationResult } from './validation-result';
 
 it('works if no validation or sanitization chains ran', () => {
   expect(matchedData({})).toEqual({});
@@ -52,6 +53,110 @@ it('does not include valid data from invalid oneOf() chain group', done => {
       baz: 'baz',
     });
     done();
+  });
+});
+
+describe('missing fields', () => {
+  it.each(['never_that_field', 'nested.never_that_field'])(
+    'omits absent valid field %s',
+    async path => {
+      const req = { body: { name: 'john' } };
+      await check(path).not().exists().run(req);
+
+      expect(validationResult(req).isEmpty()).toBe(true);
+      expect(req.body).toStrictEqual({ name: 'john' });
+      expect(matchedData(req)).toStrictEqual({});
+    },
+  );
+
+  it('omits absent valid fields selected from a single location', async () => {
+    const req = { body: {}, query: { field: 'unselected' } };
+    await body('field').not().exists().run(req);
+
+    expect(validationResult(req).isEmpty()).toBe(true);
+    expect(matchedData(req)).not.toHaveProperty('field');
+  });
+
+  it.each([body, check])('preserves explicit undefined values (%p)', async build => {
+    const req = { body: { field: undefined, nested: { field: undefined } } };
+    await build(['field', 'nested.field']).not().exists().run(req);
+
+    expect(validationResult(req).isEmpty()).toBe(true);
+    expect(matchedData(req)).toStrictEqual(req.body);
+  });
+
+  it('preserves explicit undefined header values with case-insensitive selection', async () => {
+    const req = { headers: { 'x-field': undefined } };
+    await check('X-Field').not().exists().run(req);
+
+    expect(matchedData(req)).toStrictEqual({ 'X-Field': undefined });
+  });
+
+  it('preserves values sanitized to undefined', async () => {
+    const req = { body: { field: 'value' } };
+    await check('field')
+      .customSanitizer(() => undefined)
+      .run(req);
+
+    expect(req.body).toStrictEqual({ field: undefined });
+    expect(matchedData(req)).toStrictEqual({ field: undefined });
+  });
+
+  it('includes defaults supplied for absent fields', async () => {
+    const req = { body: {} };
+    await body('field').default('value').run(req);
+
+    expect(matchedData(req)).toStrictEqual({ field: 'value' });
+  });
+
+  it.each([undefined, 'value'])('preserves whole-body data (%p)', async value => {
+    const req = { body: value };
+    await body()
+      .custom(() => true)
+      .run(req);
+
+    expect(matchedData(req)).toStrictEqual({ '': value });
+  });
+
+  it('preserves extraction from multiple locations', async () => {
+    const req = { body: { field: 'body' }, query: { field: 'query' } };
+    await check('field').isString().run(req);
+
+    expect(matchedData(req)).toStrictEqual({ field: 'query' });
+    expect(matchedData(req, { locations: ['body'] })).toStrictEqual({ field: 'body' });
+  });
+
+  it('includes absent invalid fields when onlyValidData is false', async () => {
+    const req = { body: {} };
+    await body('field').exists().run(req);
+
+    expect(validationResult(req).isEmpty()).toBe(false);
+    expect(matchedData(req)).toStrictEqual({});
+    expect(matchedData(req, { onlyValidData: false })).toStrictEqual({ field: undefined });
+  });
+
+  it.each([{ includeOptionals: true }, { onlyValidData: false }])(
+    'preserves explicit inclusion options (%p)',
+    async options => {
+      const req = { body: {} };
+      await body('field').not().exists().run(req);
+
+      expect(matchedData(req, options)).toStrictEqual({ field: undefined });
+    },
+  );
+
+  it('preserves optional data in oneOf contexts', async () => {
+    const req = { body: {} };
+    await oneOf([body('field').optional().isInt()]).run(req);
+
+    expect(matchedData(req)).toStrictEqual({ field: undefined });
+  });
+
+  it('preserves explicit undefined across locations in oneOf contexts', async () => {
+    const req = { body: { field: undefined } };
+    await oneOf([check('field').not().exists()]).run(req);
+
+    expect(matchedData(req)).toStrictEqual({ field: undefined });
   });
 });
 
