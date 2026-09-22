@@ -28,6 +28,7 @@ export class ContextRunnerImpl implements ContextRunner {
     const bail = internalReq[contextsKey]?.some(
       context => context.bail && context.errors.length > 0,
     );
+
     if (bail) {
       return new ResultWithContextImpl(context);
     }
@@ -36,7 +37,6 @@ export class ContextRunnerImpl implements ContextRunner {
     context.addFieldInstances(instances);
 
     const haltedInstances = new Set<string>();
-
     for (const contextItem of context.stack) {
       const promises = context.getData({ requiredOnly: true }).map(async instance => {
         const { location, path } = instance;
@@ -52,33 +52,42 @@ export class ContextRunnerImpl implements ContextRunner {
             path,
             pathValues: instance.pathValues,
           });
-
           // An instance is mutable, so if an item changed its value, there's no need to call getData again
           const newValue = instance.value;
-
           // Checks whether the value changed.
           // Avoids e.g. undefined values being set on the request if it didn't have the key initially.
           const reqValue = path !== '' ? _.get(req[location], path) : req[location];
           if (!options.dryRun && reqValue !== instance.value) {
-            path !== '' ? _.set(req[location], path, newValue) : _.set(req, location, newValue);
+                      // Express 5 makes req.query read-only (a getter without a setter).
+          // Override it with Object.defineProperty() to make it writable before setting.
+          // This approach is more explicit and avoids silently swallowing errors.
+          if (!Object.getOwnPropertyDescriptor(req, location)) {
+            // Only define the property if it doesn't have a descriptor
+            // (i.e., it's a getter-only property that we need to override)
+            Object.defineProperty(req, location, {
+              configurable: true,
+              enumerable: true,
+              writable: true,
+            });
+          }
+          path !== ''
+            ? _.set(req[location], path, newValue)
+            : _.set(req, location, newValue);
           }
         } catch (e) {
           if (e instanceof ValidationHalt) {
             haltedInstances.add(instanceKey);
             return;
           }
-
           throw e;
         }
       });
-
       await Promise.all(promises);
     }
 
     if (!options.dryRun) {
       internalReq[contextsKey] = (internalReq[contextsKey] || []).concat(context);
     }
-
     return new ResultWithContextImpl(context);
   }
 }
