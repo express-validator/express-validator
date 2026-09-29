@@ -21,9 +21,10 @@ function getDataMapKey(path: string, location: Location) {
  * - `undefined`: only `undefined` values; equivalent to `value === undefined`
  * - `null`: only `undefined` and `null` values; equivalent to `value == null`
  * - `falsy`: all falsy values; equivalent to `!value`
+ * - `empty`: only empty strings; equivalent to `typeof value === 'string' && value === ''`
  * - `false`: not optional.
  */
-export type Optional = 'undefined' | 'null' | 'falsy' | false;
+export type Optional = 'undefined' | 'null' | 'falsy' | 'empty' | false;
 
 export type AddErrorOptions =
   | {
@@ -82,6 +83,7 @@ export class Context {
             (value: any) => value !== undefined,
             (value: any) => (optional === 'null' ? value != null : true),
             (value: any) => (optional === 'falsy' ? value : true),
+            (value: any) => (optional === 'empty' ? !(typeof value === 'string' && value === '') : true),
           ]
         : [];
 
@@ -90,10 +92,8 @@ export class Context {
       .flatMap((instances, group) => {
         const locations = _.uniqBy(instances, 'location');
 
-        // #331 - When multiple locations are involved, all of them must pass the validation.
-        // If none of the locations contain the field, we at least include one for error reporting.
-        // #458, #531 - Wildcards are an exception though: they may yield 0..* instances with different
-        // paths, so we may want to skip this filtering.
+        // When there are multiple instances for the same path, keep the ones with values
+        // and non-wildcard paths.
         if (instances.length > 1 && locations.length > 1 && !group.includes('*')) {
           const withValue = instances.filter(instance => instance.value !== undefined);
           return withValue.length ? withValue : [instances[0]];
