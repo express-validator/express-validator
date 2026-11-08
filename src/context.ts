@@ -121,7 +121,7 @@ export class Context {
   }
 
   addError(opts: AddErrorOptions) {
-    const msg = opts.message || this.message || 'Invalid value';
+    const msg = opts.message ?? this.message ?? 'Invalid value';
     let error: ValidationError;
     switch (opts.type) {
       case 'field':

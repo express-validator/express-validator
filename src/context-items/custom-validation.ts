@@ -26,7 +26,7 @@ export class CustomValidation implements ContextItem {
 
       context.addError({
         type: 'field',
-        message: this.message || (err instanceof Error ? err.message : err),
+        message: this.message ?? (err instanceof Error ? err.message : err),
         value,
         meta,
       });

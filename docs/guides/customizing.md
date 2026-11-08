@@ -124,6 +124,8 @@ body('email')
 
 Specifying a message using `.withMessage()` will have precedence over the thrown value from the
 custom validator.
+Falsy messages such as `''`, `0`, and `false` are preserved. Only `null` or `undefined` use a fallback
+message.
 
 :::
 
