@@ -42,11 +42,13 @@ export function matchedData<T extends object = Record<string, any>>(
 
   const fieldExtractor = createFieldExtractor(options.includeOptionals !== true);
   const validityFilter = createValidityFilter(options.onlyValidData);
+  const presenceFilter = createPresenceFilter(req, options);
   const locationFilter = createLocationFilter(options.locations);
 
   return _(internalReq[contextsKey])
     .flatMap(fieldExtractor)
     .filter(validityFilter)
+    .filter(presenceFilter)
     .map(field => field.instance)
     .filter(locationFilter)
     .reduce((state, instance) => _.set(state, instance.path, instance.value), {} as T);
@@ -56,6 +58,27 @@ function createFieldExtractor(removeOptionals: boolean) {
   return (context: Context) => {
     const instances = context.getData({ requiredOnly: removeOptionals });
     return instances.map((instance): FieldInstanceBag => ({ instance, context }));
+  };
+}
+
+function createPresenceFilter(req: Request, options: Partial<MatchedDataOptions>) {
+  return ({ instance, context }: FieldInstanceBag) => {
+    // oneOf() combines chains into a context without the original locations or optional settings.
+    // Preserve its existing extraction behavior.
+    if (
+      options.includeOptionals === true ||
+      options.onlyValidData === false ||
+      !context.locations.length ||
+      instance.value !== undefined
+    ) {
+      return true;
+    }
+
+    // An undefined instance may represent any of the chain's locations, not just the first one.
+    return context.locations.some(location => {
+      const path = location === 'headers' ? instance.path.toLowerCase() : instance.path;
+      return path === '' ? _.hasIn(req, location) : _.hasIn(req[location], path);
+    });
   };
 }
 

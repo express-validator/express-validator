@@ -38,6 +38,18 @@ app.post(
 );
 ```
 
+For validation chains run directly on the request, absent fields are omitted by default even if
+validation succeeds. For example:
+
+```ts
+// req.body is {}
+await body('field').not().exists().run(req);
+matchedData(req); // => {}
+```
+
+Valid, non-optional fields explicitly set to `undefined` are still included. This does not change
+extraction from `oneOf()` groups, or when `includeOptionals: true` or `onlyValidData: false` is specified.
+
 ### With optional data
 
 By default, `matchedData` doesn't return data that is optional and wasn't present in the request.<br/>
