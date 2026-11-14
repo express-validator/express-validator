@@ -11,6 +11,7 @@ export class Sanitization implements ContextItem {
     // For testing only.
     // Deliberately not calling it `toString` in order to not override `Object.prototype.toString`.
     private readonly stringify = toStringImpl,
+    readonly alwaysRun = false,
   ) {}
 
   async run(context: Context, value: any, meta: Meta) {

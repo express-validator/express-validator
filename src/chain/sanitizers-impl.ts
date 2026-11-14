@@ -15,9 +15,10 @@ export class SanitizersImpl<Chain> implements Sanitizers<Chain> {
     return this.chain;
   }
   default(default_value: any) {
-    return this.customSanitizer(value =>
-      [undefined, null, NaN, ''].includes(value) ? _.cloneDeep(default_value) : value,
-    );
+    const sanitizer: CustomSanitizer = value =>
+      [undefined, null, NaN, ''].includes(value) ? _.cloneDeep(default_value) : value;
+    this.builder.addItem(new Sanitization(sanitizer, true, [], undefined, true));
+    return this.chain;
   }
   replace(values_to_replace: any, new_value: any) {
     if (!Array.isArray(values_to_replace)) {
